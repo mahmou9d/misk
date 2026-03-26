@@ -1,0 +1,1124 @@
+{
+  "navbar": {
+    "home": "Home",
+    "categories": "Categories",
+    "returnPolicy": "Return & Exchange Policy",
+    "search": "Search",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "dashboard": "Dashboard",
+    "womens": "Women's Perfumes",
+    "mens": "Men's Perfumes",
+    "categoriesTitle": "Categories",
+    "businesshourslocation": "Business Hours & Location"
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: October 14, 2025",
+    "intro": "Misk Fragrances operates this store and website to provide you with a curated shopping experience. This Privacy Policy describes how we collect, use, and disclose your personal information when you visit, use, or make a purchase through our Services.",
+    "acknowledge": "Please read this Privacy Policy carefully. By using and accessing the Services, you acknowledge that you have read and understood the collection, use, and disclosure of your information as described herein.",
+    "contents": "Contents",
+    "contactNote": "Questions about this policy or want to exercise your rights?",
+    "contactLink": "Contact our team",
+    "sections": [
+      {
+        "title": "Personal Information We Collect",
+        "short": "What we collect",
+        "content": "When we use the term \"personal information,\" we are referring to information that identifies or can reasonably be linked to you or another person. Personal information does not include information that is collected anonymously or that has been de-identified. We may collect or process the following categories of personal information depending on how you interact with the Services:",
+        "bullets": [
+          "Contact details — name, address, billing & shipping address, phone number, and email address.",
+          "Financial information — credit/debit card numbers, payment details, transaction history, and payment confirmation.",
+          "Account information — username, password, security questions, preferences and settings.",
+          "Transaction information — items viewed, added to cart or wishlist, purchased, returned, exchanged or cancelled.",
+          "Communications — information you include when sending us a customer support inquiry.",
+          "Device information — device type, browser, IP address, network connection, and unique identifiers.",
+          "Usage information — how and when you interact with or navigate the Services."
+        ],
+        "note": ""
+      },
+      {
+        "title": "Personal Information Sources",
+        "short": "Where we get it",
+        "content": "We may collect personal information from the following sources:",
+        "bullets": [
+          "Directly from you — when you create an account, visit or use the Services, communicate with us, or otherwise provide information.",
+          "Automatically through the Services — from your device via cookies and similar tracking technologies.",
+          "From our service providers — when we engage them to enable technology or when they collect data on our behalf.",
+          "From our partners or other third parties."
+        ],
+        "note": ""
+      },
+      {
+        "title": "How We Use Your Information",
+        "short": "Our usage",
+        "content": "Depending on how you interact with us, we may use personal information for the following purposes:",
+        "bullets": [
+          "Provide & Improve Services — process payments, fulfill orders, manage your account, arrange shipping, and create a personalized shopping experience.",
+          "Marketing & Advertising — send promotional communications by email, text, or mail, and show relevant online advertisements.",
+          "Security & Fraud Prevention — authenticate your account, detect fraudulent activity, and secure our services.",
+          "Communicating with You — provide customer support and maintain our business relationship.",
+          "Legal Compliance — comply with applicable law, respond to legal process, and enforce our terms and policies."
+        ],
+        "note": ""
+      },
+      {
+        "title": "How We Disclose Your Information",
+        "short": "Disclosure",
+        "content": "In certain circumstances, we may disclose your personal information to third parties for legitimate purposes, including:",
+        "bullets": [
+          "Our technology platform and service vendors — IT management, payment processing, analytics, cloud storage, fulfillment and shipping.",
+          "Business and marketing partners — for marketing services and advertising.",
+          "At your direction — when you consent to sharing with third parties, such as for shipping or social media integrations.",
+          "Corporate affiliates — within our corporate group.",
+          "Business transactions — mergers, legal obligations, enforcement of terms, or protection of rights."
+        ],
+        "note": ""
+      },
+      {
+        "title": "Our Technology Infrastructure",
+        "short": "Tech infrastructure",
+        "content": "Our store is built on a sophisticated technology infrastructure designed to deliver a secure, seamless shopping experience. Information you submit may be transmitted to technical service providers and third parties that may be located in countries other than where you reside.\n\nOur technical service providers are responsible for processing your personal information for certain purposes, including responding to your rights requests related to those purposes.",
+        "bullets": [],
+        "note": ""
+      },
+      {
+        "title": "Third Party Websites & Links",
+        "short": "External links",
+        "content": "The Services may provide links to websites operated by third parties. If you follow links to sites not affiliated with us, you should review their privacy and security policies. We do not guarantee and are not responsible for the privacy or security of such sites.\n\nInformation you share on third-party social platforms may be viewable by other users without limitation. Our inclusion of such links does not imply any endorsement.",
+        "bullets": [],
+        "note": ""
+      },
+      {
+        "title": "Children's Data",
+        "short": "Children",
+        "content": "The Services are not intended for children, and we do not knowingly collect personal information about children under the age of majority in your jurisdiction. If you are the parent or guardian of a child who has provided us with their personal information, please contact us to request deletion.\n\nAs of the Effective Date of this Privacy Policy, we do not have actual knowledge that we \"share\" or \"sell\" personal information of individuals under 16 years of age.",
+        "bullets": [],
+        "note": ""
+      },
+      {
+        "title": "Security & Retention",
+        "short": "Security",
+        "content": "No security measures are perfect or impenetrable, and we cannot guarantee \"perfect security.\" We recommend that you do not use unsecure channels to communicate sensitive or confidential information to us.\n\nHow long we retain your personal information depends on factors such as whether we need it to maintain your account, provide Services, comply with legal obligations, resolve disputes, or enforce applicable contracts and policies.",
+        "bullets": [],
+        "note": ""
+      },
+      {
+        "title": "Your Rights & Choices",
+        "short": "Your rights",
+        "content": "Depending on where you live, you may have some or all of the rights below. These rights are not absolute and may apply only in certain circumstances.",
+        "bullets": [
+          "Right to Access / Know — request access to personal information we hold about you.",
+          "Right to Delete — request deletion of personal information we maintain about you.",
+          "Right to Correct — request correction of inaccurate personal information.",
+          "Right of Portability — receive a copy of your data and request transfer to a third party.",
+          "Communication Preferences — opt out of promotional emails at any time via the unsubscribe link."
+        ],
+        "note": "You may exercise any of these rights where indicated on the Services or by contacting us. We will not discriminate against you for exercising any of these rights. We may need to verify your identity before processing your request."
+      },
+      {
+        "title": "Complaints",
+        "short": "Complaints",
+        "content": "If you have complaints about how we process your personal information, please contact us using the contact details below. Depending on where you live, you may have the right to appeal our decision or lodge a complaint with your local data protection authority.",
+        "bullets": [],
+        "note": ""
+      },
+      {
+        "title": "International Transfers",
+        "short": "Transfers",
+        "content": "Please note that we may transfer, store and process your personal information outside the country you live in.\n\nIf we transfer your personal information out of the European Economic Area or the United Kingdom, we will rely on recognized transfer mechanisms like the European Commission's Standard Contractual Clauses, unless the transfer is to a country with an adequate level of protection.",
+        "bullets": [],
+        "note": ""
+      },
+      {
+        "title": "Changes to This Policy",
+        "short": "Updates",
+        "content": "We may update this Privacy Policy from time to time, including to reflect changes to our practices or for other operational, legal, or regulatory reasons. We will post the revised Privacy Policy on this website, update the Last updated date, and provide notice as required by applicable law.",
+        "bullets": [],
+        "note": ""
+      },
+      {
+        "title": "Contact",
+        "short": "Contact",
+        "content": "Should you have any questions about our privacy practices or this Privacy Policy, or if you would like to exercise any of the rights available to you, please email us at Misk@gmail.com or contact us at Cairo Festival City, Nasr City, C, 0000, EG.",
+        "bullets": [],
+        "note": ""
+      }
+    ]
+  },
+  "register": {
+    "title": "Welcome to Misk",
+    "subtitle": "Create your account and begin your fragrance journey",
+    "or": "or",
+    "fullName": "Full name",
+    "email": "Email address",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "createAccount": "Create Account",
+    "creating": "Creating your account…",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "success": "Welcome! Your account has been created successfully.",
+    "error": "Registration unsuccessful. Please try again.",
+    "googleError": "Google sign-in failed. Please try again."
+  },
+  "forgotPassword": {
+    "title": "Reset your password",
+    "subtitle": "Enter your email and we'll send you a reset link",
+    "emailPlaceholder": "Email address",
+    "sendLink": "Send reset link",
+    "sending": "Sending…",
+    "sent": "Link sent",
+    "checkEmail": "Check your inbox",
+    "sentTo": "We sent a link to",
+    "checkSpam": "Didn't receive it? Check your spam folder.",
+    "backToLogin": "Back to sign in"
+  },
+  "resetPassword": {
+    "title": "Set a new password",
+    "subtitle": "Your new password must be different from previous ones",
+    "newPasswordPlaceholder": "New password",
+    "confirmPasswordPlaceholder": "Confirm new password",
+    "submit": "Reset password",
+    "resetting": "Updating…",
+    "successTitle": "Password updated",
+    "successSubtitle": "Redirecting you to sign in…",
+    "backToLogin": "Back to sign in"
+  },
+  "overview": {
+    "title": "Dashboard",
+    "welcome": "Welcome back — Misk Admin",
+    "loading": "Loading stats…",
+    "navCards": [
+      {
+        "label": "Categories",
+        "href": "/admin/categories",
+        "icon": "⊞",
+        "desc": "Create & manage"
+      },
+      {
+        "label": "Products",
+        "href": "/admin/products",
+        "icon": "◈",
+        "desc": "Add or update"
+      },
+      {
+        "label": "Orders",
+        "href": "/admin/orders",
+        "icon": "◉",
+        "desc": "View & update"
+      }
+    ],
+    "stats": {
+      "totalOrders": "Total Orders",
+      "totalProducts": "Total Products",
+      "totalStock": "Total Stock",
+      "categories": "Categories",
+      "users": "Users",
+      "sales": "Sales"
+    },
+    "orderStatus": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "breakdown": "Order Status Breakdown",
+    "reviews": "Reviews",
+    "noReviews": "No review data",
+    "topSelling": "🔥 Top Selling",
+    "lowStock": "⚠ Low Stock",
+    "recentOrders": "📦 Recent Orders",
+    "colProduct": "Product",
+    "colSold": "Sold",
+    "colVolume": "Volume",
+    "colStock": "Stock",
+    "colId": "#",
+    "colDate": "Date",
+    "colStatus": "Status",
+    "colTotal": "Total"
+  },
+  "checkoutForm": {
+    "contact": "Contact",
+    "signIn": "Sign in",
+    "emailPlaceholder": "Email",
+    "newsEmail": "Email me with news and offers",
+    "delivery": "Delivery",
+    "country": "Egypt",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "address": "Address",
+    "apt": "Apartment, suite, etc. (optional)",
+    "city": "City",
+    "postalCode": "Postal code (optional)",
+    "phone": "Phone",
+    "saveInfo": "Save this information for next time",
+    "shippingMethod": "Shipping method",
+    "shippingDays": "Shipping 3–4 days",
+    "payment": "Payment",
+    "paymentSecure": "All transactions are secure and encrypted.",
+    "cod": "Cash on Delivery (COD)",
+    "card": "Credit / Debit Card",
+    "billingAddress": "Billing address",
+    "billingSame": "Same as shipping address",
+    "billingDifferent": "Use a different billing address",
+    "processing": "Processing…",
+    "payWithCard": "Pay with Card",
+    "completeOrder": "Complete order",
+    "privacyPolicy": "Privacy policy",
+    "terms": "Terms of service",
+    "errors": {
+      "email": "Invalid email address",
+      "firstName": "First name is required",
+      "lastName": "Last name is required",
+      "address": "Address is required",
+      "city": "City is required",
+      "gov": "Governorate is required",
+      "phone": "Valid phone number is required"
+    },
+    "gov": "Governorate"
+  },
+  "cartDrawer": {
+    "cart": "Cart",
+    "item": "item",
+    "items": "items",
+    "empty": "Your cart is empty",
+    "continueShopping": "Continue Shopping",
+    "subtotal": "Subtotal",
+    "checkout": "Checkout"
+  },
+  "adminLayout": {
+    "title": "Misk Admin",
+    "subtitle": "Dashboard",
+    "backToStore": "← Store",
+    "nav": [
+      {
+        "label": "Home",
+        "href": "/admin"
+      },
+      {
+        "label": "Categories",
+        "href": "/admin/categories"
+      },
+      {
+        "label": "Products",
+        "href": "/admin/products"
+      },
+      {
+        "label": "Orders",
+        "href": "/admin/orders"
+      },
+      {
+        "label": "Banners & Settings",
+        "href": "/admin/banners"
+      }
+    ]
+  },
+  "adminui": {
+    "loading": "Loading…"
+  },
+  "paymentModal": {
+    "title": "Choose payment method",
+    "creditCard": "Credit / Debit Card",
+    "mobileWallet": "Mobile Wallet",
+    "walletProviders": "(Vodafone / Orange / Instapay)",
+    "walletPlaceholder": "Wallet phone number",
+    "processing": "Processing…",
+    "confirmPay": "Confirm & Pay"
+  },
+  "productCard": {
+    "viewDetails": "View Details"
+  },
+  "adminCategories": {
+    "title": "Categories",
+    "subtitle": "Create product categories",
+    "newCategory": "New Category",
+    "nameLabel": "Name *",
+    "namePlaceholder": "Men's Fragrances",
+    "createBtn": "Create",
+    "created": "Created.",
+    "createFailed": "Failed to create category.",
+    "existing": "Existing Categories",
+    "loading": "Loading…",
+    "empty": "No categories yet."
+  },
+  "adminComponents": {
+    "deleteConfirm": "Delete",
+    "yesDelete": "Yes, delete",
+    "cancel": "Cancel",
+    "images": "Images",
+    "mainBadge": "MAIN",
+    "delBadge": "DEL",
+    "addBadge": "ADD",
+    "maxSize": "max 3 MB",
+    "setMainTitle": "Set as main image",
+    "deleteImgTitle": "Delete image",
+    "addImgTitle": "Add image (max 3 MB)",
+    "addImgsTitle": "Add images (max 3 MB each)",
+    "imgTooLarge": "Image must be 3 MB or less.",
+    "imgUploaded": "Image uploaded.",
+    "uploadFailed": "Upload failed.",
+    "imgDeleted": "Image deleted.",
+    "deleteFailed": "Delete failed.",
+    "mainUpdated": "Main image updated.",
+    "failed": "Failed.",
+    "noImages": "No images yet — click ADD to upload",
+    "filesSkipped": "{n} file(s) skipped — max 3 MB each.",
+    "volume": "Volume",
+    "price": "Price",
+    "compare": "Compare",
+    "stock": "Stock",
+    "allProducts": "All Products",
+    "loading": "Loading…"
+  },
+  "searchComponents": {
+    "sortBy": "Sort By",
+    "availability": "Availability",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "price": "Price",
+    "min": "Min",
+    "max": "Max",
+    "clearFilters": "Clear {n} filter(s)",
+    "filterSort": "Filter & Sort",
+    "placeholder": "Search fragrances…",
+    "searchBtn": "Search",
+    "suggestions": "Suggestions",
+    "noSuggestions": "No suggestions",
+    "products": "Products",
+    "noProducts": "No products found",
+    "searchFor": "Search for",
+    "allResults": "All results"
+  },
+  "adminOrders": {
+    "title": "Orders",
+    "subtitle": "View and manage customer orders",
+    "loading": "Loading orders…",
+    "loadError": "Failed to load orders.",
+    "empty": "No orders found.",
+    "customer": "Customer",
+    "items": "Items",
+    "newStatus": "New Status",
+    "changeStatus": "Change Status",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "updateSuccess": "Order updated.",
+    "updateError": "Update failed.",
+    "statuses": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    }
+  },
+"adminProducts": {
+  "title": "Products",
+  "subtitle": "Manage your store products",
+  "createBtn": "Create Product",
+  "productCount": "{count} products",
+  "fields": {
+    "name": "Name *",
+    "category": "Category *",
+    "categoryName": "Category Name",
+    "fragranceFamily": "Fragrance Family",
+    "concentration": "Concentration",
+    "selectPlaceholder": "Select…",
+    "description": "Description",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "volume": "Volume",
+    "price": "Price",
+    "comparePrice": "Compare Price",
+    "stock": "Stock",
+    "stockLabel": "Stock"
+  },
+  "steps": {
+    "bar": {
+      "productInfo": "Product info",
+      "variants": "Variants"
+    },
+    "create": {
+      "idle": "Create Product",
+      "creating": "Creating…",
+      "variants": "Adding variants…",
+      "images": "Uploading images…",
+      "done": "Done ✓"
+    },
+    "edit": {
+      "idle": "Update Product",
+      "updating": "Updating…",
+      "images": "Uploading images…",
+      "done": "Done ✓"
+    },
+    "addVariant": {
+      "idle": "Add Variants",
+      "adding": "Adding…",
+      "images": "Uploading images…",
+      "done": "Done ✓"
+    },
+    "editVariant": {
+      "idle": "Update Variant",
+      "updating": "Updating…",
+      "done": "Done ✓"
+    }
+  },
+  "state": {
+    "loading": "Loading products…",
+    "empty": "No products yet",
+    "emptyHint": "Create your first product above"
+  },
+  "pagination": {
+    "previous": "← Previous",
+    "page": "Page {page}",
+    "next": "Next →"
+  },
+  "card": {
+    "edit": "Edit",
+    "addVariant": "+ Add variant",
+    "editVariant": "Edit variant",
+    "delete": "Delete"
+  },
+  "actions": {
+    "cancel": "Cancel",
+    "next": "Next →",
+    "back": "← Back"
+  },
+  "modals": {
+    "createProduct": "Create product",
+    "addVariants": "Add variants",
+    "editProduct": "Edit product",
+    "addVariantsTitle": "Add variants",
+    "editVariant": "Edit variant",
+    "deleteProduct": "Delete product"
+  },
+  "deleteModal": {
+    "title": "Delete product"
+  },
+  "create": {
+    "heading": "New Product",
+    "variantsOptional": "Variants (optional)",
+    "addVariantRow": "+ Add Variant"
+  },
+  "edit": {
+    "heading": "Edit Product",
+    "loading": "Loading…",
+    "selectHint": "← Select a product from the list",
+    "variantImages": "Variant Images",
+    "deleteProduct": "Delete Product"
+  },
+  "addVariant": {
+    "heading": "Add Variants",
+    "selectHint": "← Select a product from the list",
+    "addRow": "+ Add Row",
+    "manageImages": "Manage Images for New Variants"
+  },
+  "editVariant": {
+    "heading": "Edit Variant",
+    "selectHint": "← Select a product from the list",
+    "variantsLabel": "Variants",
+    "inStock": "in stock",
+    "img": "img",
+    "delete": "Delete",
+    "selectVariant": "Select variant",
+    "editSelected": "Edit selected"
+  },
+  "errors": {
+    "nameAndCategoryRequired": "Name & category required."
+  },
+  "tabs": {
+    "create": "Create",
+    "edit": "Edit",
+    "addVariant": "Add Variant",
+    "editVariant": "Edit Variant"
+  }
+},
+  "productDetail": {
+    "notFound": "Product not found.",
+    "backHome": "Back to Home",
+    "volume": "Volume",
+    "quantity": "Quantity",
+    "soldOut": "Sold Out",
+    "adding": "Adding…",
+    "added": "Added to Cart",
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy it Now",
+    "share": "Share",
+    "collectionLabel": "Collection",
+    "youMayAlsoLike": "You May Also Like",
+    "addedToCart": "Added to cart!",
+    "addToCartError": "Failed to add to cart. Please try again.",
+    "buyNowError": "Failed to process. Please try again."
+  },
+  "returnPolicy": {
+    "title": "Return & Exchange Policy",
+    "intro": "At Misk, we are committed to providing high-quality perfumes crafted with exceptional attention to detail. This policy outlines the terms under which refunds may be requested, ensuring full transparency and fairness for all customers.",
+    "footerNote": "For any questions regarding this policy, please don't hesitate to",
+    "footerLink": "contact our team",
+    "footerSuffix": ". We're here to help.",
+    "sections": [
+      {
+        "title": "Performance-Based Refund Guarantee",
+        "content": "We offer a refund guarantee solely based on performance. If the perfume's longevity or projection does not meet the expected level, you may request a refund or choose another scent.",
+        "bullets": []
+      },
+      {
+        "title": "Eligibility for Refund",
+        "content": "To qualify for a refund, all of the following conditions must be met:",
+        "bullets": [
+          "The perfume must be in its original condition, free from any damage or misuse.",
+          "The external packaging must be included.",
+          "Opening the bottle for testing purposes is permitted.",
+          "Refund requests must be submitted within 7 days of receiving your order.",
+          "Refunds will not be issued due to personal dislike of the scent."
+        ]
+      },
+      {
+        "title": "Exchange Policy",
+        "content": "",
+        "bullets": ["No exchanges are permitted for any reason."],
+        "note": "All orders are considered final, and exchanges are not accepted under any circumstances.",
+        "noteType": "warning"
+      },
+      {
+        "title": "How to Request a Refund",
+        "content": "To submit a refund request, please contact our support team through our official communication channels. Our team will guide you through the process and assist you promptly.",
+        "bullets": []
+      },
+      {
+        "title": "Additional Notes",
+        "content": "",
+        "bullets": [
+          "Refunds will be processed only after the returned item is received and inspected.",
+          "Shipping fees (if any) are non-refundable.",
+          "Any misuse, intentional damage, or missing packaging will void the refund eligibility."
+        ]
+      }
+    ]
+  },
+  "termsOfService": {
+    "title": "Terms of Service",
+    "effectiveDate": "Effective date: October 14, 2025",
+    "intro": "Welcome to Misk. By visiting, interacting with or using our Services, you agree to be bound by these Terms of Service and our Privacy Policy. Please read these Terms carefully, as they include important information about your legal rights.",
+    "sections_label": "Sections",
+    "expandAll": "Expand all",
+    "collapseAll": "Collapse all",
+    "contactNote": "Questions about these Terms?",
+    "contactLink": "Contact us",
+    "sections": [
+      {
+        "short": "Access & Account",
+        "title": "Access and Account",
+        "content": "By agreeing to these Terms of Service, you represent that you are at least the age of majority in your state or province of residence, and you have given us your consent to allow any of your minor dependents to use the Services on devices you own, purchase or manage.\n\nTo use the Services, you may be asked to provide certain information, such as your email address, billing, payment, and shipping information. You represent and warrant that all the information you provide is correct, current and complete and that you have all rights necessary to provide this information.\n\nYou are solely responsible for maintaining the security of your account credentials and for all of your account activity. You may not transfer, sell, assign, or license your account to any other person.",
+        "bullets": []
+      },
+      {
+        "short": "Our Products",
+        "title": "Our Products",
+        "content": "We have made every effort to provide an accurate representation of our products and services. However, colors or product appearance may differ from how they appear on your screen due to your device type and settings.\n\nWe do not warrant that the appearance or quality of any products purchased will meet your expectations or be the same as depicted in our online stores. All product descriptions are subject to change at any time without notice, at our sole discretion. We reserve the right to discontinue any product at any time.",
+        "bullets": []
+      },
+      {
+        "short": "Orders",
+        "title": "Orders",
+        "content": "When you place an order, you are making an offer to purchase. Misk reserves the right to accept or decline your order for any reason. Your order is not accepted until Misk confirms acceptance. We must receive and process your payment before your order is accepted.\n\nPlease review your order carefully before submitting, as Misk may be unable to accommodate cancellation requests after an order is accepted. In the event that we do not accept, change, or cancel an order, we will attempt to notify you by contacting the email, billing address, or phone number provided.\n\nYour purchases are subject to return or exchange solely in accordance with our Refund Policy. You represent and warrant that your purchases are for your own personal or household use and not for commercial resale or export.",
+        "bullets": []
+      },
+      {
+        "short": "Prices & Billing",
+        "title": "Prices and Billing",
+        "content": "Prices, discounts and promotions are subject to change without notice. The price charged for a product will be the price in effect at the time the order is placed and will be set out in your order confirmation email. Unless otherwise stated, posted prices do not include taxes, shipping, handling, customs or import charges.\n\nPrices in our online stores may differ from prices in physical stores or stores operated by third parties. We may offer promotions that affect pricing and are governed by separate terms.\n\nYou agree to provide current, complete and accurate purchase and payment information for all purchases. You represent and warrant that (i) the credit card information you provide is true, correct, and complete, (ii) you are duly authorized to use such card, (iii) charges will be honored by your credit card company, and (iv) you will pay charges at the posted prices, including all applicable taxes and fees.",
+        "bullets": []
+      },
+      {
+        "short": "Shipping & Delivery",
+        "title": "Shipping and Delivery",
+        "content": "We are not liable for shipping and delivery delays. All delivery times are estimates only and are not guaranteed. We are not responsible for delays caused by shipping carriers, customs processing, or events outside our control. Once we transfer products to the carrier, title and risk of loss passes to you.",
+        "bullets": []
+      },
+      {
+        "short": "Intellectual Property",
+        "title": "Intellectual Property",
+        "content": "Our Services, including all trademarks, brands, text, images, graphics, video, and audio, are owned by Misk, its affiliates or licensors and are protected by copyright and other intellectual property laws.\n\nThese Terms permit you to use the Services for your personal, non-commercial use only. You must not reproduce, distribute, modify, create derivative works of, publicly display, republish, or transmit any material on the Services without our prior written consent.\n\nMisk's names, logos, product and service names, designs, and slogans are trademarks of Misk or its affiliates. You must not use such trademarks without the prior written permission of Misk. All rights not expressly granted herein are reserved by Misk.",
+        "bullets": []
+      },
+      {
+        "short": "Optional Tools",
+        "title": "Optional Tools",
+        "content": "You may be provided with access to third-party tools as part of the Services, which we neither monitor nor have any control over. We provide access to such tools \"as is\" and \"as available\" without any warranties or endorsement. We shall have no liability arising from your use of optional third-party tools.\n\nAny use of optional tools is entirely at your own risk and discretion. We may also offer new features through the Services in the future, which shall also be subject to these Terms.",
+        "bullets": []
+      },
+      {
+        "short": "Third-Party Links",
+        "title": "Third-Party Links",
+        "content": "The Services may contain links to websites operated by third parties. We are not responsible for examining or evaluating the content or accuracy of any third-party materials or websites. If you leave the Services to access third-party sites, you do so at your own risk.\n\nWe are not liable for any harm or damages related to your access of third-party websites or your purchase or use of any third-party products or services. Please review third-party policies before engaging in any transaction.",
+        "bullets": []
+      },
+      {
+        "short": "Our Platform",
+        "title": "Our Platform",
+        "content": "Misk is built on a robust technology platform that powers every step of your shopping journey. All sales and purchases are made directly with Misk, and we take full responsibility for your orders and the products you receive.\n\nWe are your true partner from the moment you browse to the moment your order arrives at your door.",
+        "bullets": []
+      },
+      {
+        "short": "Privacy Policy",
+        "title": "Privacy Policy",
+        "content": "All personal information we collect through the Services is subject to our Privacy Policy. By using the Services, you acknowledge that you have read our privacy policies.\n\nOur Services rely on an integrated technology infrastructure that collects and processes personal information related to your access and use of the store. Some information may be shared with technical service providers and third parties in various countries as described in our Privacy Policy.",
+        "bullets": []
+      },
+      {
+        "short": "Feedback",
+        "title": "Feedback",
+        "content": "If you submit any ideas, suggestions, feedback, reviews, or proposals (collectively, \"Feedback\"), you grant us a perpetual, worldwide, sublicensable, royalty-free license to use, reproduce, modify, publish, distribute and display such Feedback in any medium for any purpose.\n\nYou represent and warrant that: (i) you own or have all necessary rights to all Feedback; (ii) you have disclosed any compensation received in connection with your Feedback; and (iii) your Feedback complies with these Terms. We are under no obligation to maintain your Feedback in confidence, pay compensation for it, or respond to it.\n\nYou agree that your Feedback will not violate any third-party rights and will not contain unlawful, abusive, or obscene content or any computer virus or malware.",
+        "bullets": []
+      },
+      {
+        "short": "Errors & Omissions",
+        "title": "Errors, Inaccuracies and Omissions",
+        "content": "Occasionally there may be information on the Services that contains typographical errors, inaccuracies or omissions relating to product descriptions, pricing, promotions, shipping charges, or availability. We reserve the right to correct any errors, inaccuracies or omissions, and to change or update information or cancel orders if any information is inaccurate, at any time without prior notice.",
+        "bullets": []
+      },
+      {
+        "short": "Prohibited Uses",
+        "title": "Prohibited Uses",
+        "content": "You may access and use the Services for lawful purposes only. You may not use the Services for any unlawful or malicious purpose, to violate any regulations or laws, to infringe upon intellectual property rights, to harass or harm any person, to transmit false or misleading information, or to send any unsolicited advertising or spam.\n\nYou also agree not to upload viruses or malicious code, reproduce or exploit any portion of the Services, collect personal information of others, or interfere with the security features of the Services. We reserve the right to suspend, disable, or terminate your account at any time if we determine you have violated any part of these Terms.",
+        "bullets": []
+      },
+      {
+        "short": "Termination",
+        "title": "Termination",
+        "content": "We may terminate this agreement or your access to the Services at any time without notice, and you will remain liable for all amounts due up to and including the date of termination.\n\nThe following sections will continue to apply following any termination: Intellectual Property, Feedback, Termination, Disclaimer of Warranties, Limitation of Liability, Indemnification, Severability, Waiver, Entire Agreement, Assignment, and Governing Law.",
+        "bullets": []
+      },
+      {
+        "short": "Disclaimer",
+        "title": "Disclaimer of Warranties",
+        "content": "The information presented through the Services is made available solely for general information purposes. We do not warrant the accuracy, completeness, or usefulness of this information.\n\nEXCEPT AS EXPRESSLY STATED BY MISK, THE SERVICES AND ALL PRODUCTS ARE PROVIDED \"AS IS\" AND \"AS AVAILABLE\" WITHOUT ANY REPRESENTATION, WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ALL IMPLIED WARRANTIES OR CONDITIONS OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, DURABILITY, TITLE, AND NON-INFRINGEMENT.",
+        "bullets": []
+      },
+      {
+        "short": "Liability",
+        "title": "Limitation of Liability",
+        "content": "TO THE FULLEST EXTENT PROVIDED BY LAW, IN NO CASE SHALL MISK, OUR PARTNERS, DIRECTORS, OFFICERS, EMPLOYEES, AFFILIATES, AGENTS, CONTRACTORS, OR SERVICE PROVIDERS BE LIABLE FOR ANY INJURY, LOSS, CLAIM, OR ANY DIRECT, INDIRECT, INCIDENTAL, PUNITIVE, SPECIAL, OR CONSEQUENTIAL DAMAGES OF ANY KIND, INCLUDING WITHOUT LIMITATION LOST PROFITS, LOST REVENUE, LOST SAVINGS, LOSS OF DATA, OR REPLACEMENT COSTS, ARISING FROM YOUR USE OF ANY OF THE SERVICES OR ANY PRODUCTS PROCURED THROUGH THE SERVICES.",
+        "bullets": []
+      },
+      {
+        "short": "Indemnification",
+        "title": "Indemnification",
+        "content": "You agree to indemnify, defend and hold harmless Misk and our affiliates, partners, officers, directors, employees, agents, and service providers from any losses, damages, liabilities or claims, including reasonable attorneys' fees, arising out of (1) your breach of these Terms, (2) your violation of any law or the rights of a third party, or (3) your access to and use of the Services.",
+        "bullets": []
+      },
+      {
+        "short": "Severability",
+        "title": "Severability",
+        "content": "In the event that any provision of these Terms of Service is determined to be unlawful, void or unenforceable, such provision shall nonetheless be enforceable to the fullest extent permitted by applicable law, and the unenforceable portion shall be deemed to be severed from these Terms. Such determination shall not affect the validity and enforceability of any other remaining provisions.",
+        "bullets": []
+      },
+      {
+        "short": "Entire Agreement",
+        "title": "Waiver; Entire Agreement",
+        "content": "The failure of us to exercise or enforce any right or provision of these Terms shall not constitute a waiver of such right or provision.\n\nThese Terms of Service and any policies or operating rules posted by us constitute the entire agreement and understanding between you and us and govern your use of the Service, superseding any prior or contemporaneous agreements, communications and proposals, whether oral or written.",
+        "bullets": []
+      },
+      {
+        "short": "Assignment",
+        "title": "Assignment",
+        "content": "You may not delegate, transfer or assign this Agreement or any of your rights or obligations without our prior written consent, and any such attempt will be null and void. We may transfer, assign, or delegate these Terms and our rights and obligations without consent or notice to you.",
+        "bullets": []
+      },
+      {
+        "short": "Governing Law",
+        "title": "Governing Law",
+        "content": "These Terms of Service and any separate agreements whereby we provide you Services shall be governed by and construed in accordance with the federal and state or territorial courts in the jurisdiction where Misk is headquartered. You and Misk consent to venue and personal jurisdiction in such courts.",
+        "bullets": []
+      },
+      {
+        "short": "Headings",
+        "title": "Headings",
+        "content": "The headings used in this agreement are included for convenience only and will not limit or otherwise affect these Terms.",
+        "bullets": []
+      },
+      {
+        "short": "Changes to Terms",
+        "title": "Changes to Terms of Service",
+        "content": "We reserve the right, in our sole discretion, to update, change, or replace any part of these Terms of Service by posting updates and changes to our website. It is your responsibility to check our website periodically for changes. We will notify you of any material changes in accordance with applicable law. Your continued use of the Services following the posting of any changes constitutes acceptance of those changes.",
+        "bullets": []
+      },
+      {
+        "short": "Contact",
+        "title": "Contact Information",
+        "content": "Questions about the Terms of Service should be sent to us at Misk@gmail.com.",
+        "bullets": []
+      }
+    ]
+  },
+  "collectionPage": {
+    "collectionLabel": "Collection",
+    "men": "Men",
+    "women": "Women",
+    "all": "All Products",
+    "featured": "Featured",
+    "filter": "Filter",
+    "availability": "Availability",
+    "selected": "selected",
+    "reset": "Reset",
+    "inStock": "In stock",
+    "outOfStock": "Out of stock",
+    "price": "Price",
+    "priceRange": "Price range",
+    "min": "Min",
+    "max": "Max",
+    "sort": "Sort",
+    "products": "products",
+    "loadError": "Failed to load products. Please try again.",
+    "noMatch": "No products match your filters.",
+    "loadMore": "Load more",
+    "sortData": {
+      "featured": "Featured",
+      "best": "Best selling",
+      "az": "Alphabetically, A-Z",
+      "za": "Alphabetically, Z-A",
+      "priceAsc": "Price, low to high",
+      "priceDesc": "Price, high to low",
+      "dateOld": "Date, old to new",
+      "dateNew": "Date, new to old"
+    }
+  },
+  "search": {
+    "resultsFor": "Results for",
+    "result": "result",
+    "results": "results",
+    "filterSort": "Filter & Sort",
+    "filters": "Filters",
+    "clearAll": "Clear all",
+    "noResults": "No results for",
+    "noResultsHint": "Try a different spelling or browse all fragrances",
+    "noProductsMatch": "No products match your search.",
+    "clearSearch": "Clear Search"
+  },
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "We missed you — sign in and continue your journey",
+    "or": "or",
+    "emailPlaceholder": "Email address",
+    "passwordPlaceholder": "Password",
+    "forgotPassword": "Forgot password?",
+    "signIn": "Sign In",
+    "signingIn": "Signing in…",
+    "noAccount": "Don't have an account?",
+    "createOne": "Create a free account",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "success": "Welcome back! You're now signed in.",
+    "error": "Sign-in failed. Please check your details and try again.",
+    "googleError": "Google sign-in failed. Please try again."
+  },
+  "checkout": {
+    "currency": "EGP",
+    "emptyCart": "Your cart is empty",
+    "discountPlaceholder": "Discount code",
+    "apply": "Apply",
+    "discountApplied": "Discount applied!",
+    "discountEmpty": "Enter a discount code first.",
+    "subtotal": "Subtotal",
+    "discount": "Discount (10%)",
+    "shipping": "Shipping",
+    "total": "Total",
+    "orderSuccess": "Order placed successfully!",
+    "orderError": "Something went wrong. Please try again.",
+    "paymentSuccess": "Payment successful!",
+    "paymentError": "Payment failed. Please try again.",
+    "redirecting": "Redirecting to payment…"
+  },
+  "footer": {
+    "quickLinksLabel": "Quick Links",
+    "subscribeLabel": "Be the First to Know",
+    "subscribeDescription": "Subscribe and get exclusive offers and new collections before everyone else",
+    "emailPlaceholder": "your@email.com",
+    "subscribeSuccess": "Welcome to the Misk family!",
+    "developedBy": "Developed by",
+    "links": {
+      "search": "Search",
+      "shop": "Shop",
+      "returnPolicy": "Return & Exchange Policy",
+      "privacyPolicy": "Privacy Policy",
+      "terms": "Terms of Service"
+    }
+  },
+  "faq": {
+    "eyebrow": "We've Got Answers",
+    "title": "Frequently Asked Questions",
+    "items": [
+      {
+        "q": "What is Misk's return and exchange policy?",
+        "a": "Your satisfaction is our priority. We offer a 7-day exchange policy on all products, provided they are unused and in their original packaging. Simply reach out to our support team with your order number and we'll handle the rest."
+      },
+      {
+        "q": "How do I use the satisfaction guarantee?",
+        "a": "Every purchase is backed by our satisfaction guarantee. If you're not completely happy with your order for any reason, contact us within 7 days of receiving it — we'll make it right with an exchange or store credit."
+      },
+      {
+        "q": "How long does the fragrance last and what's its sillage like?",
+        "a": "Our fragrances are Extrait De Parfum (30–35% concentration), delivering an exceptional 8–14 hours of longevity and a moderate to strong sillage that fills every room with elegance. Apply to pulse points — wrists, neck, and behind the ears — for an unforgettable scent experience."
+      },
+      {
+        "q": "Can I return a perfume if I don't like the scent?",
+        "a": "We want you to shop with complete confidence. We recommend carefully reading the fragrance notes on each product page before purchasing. If you need guidance finding your perfect scent, our team is always ready to help."
+      },
+      {
+        "q": "How much does shipping cost and how long does delivery take?",
+        "a": "Enjoy completely free shipping on all orders over 2,000 EGP. A flat, affordable shipping fee applies to orders below that threshold. Your order arrives within 2–4 business days anywhere in Egypt."
+      }
+    ]
+  },
+  "collections": {
+    "shopBy": "Explore the World of",
+    "title": "Our Collections",
+    "men": "Men",
+    "women": "Women",
+    "explore": "Explore the Collection"
+  },
+  "productGrid": {
+    "title": "The Misk Collection",
+    "men": "Men",
+    "women": "Women",
+    "noProducts": "No products available at the moment.",
+    "viewAll": "Browse the Full Collection"
+  },
+  "product": {
+    "loading": "Loading...",
+    "noProducts": "No products found.",
+    "currency": "EGP",
+    "addToCart": "Add to Cart",
+    "adding": "Adding...",
+    "added": "Added to Cart",
+    "addedToCart": "Added to cart!",
+    "addToCartError": "Failed to add to cart. Please try again.",
+    "buyNow": "Buy it Now",
+    "viewDetails": "View full details"
+  },
+  "hero": {
+    "eyebrow": "New Exclusive Collection",
+    "title": "Luxury Redefined",
+    "titleEm": "in Every Drop",
+    "cta": "Discover Now"
+  },
+  "announcementBar": {
+    "items": [
+      {
+        "icon": "🌙",
+        "text": "Use code",
+        "bold": "RAMADAN0"
+      },
+      {
+        "icon": null,
+        "text": "Orders over",
+        "bold": "2,000 EGP"
+      },
+      {
+        "icon": null,
+        "text": "Free delivery to your door",
+        "bold": null
+      },
+      {
+        "icon": null,
+        "text": "Orders over",
+        "bold": "2,000 EGP"
+      },
+      {
+        "icon": "🌙",
+        "text": "Use code",
+        "bold": "RAMADAN0"
+      },
+      {
+        "icon": null,
+        "text": "Free delivery to your door",
+        "bold": null
+      },
+      {
+        "icon": null,
+        "text": "Orders over",
+        "bold": "2,000 EGP"
+      }
+    ]
+  },
+  "approach": {
+    "subtitle": "Our Philosophy",
+    "title1": "Why",
+    "title2": "Misk?",
+    "cards": [
+      {
+        "number": "01",
+        "iconText": "Passion",
+        "title": "Passion",
+        "description": "Every fragrance is handpicked by connoisseurs who believe that scent is a memory that never fades."
+      },
+      {
+        "number": "02",
+        "iconText": "Quality",
+        "title": "Quality",
+        "description": "Exclusively Extrait De Parfum concentrations — because true luxury never compromises."
+      },
+      {
+        "number": "03",
+        "iconText": "Experience",
+        "title": "Experience",
+        "description": "From the moment you browse to the moment your order arrives, every detail is crafted to match the standard of our fragrances."
+      }
+    ]
+  },
+  "cart": {
+    "title": "Cart",
+    "item": "item",
+    "items": "items",
+    "empty": "Your cart is empty",
+    "continueShopping": "Continue Shopping",
+    "subtotal": "Subtotal",
+    "checkout": "Checkout"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "welcomeBack": "Welcome back — Misk Admin",
+    "loadingStats": "Loading stats…",
+    "categories": "Categories",
+    "products": "Products",
+    "orders": "Orders",
+    "banners": "Banners & Settings",
+    "createManage": "Create & manage",
+    "addOrUpdate": "Add or update",
+    "viewUpdate": "View & update",
+    "totalOrders": "Total Orders",
+    "totalProducts": "Total Products",
+    "totalStock": "Total Stock",
+    "users": "Users",
+    "sales": "Sales",
+    "pending": "Pending",
+    "paid": "Paid",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled",
+    "orderStatusBreakdown": "Order Status Breakdown",
+    "reviews": "Reviews",
+    "noReviewData": "No review data",
+    "topSelling": "🔥 Top Selling",
+    "lowStock": "⚠ Low Stock",
+    "recentOrders": "📦 Recent Orders",
+    "product": "Product",
+    "sold": "Sold",
+    "volume": "Volume",
+    "stock": "Stock",
+    "date": "Date",
+    "status": "Status",
+    "total": "Total"
+  },
+  "paymentPopup": {
+    "success": {
+      "title": "Payment Successful",
+      "subtitle": "Your payment has been confirmed",
+      "badge": "Paid",
+      "continueShopping": "Continue Shopping",
+      "viewOrder": "View Order Details"
+    },
+    "failed": {
+      "title": "Payment Failed",
+      "hint": "💡 Please check your card details or try a different payment method.",
+      "tryAgain": "Try Again",
+      "goHome": "Go Back to Home"
+    },
+    "labels": {
+      "orderId": "Order ID",
+      "reference": "Reference",
+      "card": "Card",
+      "date": "Date",
+      "currency": "Currency"
+    }
+  },
+  "businessHours": {
+    "title": "Business Hours",
+    "locationTitle": "Location",
+    "closed": "Closed",
+    "openInMaps": "Open in Maps",
+    "days": {
+      "Monday": "Monday",
+      "Tuesday": "Tuesday",
+      "Wednesday": "Wednesday",
+      "Thursday": "Thursday",
+      "Friday": "Friday",
+      "Saturday": "Saturday",
+      "Sunday": "Sunday"
+    }
+  },
+  "bannersSettings": {
+    "title": "Banners & Settings",
+    "subtitle": "Manage homepage banners and global site configurations",
+    "tabs": {
+      "banners": "🖼 Banners",
+      "settings": "⚙️ Settings"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "banners": {
+      "addBtn": "Add Banner",
+      "newBanner": "New Banner",
+      "loading": "Loading banners…",
+      "loadError": "Failed to load banners.",
+      "empty": "No banners yet.",
+      "fields": {
+        "title": "Title",
+        "linkUrl": "Link URL",
+        "order": "Order",
+        "active": "Active",
+        "image": "Image",
+        "replaceImage": "Replace Image",
+        "optional": "(optional)"
+      },
+      "actions": {
+        "save": "Save",
+        "saving": "Saving…",
+        "cancel": "Cancel",
+        "edit": "Edit",
+        "delete": "Delete",
+        "deleting": "Deleting…",
+        "deleteConfirm": "Delete this banner?"
+      },
+      "notifications": {
+        "created": "Banner created successfully.",
+        "createFailed": "Failed to create banner.",
+        "updated": "Banner updated successfully.",
+        "updateFailed": "Failed to update banner.",
+        "deleted": "Banner deleted.",
+        "deleteFailed": "Failed to delete.",
+        "toggled": "Banner updated.",
+        "toggleFailed": "Failed to update."
+      }
+    },
+    "settings": {
+      "loading": "Loading settings…",
+      "loadError": "Failed to load settings.",
+      "announcementBar": "Announcement Bar",
+      "announcementText": "Announcement Text",
+      "announcementLink": "Announcement Link",
+      "announcementPlaceholder": "Free shipping for orders over $2000",
+      "announcementLinkPlaceholder": "https://example.com/shipping-policy",
+      "announcementPreview": "Your announcement text will appear here…",
+      "link": "→ link",
+      "optional": "(optional)",
+      "saveChanges": "Save Changes",
+      "saving": "Saving…",
+      "unsaved": "Unsaved changes",
+      "notifications": {
+        "updated": "Settings updated successfully.",
+        "updateFailed": "Failed to update settings."
+      }
+    }
+  }
+}

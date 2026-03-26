@@ -1,0 +1,129 @@
+"use client";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import ProductCard from "@/components/layout/Productcard";
+import { useGetProducts } from "@/hooks/useProducts";
+import { Product } from "@/type/type";
+import { useTranslation } from "@/lib/Usetranslation";
+
+export default function ProductGrid() {
+  const { t, isArabic, dir, locale } = useTranslation();
+  const [tab, setTab] = useState<"men" | "women">("men");
+  const { data, isLoading } = useGetProducts();
+  const allProducts: Product[] = data?.products ?? [];
+  const filtered = allProducts.filter((p) => p.category_name === tab);
+
+  return (
+    <section
+      className="w-full bg-[#fcfcfc] py-28 relative overflow-hidden"
+      dir={dir}
+    >
+      {/* ── Background Decoration ── */}
+      <div className="absolute top-10 left-1/2 -translate-x-1/2 opacity-[0.03] select-none pointer-events-none">
+        <h2 className="text-[180px] font-serif font-bold whitespace-nowrap uppercase tracking-tighter">
+          {tab === "men" ? "Gentlemen" : "Signora"}
+        </h2>
+      </div>
+
+      <div className="max-w-screen-xl mx-auto px-6 lg:px-12 relative z-10">
+        {/* ── Header & Premium Tabs ── */}
+        <div className="flex flex-col items-center mb-24">
+          <span className="text-[#c9a84c] text-[10px] font-bold uppercase tracking-[0.6em] mb-10 opacity-80">
+            {t.productGrid.title}
+          </span>
+
+          <div className="inline-flex items-center p-1.5 bg-white border border-gray-100 rounded-full shadow-sm">
+            {(["men", "women"] as const).map((tabKey) => (
+              <button
+                key={tabKey}
+                onClick={() => setTab(tabKey)}
+                className={`relative px-12 py-3 rounded-full text-[13px] font-bold uppercase transition-all duration-500
+                ${tab === tabKey ? "text-white" : "text-gray-400 hover:text-gray-900"}
+                ${isArabic ? "tracking-0 text-[16px]" : "tracking-[0.2em]"}`}
+              >
+                <span className="relative z-10">
+                  {tabKey === "men" ? t.productGrid.men : t.productGrid.women}
+                </span>
+                {tab === tabKey && (
+                  <motion.div
+                    layoutId="activeTabGlow"
+                    className="absolute inset-0 bg-[#0a051a] rounded-full shadow-[0_10px_20px_rgba(0,0,0,0.2)]"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Product Grid ── */}
+        <div className="min-h-[500px]">
+          {isLoading ? (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="aspect-[3/4] bg-gray-100 animate-pulse rounded-sm"
+                />
+              ))}
+            </div>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={tab}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16"
+              >
+                {filtered.slice(0, 4).map((p, i) => (
+                  <ProductCard key={p.id} p={p} index={i} />
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          )}
+        </div>
+
+        {/* ── THE "JAMED" VIEW ALL BUTTON ── */}
+
+        <div className="flex justify-center mt-24">
+          <Link
+            href={`/${locale.toLowerCase()}/collections/all`}
+            className="group relative bg-[#111] inline-flex items-center gap-4 px-14 py-4 rounded-full border border-[#c9a84c]/40 transition-all duration-500 hover:border-[#ffbb00] hover:bg-[#ffbb00] no-underline shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_35px_rgba(201,168,76,0.2)]"
+          >
+            {/* Text */}
+            <span
+              className={`text-white font-medium text-[13px] uppercase transition-colors duration-500 group-hover:text-[#111]
+      ${isArabic ? "tracking-0 text-[16px] font-bold" : "tracking-[0.2em]"}`}
+            >
+              {t.productGrid.viewAll}
+            </span>
+
+            {/* Simple Minimal Arrow */}
+            <svg
+              width="18"
+              height="12"
+              viewBox="0 0 18 12"
+              fill="none"
+              className={`text-[#c9a84c] transition-all duration-500 group-hover:text-[#111] group-hover:translate-x-1 ${isArabic ? "rotate-180 group-hover:-translate-x-1" : ""}`}
+            >
+              <path
+                d="M12 1L17 6L12 11M1 6H16.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+
+            {/* Subtle Inner Shine (لمعة خفيفة وقت الهوفر) */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
