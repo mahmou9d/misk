@@ -6,68 +6,77 @@ import { motion } from "framer-motion";
 import { Product } from "@/type/type";
 import { useTranslation } from "@/lib/Usetranslation";
 
-export default function ProductCard({
-  index,
-  p,
-  fill = false,
-}: {
+interface Props {
   index: number;
   p: Product;
   fill?: boolean;
-}) {
-  const { isArabic, locale } = useTranslation();
+}
+
+export default function ProductCard({ index, p, fill = false }: Props) {
+  const { t, isArabic, locale } = useTranslation();
   const price = parseFloat(String(p.lowest_price));
-  const currency = isArabic ? "ج.م" : "EGP";
+  const fallbackImage = "/heros.jpg";
+  const rawImageSrc = p?.thumbnail ? String(p.thumbnail) : fallbackImage;
+  const currency = isArabic ? "ج.م" : "LE";
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{
-        delay: index * 0.04,
-        duration: 0.7,
-        ease: [0.25, 1, 0.5, 1],
+        delay: index * 0.05,
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
       }}
-      className={`group flex flex-col ${fill ? "h-full" : ""}`}
+      className={`group flex flex-col cursor-pointer ${fill ? "flex-1" : ""}`}
     >
       <Link
         href={`/${locale.toLowerCase()}/products/${p.id}`}
-        className="block"
+        className="flex flex-col no-underline h-full"
       >
-        {/* الصورة: انحناء احترافي (32px) مع ظل ناعم عند الهوفر */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-[32px] bg-[#f8f8f8] mb-6 transition-all duration-500 group-hover:shadow-xl group-hover:shadow-black/5">
+        <div className="relative w-full aspect-[3/4] overflow-hidden bg-gradient-to-br from-[#f8f5f0] to-[#ede8e0] border border-[#c9a84c1f]">
           <Image
-            src={p?.thumbnail ? String(p.thumbnail) : "/heros.jpg"}
+            src={rawImageSrc}
             alt={p.name}
             fill
-            className="object-cover transition-transform duration-1000 cubic-bezier(0.4, 0, 0.2, 1) group-hover:scale-110"
-            sizes="(max-width: 768px) 100vw, 33vw"
-            priority={index < 4}
+            className="object-cover rounded-2xl transition-transform duration-700 group-hover:scale-110"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            quality={90}
+            loading="lazy"
           />
-
-          {/* لمسة إضاءة علوية (Gradient) خفيفة جداً تعطي عمق للصورة */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/[0.02] to-transparent pointer-events-none" />
-        </div>
-
-        {/* النصوص: واضحة، كبيرة، ومنظمة */}
-        <div className="px-2 space-y-3">
-          <div>
-            <p className="text-[14px] tracking-[2px] uppercase text-[#c9a84c] font-bold mb-2">
-              {p.category_name}
-            </p>
-            <h3 className="text-[22px] md:text-[24px] font-medium text-[#111] leading-[1.1] tracking-tight group-hover:text-[#c9a84c] transition-colors duration-300">
-              {p.name}
-            </h3>
-          </div>
-
-          {/* السعر: عريض وواضح جداً */}
-          <div className="flex items-center gap-2 pt-1">
-            <span className="text-[26px] font-black text-[#111] tracking-tighter">
-              {isNaN(price) ? "—" : price.toLocaleString()}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#1a0a3d8c] flex items-end p-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span className=" text-[16px] tracking-[2.5px] uppercase text-[#f0d080eb] flex items-center gap-[5px]">
+              {t.productCard.viewDetails}
+              <svg
+                width="11"
+                height="11"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="rtl:rotate-180"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
             </span>
-            <span className="text-[16px] font-semibold text-gray-400 uppercase">
-              {currency}
+          </div>
+        </div>
+        <div className="pt-3">
+          <p className=" text-[16px] tracking-[3px] uppercase text-[#c9a84cbf] mb-1">
+            {p.category_name}
+          </p>
+          <h3 className=" text-[20px] font-medium text-[#1a1a1a] leading-[1.3] mb-1.5">
+            {p.name}
+          </h3>
+          <div className="h-[1px] mb-[7px] bg-gradient-to-r from-[#c9a84c40] to-transparent rtl:bg-gradient-to-l" />
+          <div className="flex items-center justify-between">
+            <span className=" text-[20px] font-semibold animate-gold-shimmer bg-[linear-gradient(90deg,#c9a84c_0%,#f0d080_40%,#c9a84c_70%,#e8c860_100%)] bg-[length:200%_auto] bg-clip-text text-transparent">
+              {currency}{" "}
+              {isNaN(price)
+                ? "—"
+                : price.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                  })}
             </span>
           </div>
         </div>
