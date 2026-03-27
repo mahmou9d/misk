@@ -34,7 +34,7 @@ export default function ProductCard({ index, p, fill = false }: Props) {
         href={`/${locale.toLowerCase()}/products/${p.id}`}
         className="flex flex-col no-underline h-full"
       >
-        <div className="relative w-full aspect-[3/4] overflow-hidden bg-gradient-to-br from-[#f8f5f0] to-[#ede8e0] border border-[#c9a84c1f]">
+        <div className="relative w-full rounded-2xl aspect-[3/4] overflow-hidden bg-gradient-to-br from-[#f8f5f0] to-[#ede8e0] border border-[#c9a84c1f]">
           <Image
             src={rawImageSrc}
             alt={p.name}
