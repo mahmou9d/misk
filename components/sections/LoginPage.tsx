@@ -194,13 +194,13 @@ export default function LoginPage() {
           <div className="mt-12 flex gap-8 opacity-40">
             <Link
               href={`/${locale.toLowerCase()}/policies/privacy-policy`}
-              className="text-[15px] font-black uppercase tracking-[2px] text-black"
+              className="text-[8px] font-black uppercase tracking-[2px] text-black"
             >
               {t.login.privacyPolicy}
             </Link>
             <Link
               href={`/${locale.toLowerCase()}/policies/terms-of-service`}
-              className="text-[15px] font-black uppercase tracking-[2px] text-black"
+              className="text-[8px] font-black uppercase tracking-[2px] text-black"
             >
               {t.login.terms}
             </Link>

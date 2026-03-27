@@ -24,7 +24,6 @@ export const AdminHeader = ({ sidebarOpen, setSidebarOpen }: HeaderProps) => {
             <Menu className="w-5 h-5 text-gray-400" />
           )}
         </motion.button>
-
       </div>
 
       <div className="flex items-center gap-3">
@@ -34,7 +33,7 @@ export const AdminHeader = ({ sidebarOpen, setSidebarOpen }: HeaderProps) => {
           className="relative p-3 rounded-xl hover:bg-white/5"
         >
           <Bell className="w-5 h-5 text-gray-400" />
-          <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-[#b4182d] rounded-full ring-2 ring-[#1a1d29]" />
+          <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-[#f00] rounded-full ring-2 ring-[#1a1d29]" />
         </motion.button>
       </div>
     </header>

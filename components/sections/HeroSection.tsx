@@ -31,8 +31,8 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative w-full overflow-hidden bg-[#04020e]"
-      style={{ height: "clamp(560px, 94vh, 900px)" }}
+      className="relative w-full overflow-hidden bg-[#04020e] h-[600px] lg:h-[750px]"
+      
     >
       {/* ── Background (إضافة تأثير زووم هادئ جداً) ── */}
       <div className="absolute inset-0">
@@ -147,7 +147,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, scaleX: 0 }}
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 1, delay: 0.48, ease: EASE }}
-            className="flex items-center gap-3 mb-8"
+            className="flex items-center gap-3 mb-4"
             style={{ transformOrigin: isArabic ? "right" : "left" }}
           >
             <span className="w-1 h-1 bg-[#c9a84c]/60 rotate-45" />
@@ -160,10 +160,10 @@ export default function HeroSection() {
             style={{
               fontSize: "clamp(14px, 1.4vw, 16px)",
               fontWeight: 300,
-              color: "rgba(255,255,255,0.45)",
+              color: "white",
               lineHeight: 1.8,
               maxWidth: 420,
-              marginBottom: "clamp(40px, 6vw, 75px)",
+              marginBottom: 20,
               letterSpacing: "0.01em",
             }}
           >
@@ -180,13 +180,12 @@ export default function HeroSection() {
           >
             <Link
               href={`/${locale.toLowerCase()}/shop`}
-              className="group relative overflow-hidden inline-flex items-center gap-4 rounded-2xl no-underline"
+              className="group relative  text-[16px] md:text-[20px]  overflow-hidden inline-flex items-center gap-4 rounded-2xl no-underline"
               style={{
                 padding: "16px 45px",
                 background:
                   "linear-gradient(135deg, #c9a84c 0%, #e8c847 50%, #b8912e 100%)",
                 color: "#06040c",
-                fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: isArabic ? "0" : "0.22em",
                 textTransform: isArabic ? "none" : "uppercase",
@@ -214,10 +213,10 @@ export default function HeroSection() {
 
             <Link
               href={`/${locale.toLowerCase()}/collections`}
-              className="inline-flex items-center rounded-2xl border border-white px-8 py-4 text-white transition-all duration-300 hover:border-[#c9a84c]/30 hover:text-[#c9a84c] hover:bg-white/[0.02]"
+              className="inline-flex text-[16px] md:text-[20px] items-center rounded-2xl border border-white px-8 py-4 text-white transition-all duration-300 hover:border-[#c9a84c]/30 hover:text-[#c9a84c] hover:bg-white/[0.02]"
               style={{
-                fontSize: 11,
-                fontWeight: 400,
+                
+                fontWeight: 700,
                 letterSpacing: "0.15em",
                 textTransform: "uppercase",
               }}

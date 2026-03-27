@@ -79,8 +79,8 @@ export const dashboardAPI = {
     return data || [];
   },
 
-  getCategories: async (): Promise<{ id: number; name: string, name_ar: string }[]> => {
-    const { data } = await apiClient.get<{ id: number; name: string, name_ar: string }[]>(
+  getCategories: async (): Promise<{ id: number; name: string, name_ar: string,name_en: string }[]> => {
+    const { data } = await apiClient.get<{ id: number; name: string, name_ar: string,name_en: string }[]>(
       "/dashboard/categories/",
     );
     return data;

@@ -151,7 +151,7 @@ export default function SearchPage() {
                   <div className="w-full md:w-auto">
                     <ActiveFilterPills
                       {...sidebarProps}
-                      onRemoveAvail={(f) =>
+                      onRemoveAvail={(f: string) =>
                         setAvailFilter(availFilter.filter((x) => x !== f))
                       }
                       onClearPrice={() => {

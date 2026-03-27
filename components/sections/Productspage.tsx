@@ -14,20 +14,12 @@ import Notification from "../layout/Notification";
 import { useTranslation } from "@/lib/Usetranslation";
 import Image from "next/image";
 
-export const CONC = (selectLabel: string) => [
-  { value: "", label: selectLabel },
-  { value: "Extrait De Parfum", label: "Extrait De Parfum" },
-  { value: "Eau de Parfum", label: "Eau de Parfum" },
-  { value: "Eau de Toilette", label: "Eau de Toilette" },
-  { value: "Eau de Cologne", label: "Eau de Cologne" },
-];
-
 /* ══════════════════════════════════════════════════════════
    Shared input style
    ══════════════════════════════════════════════════════════ */
 const INPUT_CLS =
-  "w-full bg-[#0f1117] border border-white/10 rounded-xl px-3 py-2 text-[14px] text-white " +
-  "placeholder:text-gray-600 focus:ring-2 focus:ring-[#fda481]/20 focus:border-[#fda481]/50 " +
+  "w-full bg-[#0f1117] border border-white/10 rounded-xl px-3 py-2 text-[16px] text-white " +
+  "placeholder:text-gray-600 focus:ring-2 focus:ring-[#fff]/20 focus:border-[#fff]/50 " +
   "transition-all outline-none";
 
 /* ══════════════════════════════════════════════════════════
@@ -57,7 +49,7 @@ function DualInput({
   return (
     <div className="flex flex-col gap-1 mb-1">
       {/* English */}
-      <label className="text-[12px] text-gray-400 font-medium">{label}</label>
+      <label className="text-[16px] text-gray-400 font-medium">{label}</label>
       <input
         type={type}
         value={valueEn}
@@ -67,7 +59,7 @@ function DualInput({
         dir="ltr"
       />
       {/* Arabic */}
-      <label className="text-[12px] text-gray-500 font-medium mt-0.5">
+      <label className="text-[16px] text-gray-500 font-medium mt-0.5">
         {labelAr}
       </label>
       <input
@@ -108,7 +100,7 @@ function DualTextarea({
 
   return (
     <div className="flex flex-col gap-1 mb-1">
-      <label className="text-[12px] text-gray-400 font-medium">{label}</label>
+      <label className="text-[16px] text-gray-400 font-medium">{label}</label>
       <textarea
         value={valueEn}
         onChange={onChangeEn}
@@ -116,7 +108,7 @@ function DualTextarea({
         className={TA}
         dir="ltr"
       />
-      <label className="text-[12px] text-gray-500 font-medium mt-0.5">
+      <label className="text-[16px] text-gray-500 font-medium mt-0.5">
         {labelAr}
       </label>
       <textarea
@@ -213,12 +205,12 @@ function StepBar({
           className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg transition-all ${step === n ? "bg-[#1a1d29] shadow-sm" : ""}`}
         >
           <span
-            className={`w-5 h-5 rounded-full text-[13px] font-semibold flex items-center justify-center flex-shrink-0 ${step > n ? "bg-emerald-500 text-white" : step === n ? "bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white" : "bg-white/10 text-gray-500"}`}
+            className={`w-5 h-5 rounded-full text-[16px] font-semibold flex items-center justify-center flex-shrink-0 ${step > n ? "bg-emerald-500 text-white" : step === n ? "bg-gradient-to-r from-[#ffffff69] to-black text-white" : "bg-white/10 text-gray-500"}`}
           >
             {step > n ? "✓" : n}
           </span>
           <span
-            className={`text-[14px] font-medium ${step === n ? "text-white" : "text-gray-500"}`}
+            className={`text-[16px] font-medium ${step === n ? "text-white" : "text-gray-500"}`}
           >
             {label}
           </span>
@@ -242,7 +234,7 @@ function StatusBadge({
 }) {
   return (
     <div
-      className={`inline-flex mb-2 items-center gap-1.5 text-[13px] font-semibold px-2.5 py-1 rounded-full flex-shrink-0 ${isArabic ? "flex-row-reverse" : ""} ${active ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-white/5 text-gray-400 border border-white/10"}`}
+      className={`inline-flex mb-2 items-center gap-1.5 text-[16px] font-semibold px-2.5 py-1 rounded-full flex-shrink-0 ${isArabic ? "flex-row-reverse" : ""} ${active ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-white/5 text-gray-400 border border-white/10"}`}
     >
       <span
         className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${active ? "bg-emerald-500" : "bg-gray-500"}`}
@@ -324,9 +316,9 @@ function ProductCard({
             <p className="text-[16px] font-semibold text-white leading-snug truncate mb-0.5">
               {displayName}
             </p>
-            <p className="text-[13px] text-gray-500">{displayCategory}</p>
+            <p className="text-[16px] text-gray-500">{displayCategory}</p>
             {displayFragrance && (
-              <p className="text-[13px] text-gray-500 mt-0.5">
+              <p className="text-[16px] text-gray-500 mt-0.5">
                 {displayFragrance}
               </p>
             )}
@@ -351,10 +343,10 @@ function ProductCard({
                       className="w-5 h-5 rounded object-cover"
                     />
                   )}
-                  <span className="text-[13px] font-medium text-gray-300">
+                  <span className="text-[16px] font-medium text-gray-300">
                     {v.volume}
                   </span>
-                  <span className="text-[12px] text-gray-500">
+                  <span className="text-[16px] text-gray-500">
                     LE {parseFloat(v.price).toLocaleString()}
                   </span>
                   <span
@@ -369,25 +361,25 @@ function ProductCard({
       <div className="border-t border-white/10 bg-[#0f1117] px-4 py-3 flex items-center gap-2 flex-wrap">
         <button
           onClick={onEdit}
-          className="text-[13px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
+          className="text-[16px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
         >
           {labels.edit}
         </button>
         <button
           onClick={onAddVariant}
-          className="text-[13px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
+          className="text-[16px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
         >
           {labels.addVariant}
         </button>
         <button
           onClick={onEditVariant}
-          className="text-[13px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
+          className="text-[16px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
         >
           {labels.editVariant}
         </button>
         <button
           onClick={onDelete}
-          className={`${isArabic ? "mr-auto" : "ml-auto"} text-[13px] font-medium text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2 hover:bg-red-500/20 transition-colors cursor-pointer`}
+          className={`${isArabic ? "mr-auto" : "ml-auto"} text-[16px] font-medium text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2 hover:bg-red-500/20 transition-colors cursor-pointer`}
         >
           {labels.delete}
         </button>
@@ -589,7 +581,7 @@ export default function ProductsPage() {
   const CancelBtn = ({ onClick }: { onClick: () => void }) => (
     <button
       onClick={onClick}
-      className="text-[14px] font-medium text-gray-400 bg-white/5 border border-white/10 px-5 py-2.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer border-none"
+      className="text-[16px] font-medium text-gray-400 bg-white/5 border border-white/10 px-5 py-2.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer border-none"
     >
       {p.actions.cancel}
     </button>
@@ -629,7 +621,7 @@ export default function ProductsPage() {
               placeholder={
                 isArabic ? "ابحث عن منتج..." : "Search for a product..."
               }
-              className={`w-full ${isArabic ? "pr-10 pl-4 text-right" : "pl-10 pr-4"} py-2.5 bg-[#1a1d29] border border-white/10 rounded-xl text-[14px] text-white placeholder:text-gray-500 focus:ring-2 focus:ring-[#fda481]/20 focus:border-[#fda481]/50 transition-all outline-none`}
+              className={`w-full ${isArabic ? "pr-10 pl-4 text-right" : "pl-10 pr-4"} py-2.5 bg-[#1a1d29] border border-white/10 rounded-xl text-[16px] text-white placeholder:text-gray-500 focus:ring-2 focus:ring-[#fff]/20 focus:border-[#fff]/50 transition-all outline-none`}
             />
             {searchTerm && (
               <button
@@ -640,7 +632,7 @@ export default function ProductsPage() {
               </button>
             )}
           </div>
-          <p className="text-[14px] text-gray-500 font-medium whitespace-nowrap hidden sm:block">
+          <p className="text-[16px] text-gray-500 font-medium whitespace-nowrap hidden sm:block">
             {p.productCount.replace(
               "{count}",
               String(productsData?.count ?? products.length),
@@ -652,7 +644,7 @@ export default function ProductsPage() {
             setShowCreate(true);
             setCreateStep(1);
           }}
-          className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white text-[14px] font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-[#fda481]/20 hover:opacity-90 active:scale-[0.98] transition-all cursor-pointer border-none"
+          className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#ffffff69] to-black text-white text-[16px] font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-[#fff]/20 hover:opacity-90 active:scale-[0.98] transition-all cursor-pointer border-none"
         >
           <span className="text-[18px] leading-none">+</span>
           {p.createBtn}
@@ -661,8 +653,8 @@ export default function ProductsPage() {
 
       {/* ── Grid ── */}
       {loadingProducts ? (
-        <div className="flex items-center justify-center gap-2 text-[14px] text-gray-500 py-16">
-          <span className="w-4 h-4 rounded-full border-2 border-[#fda481] border-t-transparent animate-spin" />
+        <div className="flex items-center justify-center gap-2 text-[16px] text-gray-500 py-16">
+          <span className="w-4 h-4 rounded-full border-2 border-[#fff] border-t-transparent animate-spin" />
           {p.state.loading}
         </div>
       ) : products.length === 0 ? (
@@ -673,7 +665,7 @@ export default function ProductsPage() {
           <p className="text-[15px] text-gray-400 font-medium">
             {p.state.empty}
           </p>
-          <p className="text-[13px] text-gray-600 mt-1">{p.state.emptyHint}</p>
+          <p className="text-[16px] text-gray-600 mt-1">{p.state.emptyHint}</p>
         </div>
       ) : (
         <>
@@ -699,11 +691,11 @@ export default function ProductsPage() {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
                 disabled={!prevPage}
-                className="text-[13px] px-4 py-1.5 border border-white/10 rounded-xl bg-[#1a1d29] text-gray-400 hover:bg-white/5 disabled:opacity-40 transition-opacity cursor-pointer"
+                className="text-[16px] px-4 py-1.5 border border-white/10 rounded-xl bg-[#1a1d29] text-gray-400 hover:bg-white/5 disabled:opacity-40 transition-opacity cursor-pointer"
               >
                 {p.pagination.previous}
               </button>
-              <span className="text-[13px] text-gray-500 font-medium">
+              <span className="text-[16px] text-gray-500 font-medium">
                 {p.pagination.page.replace("{page}", String(page))}
               </span>
               <button
@@ -712,7 +704,7 @@ export default function ProductsPage() {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
                 disabled={!nextPage}
-                className="text-[13px] px-4 py-1.5 border border-white/10 rounded-xl bg-[#1a1d29] text-gray-400 hover:bg-white/5 disabled:opacity-40 transition-opacity cursor-pointer"
+                className="text-[16px] px-4 py-1.5 border border-white/10 rounded-xl bg-[#1a1d29] text-gray-400 hover:bg-white/5 disabled:opacity-40 transition-opacity cursor-pointer"
               >
                 {p.pagination.next}
               </button>
@@ -784,7 +776,7 @@ export default function ProductsPage() {
               />
               {/* Category */}
               <div className="flex flex-col gap-1 mb-1">
-                <label className="text-[12px] text-gray-400 font-medium">
+                <label className="text-[16px] text-gray-400 font-medium">
                   {p.fields.category}
                 </label>
                 <Select
@@ -810,7 +802,7 @@ export default function ProductsPage() {
               <CancelBtn onClick={() => setShowCreate(false)} />
               <button
                 onClick={handleCreateStep1}
-                className="text-[14px] font-bold bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white px-6 py-2.5 rounded-xl hover:opacity-90 transition-opacity cursor-pointer border-none flex items-center gap-1.5"
+                className="text-[16px] font-bold bg-gradient-to-r from-[#ffffff69] to-black text-white px-6 py-2.5 rounded-xl hover:opacity-90 transition-opacity cursor-pointer border-none flex items-center gap-1.5"
               >
                 {p.actions.next}
               </button>
@@ -879,7 +871,7 @@ export default function ProductsPage() {
                   },
                 ])
               }
-              className="text-[13px] text-gray-500 border border-dashed border-white/10 rounded-xl px-4 py-2 bg-transparent cursor-pointer mb-4 hover:bg-white/5 hover:border-white/20 transition-colors w-full"
+              className="text-[16px] text-gray-500 border border-dashed border-white/10 rounded-xl px-4 py-2 bg-transparent cursor-pointer mb-4 hover:bg-white/5 hover:border-white/20 transition-colors w-full"
             >
               {p.create.addVariantRow}
             </button>
@@ -887,7 +879,7 @@ export default function ProductsPage() {
             <ActRow>
               <button
                 onClick={() => setCreateStep(1)}
-                className="text-[14px] font-medium text-gray-400 bg-white/5 border border-white/10 px-5 py-2.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer border-none flex items-center gap-1.5"
+                className="text-[16px] font-medium text-gray-400 bg-white/5 border border-white/10 px-5 py-2.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer border-none flex items-center gap-1.5"
               >
                 {p.actions.back}
               </button>
@@ -912,7 +904,7 @@ export default function ProductsPage() {
         isArabic={isArabic}
       >
         {loadingSingle && pid && (
-          <p className="text-[14px] text-gray-500 mb-3">{p.edit.loading}</p>
+          <p className="text-[16px] text-gray-500 mb-3">{p.edit.loading}</p>
         )}
         {pid && (
           <>
@@ -938,7 +930,7 @@ export default function ProductsPage() {
                 onChangeAr={se("fragrance_family_ar")}
               />
               <div className="flex flex-col gap-1 mb-1">
-                <label className="text-[12px] text-gray-400 font-medium">
+                <label className="text-[16px] text-gray-400 font-medium">
                   {p.fields.categoryName}
                 </label>
                 <Select
@@ -959,7 +951,7 @@ export default function ProductsPage() {
               onChangeAr={se("description_ar")}
             />
             <div className="flex flex-col gap-1 mb-1">
-              <label className="text-[12px] text-gray-400 font-medium">
+              <label className="text-[16px] text-gray-400 font-medium">
                 {p.fields.status}
               </label>
               <Select
@@ -1059,7 +1051,7 @@ export default function ProductsPage() {
             {isAvBusy && <Spinner label={AV_STEP_LBL[avStep]} />}
             {newlyCreatedVids.length > 0 && (
               <div className="mt-1 pt-5 border-t border-white">
-                <p className="text-[12px] font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                <p className="text-[16px] font-semibold text-gray-500 uppercase tracking-wider mb-3">
                   {p.addVariant.manageImages}
                 </p>
                 {(varProduct?.variants ?? [])
@@ -1069,7 +1061,7 @@ export default function ProductsPage() {
                       key={v.id}
                       className="bg-[#0f1117] border border-white/10 rounded-xl p-4 mb-3"
                     >
-                      <p className="text-[14px] font-semibold text-white mb-3">
+                      <p className="text-[16px] font-semibold text-white mb-3">
                         {v.volume}
                         <span className="font-normal text-gray-500 ml-2">
                           LE {parseFloat(v.price).toLocaleString()}
@@ -1110,14 +1102,14 @@ export default function ProductsPage() {
           !loadingVarProduct &&
           (varProduct?.variants ?? []).length > 0 && (
             <>
-              <p className="text-[12px] font-semibold text-gray-500 uppercase tracking-wider mb-3">
+              <p className="text-[16px] font-semibold text-gray-500 uppercase tracking-wider mb-3">
                 {p.editVariant.selectVariant}
               </p>
               <div className="flex flex-col gap-2 mb-2">
                 {(varProduct?.variants ?? []).map((v: Variant) => (
                   <div
                     key={v.id}
-                    className={`flex items-center justify-between p-3 rounded-xl cursor-pointer border transition-all ${selectedVid === v.id ? "bg-[#0f1117] border-[#fda481]/50" : "bg-[#0f1117]/50 border-white/10 hover:border-white/20 hover:bg-[#0f1117]"}`}
+                    className={`flex items-center justify-between p-3 rounded-xl cursor-pointer border transition-all ${selectedVid === v.id ? "bg-[#0f1117] border-[#fff]/50" : "bg-[#0f1117]/50 border-white/10 hover:border-white/20 hover:bg-[#0f1117]"}`}
                     onClick={() => setSelectedVid(v.id)}
                   >
                     <div className="flex items-center gap-3">
@@ -1140,10 +1132,10 @@ export default function ProductsPage() {
                         );
                       })()}
                       <div>
-                        <p className="text-[14px] font-semibold text-white">
+                        <p className="text-[16px] font-semibold text-white">
                           {v.volume}
                         </p>
-                        <p className="text-[12px] text-gray-500 mt-0.5">
+                        <p className="text-[16px] text-gray-500 mt-0.5">
                           LE {parseFloat(v.price).toLocaleString()} · {v.stock}{" "}
                           {p.editVariant.inStock} ·{" "}
                           <span
@@ -1163,7 +1155,7 @@ export default function ProductsPage() {
                         e.stopPropagation();
                         setConfirmDeleteVid(v.id);
                       }}
-                      className="text-[12px] font-medium text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-1.5 cursor-pointer hover:bg-red-500/20 transition-colors flex-shrink-0"
+                      className="text-[16px] font-medium text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-1.5 cursor-pointer hover:bg-red-500/20 transition-colors flex-shrink-0"
                     >
                       {p.editVariant.delete}
                     </button>
@@ -1184,7 +1176,7 @@ export default function ProductsPage() {
         {selectedVid && (
           <>
             <div className="h-px bg-white/10 my-5" />
-            <p className="text-[12px] font-semibold text-gray-500 uppercase tracking-wider mb-4">
+            <p className="text-[16px] font-semibold text-gray-500 uppercase tracking-wider mb-4">
               {p.editVariant.editSelected}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
@@ -1216,7 +1208,7 @@ export default function ProductsPage() {
                 },
               ].map(({ lbl, val, key, tp }) => (
                 <div key={key} className="flex flex-col gap-1 mb-1">
-                  <label className="text-[12px] text-gray-400 font-medium">
+                  <label className="text-[16px] text-gray-400 font-medium">
                     {lbl}
                   </label>
                   <input
@@ -1231,7 +1223,7 @@ export default function ProductsPage() {
               ))}
             </div>
             <div className="flex flex-col gap-1 mb-1">
-              <label className="text-[12px] text-gray-400 font-medium">
+              <label className="text-[16px] text-gray-400 font-medium">
                 {p.fields.status}
               </label>
               <Select
@@ -1255,7 +1247,7 @@ export default function ProductsPage() {
             <ActRow>
               <button
                 onClick={() => setSelectedVid(null)}
-                className="text-[14px] font-medium text-gray-400 bg-white/5 border border-white/10 px-5 py-2.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer border-none"
+                className="text-[16px] font-medium text-gray-400 bg-white/5 border border-white/10 px-5 py-2.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer border-none"
               >
                 {p.actions.cancel}
               </button>

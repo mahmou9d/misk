@@ -22,6 +22,7 @@ import {
   SearchIcon,
   UserIcon,
 } from "@/public/svg/Svgs";
+import { useGetCategory } from "@/hooks/useDashboard";
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 const Logo = ({ locale }: { locale: string }) => (
@@ -125,18 +126,17 @@ function UserActions({ locale }: { locale: string }) {
     <div className="flex items-center gap-[12px]">
       {isAdmin && (
         <>
-        <Link
-          href={`/${locale.toLowerCase()}/admin`}
-          className="p-2.5 rounded-full transition-all duration-200 flex items-center group text-[#666]"
-          title={t.navbar.dashboard}
-        >
-          <span className="group-hover:text-[var(--purple-deep)] transition-colors">
-            <DashboardIcon />
-          </span>
-        </Link>
-              {/* Divider */}
-      <span className="block xl:hidden w-1 h-8 [background:linear-gradient(180deg,transparent,rgba(201,168,76,0.3),transparent)]" />
-
+          <Link
+            href={`/${locale.toLowerCase()}/admin`}
+            className="p-2.5 rounded-full transition-all duration-200 flex items-center group text-[#666]"
+            title={t.navbar.dashboard}
+          >
+            <span className="group-hover:text-[var(--purple-deep)] transition-colors">
+              <DashboardIcon />
+            </span>
+          </Link>
+          {/* Divider */}
+          <span className="block xl:hidden w-1 h-8 [background:linear-gradient(180deg,transparent,rgba(201,168,76,0.3),transparent)]" />
         </>
       )}
 
@@ -283,6 +283,8 @@ export default function Navbar() {
   const { cartOpen, setCartOpen } = useCats();
   const [ddOpen, setDdOpen] = useState(false);
   const { data: cartData } = useGetCartItems();
+  const { data: categories } = useGetCategory();
+
   const cartCount = cartData?.reduce(
     (acc, item) => acc + Number(item?.quantity),
     0,
@@ -296,13 +298,13 @@ export default function Navbar() {
   const handleSearchClick = () =>
     router.push(`/${locale.toLowerCase()}/search`);
 
-  const categories = [
-    {
-      label: t.navbar.womens,
-      href: `/${locale.toLowerCase()}/collections/womens`,
-    },
-    { label: t.navbar.mens, href: `/${locale.toLowerCase()}/collections/mens` },
-  ];
+  // const categories = [
+  //   {
+  //     label: t.navbar.womens,
+  //     href: `/${locale.toLowerCase()}/collections/womens`,
+  //   },
+  //   { label: t.navbar.mens, href: `/${locale.toLowerCase()}/collections/mens` },
+  // ];
 
   const links = [
     {
@@ -381,9 +383,9 @@ export default function Navbar() {
                         >
                           <div className="absolute top-0 left-4 right-4 h-px [background:linear-gradient(90deg,transparent,rgba(201,168,76,0.5),transparent)]" />
 
-                          {categories.map((cat, i) => (
+                          {categories?.map((cat, i) => (
                             <motion.li
-                              key={cat.label}
+                              key={cat.name}
                               initial={{ opacity: 0, x: isArabic ? 6 : -6 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: i * 0.05, duration: 0.15 }}
@@ -401,11 +403,11 @@ before:duration-200
 hover:before:opacity-100`}
                             >
                               <Link
-                                href={cat.href}
+                                href={`/${locale.toLowerCase()}/collections/${cat.name_en.toLowerCase()}`}
                                 onClick={closeAll}
                                 className="flex items-center gap-2 py-[11px] px-5 text-gray-600 hover:text-[var(--purple-deep)] hover:bg-purple-50 transition-all text-[length:16px] [letter-spacing:0.2px]"
                               >
-                                {cat.label}
+                                {cat.name}
                               </Link>
                             </motion.li>
                           ))}
@@ -541,19 +543,19 @@ hover:before:opacity-100`}
                     </span>
                   </div>
 
-                  {categories.map((cat, ci) => (
+                  {categories?.map((cat, ci) => (
                     <motion.div
-                      key={cat.label}
+                      key={cat.name}
                       initial={{ opacity: 0, x: isArabic ? -12 : 12 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.08 + ci * 0.05, duration: 0.18 }}
                     >
                       <Link
-                        href={cat.href}
+                        href={`/${locale.toLowerCase()}/collections/${cat.name_en.toLowerCase()}`}
                         onClick={closeAll}
                         className="flex items-center gap-3 h-14 px-5 text-gray-700 hover:text-[var(--purple-deep)] hover:bg-purple-50 transition-colors border-b border-black/5 text-[length:15px]  [border-inline-start:2px_solid_transparent]"
                       >
-                        {cat.label}
+                        {cat.name}
                       </Link>
                     </motion.div>
                   ))}

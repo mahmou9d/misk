@@ -10,11 +10,12 @@ import { useTranslation } from "@/lib/Usetranslation";
 
 export default function ProductGrid() {
   const { t, isArabic, dir, locale } = useTranslation();
-  const [tab, setTab] = useState<"men" | "women">("men");
+  const [tab, setTab] = useState<"men" | "unisex" |"women">("men");
   const { data, isLoading } = useGetProducts();
   const allProducts: Product[] = data?.products ?? [];
-  const filtered = allProducts.filter((p) => p.category_name === tab);
-
+  const categories = tab==="men"?"رجالي":tab==="unisex"?"رجالى و نسائى":"نسائي";
+  const products = isArabic ? categories : tab;
+  const filtered = allProducts.filter((p) => p.category_name === products);
   return (
     <section
       className="w-full bg-[#fcfcfc] py-28 relative overflow-hidden"
@@ -22,29 +23,29 @@ export default function ProductGrid() {
     >
       {/* ── Background Decoration ── */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 opacity-[0.03] select-none pointer-events-none">
-        <h2 className="text-[180px] font-serif font-bold whitespace-nowrap uppercase tracking-tighter">
-          {tab === "men" ? "Gentlemen" : "Signora"}
+        <h2 className="text-[90px] lg:text-[180px] font-serif font-bold whitespace-nowrap uppercase tracking-tighter">
+          {tab === "men" ? "Men" : tab === "unisex" ? "Unisex" : "Women"}
         </h2>
       </div>
 
       <div className="max-w-screen-xl mx-auto px-6 lg:px-12 relative z-10">
         {/* ── Header & Premium Tabs ── */}
         <div className="flex flex-col items-center mb-24">
-          <span className="text-[#c9a84c] text-[10px] font-bold uppercase tracking-[0.6em] mb-10 opacity-80">
+          <span className="text-[#c9a84c] text-[20px] font-bold uppercase tracking-[0.6em] mb-10 opacity-80">
             {t.productGrid.title}
           </span>
 
           <div className="inline-flex items-center p-1.5 bg-white border border-gray-100 rounded-full shadow-sm">
-            {(["men", "women"] as const).map((tabKey) => (
+            {(["men", "unisex", "women"] as const).map((tabKey) => (
               <button
                 key={tabKey}
                 onClick={() => setTab(tabKey)}
-                className={`relative px-12 py-3 rounded-full text-[13px] font-bold uppercase transition-all duration-500
+                className={`relative px-8 lg:px-12 py-3 rounded-full text-[13px] font-bold uppercase transition-all duration-500
                 ${tab === tabKey ? "text-white" : "text-gray-400 hover:text-gray-900"}
                 ${isArabic ? "tracking-0 text-[16px]" : "tracking-[0.2em]"}`}
               >
                 <span className="relative z-10">
-                  {tabKey === "men" ? t.productGrid.men : t.productGrid.women}
+                  {tabKey === "men" ? t.productGrid.men : tabKey === "unisex" ? t.productGrid.unisex : t.productGrid.women}
                 </span>
                 {tab === tabKey && (
                   <motion.div
@@ -59,10 +60,10 @@ export default function ProductGrid() {
         </div>
 
         {/* ── Product Grid ── */}
-        <div className="min-h-[500px]">
+        <div>
           {isLoading ? (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
-              {[1, 2, 3, 4].map((i) => (
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                 <div
                   key={i}
                   className="aspect-[3/4] bg-gray-100 animate-pulse rounded-sm"
@@ -71,18 +72,24 @@ export default function ProductGrid() {
             </div>
           ) : (
             <AnimatePresence mode="wait">
-              <motion.div
-                key={tab}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16"
-              >
-                {filtered.slice(0, 4).map((p, i) => (
-                  <ProductCard key={p.id} p={p} index={i} />
-                ))}
-              </motion.div>
+              {filtered.length > 0 ? (
+                <motion.div
+                  key={tab}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16"
+                >
+                  {filtered.slice(0, 8).map((p, i) => (
+                    <ProductCard key={p.id} p={p} index={i} />
+                  ))}
+                </motion.div>
+              ) : (
+                <p className="flex items-center justify-center text-black text-[20px] lg:text-[45px]">
+                  {t.productGrid.noProducts}
+                </p>
+              )}
             </AnimatePresence>
           )}
         </div>
@@ -92,7 +99,7 @@ export default function ProductGrid() {
         <div className="flex justify-center mt-24">
           <Link
             href={`/${locale.toLowerCase()}/collections/all`}
-            className="group relative bg-[#111] inline-flex items-center gap-4 px-14 py-4 rounded-full border border-[#c9a84c]/40 transition-all duration-500 hover:border-[#ffbb00] hover:bg-[#ffbb00] no-underline shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_35px_rgba(201,168,76,0.2)]"
+            className="group relative bg-[#111] inline-flex items-center gap-4 px-8 lg:px-14 py-4 rounded-full border border-[#c9a84c]/40 transition-all duration-500 hover:border-[#ffbb00] hover:bg-[#ffbb00] no-underline shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_35px_rgba(201,168,76,0.2)]"
           >
             {/* Text */}
             <span

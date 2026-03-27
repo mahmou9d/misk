@@ -418,128 +418,128 @@
       "cancelled": "Cancelled"
     }
   },
-"adminProducts": {
-  "title": "Products",
-  "subtitle": "Manage your store products",
-  "createBtn": "Create Product",
-  "productCount": "{count} products",
-  "fields": {
-    "name": "Name *",
-    "category": "Category *",
-    "categoryName": "Category Name",
-    "fragranceFamily": "Fragrance Family",
-    "concentration": "Concentration",
-    "selectPlaceholder": "Select…",
-    "description": "Description",
-    "status": "Status",
-    "active": "Active",
-    "inactive": "Inactive",
-    "volume": "Volume",
-    "price": "Price",
-    "comparePrice": "Compare Price",
-    "stock": "Stock",
-    "stockLabel": "Stock"
-  },
-  "steps": {
-    "bar": {
-      "productInfo": "Product info",
-      "variants": "Variants"
+  "adminProducts": {
+    "title": "Products",
+    "subtitle": "Manage your store products",
+    "createBtn": "Create Product",
+    "productCount": "{count} products",
+    "fields": {
+      "name": "Name *",
+      "category": "Category *",
+      "categoryName": "Category Name",
+      "fragranceFamily": "Fragrance Family",
+      "concentration": "Concentration",
+      "selectPlaceholder": "Select…",
+      "description": "Description",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "volume": "Volume",
+      "price": "Price",
+      "comparePrice": "Compare Price",
+      "stock": "Stock",
+      "stockLabel": "Stock"
+    },
+    "steps": {
+      "bar": {
+        "productInfo": "Product info",
+        "variants": "Variants"
+      },
+      "create": {
+        "idle": "Create Product",
+        "creating": "Creating…",
+        "variants": "Adding variants…",
+        "images": "Uploading images…",
+        "done": "Done ✓"
+      },
+      "edit": {
+        "idle": "Update Product",
+        "updating": "Updating…",
+        "images": "Uploading images…",
+        "done": "Done ✓"
+      },
+      "addVariant": {
+        "idle": "Add Variants",
+        "adding": "Adding…",
+        "images": "Uploading images…",
+        "done": "Done ✓"
+      },
+      "editVariant": {
+        "idle": "Update Variant",
+        "updating": "Updating…",
+        "done": "Done ✓"
+      }
+    },
+    "state": {
+      "loading": "Loading products…",
+      "empty": "No products yet",
+      "emptyHint": "Create your first product above"
+    },
+    "pagination": {
+      "previous": "← Previous",
+      "page": "Page {page}",
+      "next": "Next →"
+    },
+    "card": {
+      "edit": "Edit",
+      "addVariant": "+ Add variant",
+      "editVariant": "Edit variant",
+      "delete": "Delete"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "next": "Next →",
+      "back": "← Back"
+    },
+    "modals": {
+      "createProduct": "Create product",
+      "addVariants": "Add variants",
+      "editProduct": "Edit product",
+      "addVariantsTitle": "Add variants",
+      "editVariant": "Edit variant",
+      "deleteProduct": "Delete product"
+    },
+    "deleteModal": {
+      "title": "Delete product"
     },
     "create": {
-      "idle": "Create Product",
-      "creating": "Creating…",
-      "variants": "Adding variants…",
-      "images": "Uploading images…",
-      "done": "Done ✓"
+      "heading": "New Product",
+      "variantsOptional": "Variants (optional)",
+      "addVariantRow": "+ Add Variant"
     },
     "edit": {
-      "idle": "Update Product",
-      "updating": "Updating…",
-      "images": "Uploading images…",
-      "done": "Done ✓"
+      "heading": "Edit Product",
+      "loading": "Loading…",
+      "selectHint": "← Select a product from the list",
+      "variantImages": "Variant Images",
+      "deleteProduct": "Delete Product"
     },
     "addVariant": {
-      "idle": "Add Variants",
-      "adding": "Adding…",
-      "images": "Uploading images…",
-      "done": "Done ✓"
+      "heading": "Add Variants",
+      "selectHint": "← Select a product from the list",
+      "addRow": "+ Add Row",
+      "manageImages": "Manage Images for New Variants"
     },
     "editVariant": {
-      "idle": "Update Variant",
-      "updating": "Updating…",
-      "done": "Done ✓"
+      "heading": "Edit Variant",
+      "selectHint": "← Select a product from the list",
+      "variantsLabel": "Variants",
+      "inStock": "in stock",
+      "img": "img",
+      "delete": "Delete",
+      "selectVariant": "Select variant",
+      "editSelected": "Edit selected"
+    },
+    "errors": {
+      "nameAndCategoryRequired": "Name & category required."
+    },
+    "tabs": {
+      "create": "Create",
+      "edit": "Edit",
+      "addVariant": "Add Variant",
+      "editVariant": "Edit Variant"
     }
   },
-  "state": {
-    "loading": "Loading products…",
-    "empty": "No products yet",
-    "emptyHint": "Create your first product above"
-  },
-  "pagination": {
-    "previous": "← Previous",
-    "page": "Page {page}",
-    "next": "Next →"
-  },
-  "card": {
-    "edit": "Edit",
-    "addVariant": "+ Add variant",
-    "editVariant": "Edit variant",
-    "delete": "Delete"
-  },
-  "actions": {
-    "cancel": "Cancel",
-    "next": "Next →",
-    "back": "← Back"
-  },
-  "modals": {
-    "createProduct": "Create product",
-    "addVariants": "Add variants",
-    "editProduct": "Edit product",
-    "addVariantsTitle": "Add variants",
-    "editVariant": "Edit variant",
-    "deleteProduct": "Delete product"
-  },
-  "deleteModal": {
-    "title": "Delete product"
-  },
-  "create": {
-    "heading": "New Product",
-    "variantsOptional": "Variants (optional)",
-    "addVariantRow": "+ Add Variant"
-  },
-  "edit": {
-    "heading": "Edit Product",
-    "loading": "Loading…",
-    "selectHint": "← Select a product from the list",
-    "variantImages": "Variant Images",
-    "deleteProduct": "Delete Product"
-  },
-  "addVariant": {
-    "heading": "Add Variants",
-    "selectHint": "← Select a product from the list",
-    "addRow": "+ Add Row",
-    "manageImages": "Manage Images for New Variants"
-  },
-  "editVariant": {
-    "heading": "Edit Variant",
-    "selectHint": "← Select a product from the list",
-    "variantsLabel": "Variants",
-    "inStock": "in stock",
-    "img": "img",
-    "delete": "Delete",
-    "selectVariant": "Select variant",
-    "editSelected": "Edit selected"
-  },
-  "errors": {
-    "nameAndCategoryRequired": "Name & category required."
-  },
-  "tabs": {
-    "create": "Create",
-    "edit": "Edit",
-    "addVariant": "Add Variant",
-    "editVariant": "Edit Variant"
-  }
-},
   "productDetail": {
     "notFound": "Product not found.",
     "backHome": "Back to Home",
@@ -556,6 +556,22 @@
     "addedToCart": "Added to cart!",
     "addToCartError": "Failed to add to cart. Please try again.",
     "buyNowError": "Failed to process. Please try again."
+  },
+  "reviews": {
+    "label": "Customer Reviews",
+    "title": "What Our Customers Say",
+    "review": "review",
+    "reviews": "reviews",
+    "noReviews": "No reviews yet. Buy the first!",
+    "thankYou":"Thank you for your review!",
+    "writeReview": "Write a Review",
+    "yourRating": "Your Rating",
+    "yourComment": "Your Comment",
+    "optional": "optional",
+    "commentPlaceholder": "Share your experience...",
+    "submitting": "Submitting...",
+    "submit": "Submit"
+    
   },
   "returnPolicy": {
     "title": "Return & Exchange Policy",
@@ -888,6 +904,7 @@
   "productGrid": {
     "title": "The Misk Collection",
     "men": "Men",
+    "unisex": "Unisex",
     "women": "Women",
     "noProducts": "No products available at the moment.",
     "viewAll": "Browse the Full Collection"

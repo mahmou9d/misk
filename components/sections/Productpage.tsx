@@ -193,7 +193,7 @@ export default function ProductPage() {
                 transition={{ delay: 0.18, duration: 0.4 }}
                 className="mb-3 flex items-center gap-2"
               >
-                <span className={`text-[12px] font-semibold text-[#c9a84c]
+                <span className={`text-[14px] font-semibold text-[#c9a84c]
                   ${isArabic ? "" : "tracking-[5px] uppercase"}`}>
                   Misk Fragrance
                 </span>
@@ -217,7 +217,7 @@ export default function ProductPage() {
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.27, duration: 0.4 }}
-                  className={`text-[#888] text-[14px] leading-relaxed mb-4 line-clamp-3
+                  className={`text-[#4d4c4c] text-[16px] leading-relaxed mb-4 line-clamp-3
                     ${isArabic ? "" : "tracking-[0.2px]"}`}
                 >
                   {product.description}
@@ -255,7 +255,7 @@ export default function ProductPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.4, duration: 0.3 }}
-                    className={`text-[12px] text-[#c9a84c]/80 mt-1
+                    className={`text-[14px] text-[#c9a84c]/80 mt-1
                       ${isArabic ? "" : "tracking-[0.3px]"}`}
                   >
                     {isArabic
@@ -328,23 +328,6 @@ export default function ProductPage() {
                 </motion.button>
               </motion.div>
 
-              {/* Trust badges */}
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.52, duration: 0.4 }}
-                className="flex justify-between mt-5 pt-4 border-t border-[rgba(201,168,76,0.12)]"
-              >
-                {trustBadges.map((badge, i) => (
-                  <div key={i} className="flex flex-col items-center gap-1.5">
-                    <span className="text-[#c9a84c] text-[10px]">{badge.icon}</span>
-                    <span className={`text-[#999] text-[10px] text-center font-medium
-                      ${isArabic ? "" : "tracking-[0.4px] uppercase"}`}>
-                      {badge.label}
-                    </span>
-                  </div>
-                ))}
-              </motion.div>
 
               {/* View details */}
               <motion.div
@@ -355,7 +338,7 @@ export default function ProductPage() {
               >
                 <Link
                   href={`/${locale.toLowerCase()}/products/${product.id}`}
-                  className="group inline-flex items-center gap-2 text-[13px] text-[#aaa] hover:text-[#1a0a3d] no-underline transition-colors duration-300"
+                  className="group inline-flex items-center gap-2 text-[15px] text-[#000] hover:text-[#1a0a3d] no-underline transition-colors duration-300"
                 >
                   <span className={`border-b border-transparent group-hover:border-[#1a0a3d]/30 pb-px
                     ${isArabic ? "" : "tracking-[0.5px] uppercase"}`}>

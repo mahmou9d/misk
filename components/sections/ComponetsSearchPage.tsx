@@ -148,15 +148,12 @@ export function PriceSidebar({ min, max, setMin, setMax }: any) {
           { ph: t.searchComponents.max, v: max, fn: setMax, sym: "≤" },
         ].map(({ ph, v, fn, sym }) => (
           <div key={ph} className="flex-1 relative">
-            <span className="absolute start-2 top-1/2 -translate-y-1/2 text-[16px] text-[#1d1d1d] pointer-events-none">
-              {sym}
-            </span>
             <input
               type="number"
               placeholder={ph}
               value={v}
               onChange={(e) => fn(e.target.value)}
-              className="w-full text-[16px] py-2 ps-[22px] pe-2 bg-transparent border-b border-[#c9a84c]/10 outline-none text-[#1a1522] transition-colors focus:border-b-[#c9a84c]/45"
+              className="w-full text-[16px] py-2 ps-[22px] pe-2 bg-white rounded-xl border-2 border-[#c9a84c] outline-none text-[#1a1522] transition-colors"
             />
           </div>
         ))}

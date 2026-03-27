@@ -7,7 +7,7 @@ export const P = ({ t, s }: { t: string; s?: string }) => (
     <h1 className="text-[20px] font-semibold text-[#111] m-0 leading-tight">
       {t}
     </h1>
-    {s && <p className="text-[13px] text-[#888] mt-1 m-0">{s}</p>}
+    {s && <p className="text-[16px] text-[#888] mt-1 m-0">{s}</p>}
   </div>
 );
 
@@ -30,13 +30,13 @@ export const Card = ({
 
 
 export const Sec = ({ children }: { children: React.ReactNode }) => (
-  <p className="text-[11px] font-bold text-[#aaa] tracking-[0.8px] uppercase mb-[14px] mt-0">
+  <p className="text-[16px] font-bold text-[#aaa] tracking-[0.8px] uppercase mb-[14px] mt-0">
     {children}
   </p>
 );
 
 const inputClasses =
-  "w-full h-[38px] border border-[#0f1117] rounded-[6px] px-[11px] text-[13px] text-[#fff] bg-[#0f1117] outline-none box-border focus:border-[#0f1117] transition-colors";
+  "w-full h-[38px] border border-[#0f1117] rounded-[6px] px-[11px] text-[16px] text-[#fff] bg-[#0f1117] outline-none box-border focus:border-[#0f1117] transition-colors";
 
 export function Input({
   label,
@@ -46,7 +46,7 @@ export function Input({
   return (
     <div className="mb-3">
       {label && (
-        <label className="text-[12px] text-[#666] block mb-1">{label}</label>
+        <label className="text-[16px] text-[#666] block mb-1">{label}</label>
       )}
       <input className={`${inputClasses} ${className || ""}`} {...p} />
     </div>
@@ -61,7 +61,7 @@ export function Textarea({
   return (
     <div className="mb-3">
       {label && (
-        <label className="text-[12px] text-[#666] block mb-1">{label}</label>
+        <label className="text-[16px] text-[#666] block mb-1">{label}</label>
       )}
       <textarea
         className={`${inputClasses} h-[80px] py-[9px] resize-vertical ${className || ""}`}
@@ -83,7 +83,7 @@ export function Select({
   return (
     <div className="mb-3">
       {label && (
-        <label className="text-[12px] text-[#666] block mb-1">{label}</label>
+        <label className="text-[16px] text-[#666] block mb-1">{label}</label>
       )}
       <select
         className={`${inputClasses} cursor-pointer ${className || ""}`}
@@ -122,7 +122,7 @@ export function Btn({
       disabled={loading}
       className={`
         ${variants[variant]}
-        h-[36px] px-4 rounded-[6px] text-[13px] font-medium transition-opacity
+         px-5  rounded-[6px] text-[16px] font-medium transition-opacity
         ${loading ? "cursor-not-allowed opacity-60" : "cursor-pointer active:opacity-80"}
         ${className || ""}
       `}
@@ -144,7 +144,7 @@ export function Toast({
   return (
     <div
       className={`
-        p-[10px_13px] rounded-[6px] text-[13px] mb-[14px] border
+        p-[10px_13px] rounded-[6px] text-[16px] mb-[14px] border
         ${
           type === "success"
             ? "bg-[#f0fdf4] text-[#166534] border-[#bbf7d0]"

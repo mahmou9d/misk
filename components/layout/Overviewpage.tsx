@@ -58,7 +58,7 @@ export default function OverviewPage() {
       title: a.sales,
       value:
         totalSales != null ? `LE ${Number(totalSales).toLocaleString()}` : "…",
-      gradient: "from-[#fda481] to-[#b4182d]",
+      gradient: "from-[#ffffff69] to-black",
       icon: DollarSign,
       trend: "up" as const,
       change: "",
@@ -67,7 +67,7 @@ export default function OverviewPage() {
       id: 1,
       title: a.totalOrders,
       value: totalOrders ?? "…",
-      gradient: "from-[#b4182d] to-[#54162b]",
+      gradient: "from-[#000] to-[#54162b]",
       icon: ShoppingCart,
       trend: "up" as const,
       change: "",
@@ -76,7 +76,7 @@ export default function OverviewPage() {
       id: 3,
       title: a.totalStock,
       value: totalStock ?? "…",
-      gradient: "from-[#fda481] to-[#b4182d]",
+      gradient: "from-[#ffffff69] to-black",
       icon: BarChart3,
       trend: "up" as const,
       change: "",
@@ -140,7 +140,7 @@ export default function OverviewPage() {
         {statCards.map((stat) => (
           <div
             key={stat.id}
-            className="bg-[#1a1d29] rounded-2xl p-7 border border-white/10 hover:border-[#fda481]/50 cursor-pointer group"
+            className="bg-[#1a1d29] rounded-2xl p-7 border border-white/10 hover:border-[#fff]/50 cursor-pointer group"
           >
             <div className="flex items-start justify-between mb-5">
               <div
@@ -189,7 +189,7 @@ export default function OverviewPage() {
                   onClick={() => setChartView("sales")}
                   className={`px-4 py-2 rounded-lg text-sm font-semibold ${
                     chartView === "sales"
-                      ? "bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white shadow-lg"
+                      ? "bg-gradient-to-r from-[#ffffff69] to-black text-white shadow-lg"
                       : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -199,7 +199,7 @@ export default function OverviewPage() {
                   onClick={() => setChartView("orders")}
                   className={`px-4 py-2 rounded-lg text-sm font-semibold ${
                     chartView === "orders"
-                      ? "bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white shadow-lg"
+                      ? "bg-gradient-to-r from-[#ffffff69] to-black text-white shadow-lg"
                       : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -269,7 +269,7 @@ export default function OverviewPage() {
                               }}
                               className={`w-full max-w-[50px] rounded-t-xl relative ${
                                 hasData
-                                  ? "bg-gradient-to-t from-[#b4182d] via-[#fda481] to-[#ffd4c1] cursor-pointer shadow-lg"
+                                  ? "bg-gradient-to-t from-[#000] via-[#fff] to-[#ffd4c1] cursor-pointer shadow-lg"
                                   : "bg-gradient-to-t from-white/5 to-white/10"
                               }`}
                               style={{
@@ -285,12 +285,12 @@ export default function OverviewPage() {
                               }}
                             >
                               {isHovered && hasData && (
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 bg-[#0f1117] px-4 py-3 rounded-xl shadow-2xl border border-[#fda481]/30 whitespace-nowrap z-50">
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 bg-[#0f1117] px-4 py-3 rounded-xl shadow-2xl border border-[#fff]/30 whitespace-nowrap z-50">
                                   <div className="text-center">
                                     <p className="text-xs text-gray-400 font-medium mb-1">
                                       {monthData.name}
                                     </p>
-                                    <p className="text-xl font-bold text-[#fda481] mb-0.5">
+                                    <p className="text-xl font-bold text-[#fff] mb-0.5">
                                       {chartView === "sales"
                                         ? `$${monthData.sales}`
                                         : monthData.orders}
@@ -302,7 +302,7 @@ export default function OverviewPage() {
                                     </p>
                                   </div>
                                   <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
-                                    <div className="w-3 h-3 bg-[#0f1117] border-r border-b border-[#fda481]/30 rotate-45" />
+                                    <div className="w-3 h-3 bg-[#0f1117] border-r border-b border-[#fff]/30 rotate-45" />
                                   </div>
                                 </div>
                               )}
@@ -321,7 +321,7 @@ export default function OverviewPage() {
                     {salesData.map((monthData: any, index: number) => (
                       <div key={index} className="flex-1 text-center">
                         <span
-                          className={`text-xs font-bold ${hoveredBar === index ? "text-[#fda481]" : "text-gray-400"}`}
+                          className={`text-xs font-bold ${hoveredBar === index ? "text-[#fff]" : "text-gray-400"}`}
                         >
                           {monthData.name.slice(0, 3)}
                         </span>
@@ -333,7 +333,7 @@ export default function OverviewPage() {
 
               {/* Summary Stats */}
               <div className="mt-8 grid grid-cols-3 gap-4">
-                <div className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-[#fda481]/30">
+                <div className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-[#fff]/30">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 flex items-center justify-center">
                       <DollarSign className="w-4 h-4 text-emerald-400" />
@@ -349,7 +349,7 @@ export default function OverviewPage() {
                       .toLocaleString()}
                   </p>
                 </div>
-                <div className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-[#fda481]/30">
+                <div className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-[#fff]/30">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center">
                       <ShoppingCart className="w-4 h-4 text-blue-400" />
@@ -365,10 +365,10 @@ export default function OverviewPage() {
                     )}
                   </p>
                 </div>
-                <div className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-[#fda481]/30">
+                <div className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-[#fff]/30">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#fda481]/20 to-[#b4182d]/20 flex items-center justify-center">
-                      <TrendingUp className="w-4 h-4 text-[#fda481]" />
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#fff]/20 to-[#000]/20 flex items-center justify-center">
+                      <TrendingUp className="w-4 h-4 text-[#fff]" />
                     </div>
                     <p className="text-xs text-gray-400 font-medium">
                       Avg. Order
@@ -417,7 +417,7 @@ export default function OverviewPage() {
               reviewEntries.map(([k, v], index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 cursor-pointer group border border-transparent hover:border-[#fda481]/20"
+                  className="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 cursor-pointer group border border-transparent hover:border-[#fff]/20"
                 >
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500/30 to-yellow-700/30 flex items-center justify-center border border-white/10">
                     <Star className="w-6 h-6 text-yellow-400" />
@@ -427,7 +427,7 @@ export default function OverviewPage() {
                       {k.replace(/_/g, " ")}
                     </p>
                   </div>
-                  <span className="text-xs font-bold text-[#fda481]">{v}</span>
+                  <span className="text-xs font-bold text-[#fff]">{v}</span>
                 </div>
               ))
             ) : (

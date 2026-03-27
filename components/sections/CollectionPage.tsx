@@ -12,6 +12,7 @@ import { applySort, getSortOptions } from "@/lib/Products";
 import { Product } from "@/type/type";
 import { useTranslation } from "@/lib/Usetranslation";
 import { ArrowDown } from "@/public/svg/Svgs";
+import { useGetCategory } from "@/hooks/useDashboard";
 
 /* ── Dropdown: تحسين الشكل ليكون أكثر عصرية ── */
 function Dropdown({
@@ -86,8 +87,9 @@ function ProductSkeleton() {
 export default function CollectionPage({
   category,
 }: {
-  category: "men" | "women" | "all";
+  category: string;
 }) {
+
   const { t, isArabic, dir } = useTranslation();
   const [sort, setSort] = useState("featured");
   const [sortOpen, setSortOpen] = useState(false);
@@ -98,9 +100,12 @@ export default function CollectionPage({
   const [maxPrice, setMaxPrice] = useState("");
   const [page, setPage] = useState(1);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-
+const { data: categories } = useGetCategory();
   const { data, isLoading, isError } = useGetProducts({ page });
   const nextPage = data?.next ?? null;
+const categoryName = categories?.find(
+  (c) => c.name_en.toUpperCase() === category.toUpperCase(),
+);
 
   useEffect(() => {
     const products: Product[] = data?.products ?? [];
@@ -110,20 +115,15 @@ export default function CollectionPage({
 
   useEffect(() => {
     setPage(1);
-  }, [availFilter, minPrice, maxPrice, category, isArabic]);
+  }, [availFilter, minPrice, maxPrice, categoryName, isArabic]);
 
   const sortOptions = getSortOptions(t.collectionPage.sortData);
-  const title =
-    category === "men"
-      ? t.collectionPage.men
-      : category === "women"
-        ? t.collectionPage.women
-        : t.collectionPage.all;
+
 
   let products =
     category === "all"
       ? [...allProducts]
-      : allProducts.filter((p) => p.category_name === category);
+      : allProducts.filter((p) => p.category_name === categoryName?.name);
   if (availFilter.includes("in-stock") && !availFilter.includes("out-of-stock"))
     products = products.filter((p) => p.is_active);
   if (availFilter.includes("out-of-stock") && !availFilter.includes("in-stock"))
@@ -165,7 +165,7 @@ export default function CollectionPage({
                 {t.collectionPage.collectionLabel}
               </span>
               <h1 className="text-[#111] font-bold text-[clamp(36px,5vw,52px)] leading-none tracking-tight">
-                {title}
+                {category==="all" ? t.collectionPage.all : categoryName?.name}
               </h1>
               <div className="mt-6 h-[2px] w-16 bg-[#c9a84c]" />
             </div>

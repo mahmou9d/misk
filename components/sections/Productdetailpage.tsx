@@ -25,23 +25,7 @@ import { useCats } from "@/lib/CatsContext";
 import { useTranslation } from "@/lib/Usetranslation";
 import { useGetReviews, useAddReview } from "@/hooks/useReviews";
 
-/* ── Icons ── */
-const ShareIcon = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.8"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-    <polyline points="16 6 12 2 8 6" />
-    <line x1="12" y1="2" x2="12" y2="15" />
-  </svg>
-);
+
 
 /* ── Skeleton ── */
 function Skeleton() {
@@ -95,7 +79,7 @@ function ProductGallery({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="relative w-3/4 aspect-[3/4] overflow-hidden bg-gradient-to-br from-[#f8f5f0] to-[#ede8e0] border border-[#c9a84c]/[0.14]">
+      <div className="relative w-3/4 aspect-[3/4] rounded-2xl overflow-hidden bg-gradient-to-br from-[#f8f5f0] to-[#ede8e0] border border-[#c9a84c]/[0.14]">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndex}
@@ -111,7 +95,7 @@ function ProductGallery({
                 alt={name}
                 fill
                 loading="lazy"
-                className="object-cover"
+                className="object-cover rounded-2xl"
                 sizes="(max-width:768px) 100vw, 52vw"
               />
             ) : (
@@ -126,7 +110,7 @@ function ProductGallery({
         {["tl", "tr", "bl", "br"].map((pos) => (
           <div
             key={pos}
-            className={`absolute w-4 h-4 border-[#c9a84c]/50
+            className={`absolute w-4 h-4 rounded-sm border-[#c9a84c]/50
               ${pos.startsWith("t") ? "top-3 border-t" : "bottom-3 border-b"}
               ${pos.endsWith("l") ? "left-3 border-l" : "right-3 border-r"}
             `}
@@ -306,14 +290,14 @@ function ReviewCard({
     >
       <div className="flex items-start gap-3 mb-3">
         <div className="w-9 h-9 shrink-0 bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] flex items-center justify-center">
-          <span className="text-[11px] font-semibold text-[#f0d080] tracking-wide">
+          <span className="text-[16px] font-semibold text-[#f0d080] tracking-wide">
             {initials}
           </span>
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-2 mb-1">
             <span
-              className={`text-[13px] font-medium text-[#111] truncate ${
+              className={`text-[16px] font-medium text-[#111] truncate ${
                 isArabic ? "tracking-normal" : "tracking-[0.5px]"
               }`}
             >
@@ -328,7 +312,7 @@ function ReviewCard({
       </div>
       {review.comment && (
         <p
-          className={`text-[14px] text-gray-500 ${
+          className={`text-[16px] text-gray-500 ${
             isArabic
               ? "leading-[1.9] tracking-normal"
               : "leading-[1.75] tracking-[0.2px]"
@@ -394,7 +378,7 @@ function AddReviewForm({
       >
         <div className="text-[#c9a84c] text-2xl mb-2">✓</div>
         <p
-          className={`text-[14px] text-gray-500 ${
+          className={`text-[16px] text-gray-500 ${
             isArabic ? "tracking-normal" : "tracking-[0.5px]"
           }`}
         >
@@ -405,9 +389,9 @@ function AddReviewForm({
   }
 
   return (
-    <div className="border border-black/[0.07] bg-[#faf9f7] p-5">
+    <div className="border rounded-2xl border-black/[0.07] bg-[#faf9f7] p-5">
       <p
-        className={`text-[13px] text-[#111] mb-4 ${
+        className={`text-[16px] text-[#111] mb-4 ${
           isArabic ? "tracking-normal" : "tracking-[2px] uppercase"
         }`}
       >
@@ -417,7 +401,7 @@ function AddReviewForm({
       {/* Star Rating Picker */}
       <div className="mb-4">
         <p
-          className={`text-[12px] text-gray-400 mb-2 ${
+          className={`text-[16px] text-gray-700 mb-2 ${
             isArabic ? "tracking-normal" : "tracking-[1px]"
           }`}
         >
@@ -430,12 +414,12 @@ function AddReviewForm({
       {/* Comment */}
       <div className="mb-4">
         <p
-          className={`text-[12px] text-gray-400 mb-2 ${
+          className={`text-[16px] text-gray-700 mb-2 ${
             isArabic ? "tracking-normal" : "tracking-[1px]"
           }`}
         >
           {t?.reviews?.yourComment || "Your Comment"}{" "}
-          <span className="text-gray-300">
+          <span className="text-gray-500">
             ({t?.reviews?.optional || "optional"})
           </span>
         </p>
@@ -447,7 +431,7 @@ function AddReviewForm({
           placeholder={
             t?.reviews?.commentPlaceholder || "Share your experience..."
           }
-          className={`w-full text-[13px] text-[#333] bg-white border border-black/10 px-3.5 py-3 resize-none outline-none transition-colors duration-200 focus:border-[#c9a84c]/60 placeholder:text-gray-300 ${
+          className={`w-full rounded-xl text-[16px] text-[#333] bg-white border border-black/10 px-3.5 py-3 resize-none outline-none transition-colors duration-200 focus:border-[#c9a84c]/60 placeholder:text-gray-300 ${
             isArabic
               ? "tracking-normal leading-[1.9]"
               : "tracking-[0.3px] leading-relaxed"
@@ -459,11 +443,11 @@ function AddReviewForm({
         whileTap={{ scale: 0.98 }}
         onClick={handleSubmit}
         disabled={!rating || isPending}
-        className={`h-[44px] px-8 text-[12px] font-semibold border transition-all duration-300 relative overflow-hidden group
+        className={`h-[44px] rounded-xl px-8 text-[16px] font-semibold border transition-all duration-300 relative overflow-hidden group
           ${
             rating && !isPending
               ? "bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] text-[#f0d080]/95 border-[#c9a84c]/25 cursor-pointer hover:shadow-[0_4px_20px_rgba(45,27,105,0.25)]"
-              : "bg-gray-100 text-gray-300 border-gray-100 cursor-not-allowed"
+              : "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
           }
           ${isArabic ? "tracking-normal" : "tracking-[2px] uppercase"}
         `}
@@ -473,9 +457,7 @@ function AddReviewForm({
             ? t?.reviews?.submitting || "Submitting..."
             : t?.reviews?.submit || "Submit Review"}
         </span>
-        {rating && !isPending && (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#c9a84c]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        )}
+
       </motion.button>
     </div>
   );
@@ -513,7 +495,7 @@ function ReviewsSection({
       {/* Header */}
       <div className="mb-8">
         <span
-          className={`text-[16px] text-[#c9a84c]/80 block mb-2 ${
+          className={`text-[18px] text-[#c9a84c]/80 block mb-2 ${
             isArabic ? "tracking-normal" : "tracking-[5px] uppercase"
           }`}
         >
@@ -537,7 +519,7 @@ function ReviewsSection({
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.15, duration: 0.4 }}
-              className="border border-black/[0.07] bg-[#faf9f7] p-5"
+              className="border rounded-xl border-black/[0.07] bg-[#faf9f7] p-5"
             >
               <div className="flex items-end gap-3 mb-4">
                 <span className="text-[52px] font-light text-[#111] leading-none">
@@ -546,7 +528,7 @@ function ReviewsSection({
                 <div className="pb-1.5">
                   <StarRow rating={avgRating} size={18} />
                   <p
-                    className={`text-[12px] text-gray-400 mt-1.5 ${
+                    className={`text-[16px] text-gray-400 mt-1.5 ${
                       isArabic ? "tracking-normal" : "tracking-[0.5px]"
                     }`}
                   >
@@ -593,7 +575,7 @@ function ReviewsSection({
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex flex-col items-center justify-center py-16 border border-dashed border-black/10"
+              className="flex flex-col items-center justify-center rounded-2xl py-16 border border-dashed border-black/50"
             >
               <div className="flex gap-1 mb-3">
                 {[1, 2, 3, 4, 5].map((i) => (
@@ -601,11 +583,11 @@ function ReviewsSection({
                 ))}
               </div>
               <p
-                className={`text-[14px] text-gray-400 ${
+                className={`text-[17px] text-gray-600 ${
                   isArabic ? "tracking-normal" : "tracking-[1px]"
                 }`}
               >
-                {t?.reviews?.noReviews || "No reviews yet. Be the first!"}
+                {t?.reviews?.noReviews || "No reviews yet. Buy the first!"}
               </p>
             </motion.div>
           ) : (
@@ -719,7 +701,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
         onSuccess: () => router.push(`/${locale.toLowerCase()}/checkout`),
         onError: (e: AxiosError<ErrorResponse>) => {
           showNotification(
-            e?.response?.data?.detail || t.productDetail.buyNowError,
+            e?.response?.data?.message || t.productDetail.buyNowError,
             "error",
           );
         },
@@ -785,7 +767,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
 
       <section className="w-full bg-white pb-24" dir={dir}>
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-10 pt-12">
-          <div className="flex flex-col md:flex-row gap-10 lg:gap-20 items-start">
+          <div className="flex flex-col md:flex-row items-start">
             {/* Gallery */}
             <motion.div
               className="w-full md:w-1/2 lg:w-[52%] flex-shrink-0"
@@ -812,33 +794,37 @@ export default function ProductDetailPage({ id }: { id: number }) {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.18, duration: 0.4 }}
-                className={` text-[20px] text-[#c9a84c]/80 mb-2 ${isArabic ? "tracking-normal" : "tracking-[5px] uppercase"}`}
+                className={` text-[22px] font-extrabold text-[#c9a84c]/80  ${isArabic ? "tracking-normal" : "tracking-[5px] uppercase"}`}
               >
                 Misk
               </motion.p>
-
-              {(product.fragrance_family || product.concentration) && (
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2, duration: 0.4 }}
-                  className={` text-[13px] text-gray-400 mb-2.5 ${isArabic ? "tracking-normal" : "tracking-[0.5px]"}`}
-                >
-                  {[product.fragrance_family, product.concentration]
-                    .filter(Boolean)
-                    .join(" · ")}
-                </motion.p>
-              )}
 
               <motion.h1
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.22, duration: 0.45 }}
-                className={` text-[clamp(28px,3.5vw,46px)] font-normal text-[#111] mb-2.5 ${isArabic ? "leading-[1.4]" : "leading-[1.15]"}`}
+                className={` text-[clamp(28px,3.5vw,46px)] font-normal text-[#111]  ${isArabic ? "leading-[1.4]" : "leading-[1.15]"}`}
               >
                 {product.name}
               </motion.h1>
-
+              {/* Description */}
+              {product.description && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.48, duration: 0.4 }}
+                  className="mb-[22px]"
+                >
+                  {product.description.split("\n\n").map((para, i) => (
+                    <p
+                      key={i}
+                      className={` text-[17px] text-gray-500 mb-3.5 last:mb-0 ${isArabic ? "leading-[2] tracking-normal" : "leading-[1.85] tracking-[0.2px]"}`}
+                    >
+                      {para}
+                    </p>
+                  ))}
+                </motion.div>
+              )}
               {/* Divider */}
               <motion.div
                 initial={{ scaleX: 0 }}
@@ -872,7 +858,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
                   </span>
                 )}
                 {discountPct && (
-                  <span className=" text-[16px] font-bold px-2 py-[3px] bg-gradient-to-br from-[#1a0a3d] to-[#2a1060] text-[#f0d080] border border-[#c9a84c]/30">
+                  <span className=" text-[16px] font-bold rounded-2xl px-2 py-[3px] bg-gradient-to-br from-[#1a0a3d] to-[#2a1060] text-[#f0d080] border border-[#c9a84c]/30">
                     -{discountPct}%
                   </span>
                 )}
@@ -887,7 +873,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
                   className="mb-6"
                 >
                   <p
-                    className={` text-[16px] text-[#000] mb-3 ${isArabic ? "tracking-normal" : "tracking-[3px] uppercase"}`}
+                    className={` text-[16px] rounded-xl text-[#000] mb-3 ${isArabic ? "tracking-normal" : "tracking-[3px] uppercase"}`}
                   >
                     {t.productDetail.volume}
                   </p>
@@ -901,7 +887,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
                           whileTap={{ scale: 0.95 }}
                           onClick={() => !outOfStock && setSelectedVariant(v)}
                           disabled={outOfStock}
-                          className={` text-[13px] px-[18px] py-2 border transition-all duration-200 
+                          className={` text-[15px] rounded-2xl px-[18px] py-2 border transition-all duration-200 
                             ${isSelected ? "border-[#c9a84c]/80 bg-[#c9a84c]/10 text-[#c9a84c]/90 shadow-[inset_0_0_0_1px_rgba(201,168,76,0.3)]" : "border-black/10 bg-white text-[#444]"}
                             ${outOfStock ? "text-gray-300 cursor-not-allowed line-through" : "hover:border-[#c9a84c]/50 cursor-pointer"}
                             ${isArabic ? "tracking-normal" : "tracking-[1px]"}
@@ -929,18 +915,18 @@ export default function ProductDetailPage({ id }: { id: number }) {
                 >
                   {t.productDetail.quantity}
                 </p>
-                <div className="inline-flex items-center border border-black/10">
+                <div className="inline-flex rounded-2xl items-center border border-black/10">
                   <button
-                    className="w-11 h-11 text-[18px] text-gray-500  hover:bg-[#c9a84c]/5 hover:text-[#2d1b69] transition-colors"
+                    className="w-11 h-11 rounded-r-2xl text-[20px] font-extrabold text-gray-500  hover:bg-[#c9a84c]/5 hover:text-[#2d1b69] transition-colors"
                     onClick={() => setQty((q) => Math.max(1, q - 1))}
                   >
                     −
                   </button>
-                  <span className=" text-[15px] min-w-[36px] text-center text-[#111] border-x border-black/10 h-11 flex items-center justify-center">
+                  <span className="text-[16px] font-extrabold min-w-[36px] text-center text-[#111] border-x border-black/10 h-11 flex items-center justify-center">
                     {qty}
                   </span>
                   <button
-                    className="w-11 h-11 text-[18px] text-gray-500  hover:bg-[#c9a84c]/5 hover:text-[#2d1b69] transition-colors"
+                    className="w-11 h-11 rounded-l-2xl text-[20px] font-extrabold text-gray-500  hover:bg-[#c9a84c]/5 hover:text-[#2d1b69] transition-colors"
                     onClick={() => setQty((q) => q + 1)}
                   >
                     +
@@ -959,7 +945,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
                   whileTap={{ scale: 0.988 }}
                   onClick={handleAdd}
                   disabled={!inStock || isAddingThisVariant}
-                  className={`h-[52px]  text-[13px] font-medium border transition-all duration-300
+                  className={`h-[52px]  text-[18px] rounded-2xl font-medium border transition-all duration-300
                     ${wasAddedThisVariant ? "border-[#c9a84c]/50 bg-[#c9a84c]/5 text-[#c9a84c]/90" : "border-black/20 bg-white text-[#222]"}
                     ${!inStock || isAddingThisVariant ? "text-gray-300 cursor-not-allowed border-gray-100" : "hover:border-[#c9a84c]/55 hover:text-[#c9a84c]/90 cursor-pointer"}
                     ${isArabic ? "tracking-normal" : "tracking-[3px] uppercase"}
@@ -978,7 +964,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
                   whileTap={{ scale: 0.988 }}
                   onClick={handleBuyNow}
                   disabled={!inStock}
-                  className={`h-[52px]  text-[13px] font-semibold border border-[#c9a84c]/25 shadow-lg transition-all duration-300 relative overflow-hidden group
+                  className={`h-[52px] text-[18px] rounded-2xl font-semibold border border-[#c9a84c]/25 shadow-lg transition-all duration-300 relative overflow-hidden group
                     ${inStock ? "bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] text-[#f0d080]/95 shadow-[#2d1b69]/20 hover:shadow-[#2d1b69]/35 cursor-pointer" : "bg-gray-300 text-white cursor-not-allowed"}
                     ${isArabic ? "tracking-normal" : "tracking-[3px] uppercase"}
                   `}
@@ -989,26 +975,6 @@ export default function ProductDetailPage({ id }: { id: number }) {
                   <div className="absolute inset-0 bg-gradient-to-br from-[#c9a84c]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </motion.button>
               </motion.div>
-
-              {/* Description */}
-              {product.description && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.48, duration: 0.4 }}
-                  className="mb-[22px]"
-                >
-                  <div className="h-[1px] bg-gradient-to-r from-[#c9a84c]/10 to-transparent mb-4.5" />
-                  {product.description.split("\n\n").map((para, i) => (
-                    <p
-                      key={i}
-                      className={` text-[15px] text-gray-500 mb-3.5 last:mb-0 ${isArabic ? "leading-[2] tracking-normal" : "leading-[1.85] tracking-[0.2px]"}`}
-                    >
-                      {para}
-                    </p>
-                  ))}
-                </motion.div>
-              )}
             </motion.div>
           </div>
 

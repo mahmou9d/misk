@@ -74,8 +74,8 @@ export default function CategoriesPage() {
           {/* Card Header */}
           <div className="p-8 border-b border-white/10">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#fda481]/20 to-[#b4182d]/20 flex items-center justify-center">
-                <FolderPlus className="w-8 h-8 text-[#fda481]" />
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#fff]/20 to-[#000]/20 flex items-center justify-center">
+                <FolderPlus className="w-8 h-8 text-[#fff]" />
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-white mb-1">
@@ -93,10 +93,9 @@ export default function CategoriesPage() {
               <div>
                 <label className="block text-sm font-bold text-white mb-3">
                   {c.nameLabel}{" "}
-                  <span className="text-[#fda481] font-normal text-xs">
+                  <span className="text-[#fff] font-normal text-xs">
                     (EN)
                   </span>{" "}
-                  
                 </label>
                 <div className="relative">
                   <Tag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -108,7 +107,7 @@ export default function CategoriesPage() {
                     placeholder={c.namePlaceholder}
                     disabled={isPending}
                     dir="ltr"
-                    className="w-full pl-12 pr-4 py-4 bg-[#0f1117] border border-white/10 rounded-xl text-white text-lg placeholder-gray-500 focus:outline-none focus:border-[#fda481]/50 focus:ring-2 focus:ring-[#fda481]/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full pl-12 pr-4 py-4 bg-[#0f1117] border border-white/10 rounded-xl text-white text-lg placeholder-gray-500 focus:outline-none focus:border-[#fff]/50 focus:ring-2 focus:ring-[#fff]/20 disabled:opacity-50 disabled:cursor-not-allowed"
                     autoFocus
                   />
                 </div>
@@ -118,9 +117,7 @@ export default function CategoriesPage() {
               <div>
                 <label className="block text-sm font-bold text-white mb-3">
                   {c.nameLabel}{" "}
-                  <span className="text-[#fda481] font-normal text-xs">
-                    (AR)
-                  </span>
+                  <span className="text-[#fff] font-normal text-xs">(AR)</span>
                 </label>
                 <div className="relative">
                   <Tag className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -132,7 +129,7 @@ export default function CategoriesPage() {
                     placeholder="اسم الفئة بالعربي"
                     disabled={isPending}
                     dir="rtl"
-                    className="w-full pr-12 pl-4 py-4 bg-[#0f1117] border border-white/10 rounded-xl text-white text-lg placeholder-gray-500 focus:outline-none focus:border-[#fda481]/50 focus:ring-2 focus:ring-[#fda481]/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full pr-12 pl-4 py-4 bg-[#0f1117] border border-white/10 rounded-xl text-white text-lg placeholder-gray-500 focus:outline-none focus:border-[#fff]/50 focus:ring-2 focus:ring-[#fff]/20 disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
@@ -162,7 +159,7 @@ export default function CategoriesPage() {
             <button
               onClick={create}
               disabled={isPending || !name.trim()}
-              className="w-full px-8 py-4 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl font-bold text-lg shadow-xl shadow-[#fda481]/25 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-8 py-4 bg-gradient-to-r from-[#ffffff69] to-black text-white rounded-xl font-bold text-lg shadow-xl shadow-[#fff]/25 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isPending ? (
                 <>
@@ -218,11 +215,11 @@ export default function CategoriesPage() {
               {categories?.map((cat) => (
                 <div
                   key={cat.id}
-                  className="flex justify-between items-center p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-[#fda481]/20 cursor-pointer transition-all"
+                  className="flex justify-between items-center p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-[#fff]/20 cursor-pointer transition-all"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#fda481]/20 to-[#b4182d]/20 flex items-center justify-center">
-                      <Tag className="w-4 h-4 text-[#fda481]" />
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#fff]/20 to-[#000]/20 flex items-center justify-center">
+                      <Tag className="w-4 h-4 text-[#fff]" />
                     </div>
                     <div>
                       <span className="text-sm font-bold text-white block">
@@ -230,7 +227,7 @@ export default function CategoriesPage() {
                       </span>
                       {cat.name_ar && (
                         <span
-                          className="text-xs text-[#fda481]/70 block"
+                          className="text-xs text-[#fff]/70 block"
                           dir="rtl"
                         >
                           {cat.name_ar}

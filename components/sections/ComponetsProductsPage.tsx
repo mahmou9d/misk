@@ -21,7 +21,7 @@ export function Spinner({ label }: { label: string }) {
     <div
       className={`mb-2 flex items-center gap-1.5 ${isArabic ? "text-[13px] flex-row-reverse justify-end" : "text-[12px]"} text-gray-400`}
     >
-      <span className="inline-block w-2.5 h-2.5 rounded-full border-2 border-[#fda481] border-t-transparent animate-spin flex-shrink-0" />
+      <span className="inline-block w-2.5 h-2.5 rounded-full border-2 border-[#fff] border-t-transparent animate-spin flex-shrink-0" />
       {label}
     </div>
   );
@@ -175,12 +175,12 @@ export function ImgGallery({
               alt="Image Product"
               src={img.url || "heros.jpg"}
               className={`w-16 h-16 object-cover rounded-xl block border-2 ${
-                img.is_thumbnail ? "border-[#fda481]" : "border-white/10"
+                img.is_thumbnail ? "border-[#fff]" : "border-white/10"
               }`}
             />
             {img.is_thumbnail && (
               <span
-                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white text-[7px] rounded-[3px] px-1 py-px pointer-events-none tracking-wider font-bold`}
+                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#ffffff69] to-black text-white text-[7px] rounded-[3px] px-1 py-px pointer-events-none tracking-wider font-bold`}
               >
                 {c.mainBadge}
               </span>
@@ -194,7 +194,7 @@ export function ImgGallery({
                 <button
                   title={c.setMainTitle}
                   onClick={() => handleSetThumb(img.id)}
-                  className="text-[9px] font-bold bg-[#fda481] text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer tracking-wider"
+                  className="text-[9px] font-bold bg-[#fff] text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer tracking-wider"
                 >
                   {c.mainBadge}
                 </button>
@@ -299,12 +299,12 @@ export function MultiImgPicker({
               loading="lazy"
               alt="Image Product"
               className={`w-[52px] h-[52px] object-cover rounded-xl block border-2 ${
-                thumbnailIndex === fi ? "border-[#fda481]" : "border-white/10"
+                thumbnailIndex === fi ? "border-[#fff]" : "border-white/10"
               }`}
             />
             {thumbnailIndex === fi && (
               <span
-                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white text-[7px] rounded-sm px-1 py-px pointer-events-none font-bold tracking-wider`}
+                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#ffffff69] to-black text-white text-[7px] rounded-sm px-1 py-px pointer-events-none font-bold tracking-wider`}
               >
                 {c.mainBadge}
               </span>
@@ -317,7 +317,7 @@ export function MultiImgPicker({
               {thumbnailIndex !== fi && (
                 <button
                   onClick={() => onSetThumb(fi)}
-                  className="text-[8px] font-bold bg-[#fda481] text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer tracking-wider"
+                  className="text-[8px] font-bold bg-[#fff] text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer tracking-wider"
                 >
                   {c.mainBadge}
                 </button>
@@ -486,7 +486,7 @@ export function ProductList({
             key={p.id}
             className={`p-[8px_12px] rounded-xl cursor-pointer transition-all border ${
               activePid === p.id
-                ? "bg-[#fda481]/10 border-[#fda481]/30"
+                ? "bg-[#fff]/10 border-[#fff]/30"
                 : "bg-white/5 border-transparent hover:bg-white/10 hover:border-white/10"
             }`}
             onClick={() => onPick(p.id)}
@@ -495,7 +495,7 @@ export function ProductList({
               <span
                 className={`${txt.sm} ${
                   activePid === p.id
-                    ? "text-[#fda481] font-semibold"
+                    ? "text-[#fff] font-semibold"
                     : "text-gray-300 font-normal"
                 }`}
               >

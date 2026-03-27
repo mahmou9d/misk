@@ -205,7 +205,6 @@ export default function OrdersPage() {
       {notification && (
         <Notification type={notification.type} message={notification.message} />
       )}
-
       {/* ── Header ── */}
       <div className="mb-10">
         <h1 className="text-4xl font-bold text-white mb-3">{o.title}</h1>
@@ -218,7 +217,7 @@ export default function OrdersPage() {
         <div className="relative" ref={filterRef}>
           <button
             onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="px-5 py-3 bg-[#1a1d29] border border-white/10 text-white rounded-xl font-semibold text-sm hover:border-[#fda481]/30 flex items-center gap-3 min-w-[200px]"
+            className="px-5 py-3 bg-[#1a1d29] border border-white/10 text-white rounded-xl font-semibold text-[16px] hover:border-[#fff]/30 flex items-center gap-3 min-w-[200px]"
           >
             <div
               className={`w-8 h-8 rounded-lg ${selectedFilter.bgColor} flex items-center justify-center`}
@@ -228,10 +227,10 @@ export default function OrdersPage() {
               />
             </div>
             <div className={`flex-1 ${isArabic ? "text-right" : "text-left"}`}>
-              <p className="text-xs text-gray-400">
+              <p className="text-[16px] text-gray-400">
                 {isArabic ? "الحالة" : "Status"}
               </p>
-              <p className="font-bold text-white text-sm">
+              <p className="font-bold text-white text-[16px]">
                 {getLabel(selectedFilter)}
               </p>
             </div>
@@ -257,7 +256,7 @@ export default function OrdersPage() {
                         }}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg ${
                           isSelected
-                            ? "bg-gradient-to-r from-[#fda481]/20 to-[#b4182d]/20 border border-[#fda481]/30"
+                            ? "bg-gradient-to-r from-[#fff]/20 to-[#000]/20 border border-[#fff]/30"
                             : "hover:bg-white/5 border border-transparent"
                         }`}
                       >
@@ -270,13 +269,13 @@ export default function OrdersPage() {
                           className={`flex-1 ${isArabic ? "text-right" : "text-left"}`}
                         >
                           <p
-                            className={`font-semibold text-sm ${isSelected ? "text-white" : "text-gray-300"}`}
+                            className={`font-semibold text-[16px] ${isSelected ? "text-white" : "text-gray-300"}`}
                           >
                             {getLabel(opt)}
                           </p>
                         </div>
                         {isSelected && (
-                          <div className="w-6 h-6 rounded-full bg-[#fda481] flex items-center justify-center">
+                          <div className="w-6 h-6 rounded-full bg-[#fff] flex items-center justify-center">
                             <Check className="w-4 h-4 text-white" />
                           </div>
                         )}
@@ -290,9 +289,7 @@ export default function OrdersPage() {
         </div>
 
         {/* Search */}
-        <div
-          className={`flex-1 w-full ${isArabic ? "mr-auto" : "ml-auto"}`}
-        >
+        <div className={`flex-1 w-full ${isArabic ? "mr-auto" : "ml-auto"}`}>
           <div className="relative">
             <Search
               className={`absolute ${isArabic ? "right-4" : "left-4"} top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400`}
@@ -304,7 +301,7 @@ export default function OrdersPage() {
                 setPage(1);
               }}
               placeholder={isArabic ? "ابحث عن الطلبات..." : "Search orders..."}
-              className={`w-full ${isArabic ? "pr-12 pl-4" : "pl-12 pr-4"} py-3 bg-[#1a1d29] border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#fda481]/50`}
+              className={`w-full ${isArabic ? "pr-12 pl-4" : "pl-12 pr-4"} py-3 bg-[#1a1d29] border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#fff]/50`}
             />
             {search && (
               <button
@@ -321,10 +318,14 @@ export default function OrdersPage() {
       {/* ── Orders Table ── */}
       <div className="bg-[#1a1d29] rounded-2xl border border-white/10 overflow-hidden">
         {isLoading && (
-          <p className="text-sm text-gray-400 animate-pulse p-6">{o.loading}</p>
+          <p className="text-[16px] text-gray-400 animate-pulse p-6">
+            {o.loading}
+          </p>
         )}
         {isError && (
-          <p className="text-sm text-red-400 font-medium p-6">{o.loadError}</p>
+          <p className="text-[16px] text-red-400 font-medium p-6">
+            {o.loadError}
+          </p>
         )}
 
         <div className="overflow-x-auto">
@@ -334,7 +335,7 @@ export default function OrdersPage() {
                 {tableHeaders.map((h) => (
                   <th
                     key={h}
-                    className={`px-6 py-5 ${isArabic ? "text-right" : "text-left"} text-xs font-bold text-[#fda481] uppercase tracking-wider`}
+                    className={`px-6 py-5 ${isArabic ? "text-right" : "text-left"} text-[16px] font-bold text-[#fff] uppercase tracking-wider`}
                   >
                     {h}
                   </th>
@@ -363,7 +364,7 @@ export default function OrdersPage() {
                         >
                           {/* Order ID */}
                           <td className="px-6 py-5 whitespace-nowrap">
-                            <span className="font-bold text-white text-sm">
+                            <span className="font-bold text-white text-[16px]">
                               #{String(order.id).slice(0, 8)}
                             </span>
                           </td>
@@ -374,7 +375,7 @@ export default function OrdersPage() {
                               {order.full_name || o.customer}
                             </p>
                             <p
-                              className={`text-xs text-gray-400 flex items-center gap-1 ${isArabic ? "flex-row-reverse justify-end" : ""}`}
+                              className={`text-[16px] text-gray-400 flex items-center gap-1 ${isArabic ? "flex-row-reverse justify-end" : ""}`}
                             >
                               <MapPin className="w-3 h-3" />
                               {order.country || "—"}
@@ -386,15 +387,15 @@ export default function OrdersPage() {
                             <div
                               className={`flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
                             >
-                              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#fda481]/20 to-[#b4182d]/20 flex items-center justify-center">
-                                <Package className="w-4 h-4 text-[#fda481]" />
+                              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#fff]/20 to-[#000]/20 flex items-center justify-center">
+                                <Package className="w-4 h-4 text-[#fff]" />
                               </div>
                               <div>
-                                <p className="text-white font-medium text-sm">
+                                <p className="text-white font-medium text-[16px]">
                                   {order.items?.[0]?.variant_name || "—"}
                                 </p>
                                 {order.items?.length > 1 && (
-                                  <p className="text-xs text-gray-400">
+                                  <p className="text-[16px] text-gray-400">
                                     +{order.items.length - 1}{" "}
                                     {isArabic ? "أكثر" : "more"}
                                   </p>
@@ -416,7 +417,7 @@ export default function OrdersPage() {
                           {/* Status */}
                           <td className="px-6 py-5">
                             <span
-                              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold border ${currentOpt.bgColor} ${currentOpt.color} border-current/20`}
+                              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[16px] font-bold border ${currentOpt.bgColor} ${currentOpt.color} border-current/20`}
                             >
                               <currentOpt.icon className="w-3 h-3" />
                               {isArabic
@@ -427,7 +428,7 @@ export default function OrdersPage() {
                           </td>
 
                           {/* Date */}
-                          <td className="px-6 py-5 text-gray-400 font-medium text-sm">
+                          <td className="px-6 py-5 text-gray-400 font-medium text-[16px]">
                             {order.created_at
                               ? new Date(order.created_at).toLocaleDateString(
                                   isArabic ? "ar-EG" : "en-US",
@@ -450,7 +451,7 @@ export default function OrdersPage() {
                                   e.stopPropagation();
                                   setExpandedId(String(order.id));
                                 }}
-                                className="p-2.5 rounded-xl hover:bg-white/5 text-[#fda481]"
+                                className="p-2.5 rounded-xl hover:bg-white/5 text-[#fff]"
                               >
                                 <Eye className="w-5 h-5" />
                               </button>
@@ -472,7 +473,7 @@ export default function OrdersPage() {
                                 {/* Items */}
                                 {order.items?.length > 0 && (
                                   <div className="p-5 border-b border-white/10">
-                                    <p className="text-xs font-bold text-[#fda481] uppercase tracking-wider mb-3">
+                                    <p className="text-[16px] font-bold text-[#fff] uppercase tracking-wider mb-3">
                                       {o.items}
                                     </p>
                                     <div className="space-y-2">
@@ -485,12 +486,12 @@ export default function OrdersPage() {
                                             <div
                                               className={`flex items-center gap-3 ${isArabic ? "flex-row-reverse" : ""}`}
                                             >
-                                              <div className="w-6 h-6 rounded-md bg-[#fda481]/10 border border-[#fda481]/20 flex items-center justify-center">
-                                                <span className="text-[#fda481] text-xs font-bold">
+                                              <div className="w-6 h-6 rounded-md bg-[#fff]/10 border border-[#fff]/20 flex items-center justify-center">
+                                                <span className="text-[#fff] text-[16px] font-bold">
                                                   {i + 1}
                                                 </span>
                                               </div>
-                                              <span className="text-sm text-white font-medium">
+                                              <span className="text-[16px] text-white font-medium">
                                                 {item.variant_name}
                                                 {item.variant_volume
                                                   ? ` · ${item.variant_volume}`
@@ -501,7 +502,7 @@ export default function OrdersPage() {
                                                 {item.quantity}
                                               </span>
                                             </div>
-                                            <span className="text-sm font-bold text-white">
+                                            <span className="text-[16px] font-bold text-white">
                                               LE{" "}
                                               {parseFloat(
                                                 item.subtotal ||
@@ -520,9 +521,9 @@ export default function OrdersPage() {
                                 <div className="p-5 border-b border-white/10 space-y-2">
                                   {(order.full_address || order.country) && (
                                     <p
-                                      className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+                                      className={`text-[16px] text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
                                     >
-                                      <MapPin className="w-4 h-4 text-[#fda481] shrink-0" />
+                                      <MapPin className="w-4 h-4 text-[#fff] shrink-0" />
                                       {[order.full_address, order.country]
                                         .filter(Boolean)
                                         .join(", ")}
@@ -530,17 +531,17 @@ export default function OrdersPage() {
                                   )}
                                   {order.phone_number && (
                                     <p
-                                      className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+                                      className={`text-[16px] text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
                                     >
-                                      <Phone className="w-4 h-4 text-[#fda481] shrink-0" />
+                                      <Phone className="w-4 h-4 text-[#fff] shrink-0" />
                                       {order.phone_number}
                                     </p>
                                   )}
                                   {order.created_at && (
                                     <p
-                                      className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+                                      className={`text-[16px] text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
                                     >
-                                      <Calendar className="w-4 h-4 text-[#fda481] shrink-0" />
+                                      <Calendar className="w-4 h-4 text-[#fff] shrink-0" />
                                       {new Date(
                                         order.created_at,
                                       ).toLocaleDateString(
@@ -562,12 +563,12 @@ export default function OrdersPage() {
                                       className={`flex flex-wrap gap-3 items-center`}
                                       ref={statusRef}
                                     >
-                                      <div  className="relative min-w-[200px] z-[100]">
+                                      <div className="relative min-w-[200px] z-[100]">
                                         <button
                                           onClick={() =>
                                             setIsStatusOpen(!isStatusOpen)
                                           }
-                                          className="w-full px-4 py-3 bg-[#0f1117] border border-white/10 rounded-xl flex items-center gap-3 hover:border-[#fda481]/30"
+                                          className="w-full px-4 py-3 bg-[#0f1117] border border-white/10 rounded-xl flex items-center gap-3 hover:border-[#fff]/30"
                                         >
                                           <div
                                             className={`w-8 h-8 rounded-lg ${currentOpt.bgColor} flex items-center justify-center`}
@@ -579,10 +580,10 @@ export default function OrdersPage() {
                                           <div
                                             className={`flex-1 ${isArabic ? "text-right" : "text-left"}`}
                                           >
-                                            <p className="text-xs text-gray-400">
+                                            <p className="text-[16px] text-gray-400">
                                               {o.newStatus}
                                             </p>
-                                            <p className="font-bold text-white text-sm">
+                                            <p className="font-bold text-white text-[16px]">
                                               {getLabel(currentOpt)}
                                             </p>
                                           </div>
@@ -606,7 +607,7 @@ export default function OrdersPage() {
                                                     }}
                                                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg ${
                                                       isSel
-                                                        ? "bg-gradient-to-r from-[#fda481]/20 to-[#b4182d]/20 border border-[#fda481]/30"
+                                                        ? "bg-gradient-to-r from-[#fff]/20 to-[#000]/20 border border-[#fff]/30"
                                                         : "hover:bg-white/5 border border-transparent"
                                                     } ${isArabic ? "flex-row-reverse" : ""}`}
                                                   >
@@ -618,12 +619,12 @@ export default function OrdersPage() {
                                                       />
                                                     </div>
                                                     <span
-                                                      className={`text-sm font-semibold flex-1 ${isArabic ? "text-right" : ""} ${isSel ? "text-white" : "text-gray-300"}`}
+                                                      className={`text-[16px] font-semibold flex-1 ${isArabic ? "text-right" : ""} ${isSel ? "text-white" : "text-gray-300"}`}
                                                     >
                                                       {getLabel(opt)}
                                                     </span>
                                                     {isSel && (
-                                                      <Check className="w-4 h-4 text-[#fda481]" />
+                                                      <Check className="w-4 h-4 text-[#fff]" />
                                                     )}
                                                   </button>
                                                 );
@@ -638,7 +639,7 @@ export default function OrdersPage() {
                                           handleSave(String(order.id))
                                         }
                                         disabled={patching}
-                                        className="px-6 py-3 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl font-bold text-sm disabled:opacity-50 flex items-center gap-2"
+                                        className="px-6 py-3 bg-gradient-to-r from-[#ffffff69] to-black text-white rounded-xl font-bold text-[16px] disabled:opacity-50 flex items-center gap-2"
                                       >
                                         {patching ? (
                                           <>
@@ -653,7 +654,7 @@ export default function OrdersPage() {
                                       </button>
                                       <button
                                         onClick={() => setEditingOrder(null)}
-                                        className="px-4 py-3 bg-white/5 border border-white/10 text-gray-400 rounded-xl text-sm hover:bg-white/10"
+                                        className="px-4 py-3 bg-white/5 border border-white/10 text-gray-400 rounded-xl text-[16px] hover:bg-white/10"
                                       >
                                         {o.cancel}
                                       </button>
@@ -667,7 +668,7 @@ export default function OrdersPage() {
                                         });
                                         setNewStatus(order.status);
                                       }}
-                                      className="px-5 py-2.5 bg-white/5 border border-white/10 text-white rounded-xl text-sm font-medium hover:border-[#fda481]/30 hover:bg-white/10 flex items-center gap-2"
+                                      className="px-5 py-2.5 bg-white/5 border border-white/10 text-white rounded-xl text-[16px] font-medium hover:border-[#fff]/30 hover:bg-white/10 flex items-center gap-2"
                                     >
                                       ✏ {o.changeStatus}
                                     </button>
@@ -678,7 +679,7 @@ export default function OrdersPage() {
                                       className={`mt-3 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
                                     >
                                       <CheckCircle className="w-4 h-4 text-emerald-400" />
-                                      <span className="text-emerald-400 text-sm font-medium">
+                                      <span className="text-emerald-400 text-[16px] font-medium">
                                         {o.updateSuccess}
                                       </span>
                                     </div>
@@ -688,7 +689,7 @@ export default function OrdersPage() {
                                       className={`mt-3 p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
                                     >
                                       <AlertCircle className="w-4 h-4 text-red-400" />
-                                      <span className="text-red-400 text-sm font-medium">
+                                      <span className="text-red-400 text-[16px] font-medium">
                                         {o.updateError}
                                       </span>
                                     </div>
@@ -720,7 +721,7 @@ export default function OrdersPage() {
           <div
             className={`flex items-center justify-between px-6 py-4 border-t border-white/10 ${isArabic ? "flex-row-reverse" : ""}`}
           >
-            <p className="text-sm text-gray-400">
+            <p className="text-[16px] text-gray-400">
               {o.page} <span className="font-bold text-white">{page}</span>
             </p>
             <div className="flex items-center gap-2">
@@ -735,7 +736,7 @@ export default function OrdersPage() {
                   <ChevronLeft className="w-5 h-5" />
                 )}
               </button>
-              <span className="text-sm text-gray-400 px-2">
+              <span className="text-[16px] text-gray-400 px-2">
                 {o.page} {page}
               </span>
               <button

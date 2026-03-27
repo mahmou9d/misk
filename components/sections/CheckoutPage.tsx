@@ -5,6 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { AxiosError } from "axios";
+import Image from "next/image";
 
 import { useGetCartItems } from "@/hooks/useCart";
 import { usePlaceOrder, usePaymentPaymob } from "@/hooks/usePayment";
@@ -18,7 +19,6 @@ import Notification from "@/components/layout/Notification";
 import { PaymentMethodModal } from "@/components/layout/Paymentmethodmodal";
 import { CheckoutForm } from "@/components/layout/Checkoutform";
 import { useTranslation } from "@/lib/Usetranslation";
-import Image from "next/image";
 
 const SHIPPING = 85;
 
@@ -28,7 +28,7 @@ export default function CheckoutPage() {
   const [showPayModal, setShowPayModal] = useState(false);
   const [pendingOrderId, setPendingOrderId] = useState<string | null>(null);
   const [pendingPhone, setPendingPhone] = useState("");
-  const [discountApplied] = useState(false); // Can be linked to a state if you add discount logic
+  const [discountApplied] = useState(false);
   const [notification, setNotification] = useState<NotificationState | null>(
     null,
   );
@@ -71,13 +71,13 @@ export default function CheckoutPage() {
     } catch (err: unknown) {
       const error = err as AxiosError<ErrorResponse>;
       showNotification(
-            error?.response?.data?.message ||
-              error?.response?.data?.detail ||
-              error?.response?.data?.error ||
-              error?.response?.data?.status ||
-              error?.response?.data?.non_field_errors ||
-              error?.response?.data?.name ||
-              error?.message ||
+        error?.response?.data?.message ||
+          error?.response?.data?.detail ||
+          error?.response?.data?.error ||
+          error?.response?.data?.status ||
+          error?.response?.data?.non_field_errors ||
+          error?.response?.data?.name ||
+          error?.message ||
           t.checkout.orderError,
         "error",
       );
@@ -106,7 +106,7 @@ export default function CheckoutPage() {
           error?.response?.data?.non_field_errors ||
           error?.response?.data?.name ||
           error?.message ||
-        t.checkout.paymentError,
+          t.checkout.paymentError,
         "error",
       );
     } finally {
@@ -131,7 +131,7 @@ export default function CheckoutPage() {
           error?.response?.data?.non_field_errors ||
           error?.response?.data?.name ||
           error?.message ||
-        t.checkout.paymentError,
+          t.checkout.paymentError,
         "error",
       );
     } finally {
@@ -140,7 +140,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5]" dir={dir}>
+    <div className="min-h-screen bg-[#F8F6F2]" dir={dir}>
       <AnimatePresence>
         {notification && (
           <Notification
@@ -162,127 +162,179 @@ export default function CheckoutPage() {
         )}
       </AnimatePresence>
 
-      {/* Top bar */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-[56px]">
+      <div className="px-10 md:px-40 top-0 z-20 bg-white border-b-2 border-[#E8E2D6] py-8 shadow-sm">
+        {/* Brand + Total pill */}
+        <div className="flex items-center justify-between mb-4">
           <Link
             href={`/${locale.toLowerCase()}`}
-            className="font-bold text-yellow-500 text-[35px]"
+            className="flex flex-col items-center select-none leading-none group"
           >
-            Misk
+            <span
+              className="
+         font-bold tracking-widest transition-all duration-300
+        text-3xl md:text-4xl
+        [background:linear-gradient(135deg,#c9a84c_0%,#f0d080_45%,#b8912e_100%)]
+        [background-clip:text]
+        [letter-spacing:6px]
+        [filter:drop-shadow(0_1px_6px_rgba(201,168,76,0.25))]
+      "
+              style={{
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              Misk
+            </span>
+
+            {/* Gold divider */}
+            <span className="block h-px w-full mt-0.5 [background:linear-gradient(90deg,transparent,rgba(201,168,76,0.5),transparent)]" />
           </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href={`/${locale.toLowerCase()}`}
+              className="text-[15px] tracking-[1.5px] uppercase text-[#aaa] hover:text-[#C9A84C] transition-colors hidden sm:block"
+            >
+              {isArabic ? "→ رجوع" : "← Back"}
+            </Link>
+            <div className="bg-[#1a1a1a] text-[#F0D080] text-[14px] font-semibold px-4 py-2 rounded-full tracking-[0.3px]">
+              {t.checkout.currency}
+              {total.toLocaleString()}.00
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 flex flex-col lg:flex-row gap-8 items-start">
-        {/* LEFT: form */}
-        <CheckoutForm onSubmit={handleSubmit} loading={loading} />
+        {/* Cart items horizontal scroll */}
+        
+        {cartItems.length > 0 && (
+          <div
+            className="flex gap-3 overflow-x-auto pb-4 pt-2 px-1 no-scrollbar"
+            style={{ scrollbarWidth: "none" }}
+          >
+            {cartItems.map((item) => {
+              // حماية ضد روابط http من Cloudinary
+              const rawImage =
+                (typeof item?.variant?.images?.[0] === "string"
+                  ? item.variant.images[0]
+                  : item?.variant?.images?.[0]?.url) || "/heros.jpg";
+              const safeImage = rawImage.replace("http://", "https://");
 
-        {/* RIGHT: order summary */}
-        <motion.div
-          className="w-full lg:w-80 flex-shrink-0 flex flex-col gap-4"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div className="bg-white rounded-lg p-5 shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
-            {/* Cart items */}
-            {cartItems.length === 0 ? (
-              <p className=" text-gray-400 text-center text-[13px] py-3">
-                {t.checkout.emptyCart}
-              </p>
-            ) : (
-              cartItems.map((item) => (
+              return (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between gap-3 mb-4 last:mb-0"
+                  className="flex flex-col sm:flex-row items-center gap-3 bg-white border border-[#E8E2D6] rounded-xl p-2 flex-shrink-0 w-[140px] sm:w-auto shadow-sm"
                 >
-                  <div className="relative flex-shrink-0">
-                    <div className="rounded overflow-hidden bg-gray-100 w-[52px] h-[52px] relative">
-                      {item.variant?.images?.[0] ? (
-                        <Image
-                          width={52}
-                          height={52}
-                          loading="lazy"
-                          src={
-                            (typeof item?.variant?.images?.[0] === "string"
-                              ? item.variant.images[0]
-                              : item?.variant?.images?.[0]?.url) || "/heros.jpg"
-                          }
-                          alt={item.name as string}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#1a0808] to-[#4a1a1a]" />
-                      )}
+                  {/* Container الصورة */}
+                  <div className="relative w-full sm:w-[80px] h-[100px] sm:h-[80px] flex-shrink-0">
+                    <div className="w-full h-full bg-[#EDE8DE] rounded-lg overflow-hidden border border-[#f0ece5]">
+                      <Image
+                        width={200}
+                        height={200}
+                        loading="lazy"
+                        src={safeImage}
+                        alt={item.name as string}
+                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
+                      />
                     </div>
-                    {/* Badge Position Logic */}
+
+                    {/* دائرة العدد */}
                     <span
-                      className={`absolute -top-1.5 flex items-center justify-center rounded-full text-white font-bold  w-[18px] h-[18px] text-[10px] bg-gray-400 
-                        ${isArabic ? "-left-1.5" : "-right-1.5"}`}
+                      className={`absolute -top-1.5 -inline-flex items-center justify-center rounded-full
+                text-white font-bold min-w-[20px] h-[20px] px-1 text-[11px] bg-[#C9A84C] border-2 border-white shadow-sm
+                ${isArabic ? "-left-1.5" : "-right-1.5"}`}
                     >
                       {item.quantity}
                     </span>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className=" text-gray-900 font-medium text-[13px] truncate">
+
+                  {/* نصوص المنتج */}
+                  <div className="flex flex-col text-center sm:text-start overflow-hidden w-full px-1">
+                    <span className="text-[12px] sm:text-[14px] font-bold text-[#1a1a1a] truncate leading-tight">
                       {item.name}
-                    </p>
-                    <p className=" text-gray-400 text-[12px] truncate">
-                      {item.variant?.product_name}
-                    </p>
+                    </span>
+                    <div className="flex items-center justify-center sm:justify-start gap-1 mt-1">
+                      <span className="text-[11px] text-[#C9A84C] font-medium">
+                        {(
+                          parseFloat(item.price) * item.quantity
+                        ).toLocaleString()}
+                      </span>
+                      <span className="text-[10px] text-[#999] font-light">
+                        {t.checkout.currency}
+                      </span>
+                    </div>
                   </div>
-                  <span className=" text-gray-900 flex-shrink-0 text-[13px]">
-                    {t.checkout.currency}
-                    {(parseFloat(item.price) * item.quantity).toLocaleString()}
-                    .00
-                  </span>
                 </div>
-              ))
-            )}
-
-            {/* Totals */}
-            <div className="flex flex-col gap-2 border-t border-gray-100 mt-4 pt-3.5">
-              <div className="flex justify-between  text-gray-600 text-[14px]">
-                <span>{t.checkout.subtotal}</span>
-                <span>
-                  {t.checkout.currency}
-                  {subtotal.toLocaleString()}.00
-                </span>
-              </div>
-
-              {discountApplied && (
-                <div className="flex justify-between  text-green-600 text-[14px]">
-                  <span>{t.checkout.discount}</span>
-                  <span>
-                    −{t.checkout.currency}
-                    {discountAmt.toLocaleString()}.00
-                  </span>
-                </div>
-              )}
-
-              <div className="flex justify-between  text-gray-600 text-[14px]">
-                <span>{t.checkout.shipping}</span>
-                <span>
-                  {t.checkout.currency}
-                  {SHIPPING}.00
-                </span>
-              </div>
-
-              <div className="flex justify-between  font-semibold text-gray-900 text-[16px] mt-1">
-                <span>{t.checkout.total}</span>
-                <span>
-                  <span className="text-gray-400 font-normal text-[11px]">
-                    EGP{" "}
-                  </span>
-                  {t.checkout.currency}
-                  {total.toLocaleString()}.00
-                </span>
-              </div>
-            </div>
+              );
+            })}
           </div>
-        </motion.div>
+        )}
+
+        {/* Totals row */}
+        <div className="flex gap-5 mt-3.5 pt-3.5 border-t border-[#E8E2D6]">
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[11px] text-[#aaa] uppercase tracking-[1.5px]">
+              {t.checkout.subtotal || "Subtotal"}
+            </span>
+            <span className="text-[15px] font-semibold text-[#1a1a1a]">
+              {t.checkout.currency}
+              {subtotal.toLocaleString()}.00
+            </span>
+          </div>
+          {discountApplied && (
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[11px] text-[#aaa] uppercase tracking-[1.5px]">
+                {t.checkout.discount || "Discount"}
+              </span>
+              <span className="text-[15px] font-semibold text-green-600">
+                −{t.checkout.currency}
+                {discountAmt.toLocaleString()}.00
+              </span>
+            </div>
+          )}
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[11px] text-[#aaa] uppercase tracking-[1.5px]">
+              {t.checkout.shipping || "Shipping"}
+            </span>
+            <span className="text-[15px] font-semibold text-[#1a1a1a]">
+              {t.checkout.currency}
+              {SHIPPING}.00
+            </span>
+          </div>
+          <div className="flex flex-col gap-0.5 ml-auto">
+            <span className="text-[11px] text-[#aaa] uppercase tracking-[1.5px]">
+              {t.checkout.total || "Total"}
+            </span>
+            <span className="text-[15px] font-bold text-[#C9A84C]">
+              {t.checkout.currency}
+              {total.toLocaleString()}.00
+            </span>
+          </div>
+        </div>
       </div>
+
+      {/* ══ FORM AREA ══ */}
+      <motion.div
+        className="max-w-[680px] mx-auto px-5 sm:px-8 py-10"
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {/* Header */}
+        <div className="mb-8">
+          <p className="text-[11px] tracking-[4px] text-[#C9A84C] uppercase mb-2 font-semibold">
+            {isArabic ? "إتمام الطلب" : "Secure Checkout"}
+          </p>
+          <h1 className="text-[32px] font-bold text-[#1a1a1a] tracking-[-0.3px] mb-2">
+            {isArabic ? "تفاصيل الشحن" : "Shipping Details"}
+          </h1>
+          <p className="text-[16px] text-[#888] leading-relaxed">
+            {isArabic
+              ? "أدخل بياناتك لإتمام طلبك بأمان"
+              : "Enter your details to complete your order securely"}
+          </p>
+        </div>
+
+        <CheckoutForm onSubmit={handleSubmit} loading={loading} />
+      </motion.div>
     </div>
   );
 }

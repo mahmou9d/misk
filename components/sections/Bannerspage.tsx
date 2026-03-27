@@ -36,7 +36,7 @@ function Toggle({
       onClick={onChange}
       disabled={disabled}
       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 focus:outline-none disabled:opacity-50 ${
-        checked ? "bg-gradient-to-r from-[#fda481] to-[#b4182d]" : "bg-white/10"
+        checked ? "bg-gradient-to-r from-[#ffffff69] to-black" : "bg-white/10"
       }`}
     >
       <span
@@ -60,7 +60,7 @@ function StatusBadge({ active }: { active: boolean }) {
     <span
       className={`text-sm font-semibold text-white rounded-full px-3 py-1 whitespace-nowrap ${
         active
-          ? "bg-gradient-to-r from-[#fda481]/30 to-[#b4182d]/30 text-[#fda481] border border-[#fda481]/20"
+          ? "bg-gradient-to-r from-[#fff]/30 to-[#000]/30 text-[#fff] border border-[#fff]/20"
           : "bg-white/5 text-gray-500 border border-white/10"
       }`}
     >
@@ -72,7 +72,7 @@ function StatusBadge({ active }: { active: boolean }) {
 }
 
 const inputClass =
-  "w-full h-10 rounded-xl border border-white/10 bg-[#0f1117] px-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#fda481]/50 focus:ring-2 focus:ring-[#fda481]/20 transition";
+  "w-full h-10 rounded-xl border border-white/10 bg-[#0f1117] px-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#fff]/50 focus:ring-2 focus:ring-[#fff]/20 transition";
 
 // ─── Tab type ─────────────────────────────────────────────────────────────────
 
@@ -106,7 +106,7 @@ export default function BannersSettingsPage() {
               onClick={() => setActiveTab(tab)}
               className={`px-5 py-2.5 text-sm font-semibold capitalize rounded-t-md transition-colors -mb-px border-b-2 ${
                 activeTab === tab
-                  ? "border-[#fda481] text-[#fda481] bg-transparent"
+                  ? "border-[#fff] text-[#fff] bg-transparent"
                   : "border-transparent text-gray-500 hover:text-gray-300"
               }`}
             >
@@ -319,7 +319,7 @@ function BannersTab({
       <div className="flex justify-start mb-5">
         <button
           onClick={() => setShowCreateForm((v) => !v)}
-          className="text-sm font-bold px-6 py-2.5 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl shadow-lg shadow-[#fda481]/20 flex items-center gap-2 hover:opacity-90 transition-opacity"
+          className="text-sm font-bold px-6 py-2.5 bg-gradient-to-r from-[#ffffff69] to-black text-white rounded-xl shadow-lg shadow-[#fff]/20 flex items-center gap-2 hover:opacity-90 transition-opacity"
         >
           <span className="text-lg leading-none">+</span> {b.addBtn}
         </button>
@@ -336,7 +336,7 @@ function BannersTab({
             <div>
               <label className="text-sm text-gray-400 mb-1.5 block font-bold">
                 {b.fields.title}{" "}
-                <span className="text-[#fda481] font-normal text-xs">(EN)</span>
+                <span className="text-[#fff] font-normal text-xs">(EN)</span>
               </label>
               <input
                 className={inputClass}
@@ -351,7 +351,7 @@ function BannersTab({
             <div>
               <label className="text-sm text-gray-400 mb-1.5 block font-bold">
                 {b.fields.title}{" "}
-                <span className="text-[#fda481] font-normal text-xs">(AR)</span>
+                <span className="text-[#fff] font-normal text-xs">(AR)</span>
               </label>
               <input
                 className={inputClass}
@@ -411,7 +411,7 @@ function BannersTab({
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="text-sm text-gray-400 file:ml-3 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#fda481] file:to-[#b4182d] file:text-white hover:file:opacity-90 cursor-pointer"
+              className="text-sm text-gray-400 file:ml-3 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#fff] file:to-[#000] file:text-white hover:file:opacity-90 cursor-pointer"
             />
             {previewUrl && (
               <div className="mt-3 rounded-xl overflow-hidden border border-white/10 w-full max-w-xs h-28">
@@ -429,7 +429,7 @@ function BannersTab({
             <button
               onClick={handleCreate}
               disabled={creating || !newImage}
-              className="h-10 px-6 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
+              className="h-10 px-6 bg-gradient-to-r from-[#ffffff69] to-black text-white rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
             >
               {creating ? b.actions.saving : b.actions.save}
             </button>
@@ -498,7 +498,7 @@ function BannersTab({
                   </p>
                   {banner.title_ar && (
                     <p
-                      className="text-xs text-[#fda481]/70 leading-tight mt-0.5"
+                      className="text-xs text-[#fff]/70 leading-tight mt-0.5"
                       dir="rtl"
                     >
                       {banner.title_ar}
@@ -551,7 +551,7 @@ function BannersTab({
                         <div>
                           <label className="text-sm text-gray-400 mb-1.5 block font-bold">
                             {b.fields.title}{" "}
-                            <span className="text-[#fda481] font-normal text-xs">
+                            <span className="text-[#fff] font-normal text-xs">
                               (EN)
                             </span>
                           </label>
@@ -572,7 +572,7 @@ function BannersTab({
                         <div>
                           <label className="text-sm text-gray-400 mb-1.5 block font-bold">
                             {b.fields.title}{" "}
-                            <span className="text-[#fda481] font-normal text-xs">
+                            <span className="text-[#fff] font-normal text-xs">
                               (AR)
                             </span>
                           </label>
@@ -662,7 +662,7 @@ function BannersTab({
                               file ? URL.createObjectURL(file) : null,
                             );
                           }}
-                          className="text-sm text-gray-400 file:ml-3 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#fda481] file:to-[#b4182d] file:text-white hover:file:opacity-90 cursor-pointer"
+                          className="text-sm text-gray-400 file:ml-3 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#fff] file:to-[#000] file:text-white hover:file:opacity-90 cursor-pointer"
                         />
                         {editImagePreview && (
                           <div className="mt-3 rounded-xl overflow-hidden border border-white/10 w-full max-w-xs h-28">
@@ -681,7 +681,7 @@ function BannersTab({
                         <button
                           onClick={() => handleEditSave(banner.id)}
                           disabled={patching}
-                          className="h-10 px-6 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
+                          className="h-10 px-6 bg-gradient-to-r from-[#ffffff69] to-black text-white rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
                         >
                           {patching ? b.actions.saving : b.actions.save}
                         </button>
@@ -824,7 +824,7 @@ function SettingsTab({
         <div
           className={`px-5 py-3 text-sm font-medium text-center transition-colors ${
             isAnnouncementActive
-              ? "bg-gradient-to-r from-[#fda481]/20 to-[#b4182d]/20 text-[#fda481] border-b border-[#fda481]/10"
+              ? "bg-gradient-to-r from-[#fff]/20 to-[#000]/20 text-[#fff] border-b border-[#fff]/10"
               : "bg-white/5 text-gray-600 line-through border-b border-white/5"
           }`}
         >
@@ -843,7 +843,7 @@ function SettingsTab({
             <div>
               <label className="text-sm text-gray-400 mb-1.5 block font-bold">
                 {s.announcementText}{" "}
-                <span className="text-[#fda481] font-normal text-xs">(EN)</span>
+                <span className="text-[#fff] font-normal text-xs">(EN)</span>
               </label>
               <input
                 className={inputClass}
@@ -859,7 +859,7 @@ function SettingsTab({
             <div>
               <label className="text-sm text-gray-400 mb-1.5 block font-bold">
                 {s.announcementText}{" "}
-                <span className="text-[#fda481] font-normal text-xs">(AR)</span>
+                <span className="text-[#fff] font-normal text-xs">(AR)</span>
               </label>
               <input
                 className={inputClass}
@@ -900,7 +900,7 @@ function SettingsTab({
         <button
           onClick={handleSave}
           disabled={patching || !isDirty}
-          className="h-10 px-8 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl text-sm font-bold shadow-lg shadow-[#fda481]/20 disabled:opacity-50 hover:opacity-90 transition-opacity flex items-center gap-2"
+          className="h-10 px-8 bg-gradient-to-r from-[#ffffff69] to-black text-white rounded-xl text-sm font-bold shadow-lg shadow-[#fff]/20 disabled:opacity-50 hover:opacity-90 transition-opacity flex items-center gap-2"
         >
           {patching ? (
             <>

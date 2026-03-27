@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useTranslation } from "@/lib/Usetranslation";
 import { CheckoutFormValues } from "@/type/type";
 import { checkoutSchema } from "@/utils/validation";
+import Image from "next/image";
 
 const SHIPPING = 85;
 
@@ -68,29 +69,104 @@ const governoratesAr = [
   "قنا",
   "شمال سيناء",
   "سوهاج",
-]
+];
 
-/* ── Reusable field ── */
-function Field({
-  error,
-  ...props
-}: React.InputHTMLAttributes<HTMLInputElement> & { error?: string }) {
+/* ── Card Icons ── */
+function VisaIcon() {
   return (
-    <div className="flex flex-col gap-1">
-      <input
-        {...props}
-        className={`w-full h-[44px] px-[14px] text-[14px] text-gray-800 bg-white outline-none rounded-[6px] border transition-colors
-          ${
-            error
-              ? "border-red-500 focus:border-red-500"
-              : "border-[#d0d0d0] focus:border-[#1a4fe0]"
-          }`}
-      />
-      {error && <span className="text-[11px] text-red-500">{error}</span>}
+    <div className="flex items-center bg-white border border-[#DDD] rounded px-2 h-[26px]">
+<Image src="/visa.svg" width={36} height={26} alt="Visa" />
     </div>
   );
 }
-/* ── CheckoutForm ── */
+
+function MastercardIcon() {
+  return <Image src="/mastercard.svg" width={36} height={26} alt="Visa" />;
+}
+
+function MeezaIcon() {
+  return <Image src="/meeza.svg" width={36} height={26} alt="Visa" />;
+}
+
+/* ── Field ── */
+function Field({
+  label,
+  error,
+  ...props
+}: React.InputHTMLAttributes<HTMLInputElement> & {
+  label?: string;
+  error?: string;
+}) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      {label && (
+        <label className="text-[12px] font-semibold text-[#555] tracking-[0.3px]">
+          {label}
+        </label>
+      )}
+      <input
+        {...props}
+        className={`w-full h-[52px] px-4 text-[16px] text-[#1a1a1a] bg-white rounded-[10px] border-2 outline-none transition-all duration-150 placeholder-[#C8C4BC]
+          ${
+            error
+              ? "border-red-400 focus:border-red-400 focus:shadow-[0_0_0_4px_rgba(248,113,113,0.12)]"
+              : "border-[#DDD8CC] focus:border-[#C9A84C] focus:shadow-[0_0_0_4px_rgba(201,168,76,0.12)]"
+          }`}
+      />
+      {error && <span className="text-[13px] text-red-400">{error}</span>}
+    </div>
+  );
+}
+
+/* ── Section Label ── */
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="mb-[18px]">
+      <p className="text-[10px] tracking-[4px] text-[#C9A84C] uppercase mb-1.5">
+        {children}
+      </p>
+      <div className="h-[1.5px] bg-[#E8E2D6]" />
+    </div>
+  );
+}
+
+/* ── Radio Card ── */
+function RadioCard({
+  checked,
+  label,
+  children,
+  ...props
+}: React.InputHTMLAttributes<HTMLInputElement> & {
+  label: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <label
+      className={`flex items-center justify-between cursor-pointer px-[18px] py-4 rounded-[10px] border-2 mb-2.5 transition-all duration-150
+        ${
+          checked
+            ? "border-[#C9A84C] bg-[#FDFAF0]"
+            : "border-[#DDD8CC] bg-white hover:border-[#C9A84C]/50"
+        }`}
+    >
+      <div className="flex items-center gap-3">
+        <span
+          className={`w-[22px] h-[22px] rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors duration-150
+            ${checked ? "border-[#C9A84C]" : "border-[#DDD]"}`}
+        >
+          {checked && (
+            <span className="w-[11px] h-[11px] rounded-full bg-[#C9A84C]" />
+          )}
+        </span>
+        <span className="text-[16px] font-medium text-[#1a1a1a]">{label}</span>
+      </div>
+      {children}
+      <input type="radio" className="sr-only" {...props} />
+    </label>
+  );
+}
+
+/* ══ CheckoutForm ══ */
 export function CheckoutForm({
   onSubmit,
   loading,
@@ -127,230 +203,233 @@ export function CheckoutForm({
 
   return (
     <motion.div
-      className="flex-1 flex flex-col gap-6"
+      className="flex flex-col gap-7"
       dir={dir}
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* Contact */}
-      <div className="bg-white rounded-lg p-6 shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className=" font-semibold text-gray-900 text-[16px]">
-            {t.checkoutForm.contact}
-          </h2>
-          <Link
-            href={`/${locale.toLowerCase()}/login`}
-            className=" text-blue-600 hover:underline text-[13px]"
-          >
-            {t.checkoutForm.signIn}
-          </Link>
-        </div>
-        <Field
-          placeholder={t.checkoutForm.emailPlaceholder}
-          type="email"
-          error={translatedErrors.email}
-          {...register("email")}
-        />
-        <label className="flex items-center gap-2 mt-3 cursor-pointer">
-          <input
-            type="checkbox"
-            {...register("newsEmail")}
-            className="w-[14px] h-[14px] accent-[#1a4fe0]"
+      {/* ── Contact ── */}
+      <div>
+        <SectionLabel>{t.checkoutForm.contact}</SectionLabel>
+        <div className="flex flex-col gap-4">
+          <Field
+            label={t.checkoutForm.emailPlaceholder}
+            placeholder="you@example.com"
+            type="email"
+            error={translatedErrors.email}
+            {...register("email")}
           />
-          <span className=" text-gray-600 text-[13px]">
-            {t.checkoutForm.newsEmail}
-          </span>
-        </label>
+          <div className="flex items-center justify-between">
+            <label className="flex items-center gap-2.5 cursor-pointer">
+              <input
+                type="checkbox"
+                {...register("newsEmail")}
+                className="w-[18px] h-[18px] accent-[#C9A84C]"
+              />
+              <span className="text-[15px] text-[#888]">
+                {t.checkoutForm.newsEmail}
+              </span>
+            </label>
+            <Link
+              href={`/${locale.toLowerCase()}/login`}
+              className="text-[14px] font-semibold text-[#C9A84C] underline underline-offset-[3px] hover:opacity-70 transition-opacity"
+            >
+              {t.checkoutForm.signIn}
+            </Link>
+          </div>
+        </div>
       </div>
 
-      {/* Delivery */}
-      <div className="bg-white rounded-lg p-6 shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
-        <h2 className=" font-semibold text-gray-900 text-[16px] mb-4">
-          {t.checkoutForm.delivery}
-        </h2>
-        <div className="flex flex-col gap-3">
-          <div className="h-[44px] px-[14px] border border-[#d0d0d0] rounded-[6px] flex items-center justify-between">
-            <span className=" text-gray-800 text-[14px]">
+      {/* ── Delivery ── */}
+      <div>
+        <SectionLabel>{t.checkoutForm.delivery}</SectionLabel>
+        <div className="flex flex-col gap-4">
+          {/* Country */}
+          <div className="flex items-center justify-between h-[52px] px-4 bg-[#F4F1EB] border-2 border-[#DDD8CC] rounded-[10px]">
+            <span className="text-[16px] font-medium text-[#666]">
               {t.checkoutForm.country}
             </span>
             <svg
-              width="14"
-              height="14"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#888"
+              stroke="#aaa"
               strokeWidth="2"
             >
               <path d="M6 9l6 6 6-6" />
             </svg>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+
+          <div className="grid grid-cols-2 gap-3.5">
             <Field
-              placeholder={t.checkoutForm.firstName}
+              label={t.checkoutForm.firstName}
+              placeholder="Ahmed"
               error={translatedErrors.firstName}
               {...register("firstName")}
             />
             <Field
-              placeholder={t.checkoutForm.lastName}
+              label={t.checkoutForm.lastName}
+              placeholder="Hassan"
               error={translatedErrors.lastName}
               {...register("lastName")}
             />
           </div>
+
           <Field
-            placeholder={t.checkoutForm.address}
+            label={t.checkoutForm.address}
+            placeholder="12 El Tahrir St."
             error={translatedErrors.address}
             {...register("address")}
           />
-          <Field placeholder={t.checkoutForm.apt} {...register("apt")} />
-          <div className="grid grid-cols-3 gap-3">
+
+          <Field
+            label={t.checkoutForm.apt}
+            placeholder="Apartment, floor (optional)"
+            {...register("apt")}
+          />
+
+          <div className="grid grid-cols-3 gap-3.5">
             <Field
-              placeholder={t.checkoutForm.city}
+              label={t.checkoutForm.city}
+              placeholder="Cairo"
               error={translatedErrors.city}
               {...register("city")}
             />
-            <select
-              {...register("gov")}
-              className=" text-[14px] text-gray-800 bg-white outline-none h-[44px] px-[14px] border border-[#d0d0d0] rounded-[6px] appearance-none cursor-pointer focus:border-[#1a4fe0] transition-colors"
-            >
-              {governorates.map((g, i) => (
-                <option key={g} value={g}>
-                  {govList[i]}
-                </option>
-              ))}
-            </select>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[12px] font-semibold text-[#555] tracking-[0.3px]">
+                {isArabic ? "المحافظة" : "Governorate"}
+              </label>
+              <select
+                {...register("gov")}
+                className="h-[52px] px-4 text-[16px] text-[#1a1a1a] bg-white rounded-[10px] border-2 border-[#DDD8CC] outline-none appearance-none cursor-pointer focus:border-[#C9A84C] transition-colors duration-150"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 14px center",
+                }}
+              >
+                {governorates.map((g, i) => (
+                  <option key={g} value={g}>
+                    {govList[i]}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <Field
-              placeholder={t.checkoutForm.postalCode}
+              label={t.checkoutForm.postalCode}
+              placeholder="11511"
               {...register("postal")}
             />
           </div>
+
           <Field
-            placeholder={t.checkoutForm.phone}
+            label={t.checkoutForm.phone}
+            placeholder="+20 100 000 0000"
             type="tel"
             error={translatedErrors.phone}
             {...register("phone")}
           />
-          <label className="flex items-center gap-2 cursor-pointer">
+
+          <label className="flex items-center gap-2.5 cursor-pointer">
             <input
               type="checkbox"
               {...register("saveInfo")}
-              className="w-[14px] h-[14px] accent-[#1a4fe0]"
+              className="w-[18px] h-[18px] accent-[#C9A84C]"
             />
-            <span className=" text-gray-600 text-[13px]">
+            <span className="text-[15px] text-[#888]">
               {t.checkoutForm.saveInfo}
             </span>
           </label>
         </div>
       </div>
 
-      {/* Shipping */}
-      <div className="bg-white rounded-lg p-6 shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
-        <h2 className=" font-semibold text-gray-900 text-[16px] mb-3">
-          {t.checkoutForm.shippingMethod}
-        </h2>
-        <div className="flex items-center justify-between border-2 border-[#1a4fe0] rounded-[6px] p-[12px_16px] bg-[#f0f4ff]">
-          <span className=" text-gray-800 text-[14px]">
-            {t.checkoutForm.shippingDays}
-          </span>
-          <span className=" text-gray-800 font-medium text-[14px]">
-            EGP £{SHIPPING}.00
-          </span>
-        </div>
-      </div>
-
-      {/* Payment */}
-      <div className="bg-white rounded-lg p-6 shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
-        <h2 className=" font-semibold text-gray-900 text-[16px] mb-1">
-          {t.checkoutForm.payment}
-        </h2>
-        <p className=" text-gray-400 text-[12px] mb-3.5">
-          {t.checkoutForm.paymentSecure}
-        </p>
-        <div className="flex flex-col gap-2">
-          <label
-            className={`flex items-center gap-3 cursor-pointer rounded-lg p-[14px_16px] border-2 transition-all
-              ${payment === "cod" ? "border-[#1a4fe0] bg-[#f0f4ff]" : "border-[#d0d0d0] bg-white"}`}
-          >
-            <input
-              type="radio"
-              value="cod"
-              {...register("payment")}
-              className="accent-[#1a4fe0]"
-            />
-            <span className=" text-gray-800 text-[14px]">
-              {t.checkoutForm.cod}
+      {/* ── Shipping ── */}
+      <div>
+        <SectionLabel>{t.checkoutForm.shippingMethod}</SectionLabel>
+        <div className="flex items-center justify-between bg-white border-2 border-[#DDD8CC] rounded-[10px] px-[18px] py-4">
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[16px] font-semibold text-[#1a1a1a]">
+              {t.checkoutForm.shippingDays}
             </span>
-          </label>
-          <label
-            className={`flex items-center justify-between gap-3 cursor-pointer rounded-lg p-[14px_16px] border-2 transition-all
-              ${payment === "paymob" ? "border-[#1a4fe0] bg-[#f0f4ff]" : "border-[#d0d0d0] bg-white"}`}
+            <span className="text-[13px] text-[#aaa]">
+              {isArabic ? "٣–٥ أيام عمل" : "3–5 business days"}
+            </span>
+          </div>
+          <span className="text-[18px] font-bold text-[#C9A84C]">
+            EGP {SHIPPING}.00
+          </span>
+        </div>
+      </div>
+
+      {/* ── Payment ── */}
+      <div>
+        <SectionLabel>{t.checkoutForm.payment}</SectionLabel>
+        <div className="flex items-center gap-2 text-[14px] text-[#aaa] mb-3.5">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#aaa"
+            strokeWidth="2"
           >
-            <div className="flex items-center gap-3">
-              <input
-                type="radio"
-                value="paymob"
-                {...register("payment")}
-                className="accent-[#1a4fe0]"
-              />
-              <span className=" text-gray-800 text-[14px]">
-                {t.checkoutForm.card}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              {[
-                { name: "VISA", image: "/Visa.svg" },
-                { name: "MasterCard", image: "/Mastercard.svg" },
-                { name: "Meeza", image: "/Meeza.svg" },
-              ].map((c) => (
-                <img
-                  key={c.name}
-                  src={c.image}
-                  alt={c.name}
-                  loading="lazy"
-                  className="h-5 object-contain"
-                />
-              ))}
-            </div>
-          </label>
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          <span>{t.checkoutForm.paymentSecure}</span>
         </div>
+
+        <RadioCard
+          label={t.checkoutForm.cod}
+          value="cod"
+          checked={payment === "cod"}
+          {...register("payment")}
+        />
+        <RadioCard
+          label={t.checkoutForm.card}
+          value="paymob"
+          checked={payment === "paymob"}
+          {...register("payment")}
+        >
+          <div className="flex items-center gap-1.5">
+            <VisaIcon />
+            <MastercardIcon />
+            <MeezaIcon />
+          </div>
+        </RadioCard>
       </div>
 
-      {/* Billing */}
-      <div className="bg-white rounded-lg p-6 shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
-        <h2 className=" font-semibold text-gray-900 text-[16px] mb-3">
-          {t.checkoutForm.billingAddress}
-        </h2>
-        <div className="flex flex-col gap-2">
-          {(
-            [
-              { value: "same", label: t.checkoutForm.billingSame },
-              { value: "different", label: t.checkoutForm.billingDifferent },
-            ] as const
-          ).map((opt) => (
-            <label
-              key={opt.value}
-              className={`flex items-center gap-3 cursor-pointer rounded-lg p-[14px_16px] border-2 transition-all
-                ${billing === opt.value ? "border-[#1a4fe0] bg-[#f0f4ff]" : "border-[#d0d0d0] bg-white"}`}
-            >
-              <input
-                type="radio"
-                value={opt.value}
-                {...register("billing")}
-                className="accent-[#1a4fe0]"
-              />
-              <span className=" text-gray-800 text-[14px]">{opt.label}</span>
-            </label>
-          ))}
-        </div>
+      {/* ── Billing ── */}
+      <div>
+        <SectionLabel>{t.checkoutForm.billingAddress}</SectionLabel>
+        <RadioCard
+          label={t.checkoutForm.billingSame}
+          value="same"
+          checked={billing === "same"}
+          {...register("billing")}
+        />
+        <RadioCard
+          label={t.checkoutForm.billingDifferent}
+          value="different"
+          checked={billing === "different"}
+          {...register("billing")}
+        />
       </div>
 
-      {/* Submit */}
+      {/* ── Submit ── */}
       <motion.button
-        whileTap={{ scale: 0.98 }}
+        whileTap={{ scale: 0.99 }}
         onClick={handleSubmit(onSubmit)}
         disabled={loading}
-        className={`w-full h-[52px] rounded-[26px]  font-semibold text-white text-[15px] cursor-pointer transition-all
-          ${loading ? "bg-[#555] cursor-not-allowed" : "bg-[#1a4fe0] hover:opacity-90"}`}
+        className={`w-full h-[58px] rounded-[12px] text-[14px] font-semibold tracking-[2.5px] uppercase transition-all duration-150
+          ${
+            loading
+              ? "bg-[#e0e0e0] text-[#aaa] cursor-not-allowed"
+              : "bg-[#1a1a1a] text-[#F0D080] cursor-pointer hover:bg-[#2a2a2a]"
+          }`}
       >
         {loading
           ? t.checkoutForm.processing
@@ -359,16 +438,17 @@ export function CheckoutForm({
             : t.checkoutForm.completeOrder}
       </motion.button>
 
-      <div className="flex gap-4 justify-center pb-4">
+      {/* Links */}
+      <div className="flex gap-6 justify-center pb-2">
         <Link
           href={`/${locale.toLowerCase()}/privacy-policy`}
-          className=" text-blue-600 hover:underline text-[12px]"
+          className="text-[13px] text-[#bbb] underline underline-offset-[3px] hover:text-[#C9A84C] transition-colors"
         >
           {t.checkoutForm.privacyPolicy}
         </Link>
         <Link
           href={`/${locale.toLowerCase()}/terms`}
-          className=" text-blue-600 hover:underline text-[12px]"
+          className="text-[13px] text-[#bbb] underline underline-offset-[3px] hover:text-[#C9A84C] transition-colors"
         >
           {t.checkoutForm.terms}
         </Link>
