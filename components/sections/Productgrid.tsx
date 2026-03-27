@@ -41,7 +41,7 @@ export default function ProductGrid() {
               <button
                 key={tabKey}
                 onClick={() => setTab(tabKey)}
-                className={`relative px-8 lg:px-12 py-3 rounded-full text-[13px] font-bold uppercase transition-all duration-500
+                className={`relative px-5 lg:px-12 py-3 rounded-full text-[13px] font-bold uppercase transition-all duration-500
                 ${tab === tabKey ? "text-white" : "text-gray-400 hover:text-gray-900"}
                 ${isArabic ? "-0 text-[16px]" : "-[0.2em]"}`}
               >
