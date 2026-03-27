@@ -31,7 +31,7 @@ export default function ProductGrid() {
       <div className="max-w-screen-xl mx-auto px-6 lg:px-12 relative z-10">
         {/* ── Header & Premium Tabs ── */}
         <div className="flex flex-col items-center mb-24">
-          <span className="text-[#c9a84c] text-[20px] font-bold uppercase tracking-[0.6em] mb-10 opacity-80">
+          <span className="text-[#c9a84c] text-[20px] font-bold uppercase  mb-10 opacity-80">
             {t.productGrid.title}
           </span>
 
