@@ -22,7 +22,7 @@ import {
   SearchIcon,
   UserIcon,
 } from "@/public/svg/Svgs";
-import { useGetCategory } from "@/hooks/useDashboard";
+import { useGetCategory, useGetPublicSettings } from "@/hooks/useDashboard";
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 const Logo = ({ locale }: { locale: string }) => (
@@ -284,7 +284,8 @@ export default function Navbar() {
   const [ddOpen, setDdOpen] = useState(false);
   const { data: cartData } = useGetCartItems();
   const { data: categories } = useGetCategory();
-
+const { data } = useGetPublicSettings();
+console.log(data)
   const cartCount = cartData?.reduce(
     (acc, item) => acc + Number(item?.quantity),
     0,
@@ -472,7 +473,7 @@ hover:before:opacity-100`}
             <AnimatePresence>
               {!catsOpen && (
                 <motion.nav
-                  className="fixed z-40 bg-white xl:hidden flex flex-col top-[105px] bottom-0 left-0 right-0 overflow-y-hidden"
+                  className={`fixed z-40 bg-white xl:hidden flex flex-col ${data.is_announcement_active ? "top-[105px]" : "top-[67px]"}  bottom-0 left-0 right-0 overflow-y-hidden`}
                   dir={dir}
                   initial={{ x: isArabic ? "100%" : "-100%" }}
                   animate={{ x: 0 }}
