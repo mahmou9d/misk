@@ -30,7 +30,7 @@ export const Card = ({
 
 
 export const Sec = ({ children }: { children: React.ReactNode }) => (
-  <p className="text-[16px] font-bold text-[#aaa] tracking-[0.8px] uppercase mb-[14px] mt-0">
+  <p className="text-[16px] font-bold text-[#aaa]  uppercase mb-[14px] mt-0">
     {children}
   </p>
 );

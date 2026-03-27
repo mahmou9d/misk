@@ -180,7 +180,7 @@ export function ImgGallery({
             />
             {img.is_thumbnail && (
               <span
-                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#ffffff69] to-black text-white text-[7px] rounded-[3px] px-1 py-px pointer-events-none tracking-wider font-bold`}
+                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#ffffff69] to-black text-white text-[7px] rounded-[3px] px-1 py-px pointer-events-none -wider font-bold`}
               >
                 {c.mainBadge}
               </span>
@@ -194,7 +194,7 @@ export function ImgGallery({
                 <button
                   title={c.setMainTitle}
                   onClick={() => handleSetThumb(img.id)}
-                  className="text-[9px] font-bold bg-[#fff] text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer tracking-wider"
+                  className="text-[9px] font-bold bg-[#fff] text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer -wider"
                 >
                   {c.mainBadge}
                 </button>
@@ -202,7 +202,7 @@ export function ImgGallery({
               <button
                 title={c.deleteImgTitle}
                 onClick={() => handleDelete(img.id)}
-                className="text-[9px] font-bold bg-red-500 text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer tracking-wider"
+                className="text-[9px] font-bold bg-red-500 text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer -wider"
               >
                 {c.delBadge}
               </button>
@@ -220,7 +220,7 @@ export function ImgGallery({
               : "cursor-pointer hover:bg-white/10 hover:border-white/20 transition-colors"
           }`}
         >
-          <span className="text-[10px] font-bold tracking-wider text-gray-500">
+          <span className="text-[10px] font-bold -wider text-gray-500">
             {uploading ? "..." : c.addBadge}
           </span>
           {!uploading && (
@@ -304,7 +304,7 @@ export function MultiImgPicker({
             />
             {thumbnailIndex === fi && (
               <span
-                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#ffffff69] to-black text-white text-[7px] rounded-sm px-1 py-px pointer-events-none font-bold tracking-wider`}
+                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#ffffff69] to-black text-white text-[7px] rounded-sm px-1 py-px pointer-events-none font-bold -wider`}
               >
                 {c.mainBadge}
               </span>
@@ -317,14 +317,14 @@ export function MultiImgPicker({
               {thumbnailIndex !== fi && (
                 <button
                   onClick={() => onSetThumb(fi)}
-                  className="text-[8px] font-bold bg-[#fff] text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer tracking-wider"
+                  className="text-[8px] font-bold bg-[#fff] text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer -wider"
                 >
                   {c.mainBadge}
                 </button>
               )}
               <button
                 onClick={() => onRemove(fi)}
-                className="text-[8px] font-bold bg-red-500 text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer tracking-wider"
+                className="text-[8px] font-bold bg-red-500 text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer -wider"
               >
                 {c.delBadge}
               </button>
@@ -337,7 +337,7 @@ export function MultiImgPicker({
           title={c.addImgsTitle}
           className="w-[52px] h-[52px] border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center cursor-pointer bg-white/5 shrink-0 select-none gap-px hover:bg-white/10 hover:border-white/20 transition-colors"
         >
-          <span className="text-[9px] font-bold text-gray-500 tracking-widest">
+          <span className="text-[9px] font-bold text-gray-500 -widest">
             {c.addBadge}
           </span>
           <span className="text-[11px] text-gray-600 font-semibold">

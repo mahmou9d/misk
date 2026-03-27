@@ -112,7 +112,7 @@ export function SidebarSection({
         className="w-full flex items-center justify-between bg-transparent border-none p-0 pb-[11px]"
       >
         <span
-          className={ `{"text-[9px] text-[#8a7f99] ${isArabic ? "tracking-normal normal-case" : "tracking-[3.5px] uppercase"}`}
+          className={`{"text-[9px] text-[#8a7f99] ${isArabic ? "-normal normal-case" : "-[3.5px] uppercase"}`}
         >
           {title}
         </span>
@@ -122,15 +122,15 @@ export function SidebarSection({
       </button>
       <AnimatePresence initial={false}>
         {/* {open && ( */}
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.22 }}
-            className="overflow-hidden"
-          >
-            {children}
-          </motion.div>
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.22 }}
+          className="overflow-hidden"
+        >
+          {children}
+        </motion.div>
         {/* )} */}
       </AnimatePresence>
     </div>
@@ -210,7 +210,7 @@ export function MobileFilterDrawer({ open, onClose, ...rest }: any) {
                   <FilterIcon />
                 </span>
                 <span
-                  className={ `text-[9px] text-[#8a7f99] ${isArabic ? "tracking-normal normal-case" : "tracking-[3.5px] uppercase"}`}
+                  className={`text-[9px] text-[#8a7f99] ${isArabic ? "-normal normal-case" : "-[3.5px] uppercase"}`}
                 >
                   {t.searchComponents.filterSort}
                 </span>
@@ -265,7 +265,7 @@ export function SearchBox({
         }}
         onBlur={() => setFocused(false)}
         placeholder={t.searchComponents.placeholder}
-        className={`flex-1 bg-transparent border-none outline-none text-base text-[#1a1522] text-start ${isArabic ? "tracking-normal" : "tracking-[0.3px]"}`}
+        className={`flex-1 bg-transparent border-none outline-none text-base text-[#1a1522] text-start ${isArabic ? "-normal" : "-[0.3px]"}`}
       />
       <AnimatePresence>
         {value && (
@@ -283,7 +283,7 @@ export function SearchBox({
       </AnimatePresence>
       <button
         onClick={() => onSearch(value)}
-        className={`h-[38px] px-[18px] bg-gradient-to-br from-[#2d1b69] to-[#4a2d9e] border-none rounded-[3px] cursor-pointer text-white flex items-center gap-[6px] text-xs shrink-0 transition-all shadow-[0_2px_12px_rgba(45,27,105,0.2)] ${isArabic ? "tracking-normal normal-case" : "tracking-[2px] uppercase"}`}
+        className={`h-[38px] px-[18px] bg-gradient-to-br from-[#2d1b69] to-[#4a2d9e] border-none rounded-[3px] cursor-pointer text-white flex items-center gap-[6px] text-xs shrink-0 transition-all shadow-[0_2px_12px_rgba(45,27,105,0.2)] ${isArabic ? "-normal normal-case" : "-[2px] uppercase"}`}
       >
         <span className="hidden sm:inline leading-[1]">
           {t.searchComponents.searchBtn}
@@ -332,7 +332,7 @@ export function SuggestPanel({
         {/* Suggestions Column */}
         <div className="py-[14px]">
           <p
-            className={`text-[9px] text-[#c8c0d4] px-4 pb-[10px] text-start ${isArabic ? "tracking-normal normal-case" : "tracking-[3.5px] uppercase"}`}
+            className={`text-[9px] text-[#c8c0d4] px-4 pb-[10px] text-start ${isArabic ? "-normal normal-case" : "-[3.5px] uppercase"}`}
           >
             {t.searchComponents.suggestions}
           </p>
@@ -356,7 +356,7 @@ export function SuggestPanel({
         {/* Products Column */}
         <div className="py-[14px] border-s border-[#c9a84c]/12">
           <p
-            className={`text-[9px] text-[#c8c0d4] px-4 pb-[10px] text-start ${isArabic ? "tracking-normal normal-case" : "tracking-[3.5px] uppercase"}`}
+            className={`text-[9px] text-[#c8c0d4] px-4 pb-[10px] text-start ${isArabic ? "-normal normal-case" : "-[3.5px] uppercase"}`}
           >
             {t.searchComponents.products}
           </p>
@@ -387,7 +387,7 @@ export function SuggestPanel({
                   </span>
                   {p.category_name && (
                     <span
-                      className={`text-[9px] text-[#c9a84c] ${isArabic ? "tracking-normal normal-case" : "tracking-[2.5px] uppercase"}`}
+                      className={`text-[9px] text-[#c9a84c] ${isArabic ? "-normal normal-case" : "-[2.5px] uppercase"}`}
                     >
                       {p.category_name}
                     </span>
@@ -415,7 +415,7 @@ export function SuggestPanel({
           </span>
           <span className="text-[#c9a84c] flex items-center gap-[5px]">
             <span
-              className={`text-[10px] ${isArabic ? "tracking-normal normal-case" : "tracking-[1.5px] uppercase"}`}
+              className={`text-[10px] ${isArabic ? "-normal normal-case" : "-[1.5px] uppercase"}`}
             >
               {t.searchComponents.allResults}
             </span>

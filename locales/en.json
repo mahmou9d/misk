@@ -42,7 +42,7 @@
         "content": "We may collect personal information from the following sources:",
         "bullets": [
           "Directly from you — when you create an account, visit or use the Services, communicate with us, or otherwise provide information.",
-          "Automatically through the Services — from your device via cookies and similar tracking technologies.",
+          "Automatically through the Services — from your device via cookies and similar  technologies.",
           "From our service providers — when we engage them to enable technology or when they collect data on our behalf.",
           "From our partners or other third parties."
         ],
@@ -563,7 +563,7 @@
     "review": "review",
     "reviews": "reviews",
     "noReviews": "No reviews yet. Buy the first!",
-    "thankYou":"Thank you for your review!",
+    "thankYou": "Thank you for your review!",
     "writeReview": "Write a Review",
     "yourRating": "Your Rating",
     "yourComment": "Your Comment",
@@ -571,7 +571,6 @@
     "commentPlaceholder": "Share your experience...",
     "submitting": "Submitting...",
     "submit": "Submit"
-    
   },
   "returnPolicy": {
     "title": "Return & Exchange Policy",

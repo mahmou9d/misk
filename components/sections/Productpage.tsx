@@ -23,7 +23,9 @@ export default function ProductPage() {
   const { setCartOpen } = useCats();
   const router = useRouter();
   const [added, setAdded] = useState(false);
-  const [notification, setNotification] = useState<NotificationState | null>(null);
+  const [notification, setNotification] = useState<NotificationState | null>(
+    null,
+  );
   const showNotification = useShowNotification(setNotification);
 
   const handleAddToCart = () => {
@@ -80,7 +82,9 @@ export default function ProductPage() {
   const price = product.variants?.[0]?.price;
   const comparePrice = product.variants?.[0]?.compare_at_price;
   const discountPct = comparePrice
-    ? Math.round(((Number(comparePrice) - Number(price)) / Number(comparePrice)) * 100)
+    ? Math.round(
+        ((Number(comparePrice) - Number(price)) / Number(comparePrice)) * 100,
+      )
     : null;
   const savings = comparePrice
     ? (Number(comparePrice) - Number(price)).toLocaleString()
@@ -102,14 +106,16 @@ export default function ProductPage() {
     <>
       <AnimatePresence>
         {notification && (
-          <Notification type={notification.type} message={notification.message} />
+          <Notification
+            type={notification.type}
+            message={notification.message}
+          />
         )}
       </AnimatePresence>
 
       <section className="w-full flex justify-center bg-[#fafaf8]" dir={dir}>
         <div className="w-full max-w-240 mx-auto px-4 sm:px-6 lg:px-10 pt-13 pb-18">
           <div className="flex flex-col md:flex-row gap-10 lg:gap-16 items-start">
-
             {/* ── Image ── */}
             <Link
               href={`/${locale.toLowerCase()}/products/${firstProductId}`}
@@ -132,10 +138,18 @@ export default function ProductPage() {
                     className="absolute inset-0 bg-[linear-gradient(105deg,transparent_35%,rgba(255,255,255,0.45)_50%,transparent_65%)]"
                     initial={{ x: "-100%" }}
                     animate={{ x: "200%" }}
-                    transition={{ delay: 1, duration: 0.65, ease: "easeInOut", repeat: Infinity, repeatDelay: 3.5 }}
+                    transition={{
+                      delay: 1,
+                      duration: 0.65,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 3.5,
+                    }}
                   />
-                  <span className={`relative z-10 text-[#1a0a3d] font-bold leading-none
-                    ${isArabic ? "text-[16px]" : "text-[10px] tracking-[1.5px] uppercase"}`}>
+                  <span
+                    className={`relative z-10 text-[#1a0a3d] font-bold leading-none
+                    ${isArabic ? "text-[16px]" : "text-[10px] -[1.5px] uppercase"}`}
+                  >
                     {isArabic ? "الأكثر مبيعاً" : "Best Seller"}
                   </span>
                 </div>
@@ -153,8 +167,10 @@ export default function ProductPage() {
                     shadow-[0_4px_18px_rgba(26,10,61,0.3)]
                     ${isArabic ? "right-3" : "left-3"}`}
                 >
-                  <span className="text-[15px] font-black text-[#f0d080] leading-none">-{discountPct}%</span>
-                  <span className="text-[9px] text-[#c9a84c]/70 uppercase tracking-wide mt-0.5">
+                  <span className="text-[15px] font-black text-[#f0d080] leading-none">
+                    -{discountPct}%
+                  </span>
+                  <span className="text-[9px] text-[#c9a84c]/70 uppercase -wide mt-0.5">
                     {isArabic ? "خصم" : "off"}
                   </span>
                 </motion.div>
@@ -184,7 +200,11 @@ export default function ProductPage() {
               className="w-full md:w-1/2 flex flex-col pt-2"
               initial={{ opacity: 0, x: isArabic ? -24 : 24 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
+              transition={{
+                duration: 0.6,
+                ease: [0.22, 1, 0.36, 1],
+                delay: 0.08,
+              }}
             >
               {/* Brand */}
               <motion.div
@@ -193,8 +213,10 @@ export default function ProductPage() {
                 transition={{ delay: 0.18, duration: 0.4 }}
                 className="mb-3 flex items-center gap-2"
               >
-                <span className={`text-[14px] font-semibold text-[#c9a84c]
-                  ${isArabic ? "" : "tracking-[5px] uppercase"}`}>
+                <span
+                  className={`text-[14px] font-semibold text-[#c9a84c]
+                  ${isArabic ? "" : "-[5px] uppercase"}`}
+                >
                   Misk Fragrance
                 </span>
                 <span className="flex-1 h-px bg-[linear-gradient(to_right,rgba(201,168,76,0.4),transparent)]" />
@@ -206,7 +228,7 @@ export default function ProductPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.22, duration: 0.45 }}
                 className={`text-[#1a0a3d] text-[28px] md:text-[34px] font-bold mb-3
-                  ${isArabic ? "leading-normal" : "leading-[1.15] tracking-tight"}`}
+                  ${isArabic ? "leading-normal" : "leading-[1.15] -tight"}`}
               >
                 {product.name}
               </motion.h1>
@@ -218,7 +240,7 @@ export default function ProductPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.27, duration: 0.4 }}
                   className={`text-[#4d4c4c] text-[16px] leading-relaxed mb-4 line-clamp-3
-                    ${isArabic ? "" : "tracking-[0.2px]"}`}
+                    ${isArabic ? "" : "-[0.2px]"}`}
                 >
                   {product.description}
                 </motion.p>
@@ -256,7 +278,7 @@ export default function ProductPage() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.4, duration: 0.3 }}
                     className={`text-[14px] text-[#c9a84c]/80 mt-1
-                      ${isArabic ? "" : "tracking-[0.3px]"}`}
+                      ${isArabic ? "" : "-[0.3px]"}`}
                   >
                     {isArabic
                       ? `توفر ${t.product.currency} ${savings} (${discountPct}%)`
@@ -286,10 +308,11 @@ export default function ProductPage() {
                   disabled={isPending}
                   whileTap={{ scale: 0.97 }}
                   className={`w-full h-13.5 text-[13px] font-semibold border-2 rounded-2xl transition-all duration-300
-                    ${isArabic ? "" : "tracking-[2px] uppercase"}
-                    ${added
-                      ? "border-[#c9a84c] bg-[rgba(201,168,76,0.08)] text-[#b8912e]"
-                      : "border-[rgba(26,10,61,0.15)] bg-white text-[#1a0a3d] hover:border-[#c9a84c] hover:text-[#b8912e] hover:bg-[rgba(201,168,76,0.05)]"
+                    ${isArabic ? "" : "-[2px] uppercase"}
+                    ${
+                      added
+                        ? "border-[#c9a84c] bg-[rgba(201,168,76,0.08)] text-[#b8912e]"
+                        : "border-[rgba(26,10,61,0.15)] bg-white text-[#1a0a3d] hover:border-[#c9a84c] hover:text-[#b8912e] hover:bg-[rgba(201,168,76,0.05)]"
                     }
                     ${isPending ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
                 >
@@ -313,7 +336,7 @@ export default function ProductPage() {
                     shadow-[0_4px_22px_rgba(45,27,105,0.35)]
                     hover:shadow-[0_6px_30px_rgba(45,27,105,0.5)]
                     transition-all duration-300
-                    ${isArabic ? "" : "tracking-[2px] uppercase"}
+                    ${isArabic ? "" : "-[2px] uppercase"}
                     after:content-[''] after:absolute after:inset-0 after:rounded-2xl
                     after:bg-[linear-gradient(135deg,rgba(201,168,76,0.18)_0%,transparent_55%)]
                     after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300`}
@@ -322,12 +345,17 @@ export default function ProductPage() {
                     className="absolute inset-0 bg-[linear-gradient(105deg,transparent_30%,rgba(255,255,255,0.12)_50%,transparent_70%)]"
                     initial={{ x: "-100%" }}
                     animate={{ x: "200%" }}
-                    transition={{ delay: 2, duration: 0.8, ease: "easeInOut", repeat: Infinity, repeatDelay: 4 }}
+                    transition={{
+                      delay: 2,
+                      duration: 0.8,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 4,
+                    }}
                   />
                   <span className="relative z-10">{t.product.buyNow}</span>
                 </motion.button>
               </motion.div>
-
 
               {/* View details */}
               <motion.div
@@ -340,14 +368,21 @@ export default function ProductPage() {
                   href={`/${locale.toLowerCase()}/products/${product.id}`}
                   className="group inline-flex items-center gap-2 text-[15px] text-[#000] hover:text-[#1a0a3d] no-underline transition-colors duration-300"
                 >
-                  <span className={`border-b border-transparent group-hover:border-[#1a0a3d]/30 pb-px
-                    ${isArabic ? "" : "tracking-[0.5px] uppercase"}`}>
+                  <span
+                    className={`border-b border-transparent group-hover:border-[#1a0a3d]/30 pb-px
+                    ${isArabic ? "" : "-[0.5px] uppercase"}`}
+                  >
                     {t.product.viewDetails}
                   </span>
                   <svg
-                    width="13" height="13" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" strokeWidth="2"
-                    strokeLinecap="round" strokeLinejoin="round"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className={`transition-transform duration-300 group-hover:translate-x-1
                       ${isArabic ? "rotate-180 group-hover:-translate-x-1" : ""}`}
                   >
@@ -356,7 +391,6 @@ export default function ProductPage() {
                 </Link>
               </motion.div>
             </motion.div>
-
           </div>
         </div>
       </section>

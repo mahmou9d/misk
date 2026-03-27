@@ -116,7 +116,7 @@ export default function ForgotPasswordPage() {
   */
   const inputClassName = `
     w-full h-[50px] bg-transparent border-b outline-none text-[15px] text-[#1a1a1a] transition-colors duration-250
-    ${isArabic ? "text-right pr-0 pl-10 tracking-normal" : "text-left pl-0 pr-10 tracking-[0.3px]"}
+    ${isArabic ? "text-right pr-0 pl-10 -normal" : "text-left pl-0 pr-10 -[0.3px]"}
     ${errors.email ? "border-red-400/60" : "border-black/15 focus:border-[#c9a84c]/70"}
   `;
 
@@ -150,7 +150,7 @@ export default function ForgotPasswordPage() {
             transition={{ delay: 0.1, duration: 0.4 }}
             className="text-center mb-8"
           >
-            <span className="text-[28px] font-bold tracking-[6px] bg-gradient-to-br from-[#c9a84c] via-[#f0d080] to-[#b8912e] bg-clip-text text-transparent block drop-shadow-[0_1px_6px_rgba(201,168,76,0.2)]">
+            <span className="text-[28px] font-bold -[6px] bg-gradient-to-br from-[#c9a84c] via-[#f0d080] to-[#b8912e] bg-clip-text text-transparent block drop-shadow-[0_1px_6px_rgba(201,168,76,0.2)]">
               Misk
             </span>
             <div className="mx-auto mt-[6px] h-[1px] w-8 bg-gradient-to-r from-transparent via-[#c9a84c]/50 to-transparent" />
@@ -172,7 +172,7 @@ export default function ForgotPasswordPage() {
             </h1>
             <p
               className={`text-sm text-[#aaa] ${
-                isArabic ? "tracking-normal" : "tracking-[0.3px]"
+                isArabic ? "-normal" : "-[0.3px]"
               }`}
             >
               {t?.forgotPassword?.subtitle ??
@@ -203,14 +203,14 @@ export default function ForgotPasswordPage() {
                   <div className={isArabic ? "text-right" : "text-left"}>
                     <p
                       className={`text-[13px] font-medium text-[#1a1a1a] mb-[2px] ${
-                        isArabic ? "tracking-normal" : "tracking-[0.3px]"
+                        isArabic ? "-normal" : "-[0.3px]"
                       }`}
                     >
                       {t?.forgotPassword?.checkEmail ?? "Check your inbox"}
                     </p>
                     <p
                       className={`text-[12px] text-[#aaa] ${
-                        isArabic ? "tracking-normal" : "tracking-[0.2px]"
+                        isArabic ? "-normal" : "-[0.2px]"
                       }`}
                     >
                       {t?.forgotPassword?.sentTo ?? "We sent a link to"}{" "}
@@ -220,7 +220,7 @@ export default function ForgotPasswordPage() {
                     </p>
                     <p
                       className={`text-[11px] text-[#bbb] mt-1 ${
-                        isArabic ? "tracking-normal" : "tracking-[0.2px]"
+                        isArabic ? "-normal" : "-[0.2px]"
                       }`}
                     >
                       {t?.forgotPassword?.checkSpam ??
@@ -268,9 +268,7 @@ export default function ForgotPasswordPage() {
               {errors.email && (
                 <p
                   className={`text-[12px] text-red-500/80 mt-1 ${
-                    isArabic
-                      ? "tracking-normal text-right"
-                      : "tracking-[0.3px] text-left"
+                    isArabic ? "-normal text-right" : "-[0.3px] text-left"
                   }`}
                 >
                   {errors.email.message}
@@ -293,7 +291,7 @@ export default function ForgotPasswordPage() {
                     : "bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] cursor-pointer"
                 }
                 text-[#f0d080]/95
-                ${isArabic ? "tracking-normal normal-case" : "tracking-[3px] uppercase"}
+                ${isArabic ? "-normal normal-case" : "-[3px] uppercase"}
                 after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-br after:from-[#c9a84c]/12 after:to-transparent after:opacity-0 hover:after:opacity-100 after:transition-opacity
               `}
             >
@@ -337,7 +335,7 @@ export default function ForgotPasswordPage() {
             <Link
               href={`/${locale.toLowerCase()}/login`}
               className={`inline-flex items-center gap-2 text-[12px] text-[#bbb] no-underline border-b border-black/10 hover:text-[#c9a84c]/90 transition-colors ${
-                isArabic ? "tracking-normal flex-row-reverse" : "tracking-[1px]"
+                isArabic ? "-normal flex-row-reverse" : "-[1px]"
               }`}
             >
               <ArrowLeftIcon />
@@ -367,9 +365,7 @@ export default function ForgotPasswordPage() {
               key={href}
               href={href}
               className={`text-[12px] text-[#bbb] no-underline hover:text-[#c9a84c]/90 transition-colors ${
-                isArabic
-                  ? "tracking-normal normal-case"
-                  : "tracking-[1.5px] uppercase"
+                isArabic ? "-normal normal-case" : "-[1.5px] uppercase"
               }`}
             >
               {label}

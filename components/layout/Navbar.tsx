@@ -32,7 +32,7 @@ const Logo = ({ locale }: { locale: string }) => (
   >
     <span
       className="
-         font-bold tracking-widest transition-all duration-300
+         font-bold -widest transition-all duration-300
         text-3xl md:text-5xl
         [background:linear-gradient(135deg,#c9a84c_0%,#f0d080_45%,#b8912e_100%)]
         [background-clip:text]

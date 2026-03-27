@@ -45,7 +45,7 @@ export default function ProductCard({ index, p, fill = false }: Props) {
             loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#1a0a3d8c] flex items-end p-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span className=" text-[16px] tracking-[2.5px] uppercase text-[#f0d080eb] flex items-center gap-[5px]">
+            <span className=" text-[16px] -[2.5px] uppercase text-[#f0d080eb] flex items-center gap-[5px]">
               {t.productCard.viewDetails}
               <svg
                 width="11"
@@ -62,7 +62,7 @@ export default function ProductCard({ index, p, fill = false }: Props) {
           </div>
         </div>
         <div className="pt-3">
-          <p className=" text-[16px] tracking-[3px] uppercase text-[#c9a84cbf] mb-1">
+          <p className=" text-[16px] -[3px] uppercase text-[#c9a84cbf] mb-1">
             {p.category_name}
           </p>
           <h3 className=" text-[20px] font-medium text-[#1a1a1a] leading-[1.3] mb-1.5">

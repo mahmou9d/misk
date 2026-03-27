@@ -25,8 +25,6 @@ import { useCats } from "@/lib/CatsContext";
 import { useTranslation } from "@/lib/Usetranslation";
 import { useGetReviews, useAddReview } from "@/hooks/useReviews";
 
-
-
 /* ── Skeleton ── */
 function Skeleton() {
   return (
@@ -100,7 +98,7 @@ function ProductGallery({
               />
             ) : (
               <div className="absolute inset-0 flex items-end justify-center bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69]">
-                <span className=" text-[11px] text-[#c9a84c]/40 tracking-[3px] mb-5">
+                <span className=" text-[11px] text-[#c9a84c]/40 -[3px] mb-5">
                   {name}
                 </span>
               </div>
@@ -290,7 +288,7 @@ function ReviewCard({
     >
       <div className="flex items-start gap-3 mb-3">
         <div className="w-9 h-9 shrink-0 bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] flex items-center justify-center">
-          <span className="text-[16px] font-semibold text-[#f0d080] tracking-wide">
+          <span className="text-[16px] font-semibold text-[#f0d080] -wide">
             {initials}
           </span>
         </div>
@@ -298,7 +296,7 @@ function ReviewCard({
           <div className="flex items-center justify-between gap-2 mb-1">
             <span
               className={`text-[16px] font-medium text-[#111] truncate ${
-                isArabic ? "tracking-normal" : "tracking-[0.5px]"
+                isArabic ? "-normal" : "-[0.5px]"
               }`}
             >
               {displayName}
@@ -313,9 +311,7 @@ function ReviewCard({
       {review.comment && (
         <p
           className={`text-[16px] text-gray-500 ${
-            isArabic
-              ? "leading-[1.9] tracking-normal"
-              : "leading-[1.75] tracking-[0.2px]"
+            isArabic ? "leading-[1.9] -normal" : "leading-[1.75] -[0.2px]"
           }`}
         >
           {review.comment}
@@ -345,7 +341,6 @@ function AddReviewForm({
   const { mutate: addReview, isPending } = useAddReview();
 
   const handleSubmit = () => {
-    
     addReview(
       { product: productId, rating, comment },
       {
@@ -356,7 +351,7 @@ function AddReviewForm({
           onSuccess?.();
         },
         onError: (error: AxiosError<ErrorResponse>) => {
-          console.log(error.response?.data.detail)
+          console.log(error.response?.data.detail);
           showFormNotification(
             error?.response?.data?.message ||
               error?.response?.data?.detail ||
@@ -379,7 +374,7 @@ function AddReviewForm({
         <div className="text-[#c9a84c] text-2xl mb-2">✓</div>
         <p
           className={`text-[16px] text-gray-500 ${
-            isArabic ? "tracking-normal" : "tracking-[0.5px]"
+            isArabic ? "-normal" : "-[0.5px]"
           }`}
         >
           {t?.reviews?.thankYou || "Thank you for your review!"}
@@ -392,7 +387,7 @@ function AddReviewForm({
     <div className="border rounded-2xl border-black/[0.07] bg-[#faf9f7] p-5">
       <p
         className={`text-[16px] text-[#111] mb-4 ${
-          isArabic ? "tracking-normal" : "tracking-[2px] uppercase"
+          isArabic ? "-normal" : "-[2px] uppercase"
         }`}
       >
         {t?.reviews?.writeReview || "Write a Review"}
@@ -402,7 +397,7 @@ function AddReviewForm({
       <div className="mb-4">
         <p
           className={`text-[16px] text-gray-700 mb-2 ${
-            isArabic ? "tracking-normal" : "tracking-[1px]"
+            isArabic ? "-normal" : "-[1px]"
           }`}
         >
           {t?.reviews?.yourRating || "Your Rating"}
@@ -415,7 +410,7 @@ function AddReviewForm({
       <div className="mb-4">
         <p
           className={`text-[16px] text-gray-700 mb-2 ${
-            isArabic ? "tracking-normal" : "tracking-[1px]"
+            isArabic ? "-normal" : "-[1px]"
           }`}
         >
           {t?.reviews?.yourComment || "Your Comment"}{" "}
@@ -432,9 +427,7 @@ function AddReviewForm({
             t?.reviews?.commentPlaceholder || "Share your experience..."
           }
           className={`w-full rounded-xl text-[16px] text-[#333] bg-white border border-black/10 px-3.5 py-3 resize-none outline-none transition-colors duration-200 focus:border-[#c9a84c]/60 placeholder:text-gray-300 ${
-            isArabic
-              ? "tracking-normal leading-[1.9]"
-              : "tracking-[0.3px] leading-relaxed"
+            isArabic ? "-normal leading-[1.9]" : "-[0.3px] leading-relaxed"
           }`}
         />
       </div>
@@ -449,7 +442,7 @@ function AddReviewForm({
               ? "bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] text-[#f0d080]/95 border-[#c9a84c]/25 cursor-pointer hover:shadow-[0_4px_20px_rgba(45,27,105,0.25)]"
               : "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
           }
-          ${isArabic ? "tracking-normal" : "tracking-[2px] uppercase"}
+          ${isArabic ? "-normal" : "-[2px] uppercase"}
         `}
       >
         <span className="relative z-10">
@@ -457,7 +450,6 @@ function AddReviewForm({
             ? t?.reviews?.submitting || "Submitting..."
             : t?.reviews?.submit || "Submit Review"}
         </span>
-
       </motion.button>
     </div>
   );
@@ -496,7 +488,7 @@ function ReviewsSection({
       <div className="mb-8">
         <span
           className={`text-[18px] text-[#c9a84c]/80 block mb-2 ${
-            isArabic ? "tracking-normal" : "tracking-[5px] uppercase"
+            isArabic ? "-normal" : "-[5px] uppercase"
           }`}
         >
           {t?.reviews?.label || "Customer Reviews"}
@@ -529,7 +521,7 @@ function ReviewsSection({
                   <StarRow rating={avgRating} size={18} />
                   <p
                     className={`text-[16px] text-gray-400 mt-1.5 ${
-                      isArabic ? "tracking-normal" : "tracking-[0.5px]"
+                      isArabic ? "-normal" : "-[0.5px]"
                     }`}
                   >
                     {reviews.length}{" "}
@@ -584,7 +576,7 @@ function ReviewsSection({
               </div>
               <p
                 className={`text-[17px] text-gray-600 ${
-                  isArabic ? "tracking-normal" : "tracking-[1px]"
+                  isArabic ? "-normal" : "-[1px]"
                 }`}
               >
                 {t?.reviews?.noReviews || "No reviews yet. Buy the first!"}
@@ -732,7 +724,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
           <div className="text-center">
             <p
               className={` text-[#bbb] text-base mb-4 ${
-                isArabic ? "tracking-normal" : "tracking-[1px]"
+                isArabic ? "-normal" : "-[1px]"
               }`}
             >
               {t.productDetail.notFound}
@@ -740,7 +732,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
             <Link
               href={`/${locale.toLowerCase()}`}
               className={` text-[#888] text-[13px] border-b border-black/10 pb-0.5 transition-colors hover:text-[#111] hover:border-black/30 ${
-                isArabic ? "tracking-normal" : "tracking-[2px] uppercase"
+                isArabic ? "-normal" : "-[2px] uppercase"
               }`}
             >
               {t.productDetail.backHome}
@@ -794,7 +786,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.18, duration: 0.4 }}
-                className={` text-[22px] font-extrabold text-[#c9a84c]/80  ${isArabic ? "tracking-normal" : "tracking-[5px] uppercase"}`}
+                className={` text-[22px] font-extrabold text-[#c9a84c]/80  ${isArabic ? "-normal" : "-[5px] uppercase"}`}
               >
                 Misk
               </motion.p>
@@ -818,7 +810,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
                   {product.description.split("\n\n").map((para, i) => (
                     <p
                       key={i}
-                      className={` text-[17px] text-gray-500 mb-3.5 last:mb-0 ${isArabic ? "leading-[2] tracking-normal" : "leading-[1.85] tracking-[0.2px]"}`}
+                      className={` text-[17px] text-gray-500 mb-3.5 last:mb-0 ${isArabic ? "leading-[2] -normal" : "leading-[1.85] -[0.2px]"}`}
                     >
                       {para}
                     </p>
@@ -873,7 +865,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
                   className="mb-6"
                 >
                   <p
-                    className={` text-[16px] rounded-xl text-[#000] mb-3 ${isArabic ? "tracking-normal" : "tracking-[3px] uppercase"}`}
+                    className={` text-[16px] rounded-xl text-[#000] mb-3 ${isArabic ? "-normal" : "-[3px] uppercase"}`}
                   >
                     {t.productDetail.volume}
                   </p>
@@ -890,7 +882,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
                           className={` text-[15px] rounded-2xl px-[18px] py-2 border transition-all duration-200 
                             ${isSelected ? "border-[#c9a84c]/80 bg-[#c9a84c]/10 text-[#c9a84c]/90 shadow-[inset_0_0_0_1px_rgba(201,168,76,0.3)]" : "border-black/10 bg-white text-[#444]"}
                             ${outOfStock ? "text-gray-300 cursor-not-allowed line-through" : "hover:border-[#c9a84c]/50 cursor-pointer"}
-                            ${isArabic ? "tracking-normal" : "tracking-[1px]"}
+                            ${isArabic ? "-normal" : "-[1px]"}
                           `}
                         >
                           {v.volume}
@@ -911,7 +903,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
                 className="mb-5"
               >
                 <p
-                  className={` text-[16px] text-[#000] mb-3 ${isArabic ? "tracking-normal" : "tracking-[3px] uppercase"}`}
+                  className={` text-[16px] text-[#000] mb-3 ${isArabic ? "-normal" : "-[3px] uppercase"}`}
                 >
                   {t.productDetail.quantity}
                 </p>
@@ -948,7 +940,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
                   className={`h-[52px]  text-[18px] rounded-2xl font-medium border transition-all duration-300
                     ${wasAddedThisVariant ? "border-[#c9a84c]/50 bg-[#c9a84c]/5 text-[#c9a84c]/90" : "border-black/20 bg-white text-[#222]"}
                     ${!inStock || isAddingThisVariant ? "text-gray-300 cursor-not-allowed border-gray-100" : "hover:border-[#c9a84c]/55 hover:text-[#c9a84c]/90 cursor-pointer"}
-                    ${isArabic ? "tracking-normal" : "tracking-[3px] uppercase"}
+                    ${isArabic ? "-normal" : "-[3px] uppercase"}
                   `}
                 >
                   {!inStock
@@ -966,7 +958,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
                   disabled={!inStock}
                   className={`h-[52px] text-[18px] rounded-2xl font-semibold border border-[#c9a84c]/25 shadow-lg transition-all duration-300 relative overflow-hidden group
                     ${inStock ? "bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] text-[#f0d080]/95 shadow-[#2d1b69]/20 hover:shadow-[#2d1b69]/35 cursor-pointer" : "bg-gray-300 text-white cursor-not-allowed"}
-                    ${isArabic ? "tracking-normal" : "tracking-[3px] uppercase"}
+                    ${isArabic ? "-normal" : "-[3px] uppercase"}
                   `}
                 >
                   <span className="relative z-10">
@@ -995,7 +987,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
             >
               <div className="mb-9">
                 <span
-                  className={` text-[16px] text-[#c9a84c]/80 block mb-2 ${isArabic ? "tracking-normal" : "tracking-[5px] uppercase"}`}
+                  className={` text-[16px] text-[#c9a84c]/80 block mb-2 ${isArabic ? "-normal" : "-[5px] uppercase"}`}
                 >
                   {t.productDetail.collectionLabel}
                 </span>

@@ -119,11 +119,11 @@ export default function ReturnPolicy() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="pt-24 pb-16 md:pt-32 md:pb-20 border-b border-gray-100 mb-16"
           >
-            <span className="text-[12px] font-black tracking-[0.4em] uppercase text-[#c9a84c] block mb-4">
+            <span className="text-[12px] font-black -[0.4em] uppercase text-[#c9a84c] block mb-4">
               Misk Fragrances
             </span>
             <h1
-              className={`text-[#111] text-[clamp(40px,6vw,64px)] font-bold tracking-tight mb-8 ${isArabic ? "leading-[1.2]" : "leading-[0.95]"}`}
+              className={`text-[#111] text-[clamp(40px,6vw,64px)] font-bold -tight mb-8 ${isArabic ? "leading-[1.2]" : "leading-[0.95]"}`}
             >
               {t.returnPolicy.title}
             </h1>
@@ -155,11 +155,11 @@ export default function ReturnPolicy() {
 
                 <div className="pt-1">
                   <div className="flex items-center gap-4 mb-4">
-                    <span className="text-[12px] font-bold text-gray-300 tracking-widest uppercase">
+                    <span className="text-[12px] font-bold text-gray-300 -widest uppercase">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <h2
-                      className={`text-2xl md:text-3xl font-bold text-[#111] tracking-tight ${isArabic ? "leading-[1.4]" : "leading-none"}`}
+                      className={`text-2xl md:text-3xl font-bold text-[#111] -tight ${isArabic ? "leading-[1.4]" : "leading-none"}`}
                     >
                       {s.title}
                     </h2>
@@ -242,7 +242,7 @@ export default function ReturnPolicy() {
               className={`text-[15px] md:text-[16px] text-gray-500 font-medium m-0 ${isArabic ? "leading-[2]" : "leading-[1.7]"}`}
             >
               {t.returnPolicy.footerNote}{" "}
-              <span className="text-[#c9a84c] font-bold uppercase tracking-wider">
+              <span className="text-[#c9a84c] font-bold uppercase -wider">
                 {t.returnPolicy.footerSuffix}
               </span>
             </p>

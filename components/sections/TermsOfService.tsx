@@ -38,7 +38,7 @@ function TermSection({
         }`}
       >
         {!isArabic && (
-          <span className=" text-[10px] tracking-[1.5px] text-[#c8c0d4] text-right">
+          <span className=" text-[10px] -[1.5px] text-[#c8c0d4] text-right">
             {String(index + 1).padStart(2, "0")}
           </span>
         )}
@@ -66,7 +66,7 @@ function TermSection({
         </motion.svg>
 
         {isArabic && (
-          <span className=" text-[10px] tracking-[1.5px] text-[#c8c0d4] text-left">
+          <span className=" text-[10px] -[1.5px] text-[#c8c0d4] text-left">
             {String(index + 1).padStart(2, "0")}
           </span>
         )}
@@ -137,13 +137,13 @@ export default function TermsOfService() {
             transition={{ duration: 0.5 }}
             className="py-11 md:py-[52px] border-b border-[#c9a84c1f] mb-2"
           >
-            <span className=" text-[10px] tracking-[4px] uppercase text-[#c9a84c] block mb-2.5">
+            <span className=" text-[10px] -[4px] uppercase text-[#c9a84c] block mb-2.5">
               Misk Fragrances
             </span>
             <h1 className="-display text-[clamp(28px,4vw,48px)] font-normal text-[#1a1522] mb-3 leading-[1.1]">
               {t.termsOfService.title}
             </h1>
-            <p className=" text-[13px] text-[#c8c0d4] tracking-[0.3px] mb-6">
+            <p className=" text-[13px] text-[#c8c0d4] -[0.3px] mb-6">
               {t.termsOfService.effectiveDate}
             </p>
             <p className=" text-[15.5px] text-[#4a4255] leading-[1.85] max-w-[600px]">
@@ -159,12 +159,12 @@ export default function TermsOfService() {
             className="py-6 md:py-7 border-b border-[#c9a84c1f] mb-2"
           >
             <div className="flex items-center justify-between mb-3.5">
-              <p className=" text-[9px] tracking-[3.5px] uppercase text-[#c8c0d4] m-0">
+              <p className=" text-[9px] -[3.5px] uppercase text-[#c8c0d4] m-0">
                 {t.termsOfService.sections_label}
               </p>
               <button
                 onClick={handleToggleAll}
-                className=" text-[11px] tracking-[1px] text-[#8a7f99] bg-transparent border border-[#c9a84c1f] rounded-[3px] px-3 py-1 cursor-pointer transition-all duration-200 hover:border-[#c9a84ca1] hover:text-[#c9a84c]"
+                className=" text-[11px] -[1px] text-[#8a7f99] bg-transparent border border-[#c9a84c1f] rounded-[3px] px-3 py-1 cursor-pointer transition-all duration-200 hover:border-[#c9a84ca1] hover:text-[#c9a84c]"
               >
                 {allOpen
                   ? t.termsOfService.collapseAll

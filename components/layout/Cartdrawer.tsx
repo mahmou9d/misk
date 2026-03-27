@@ -208,7 +208,7 @@ return (
 
       {/* Volume Info */}
       {item?.variant?.volume && (
-        <span className=" text-[15px] tracking-[2px] uppercase text-[#c9a84c]/70">
+        <span className=" text-[15px]  uppercase text-[#c9a84c]/70">
           {item.variant.volume}
         </span>
       )}
@@ -339,7 +339,7 @@ useEffect(() => {
                     {t.cart.title}
                   </span>
                   {totalQuantity > 0 && (
-                    <span className=" text-[18px] tracking-[2px] text-[#c9a84c]/80">
+                    <span className=" text-[18px]  text-[#c9a84c]/80">
                       {totalQuantity}{" "}
                       {totalQuantity === 1 ? t.cart.item : t.cart.items}
                     </span>
@@ -373,12 +373,12 @@ useEffect(() => {
                     <span className="text-[#c9a84c]/30">
                       <BagIcon />
                     </span>
-                    <p className=" text-[15px] tracking-[1px] text-[#ccc]">
+                    <p className=" text-[15px]  text-[#ccc]">
                       {t.cart.empty}
                     </p>
                     <button
                       onClick={onClose}
-                      className=" text-[20px] tracking-[3px] uppercase bg-none border border-black/10 px-[22px] py-[9px] cursor-pointer mt-1 transition-all duration-200 hover:border-[#c9a84c] hover:text-[#c9a84c]"
+                      className=" text-[20px]  uppercase bg-none border border-black/10 px-[22px] py-[9px] cursor-pointer mt-1 transition-all duration-200 hover:border-[#c9a84c] hover:text-[#c9a84c]"
                     >
                       {t.cart.continueShopping}
                     </button>
@@ -402,7 +402,7 @@ useEffect(() => {
                 <div className="shrink-0 p-4 md:px-6 md:pt-[18px] md:pb-7 border-t border-[#c9a84c]/12 bg-[#faf8f4]">
                   {/* Subtotal */}
                   <div className="flex items-center justify-between mb-[18px]">
-                    <span className=" text-[12px] tracking-[3px] uppercase text-black">
+                    <span className=" text-[12px]  uppercase text-black">
                       {t.cart.subtotal}
                     </span>
                     <span className=" text-[18px] font-semibold text-[#111]">
@@ -424,7 +424,7 @@ useEffect(() => {
 
                       onClose();
                     }}
-                    className="flex items-center justify-center w-full h-[52px] no-underline  text-[13px] tracking-[3px] uppercase font-bold bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] text-[#f0d080]/95 border border-[#c9a84c]/25 shadow-[0_2px_18px_rgba(45,27,105,0.2)] transition-shadow duration-300 hover:shadow-[0_6px_28px_rgba(45,27,105,0.35)] relative overflow-hidden mb-3"
+                    className="flex rounded-2xl items-center justify-center w-full h-[52px] no-underline  text-[13px]  uppercase font-bold bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] text-[#f0d080]/95 border border-[#c9a84c]/25 shadow-[0_2px_18px_rgba(45,27,105,0.2)] transition-shadow duration-300 hover:shadow-[0_6px_28px_rgba(45,27,105,0.35)] relative overflow-hidden mb-3"
                   >
                     {t.cart.checkout} — LE {subtotal.toLocaleString()}
                   </Link>
@@ -432,7 +432,7 @@ useEffect(() => {
                   {/* Continue shopping */}
                   <button
                     onClick={onClose}
-                    className="w-full bg-none border-none cursor-pointer  text-[15px] font-semibold tracking-[3px] uppercase text-black text-center py-1.5 transition-colors duration-200 hover:text-[#c9a84c]/80"
+                    className="w-full bg-none border-none cursor-pointer  text-[15px] font-semibold  uppercase text-black text-center py-1.5 transition-colors duration-200 hover:text-[#c9a84c]/80"
                   >
                     {t.cart.continueShopping}
                   </button>

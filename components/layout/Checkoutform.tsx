@@ -100,7 +100,7 @@ function Field({
   return (
     <div className="flex flex-col gap-1.5">
       {label && (
-        <label className="text-[12px] font-semibold text-[#555] tracking-[0.3px]">
+        <label className="text-[12px] font-semibold text-[#555] ">
           {label}
         </label>
       )}
@@ -122,7 +122,7 @@ function Field({
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-[18px]">
-      <p className="text-[10px] tracking-[4px] text-[#C9A84C] uppercase mb-1.5">
+      <p className="text-[10px]  text-[#C9A84C] uppercase mb-1.5">
         {children}
       </p>
       <div className="h-[1.5px] bg-[#E8E2D6]" />
@@ -299,7 +299,7 @@ export function CheckoutForm({
             />
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-[12px] font-semibold text-[#555] tracking-[0.3px]">
+              <label className="text-[12px] font-semibold text-[#555] ">
                 {isArabic ? "المحافظة" : "Governorate"}
               </label>
               <select
@@ -424,7 +424,7 @@ export function CheckoutForm({
         whileTap={{ scale: 0.99 }}
         onClick={handleSubmit(onSubmit)}
         disabled={loading}
-        className={`w-full h-[58px] rounded-[12px] text-[14px] font-semibold tracking-[2.5px] uppercase transition-all duration-150
+        className={`w-full h-[58px] rounded-[12px] text-[14px] font-semibold uppercase transition-all duration-150
           ${
             loading
               ? "bg-[#e0e0e0] text-[#aaa] cursor-not-allowed"

@@ -31,21 +31,21 @@
 //     >
 //       <button
 //         onClick={() => setOpen((v) => !v)}
-//         className={`w-full flex items-center justify-between py-[22px] px-6 gap-4 text-start transition-colors duration-250 
+//         className={`w-full flex items-center justify-between py-[22px] px-6 gap-4 text-start transition-colors duration-250
 //         ${open ? "bg-[rgba(201,168,76,0.03)]" : "bg-transparent"}`}
 //       >
 //         <div className="flex items-center gap-4">
 //           {/* Gold number */}
 //           <span
-//             className={` text-[12px] font-medium text-[rgba(201,168,76,0.6)] min-w-[20px] shrink-0 
-//             ${isArabic ? "tracking-0" : "tracking-[1px]"}`}
+//             className={` text-[12px] font-medium text-[rgba(201,168,76,0.6)] min-w-[20px] shrink-0
+//             ${isArabic ? "-0" : "-[1px]"}`}
 //           >
 //             {String(index + 1).padStart(2, "0")}
 //           </span>
 
 //           <span
-//             className={` text-[clamp(15px,2vw,18px)] transition-colors duration-250 
-//             ${open ? "text-[#1a0a3d] font-medium" : "text-[#1a1a1a] font-normal"} 
+//             className={` text-[clamp(15px,2vw,18px)] transition-colors duration-250
+//             ${open ? "text-[#1a0a3d] font-medium" : "text-[#1a1a1a] font-normal"}
 //             ${isArabic ? "leading-[1.6]" : "leading-[1.4]"}`}
 //           >
 //             {q}
@@ -54,7 +54,7 @@
 
 //         {/* Plus / Minus toggle */}
 //         <div
-//           className={`shrink-0 flex items-center justify-center w-7 h-7 border rounded-full transition-all duration-250 
+//           className={`shrink-0 flex items-center justify-center w-7 h-7 border rounded-full transition-all duration-250
 //           ${open ? "border-[rgba(201,168,76,0.5)] bg-[rgba(201,168,76,0.08)]" : "border-[rgba(0,0,0,0.15)] bg-transparent"}`}
 //         >
 //           <IconEqual open={open} />
@@ -73,7 +73,7 @@
 //             <div className="ps-[60px] pe-6 pb-6 mt-5">
 //               <div className="border-s-2 border-[rgba(201,168,76,0.35)] ps-4">
 //                 <p
-//                   className={` text-[15px] text-[#666] font-normal 
+//                   className={` text-[15px] text-[#666] font-normal
 //                   ${isArabic ? "leading-[2]" : "leading-[1.8]"}`}
 //                 >
 //                   {a}
@@ -101,13 +101,13 @@
 //           className="flex flex-col items-center mb-12"
 //         >
 //           <span
-//             className={` text-[20px] text-[rgba(201,168,76,0.8)] mb-[10px] 
-//             ${isArabic ? "tracking-0 normal-case" : "tracking-[5px] uppercase"}`}
+//             className={` text-[20px] text-[rgba(201,168,76,0.8)] mb-[10px]
+//             ${isArabic ? "-0 normal-case" : "-[5px] uppercase"}`}
 //           >
 //             {t.faq.eyebrow}
 //           </span>
 //           <h2
-//             className={` text-gray-900 text-center text-[clamp(24px,3vw,38px)] font-medium 
+//             className={` text-gray-900 text-center text-[clamp(24px,3vw,38px)] font-medium
 //             ${isArabic ? "leading-[1.5]" : "leading-[1.15]"}`}
 //           >
 //             {t.faq.title}

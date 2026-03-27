@@ -84,7 +84,7 @@ export default function Footer() {
           transition={{ duration: 0.5 }}
           className="mb-4"
         >
-          <span className="text-[28px] font-bold tracking-[8px] bg-[linear-gradient(135deg,#c9a84c_0%,#f0d080_50%,#b8912e_100%)] bg-clip-text text-transparent drop-shadow-[0_1px_6px_rgba(201,168,76,0.2)]">
+          <span className="text-[28px] font-bold -[8px] bg-[linear-gradient(135deg,#c9a84c_0%,#f0d080_50%,#b8912e_100%)] bg-clip-text text-transparent drop-shadow-[0_1px_6px_rgba(201,168,76,0.2)]">
             Misk
           </span>
           <div className="mt-[6px] mx-auto h-[1px] w-full bg-[linear-gradient(90deg,transparent,rgba(201,168,76,0.5),transparent)]" />
@@ -96,7 +96,7 @@ export default function Footer() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1, duration: 0.4 }}
           className={`text-[16px] text-[rgba(201,168,76,0.75)] mb-4 
-          ${isArabic ? "tracking-0 normal-case" : "tracking-[4px] uppercase"}`}
+          ${isArabic ? "-0 normal-case" : "-[4px] uppercase"}`}
         >
           {t.footer.quickLinksLabel}
         </motion.p>
@@ -115,7 +115,7 @@ export default function Footer() {
                 className="group relative inline-block text-[14px] text-[#666] no-underline"
               >
                 <span
-                  className={`transition-colors duration-200 group-hover:text-[#1a0a3d] ${isArabic ? "tracking-0" : "tracking-[0.3px]"}`}
+                  className={`transition-colors duration-200 group-hover:text-[#1a0a3d] ${isArabic ? "-0" : "-[0.3px]"}`}
                 >
                   {l.label}
                 </span>
@@ -131,7 +131,7 @@ export default function Footer() {
         {/* Copyright + Developer */}
         <div className="flex flex-row items-center gap-4">
           <p
-            className={`text-[13px] text-[#aaa] ${isArabic ? "tracking-0" : "tracking-[0.5px]"}`}
+            className={`text-[13px] text-[#aaa] ${isArabic ? "-0" : "-[0.5px]"}`}
           >
             © 2026, Misk
           </p>

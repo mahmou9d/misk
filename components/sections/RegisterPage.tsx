@@ -105,7 +105,7 @@ export default function RegisterPage() {
 
       {/* خلفية فنية: كلمة MISK ضخمة */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-        <h1 className="text-[25vw] font-black text-black/[0.08] uppercase tracking-[-0.05em]">
+        <h1 className="text-[25vw] font-black text-black/[0.08] uppercase -[-0.05em]">
           Misk
         </h1>
       </div>
@@ -122,10 +122,10 @@ export default function RegisterPage() {
 
         <header className="mb-10">
           <div className="mb-4">
-            <span className="text-[10px] font-bold uppercase tracking-[4px] text-[#c9a84c] block mb-2">
+            <span className="text-[10px] font-bold uppercase -[4px] text-[#c9a84c] block mb-2">
               Join Misk World
             </span>
-            <h2 className="text-[32px] font-bold text-black leading-none uppercase tracking-tighter">
+            <h2 className="text-[32px] font-bold text-black leading-none uppercase -tighter">
               {t.register.title}
             </h2>
           </div>
@@ -144,7 +144,7 @@ export default function RegisterPage() {
               className={`w-full bg-white rounded-2xl border-b-2 border-black focus:border-black px-5 py-2 text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
             />
             {errors.first_name && (
-              <p className="absolute -bottom-5 text-[10px] font-bold text-red-500 uppercase tracking-wider">
+              <p className="absolute -bottom-5 text-[10px] font-bold text-red-500 uppercase -wider">
                 {errors.first_name.message}
               </p>
             )}
@@ -159,7 +159,7 @@ export default function RegisterPage() {
               className={`w-full bg-white rounded-2xl border-b-2 border-black focus:border-black px-5 py-2 text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
             />
             {errors.email && (
-              <p className="absolute -bottom-5 text-[10px] font-bold text-red-500 uppercase tracking-wider">
+              <p className="absolute -bottom-5 text-[10px] font-bold text-red-500 uppercase -wider">
                 {errors.email.message}
               </p>
             )}
@@ -183,7 +183,7 @@ export default function RegisterPage() {
               </button>
             </div>
             {errors.password && (
-              <p className="absolute -bottom-5 text-[10px] font-bold text-red-500 uppercase tracking-wider">
+              <p className="absolute -bottom-5 text-[10px] font-bold text-red-500 uppercase -wider">
                 {errors.password.message}
               </p>
             )}
@@ -207,7 +207,7 @@ export default function RegisterPage() {
               </button>
             </div>
             {errors.password2 && (
-              <p className="absolute -bottom-5 text-[10px] font-bold text-red-500 uppercase tracking-wider">
+              <p className="absolute -bottom-5 text-[10px] font-bold text-red-500 uppercase -wider">
                 {errors.password2.message}
               </p>
             )}
@@ -217,7 +217,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full rounded-2xl h-[54px] bg-black text-white text-[11px] font-bold uppercase tracking-[3px] transition-all overflow-hidden"
+              className="group relative w-full rounded-2xl h-[54px] bg-black text-white text-[11px] font-bold uppercase -[3px] transition-all overflow-hidden"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
                 {isLoading ? t.register.creating : t.register.createAccount}
@@ -246,7 +246,7 @@ export default function RegisterPage() {
             {t.register.haveAccount}{" "}
             <Link
               href={`/${locale.toLowerCase()}/login`}
-              className="text-black font-bold hover:text-[#c9a84c] transition-colors ml-1 uppercase tracking-tighter"
+              className="text-black font-bold hover:text-[#c9a84c] transition-colors ml-1 uppercase -tighter"
             >
               {t.register.signIn}
             </Link>
@@ -255,13 +255,13 @@ export default function RegisterPage() {
           <div className="mt-12 flex gap-8 opacity-40">
             <Link
               href={`/${locale.toLowerCase()}/policies/privacy-policy`}
-              className="text-[8px] font-black uppercase tracking-[2px] text-black"
+              className="text-[8px] font-black uppercase -[2px] text-black"
             >
               {t.login.privacyPolicy}
             </Link>
             <Link
               href={`/${locale.toLowerCase()}/policies/terms-of-service`}
-              className="text-[8px] font-black uppercase tracking-[2px] text-black"
+              className="text-[8px] font-black uppercase -[2px] text-black"
             >
               {t.login.terms}
             </Link>

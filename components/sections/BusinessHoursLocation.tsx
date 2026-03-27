@@ -46,11 +46,7 @@ function Dot({ closed }: { closed: boolean }) {
             : "bg-[#c9a84c0a] border-[#c9a84c1a] text-[#c9a84c]"
         }`}
     >
-      {closed ? (
-        <CloseIcon  />
-      ) : (
-        <ClockIcon  />
-      )}
+      {closed ? <CloseIcon /> : <ClockIcon />}
     </div>
   );
 }
@@ -70,7 +66,7 @@ export function BusinessHoursLocation() {
               viewport={{ once: true }}
               className="mb-10"
             >
-              <h2 className="text-[#111] text-4xl font-bold tracking-tight">
+              <h2 className="text-[#111] text-4xl font-bold -tight">
                 {t.businessHours.title}
               </h2>
             </motion.div>
@@ -143,7 +139,7 @@ export function BusinessHoursLocation() {
                   <h3 className="text-xl font-bold text-[#111] mb-1">
                     {location.name}
                   </h3>
-                  <p className="text-gray-400 text-sm font-medium tracking-wide italic">
+                  <p className="text-gray-400 text-sm font-medium -wide italic">
                     {location.subtitle}
                   </p>
                 </div>
@@ -153,7 +149,7 @@ export function BusinessHoursLocation() {
                   target="_blank"
                   className="flex items-center gap-3 bg-[#111] text-white px-8 py-4 rounded-full text-[14px] font-bold hover:bg-[#c9a84c] transition-all duration-300 shadow-lg shadow-black/10 active:scale-95"
                 >
-                  <ExternalIcon/>
+                  <ExternalIcon />
                   {t.businessHours.openInMaps}
                 </Link>
               </div>

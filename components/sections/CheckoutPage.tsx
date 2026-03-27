@@ -171,7 +171,7 @@ export default function CheckoutPage() {
           >
             <span
               className="
-         font-bold tracking-widest transition-all duration-300
+         font-bold -widest transition-all duration-300
         text-3xl md:text-4xl
         [background:linear-gradient(135deg,#c9a84c_0%,#f0d080_45%,#b8912e_100%)]
         [background-clip:text]
@@ -192,11 +192,11 @@ export default function CheckoutPage() {
           <div className="flex items-center gap-3">
             <Link
               href={`/${locale.toLowerCase()}`}
-              className="text-[15px] tracking-[1.5px] uppercase text-[#aaa] hover:text-[#C9A84C] transition-colors hidden sm:block"
+              className="text-[15px] -[1.5px] uppercase text-[#aaa] hover:text-[#C9A84C] transition-colors hidden sm:block"
             >
               {isArabic ? "→ رجوع" : "← Back"}
             </Link>
-            <div className="bg-[#1a1a1a] text-[#F0D080] text-[14px] font-semibold px-4 py-2 rounded-full tracking-[0.3px]">
+            <div className="bg-[#1a1a1a] text-[#F0D080] text-[14px] font-semibold px-4 py-2 rounded-full -[0.3px]">
               {t.checkout.currency}
               {total.toLocaleString()}.00
             </div>
@@ -204,7 +204,7 @@ export default function CheckoutPage() {
         </div>
 
         {/* Cart items horizontal scroll */}
-        
+
         {cartItems.length > 0 && (
           <div
             className="flex gap-3 overflow-x-auto pb-4 pt-2 px-1 no-scrollbar"
@@ -271,7 +271,7 @@ export default function CheckoutPage() {
         {/* Totals row */}
         <div className="flex gap-5 mt-3.5 pt-3.5 border-t border-[#E8E2D6]">
           <div className="flex flex-col gap-0.5">
-            <span className="text-[11px] text-[#aaa] uppercase tracking-[1.5px]">
+            <span className="text-[11px] text-[#aaa] uppercase -[1.5px]">
               {t.checkout.subtotal || "Subtotal"}
             </span>
             <span className="text-[15px] font-semibold text-[#1a1a1a]">
@@ -281,7 +281,7 @@ export default function CheckoutPage() {
           </div>
           {discountApplied && (
             <div className="flex flex-col gap-0.5">
-              <span className="text-[11px] text-[#aaa] uppercase tracking-[1.5px]">
+              <span className="text-[11px] text-[#aaa] uppercase -[1.5px]">
                 {t.checkout.discount || "Discount"}
               </span>
               <span className="text-[15px] font-semibold text-green-600">
@@ -291,7 +291,7 @@ export default function CheckoutPage() {
             </div>
           )}
           <div className="flex flex-col gap-0.5">
-            <span className="text-[11px] text-[#aaa] uppercase tracking-[1.5px]">
+            <span className="text-[11px] text-[#aaa] uppercase -[1.5px]">
               {t.checkout.shipping || "Shipping"}
             </span>
             <span className="text-[15px] font-semibold text-[#1a1a1a]">
@@ -300,7 +300,7 @@ export default function CheckoutPage() {
             </span>
           </div>
           <div className="flex flex-col gap-0.5 ml-auto">
-            <span className="text-[11px] text-[#aaa] uppercase tracking-[1.5px]">
+            <span className="text-[11px] text-[#aaa] uppercase -[1.5px]">
               {t.checkout.total || "Total"}
             </span>
             <span className="text-[15px] font-bold text-[#C9A84C]">
@@ -320,10 +320,10 @@ export default function CheckoutPage() {
       >
         {/* Header */}
         <div className="mb-8">
-          <p className="text-[11px] tracking-[4px] text-[#C9A84C] uppercase mb-2 font-semibold">
+          <p className="text-[11px] -[4px] text-[#C9A84C] uppercase mb-2 font-semibold">
             {isArabic ? "إتمام الطلب" : "Secure Checkout"}
           </p>
-          <h1 className="text-[32px] font-bold text-[#1a1a1a] tracking-[-0.3px] mb-2">
+          <h1 className="text-[32px] font-bold text-[#1a1a1a] -[-0.3px] mb-2">
             {isArabic ? "تفاصيل الشحن" : "Shipping Details"}
           </h1>
           <p className="text-[16px] text-[#888] leading-relaxed">

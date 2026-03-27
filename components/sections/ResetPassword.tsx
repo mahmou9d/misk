@@ -70,7 +70,7 @@ const CheckIcon = () => (
 // ── Shared input class builder ─────────────────────────────────────────────
 const buildInputClass = (hasError: boolean, isArabic: boolean) => `
   w-full h-[50px] bg-transparent border-b outline-none text-[15px] text-[#1a1a1a] transition-colors duration-250
-  ${isArabic ? "text-right pr-0 pl-10 tracking-normal" : "text-left pl-0 pr-10 tracking-[0.3px]"}
+  ${isArabic ? "text-right pr-0 pl-10 -normal" : "text-left pl-0 pr-10 -[0.3px]"}
   ${hasError ? "border-red-400/60" : "border-black/15 focus:border-[#c9a84c]/70"}
 `;
 
@@ -116,9 +116,7 @@ const PasswordField = ({
       {error && (
         <p
           className={`text-[12px] text-red-500/80 mt-1 ${
-            isArabic
-              ? "tracking-normal text-right"
-              : "tracking-[0.3px] text-left"
+            isArabic ? "-normal text-right" : "-[0.3px] text-left"
           }`}
         >
           {error}
@@ -141,9 +139,7 @@ const PasswordRequirements = ({ isArabic }: { isArabic: boolean }) => {
     <div className="mb-6 border border-[#c9a84c]/15 bg-[#c9a84c]/5 p-4">
       <p
         className={`text-[11px] text-[#aaa] mb-2 font-medium ${
-          isArabic
-            ? "tracking-normal text-right"
-            : "tracking-[1.5px] uppercase text-left"
+          isArabic ? "-normal text-right" : "-[1.5px] uppercase text-left"
         }`}
       >
         Password requirements
@@ -157,7 +153,7 @@ const PasswordRequirements = ({ isArabic }: { isArabic: boolean }) => {
             <div className="w-[3px] h-[3px] rounded-full bg-[#c9a84c]/50 flex-shrink-0" />
             <span
               className={`text-[12px] text-[#bbb] ${
-                isArabic ? "tracking-normal" : "tracking-[0.2px]"
+                isArabic ? "-normal" : "-[0.2px]"
               }`}
             >
               {item}
@@ -193,14 +189,14 @@ const InvalidTokenMessage = ({
       <div className={isArabic ? "text-right" : "text-left"}>
         <p
           className={`text-[13px] font-medium text-[#1a1a1a] mb-[2px] ${
-            isArabic ? "tracking-normal" : "tracking-[0.3px]"
+            isArabic ? "-normal" : "-[0.3px]"
           }`}
         >
           Invalid or expired link
         </p>
         <p
           className={`text-[12px] text-[#aaa] mb-3 ${
-            isArabic ? "tracking-normal" : "tracking-[0.2px]"
+            isArabic ? "-normal" : "-[0.2px]"
           }`}
         >
           This reset link is no longer valid. Please request a new one.
@@ -208,7 +204,7 @@ const InvalidTokenMessage = ({
         <Link
           href={`/${locale}/forgot-password`}
           className={`inline-flex items-center gap-2 text-[12px] text-[#c9a84c]/80 no-underline border-b border-[#c9a84c]/30 hover:text-[#c9a84c] transition-colors ${
-            isArabic ? "tracking-normal flex-row-reverse" : "tracking-[0.5px]"
+            isArabic ? "-normal flex-row-reverse" : "-[0.5px]"
           }`}
         >
           Request a new link
@@ -254,7 +250,7 @@ const LoadingFallback = () => {
   return (
     <MiskCard isArabic={isArabic} dir={dir}>
       <div className="text-center mb-8">
-        <span className="text-[28px] font-bold tracking-[6px] bg-gradient-to-br from-[#c9a84c] via-[#f0d080] to-[#b8912e] bg-clip-text text-transparent block drop-shadow-[0_1px_6px_rgba(201,168,76,0.2)]">
+        <span className="text-[28px] font-bold -[6px] bg-gradient-to-br from-[#c9a84c] via-[#f0d080] to-[#b8912e] bg-clip-text text-transparent block drop-shadow-[0_1px_6px_rgba(201,168,76,0.2)]">
           Misk
         </span>
         <div className="mx-auto mt-[6px] h-[1px] w-8 bg-gradient-to-r from-transparent via-[#c9a84c]/50 to-transparent" />
@@ -326,7 +322,7 @@ const ResetPasswordContent = () => {
               error?.response?.data?.non_field_errors ||
               error?.response?.data?.name ||
               error?.message ||
-            `${locale.toLowerCase() === "en" ? "Failed to reset password." : "فشل تعيين كلمة المرور"}`,
+              `${locale.toLowerCase() === "en" ? "Failed to reset password." : "فشل تعيين كلمة المرور"}`,
             "error",
           );
         },
@@ -347,7 +343,7 @@ const ResetPasswordContent = () => {
         transition={{ delay: 0.1, duration: 0.4 }}
         className="text-center mb-8"
       >
-        <span className="text-[28px] font-bold tracking-[6px] bg-gradient-to-br from-[#c9a84c] via-[#f0d080] to-[#b8912e] bg-clip-text text-transparent block drop-shadow-[0_1px_6px_rgba(201,168,76,0.2)]">
+        <span className="text-[28px] font-bold -[6px] bg-gradient-to-br from-[#c9a84c] via-[#f0d080] to-[#b8912e] bg-clip-text text-transparent block drop-shadow-[0_1px_6px_rgba(201,168,76,0.2)]">
           Misk
         </span>
         <div className="mx-auto mt-[6px] h-[1px] w-8 bg-gradient-to-r from-transparent via-[#c9a84c]/50 to-transparent" />
@@ -368,9 +364,7 @@ const ResetPasswordContent = () => {
           {t?.resetPassword?.title ?? "Set a new password"}
         </h1>
         <p
-          className={`text-sm text-[#aaa] ${
-            isArabic ? "tracking-normal" : "tracking-[0.3px]"
-          }`}
+          className={`text-sm text-[#aaa] ${isArabic ? "-normal" : "-[0.3px]"}`}
         >
           {t?.resetPassword?.subtitle ??
             "Your new password must be different from previous ones"}
@@ -404,14 +398,14 @@ const ResetPasswordContent = () => {
               <div className={isArabic ? "text-right" : "text-left"}>
                 <p
                   className={`text-[13px] font-medium text-[#1a1a1a] mb-[2px] ${
-                    isArabic ? "tracking-normal" : "tracking-[0.3px]"
+                    isArabic ? "-normal" : "-[0.3px]"
                   }`}
                 >
                   {t?.resetPassword?.successTitle ?? "Password updated"}
                 </p>
                 <p
                   className={`text-[12px] text-[#aaa] ${
-                    isArabic ? "tracking-normal" : "tracking-[0.2px]"
+                    isArabic ? "-normal" : "-[0.2px]"
                   }`}
                 >
                   {t?.resetPassword?.successSubtitle ??
@@ -468,7 +462,7 @@ const ResetPasswordContent = () => {
                     : "bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] cursor-pointer"
                 }
                 text-[#f0d080]/95
-                ${isArabic ? "tracking-normal normal-case" : "tracking-[3px] uppercase"}
+                ${isArabic ? "-normal normal-case" : "-[3px] uppercase"}
                 after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-br after:from-[#c9a84c]/12 after:to-transparent after:opacity-0 hover:after:opacity-100 after:transition-opacity
               `}
             >
@@ -509,7 +503,7 @@ const ResetPasswordContent = () => {
         <Link
           href={`/${locale.toLowerCase()}/login`}
           className={`inline-flex items-center gap-2 text-[12px] text-[#bbb] no-underline border-b border-black/10 hover:text-[#c9a84c]/90 transition-colors ${
-            isArabic ? "tracking-normal flex-row-reverse" : "tracking-[1px]"
+            isArabic ? "-normal flex-row-reverse" : "-[1px]"
           }`}
         >
           <svg

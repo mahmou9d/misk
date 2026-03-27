@@ -1051,7 +1051,7 @@ export default function ProductsPage() {
             {isAvBusy && <Spinner label={AV_STEP_LBL[avStep]} />}
             {newlyCreatedVids.length > 0 && (
               <div className="mt-1 pt-5 border-t border-white">
-                <p className="text-[16px] font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                <p className="text-[16px] font-semibold text-gray-500 uppercase -wider mb-3">
                   {p.addVariant.manageImages}
                 </p>
                 {(varProduct?.variants ?? [])
@@ -1102,7 +1102,7 @@ export default function ProductsPage() {
           !loadingVarProduct &&
           (varProduct?.variants ?? []).length > 0 && (
             <>
-              <p className="text-[16px] font-semibold text-gray-500 uppercase tracking-wider mb-3">
+              <p className="text-[16px] font-semibold text-gray-500 uppercase -wider mb-3">
                 {p.editVariant.selectVariant}
               </p>
               <div className="flex flex-col gap-2 mb-2">
@@ -1176,7 +1176,7 @@ export default function ProductsPage() {
         {selectedVid && (
           <>
             <div className="h-px bg-white/10 my-5" />
-            <p className="text-[16px] font-semibold text-gray-500 uppercase tracking-wider mb-4">
+            <p className="text-[16px] font-semibold text-gray-500 uppercase -wider mb-4">
               {p.editVariant.editSelected}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">

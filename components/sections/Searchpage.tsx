@@ -130,7 +130,7 @@ export default function SearchPage() {
                   className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pb-8 border-b border-gray-100"
                 >
                   <div className="space-y-2">
-                    <p className="text-[11px] font-black tracking-[0.3em] uppercase text-[#c9a84c]">
+                    <p className="text-[11px] font-black -[0.3em] uppercase text-[#c9a84c]">
                       {t.search.resultsFor}
                     </p>
                     <div className="flex items-center gap-4">
@@ -226,7 +226,7 @@ export default function SearchPage() {
                     <button
                       onClick={() => handlePageChange(Math.max(1, page - 1))}
                       disabled={!prevPage}
-                      className="group flex items-center gap-3 text-sm font-bold uppercase tracking-widest disabled:opacity-20 transition-all hover:text-[#c9a84c]"
+                      className="group flex items-center gap-3 text-sm font-bold uppercase -widest disabled:opacity-20 transition-all hover:text-[#c9a84c]"
                     >
                       {isRTL ? (
                         <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -246,7 +246,7 @@ export default function SearchPage() {
                     <button
                       onClick={() => handlePageChange(page + 1)}
                       disabled={!nextPage}
-                      className="group flex items-center gap-3 text-sm font-bold uppercase tracking-widest disabled:opacity-20 transition-all hover:text-[#c9a84c]"
+                      className="group flex items-center gap-3 text-sm font-bold uppercase -widest disabled:opacity-20 transition-all hover:text-[#c9a84c]"
                     >
                       {isArabic ? "التالي" : "Next"}
                       {isRTL ? (

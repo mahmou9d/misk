@@ -35,10 +35,10 @@ export default function Collections() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16 space-y-4"
         >
-          <span className="text-[14px] font-black tracking-[0.3em] uppercase text-[#c9a84c] block">
+          <span className="text-[14px] font-black -[0.3em] uppercase text-[#c9a84c] block">
             {t.collections.shopBy}
           </span>
-          <h2 className="text-[#111] text-[clamp(40px,5vw,56px)] font-bold tracking-tight leading-[0.9]">
+          <h2 className="text-[#111] text-[clamp(40px,5vw,56px)] font-bold -tight leading-[0.9]">
             {t.collections.title}
           </h2>
         </motion.div>
@@ -74,12 +74,12 @@ export default function Collections() {
 
                 {/* Content: الترتيب هنا هو السر */}
                 <div className="absolute inset-0 flex flex-col justify-end p-10 md:p-14">
-                  <h3 className="text-white text-[clamp(36px,4.5vw,52px)] font-bold leading-none mb-6 tracking-tight">
+                  <h3 className="text-white text-[clamp(36px,4.5vw,52px)] font-bold leading-none mb-6 -tight">
                     {c.label}
                   </h3>
 
                   <div className="flex items-center gap-4 overflow-hidden">
-                    <span className="text-white text-[16px] md:text-[18px] font-bold uppercase tracking-[3px]">
+                    <span className="text-white text-[16px] md:text-[18px] font-bold uppercase -[3px]">
                       {c.sub}
                     </span>
                     {/* سهم بحجم أكبر وحركة واضحة */}

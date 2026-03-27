@@ -49,7 +49,7 @@ function SuccessModal({
   data: PaymentData;
   onClose: () => void;
 }) {
-  const { locale, t ,isArabic:isRTL} = useTranslation();
+  const { locale, t, isArabic: isRTL } = useTranslation();
 
   return (
     <div
@@ -84,7 +84,7 @@ function SuccessModal({
             </p>
           </div>
 
-          <p className="text-[2rem] font-extrabold text-green-700 m-0 tracking-tight">
+          <p className="text-[2rem] font-extrabold text-green-700 m-0 -tight">
             {formatAmount(data.amount_cents, data.currency)}
           </p>
 
@@ -158,8 +158,7 @@ function FailedModal({
   data: PaymentData;
   onClose: () => void;
 }) {
-  const { locale, t ,isArabic:isRTL} = useTranslation();
-
+  const { locale, t, isArabic: isRTL } = useTranslation();
 
   return (
     <div
@@ -196,7 +195,7 @@ function FailedModal({
             )}
           </div>
 
-          <p className="text-[2rem] font-extrabold text-red-800 m-0 tracking-tight">
+          <p className="text-[2rem] font-extrabold text-red-800 m-0 -tight">
             {formatAmount(data.amount_cents, data.currency)}
           </p>
         </div>

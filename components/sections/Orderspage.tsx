@@ -335,7 +335,7 @@ export default function OrdersPage() {
                 {tableHeaders.map((h) => (
                   <th
                     key={h}
-                    className={`px-6 py-5 ${isArabic ? "text-right" : "text-left"} text-[16px] font-bold text-[#fff] uppercase tracking-wider`}
+                    className={`px-6 py-5 ${isArabic ? "text-right" : "text-left"} text-[16px] font-bold text-[#fff] uppercase -wider`}
                   >
                     {h}
                   </th>
@@ -473,7 +473,7 @@ export default function OrdersPage() {
                                 {/* Items */}
                                 {order.items?.length > 0 && (
                                   <div className="p-5 border-b border-white/10">
-                                    <p className="text-[16px] font-bold text-[#fff] uppercase tracking-wider mb-3">
+                                    <p className="text-[16px] font-bold text-[#fff] uppercase -wider mb-3">
                                       {o.items}
                                     </p>
                                     <div className="space-y-2">

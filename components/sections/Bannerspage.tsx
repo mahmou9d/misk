@@ -328,7 +328,7 @@ function BannersTab({
       {/* Create Form */}
       {showCreateForm && (
         <div className="mb-5 p-5 border border-white/10 rounded-2xl bg-[#0f1117]">
-          <p className="text-sm font-bold text-gray-400 mb-4 uppercase tracking-wider">
+          <p className="text-sm font-bold text-gray-400 mb-4 uppercase -wider">
             {b.newBanner}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -800,7 +800,7 @@ function SettingsTab({
       <div className="border border-white/10 rounded-2xl overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3.5 bg-[#0f1117] border-b border-white/10">
-          <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">
+          <p className="text-sm font-bold text-gray-400 uppercase -wider">
             {s.announcementBar}
           </p>
           <div className="flex items-center gap-3">

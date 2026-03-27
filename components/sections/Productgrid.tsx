@@ -10,10 +10,11 @@ import { useTranslation } from "@/lib/Usetranslation";
 
 export default function ProductGrid() {
   const { t, isArabic, dir, locale } = useTranslation();
-  const [tab, setTab] = useState<"men" | "unisex" |"women">("men");
+  const [tab, setTab] = useState<"men" | "unisex" | "women">("men");
   const { data, isLoading } = useGetProducts();
   const allProducts: Product[] = data?.products ?? [];
-  const categories = tab==="men"?"رجالي":tab==="unisex"?"رجالى و نسائى":"نسائي";
+  const categories =
+    tab === "men" ? "رجالي" : tab === "unisex" ? "رجالى و نسائى" : "نسائي";
   const products = isArabic ? categories : tab;
   const filtered = allProducts.filter((p) => p.category_name === products);
   return (
@@ -23,7 +24,7 @@ export default function ProductGrid() {
     >
       {/* ── Background Decoration ── */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 opacity-[0.03] select-none pointer-events-none">
-        <h2 className="text-[90px] lg:text-[180px] font-serif font-bold whitespace-nowrap uppercase tracking-tighter">
+        <h2 className="text-[90px] lg:text-[180px] font-serif font-bold whitespace-nowrap uppercase -tighter">
           {tab === "men" ? "Men" : tab === "unisex" ? "Unisex" : "Women"}
         </h2>
       </div>
@@ -31,7 +32,7 @@ export default function ProductGrid() {
       <div className="max-w-screen-xl mx-auto px-6 lg:px-12 relative z-10">
         {/* ── Header & Premium Tabs ── */}
         <div className="flex flex-col items-center mb-24">
-          <span className="text-[#c9a84c] text-[20px] font-bold uppercase  mb-10 opacity-80">
+          <span className="text-[#c9a84c] text-[20px] font-bold uppercase mb-10 opacity-80">
             {t.productGrid.title}
           </span>
 
@@ -42,10 +43,14 @@ export default function ProductGrid() {
                 onClick={() => setTab(tabKey)}
                 className={`relative px-8 lg:px-12 py-3 rounded-full text-[13px] font-bold uppercase transition-all duration-500
                 ${tab === tabKey ? "text-white" : "text-gray-400 hover:text-gray-900"}
-                ${isArabic ? "tracking-0 text-[16px]" : "tracking-[0.2em]"}`}
+                ${isArabic ? "-0 text-[16px]" : "-[0.2em]"}`}
               >
                 <span className="relative z-10">
-                  {tabKey === "men" ? t.productGrid.men : tabKey === "unisex" ? t.productGrid.unisex : t.productGrid.women}
+                  {tabKey === "men"
+                    ? t.productGrid.men
+                    : tabKey === "unisex"
+                      ? t.productGrid.unisex
+                      : t.productGrid.women}
                 </span>
                 {tab === tabKey && (
                   <motion.div
@@ -104,7 +109,7 @@ export default function ProductGrid() {
             {/* Text */}
             <span
               className={`text-white font-medium text-[13px] uppercase transition-colors duration-500 group-hover:text-[#111]
-      ${isArabic ? "tracking-0 text-[16px] font-bold" : "tracking-[0.2em]"}`}
+      ${isArabic ? "-0 text-[16px] font-bold" : "-[0.2em]"}`}
             >
               {t.productGrid.viewAll}
             </span>

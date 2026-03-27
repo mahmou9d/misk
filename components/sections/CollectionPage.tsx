@@ -43,7 +43,7 @@ function Dropdown({
       <button
         onClick={() => setOpen(!open)}
         className={`flex items-center gap-2 transition-all duration-300 text-[15px] font-medium bg-none border-none cursor-pointer py-2 px-1
-          ${isArabic ? "tracking-normal" : "tracking-tight"}
+          ${isArabic ? "-normal" : "-tight"}
           ${open ? "text-[#c9a84c]" : "text-[#444] hover:text-[#c9a84c]"}`}
       >
         {trigger}
@@ -84,12 +84,7 @@ function ProductSkeleton() {
   );
 }
 
-export default function CollectionPage({
-  category,
-}: {
-  category: string;
-}) {
-
+export default function CollectionPage({ category }: { category: string }) {
   const { t, isArabic, dir } = useTranslation();
   const [sort, setSort] = useState("featured");
   const [sortOpen, setSortOpen] = useState(false);
@@ -100,12 +95,12 @@ export default function CollectionPage({
   const [maxPrice, setMaxPrice] = useState("");
   const [page, setPage] = useState(1);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-const { data: categories } = useGetCategory();
+  const { data: categories } = useGetCategory();
   const { data, isLoading, isError } = useGetProducts({ page });
   const nextPage = data?.next ?? null;
-const categoryName = categories?.find(
-  (c) => c.name_en.toUpperCase() === category.toUpperCase(),
-);
+  const categoryName = categories?.find(
+    (c) => c.name_en.toUpperCase() === category.toUpperCase(),
+  );
 
   useEffect(() => {
     const products: Product[] = data?.products ?? [];
@@ -118,7 +113,6 @@ const categoryName = categories?.find(
   }, [availFilter, minPrice, maxPrice, categoryName, isArabic]);
 
   const sortOptions = getSortOptions(t.collectionPage.sortData);
-
 
   let products =
     category === "all"
@@ -160,12 +154,12 @@ const categoryName = categories?.find(
             {/* Title Section: تصميم أنضف وأكبر */}
             <div className="mb-12">
               <span
-                className={`text-[14px] font-bold text-[#c9a84c] block mb-3 uppercase tracking-[4px]`}
+                className={`text-[14px] font-bold text-[#c9a84c] block mb-3 uppercase -[4px]`}
               >
                 {t.collectionPage.collectionLabel}
               </span>
-              <h1 className="text-[#111] font-bold text-[clamp(36px,5vw,52px)] leading-none tracking-tight">
-                {category==="all" ? t.collectionPage.all : categoryName?.name}
+              <h1 className="text-[#111] font-bold text-[clamp(36px,5vw,52px)] leading-none -tight">
+                {category === "all" ? t.collectionPage.all : categoryName?.name}
               </h1>
               <div className="mt-6 h-[2px] w-16 bg-[#c9a84c]" />
             </div>
@@ -173,7 +167,7 @@ const categoryName = categories?.find(
             {/* Filter / Sort bar: شريط أنيق جداً */}
             <div className="flex items-center justify-between flex-wrap gap-6 mb-10 py-6 border-y border-gray-100">
               <div className="flex items-center gap-8 flex-wrap">
-                <div className="flex items-center gap-2 uppercase tracking-[2px] text-[13px] font-bold text-gray-400">
+                <div className="flex items-center gap-2 uppercase -[2px] text-[13px] font-bold text-gray-400">
                   {t.collectionPage.filter}
                   {activeFilters > 0 && (
                     <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#c9a84c] text-white text-[10px] font-bold">
@@ -190,7 +184,7 @@ const categoryName = categories?.find(
                 >
                   <div className="p-6">
                     <div className="flex justify-between items-center mb-4">
-                      <span className="text-[13px] font-bold text-gray-400 uppercase tracking-wider">
+                      <span className="text-[13px] font-bold text-gray-400 uppercase -wider">
                         {availFilter.length} {t.collectionPage.selected}
                       </span>
                       <button
@@ -243,7 +237,7 @@ const categoryName = categories?.find(
                 >
                   <div className="p-6 min-w-[280px]">
                     <div className="flex justify-between items-center mb-5">
-                      <span className="text-[13px] font-bold text-gray-400 uppercase tracking-wider">
+                      <span className="text-[13px] font-bold text-gray-400 uppercase -wider">
                         {t.collectionPage.priceRange}
                       </span>
                       <button
@@ -305,7 +299,7 @@ const categoryName = categories?.find(
                     ))}
                   </div>
                 </Dropdown>
-                <span className="text-[14px] font-bold text-gray-300 uppercase tracking-widest">
+                <span className="text-[14px] font-bold text-gray-300 uppercase -widest">
                   {products.length} {t.collectionPage.products}
                 </span>
               </div>
@@ -335,7 +329,7 @@ const categoryName = categories?.find(
                 </div>
 
                 {products.length === 0 && (
-                  <div className="text-center py-40 text-gray-400 text-[18px] font-medium tracking-wide">
+                  <div className="text-center py-40 text-gray-400 text-[18px] font-medium -wide">
                     {t.collectionPage.noMatch}
                   </div>
                 )}
@@ -345,7 +339,7 @@ const categoryName = categories?.find(
                   <div className="flex justify-center mt-24">
                     <button
                       onClick={() => setPage((p) => p + 1)}
-                      className="px-12 py-4 rounded-full border-2 border-gray-100 text-[#111] font-bold text-[15px] uppercase tracking-[2px] hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all duration-300"
+                      className="px-12 py-4 rounded-full border-2 border-gray-100 text-[#111] font-bold text-[15px] uppercase -[2px] hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all duration-300"
                     >
                       {t.collectionPage.loadMore}
                     </button>

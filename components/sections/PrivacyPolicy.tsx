@@ -33,7 +33,7 @@ function PolicySection({
         className="w-full grid grid-cols-[auto_1fr_auto] items-center gap-4 py-6 bg-transparent border-none cursor-pointer text-start"
       >
         <span
-          className={` text-[10px] text-[#c8c0d4] text-end ${isArabic ? "tracking-[0px]" : "tracking-[2px]"}`}
+          className={` text-[10px] text-[#c8c0d4] text-end ${isArabic ? "-[0px]" : "-[2px]"}`}
         >
           {String(index + 1).padStart(2, "0")}
         </span>
@@ -127,7 +127,7 @@ export default function PrivacyPolicy() {
             transition={{ duration: 0.5 }}
             className="py-11 md:py-[52px] mb-2 border-b border-[#c9a84c1f]"
           >
-            <span className=" text-[10px] tracking-[4px] uppercase text-[#c9a84c] block mb-2.5">
+            <span className=" text-[10px] -[4px] uppercase text-[#c9a84c] block mb-2.5">
               Misk Fragrances
             </span>
             <h1
@@ -136,7 +136,7 @@ export default function PrivacyPolicy() {
               {t.privacyPolicy.title}
             </h1>
             <p
-              className={` text-[13px] text-[#c8c0d4] mb-6 ${isArabic ? "tracking-[0px]" : "tracking-[0.3px]"}`}
+              className={` text-[13px] text-[#c8c0d4] mb-6 ${isArabic ? "-[0px]" : "-[0.3px]"}`}
             >
               {t.privacyPolicy.lastUpdated}
             </p>
@@ -160,7 +160,7 @@ export default function PrivacyPolicy() {
             className="py-6 md:py-8 border-b border-[#c9a84c1f] mb-2"
           >
             <p
-              className={` text-[9px] text-[#c8c0d4] mb-3.5 ${isArabic ? "tracking-[0px] normal-case" : "tracking-[3.5px] uppercase"}`}
+              className={` text-[9px] text-[#c8c0d4] mb-3.5 ${isArabic ? "-[0px] normal-case" : "-[3.5px] uppercase"}`}
             >
               {t.privacyPolicy.contents}
             </p>
@@ -168,7 +168,7 @@ export default function PrivacyPolicy() {
               {sections.map((s, i) => (
                 <span
                   key={i}
-                  className={` text-[12.5px] text-[#8a7f99] bg-[#faf9fc] border border-[#c9a84c1f] px-2.5 py-0.5 rounded-full ${isArabic ? "tracking-[0px]" : "tracking-[0.2px]"}`}
+                  className={` text-[12.5px] text-[#8a7f99] bg-[#faf9fc] border border-[#c9a84c1f] px-2.5 py-0.5 rounded-full ${isArabic ? "-[0px]" : "-[0.2px]"}`}
                 >
                   {s.short}
                 </span>
