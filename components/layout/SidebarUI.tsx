@@ -75,7 +75,7 @@ export const SidebarUI = ({
           <div
             className={`flex items-center gap-3 ${isArabic ? "flex-row-reverse text-right" : ""}`}
           >
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#ffffff69] to-black flex items-center justify-center shadow-xl shadow-[#fff]/20">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#fda481] to-[#b4182d] flex items-center justify-center shadow-xl shadow-[#fff]/20">
               <ShoppingBag className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -109,7 +109,7 @@ export const SidebarUI = ({
                 isArabic ? "flex-row-reverse text-right " : ""
               } ${
                 isActive
-                  ? "bg-gradient-to-r from-[#ffffff69] to-black text-white shadow-xl shadow-[#fff]/25"
+                  ? "bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white shadow-xl shadow-[#fff]/25"
                   : "text-gray-400 hover:text-white hover:bg-white/5"
               }`}
             >
@@ -129,7 +129,7 @@ export const SidebarUI = ({
           <div
             className={`flex items-center gap-3 p-3.5 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer group ${isArabic ? "flex-row-reverse text-right" : ""}`}
           >
-            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#ffffff69] to-black flex items-center justify-center text-white font-bold text-sm shadow-lg">
+            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#fda481] to-[#b4182d] flex items-center justify-center text-white font-bold text-sm shadow-lg">
               MF
             </div>
             <div className="flex-1 min-w-0">

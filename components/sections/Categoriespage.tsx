@@ -159,7 +159,7 @@ export default function CategoriesPage() {
             <button
               onClick={create}
               disabled={isPending || !name.trim()}
-              className="w-full px-8 py-4 bg-gradient-to-r from-[#ffffff69] to-black text-white rounded-xl font-bold text-lg shadow-xl shadow-[#fff]/25 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-8 py-4 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl font-bold text-lg shadow-xl shadow-[#fff]/25 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isPending ? (
                 <>

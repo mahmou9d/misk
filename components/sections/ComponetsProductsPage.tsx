@@ -180,7 +180,7 @@ export function ImgGallery({
             />
             {img.is_thumbnail && (
               <span
-                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#ffffff69] to-black text-white text-[7px] rounded-[3px] px-1 py-px pointer-events-none -wider font-bold`}
+                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white text-[7px] rounded-[3px] px-1 py-px pointer-events-none -wider font-bold`}
               >
                 {c.mainBadge}
               </span>
@@ -304,7 +304,7 @@ export function MultiImgPicker({
             />
             {thumbnailIndex === fi && (
               <span
-                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#ffffff69] to-black text-white text-[7px] rounded-sm px-1 py-px pointer-events-none font-bold -wider`}
+                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white text-[7px] rounded-sm px-1 py-px pointer-events-none font-bold -wider`}
               >
                 {c.mainBadge}
               </span>

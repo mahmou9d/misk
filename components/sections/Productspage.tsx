@@ -205,7 +205,7 @@ function StepBar({
           className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg transition-all ${step === n ? "bg-[#1a1d29] shadow-sm" : ""}`}
         >
           <span
-            className={`w-5 h-5 rounded-full text-[16px] font-semibold flex items-center justify-center flex-shrink-0 ${step > n ? "bg-emerald-500 text-white" : step === n ? "bg-gradient-to-r from-[#ffffff69] to-black text-white" : "bg-white/10 text-gray-500"}`}
+            className={`w-5 h-5 rounded-full text-[16px] font-semibold flex items-center justify-center flex-shrink-0 ${step > n ? "bg-emerald-500 text-white" : step === n ? "bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white" : "bg-white/10 text-gray-500"}`}
           >
             {step > n ? "✓" : n}
           </span>
@@ -644,7 +644,7 @@ export default function ProductsPage() {
             setShowCreate(true);
             setCreateStep(1);
           }}
-          className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#ffffff69] to-black text-white text-[16px] font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-[#fff]/20 hover:opacity-90 active:scale-[0.98] transition-all cursor-pointer border-none"
+          className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white text-[16px] font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-[#fff]/20 hover:opacity-90 active:scale-[0.98] transition-all cursor-pointer border-none"
         >
           <span className="text-[18px] leading-none">+</span>
           {p.createBtn}
@@ -802,7 +802,7 @@ export default function ProductsPage() {
               <CancelBtn onClick={() => setShowCreate(false)} />
               <button
                 onClick={handleCreateStep1}
-                className="text-[16px] font-bold bg-gradient-to-r from-[#ffffff69] to-black text-white px-6 py-2.5 rounded-xl hover:opacity-90 transition-opacity cursor-pointer border-none flex items-center gap-1.5"
+                className="text-[16px] font-bold bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white px-6 py-2.5 rounded-xl hover:opacity-90 transition-opacity cursor-pointer border-none flex items-center gap-1.5"
               >
                 {p.actions.next}
               </button>

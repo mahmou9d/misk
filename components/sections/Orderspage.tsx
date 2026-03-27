@@ -639,7 +639,7 @@ export default function OrdersPage() {
                                           handleSave(String(order.id))
                                         }
                                         disabled={patching}
-                                        className="px-6 py-3 bg-gradient-to-r from-[#ffffff69] to-black text-white rounded-xl font-bold text-[16px] disabled:opacity-50 flex items-center gap-2"
+                                        className="px-6 py-3 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl font-bold text-[16px] disabled:opacity-50 flex items-center gap-2"
                                       >
                                         {patching ? (
                                           <>

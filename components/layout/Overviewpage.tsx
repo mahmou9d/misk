@@ -58,7 +58,7 @@ export default function OverviewPage() {
       title: a.sales,
       value:
         totalSales != null ? `LE ${Number(totalSales).toLocaleString()}` : "…",
-      gradient: "from-[#ffffff69] to-black",
+      gradient: "from-[#fda481] to-[#b4182d]",
       icon: DollarSign,
       trend: "up" as const,
       change: "",
@@ -67,7 +67,7 @@ export default function OverviewPage() {
       id: 1,
       title: a.totalOrders,
       value: totalOrders ?? "…",
-      gradient: "from-[#000] to-[#54162b]",
+      gradient: "from-[#b4182d] to-[#54162b]",
       icon: ShoppingCart,
       trend: "up" as const,
       change: "",
@@ -76,7 +76,7 @@ export default function OverviewPage() {
       id: 3,
       title: a.totalStock,
       value: totalStock ?? "…",
-      gradient: "from-[#ffffff69] to-black",
+      gradient: "from-[#fda481] to-[#b4182d]",
       icon: BarChart3,
       trend: "up" as const,
       change: "",
@@ -189,7 +189,7 @@ export default function OverviewPage() {
                   onClick={() => setChartView("sales")}
                   className={`px-4 py-2 rounded-lg text-sm font-semibold ${
                     chartView === "sales"
-                      ? "bg-gradient-to-r from-[#ffffff69] to-black text-white shadow-lg"
+                      ? "bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white shadow-lg"
                       : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -199,7 +199,7 @@ export default function OverviewPage() {
                   onClick={() => setChartView("orders")}
                   className={`px-4 py-2 rounded-lg text-sm font-semibold ${
                     chartView === "orders"
-                      ? "bg-gradient-to-r from-[#ffffff69] to-black text-white shadow-lg"
+                      ? "bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white shadow-lg"
                       : "text-gray-400 hover:text-white"
                   }`}
                 >

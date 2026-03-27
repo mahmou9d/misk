@@ -36,7 +36,7 @@ function Toggle({
       onClick={onChange}
       disabled={disabled}
       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 focus:outline-none disabled:opacity-50 ${
-        checked ? "bg-gradient-to-r from-[#ffffff69] to-black" : "bg-white/10"
+        checked ? "bg-gradient-to-r from-[#fda481] to-[#b4182d]" : "bg-white/10"
       }`}
     >
       <span
@@ -319,7 +319,7 @@ function BannersTab({
       <div className="flex justify-start mb-5">
         <button
           onClick={() => setShowCreateForm((v) => !v)}
-          className="text-sm font-bold px-6 py-2.5 bg-gradient-to-r from-[#ffffff69] to-black text-white rounded-xl shadow-lg shadow-[#fff]/20 flex items-center gap-2 hover:opacity-90 transition-opacity"
+          className="text-sm font-bold px-6 py-2.5 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl shadow-lg shadow-[#fff]/20 flex items-center gap-2 hover:opacity-90 transition-opacity"
         >
           <span className="text-lg leading-none">+</span> {b.addBtn}
         </button>
@@ -411,7 +411,7 @@ function BannersTab({
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="text-sm text-gray-400 file:ml-3 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#fff] file:to-[#000] file:text-white hover:file:opacity-90 cursor-pointer"
+              className="text-sm text-gray-400 file:ml-3 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#fda481] file:to-[#b4182d] file:text-white hover:file:opacity-90 cursor-pointer"
             />
             {previewUrl && (
               <div className="mt-3 rounded-xl overflow-hidden border border-white/10 w-full max-w-xs h-28">
@@ -429,7 +429,7 @@ function BannersTab({
             <button
               onClick={handleCreate}
               disabled={creating || !newImage}
-              className="h-10 px-6 bg-gradient-to-r from-[#ffffff69] to-black text-white rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
+              className="h-10 px-6 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
             >
               {creating ? b.actions.saving : b.actions.save}
             </button>
@@ -662,7 +662,7 @@ function BannersTab({
                               file ? URL.createObjectURL(file) : null,
                             );
                           }}
-                          className="text-sm text-gray-400 file:ml-3 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#fff] file:to-[#000] file:text-white hover:file:opacity-90 cursor-pointer"
+                          className="text-sm text-gray-400 file:ml-3 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#fda481] file:to-[#b4182d] file:text-white hover:file:opacity-90 cursor-pointer"
                         />
                         {editImagePreview && (
                           <div className="mt-3 rounded-xl overflow-hidden border border-white/10 w-full max-w-xs h-28">
@@ -681,7 +681,7 @@ function BannersTab({
                         <button
                           onClick={() => handleEditSave(banner.id)}
                           disabled={patching}
-                          className="h-10 px-6 bg-gradient-to-r from-[#ffffff69] to-black text-white rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
+                          className="h-10 px-6 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
                         >
                           {patching ? b.actions.saving : b.actions.save}
                         </button>
@@ -900,7 +900,7 @@ function SettingsTab({
         <button
           onClick={handleSave}
           disabled={patching || !isDirty}
-          className="h-10 px-8 bg-gradient-to-r from-[#ffffff69] to-black text-white rounded-xl text-sm font-bold shadow-lg shadow-[#fff]/20 disabled:opacity-50 hover:opacity-90 transition-opacity flex items-center gap-2"
+          className="h-10 px-8 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl text-sm font-bold shadow-lg shadow-[#fff]/20 disabled:opacity-50 hover:opacity-90 transition-opacity flex items-center gap-2"
         >
           {patching ? (
             <>
