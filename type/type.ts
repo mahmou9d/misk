@@ -368,6 +368,7 @@ export interface CheckoutFormData {
   order_notes?: string;
   phone_number: string;
   country: string;
+  payment_method: string;
 }
 
 export interface Props {

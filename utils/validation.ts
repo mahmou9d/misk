@@ -64,6 +64,6 @@ export const checkoutSchema = z.object({
   postal: z.string().optional(),
   phone: z.string().min(8, "Valid phone number is required"),
   saveInfo: z.boolean().optional(),
-  payment: z.enum(["cod", "paymob"]),
+  payment_method: z.enum(["cod", "paymob"]),
   billing: z.enum(["same", "different"]),
 });

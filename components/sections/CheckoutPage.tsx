@@ -25,6 +25,7 @@ const SHIPPING = 85;
 export default function CheckoutPage() {
   const { t, isArabic, dir, locale } = useTranslation();
   const [loading, setLoading] = useState(false);
+  const [cash, setCash] = useState(false);
   const [showPayModal, setShowPayModal] = useState(false);
   const [pendingOrderId, setPendingOrderId] = useState<string | null>(null);
   const [pendingPhone, setPendingPhone] = useState("");
@@ -57,9 +58,10 @@ export default function CheckoutPage() {
         phone_number: values.phone,
         country: `Egypt - ${values.gov}`,
         order_notes: "",
+        payment_method: cash ? "cod" : "",
       });
       const orderId = String(result.order_id);
-      if (values.payment === "cod") {
+      if (values.payment_method === "cod") {
         showNotification(t.checkout.orderSuccess, "success");
         setLoading(false);
         return;
@@ -72,12 +74,6 @@ export default function CheckoutPage() {
       const error = err as AxiosError<ErrorResponse>;
       showNotification(
         error?.response?.data?.message ||
-          error?.response?.data?.detail ||
-          error?.response?.data?.error ||
-          error?.response?.data?.status ||
-          error?.response?.data?.non_field_errors ||
-          error?.response?.data?.name ||
-          error?.message ||
           t.checkout.orderError,
         "error",
       );
@@ -100,12 +96,6 @@ export default function CheckoutPage() {
       const error = err as AxiosError<ErrorResponse>;
       showNotification(
         error?.response?.data?.message ||
-          error?.response?.data?.detail ||
-          error?.response?.data?.error ||
-          error?.response?.data?.status ||
-          error?.response?.data?.non_field_errors ||
-          error?.response?.data?.name ||
-          error?.message ||
           t.checkout.paymentError,
         "error",
       );

@@ -183,10 +183,10 @@ export function CheckoutForm({
     formState: { errors },
   } = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
-    defaultValues: { gov: "Cairo", payment: "cod", billing: "same" },
+    defaultValues: { gov: "Cairo", payment_method: "cod", billing: "same" },
   });
 
-  const payment = watch("payment");
+  const payment = watch("payment_method");
   const billing = watch("billing");
 
   const translatedErrors = {
@@ -386,13 +386,13 @@ export function CheckoutForm({
           label={t.checkoutForm.cod}
           value="cod"
           checked={payment === "cod"}
-          {...register("payment")}
+          {...register("payment_method")}
         />
         <RadioCard
           label={t.checkoutForm.card}
           value="paymob"
           checked={payment === "paymob"}
-          {...register("payment")}
+          {...register("payment_method")}
         >
           <div className="flex items-center gap-1.5">
             <VisaIcon />
