@@ -98,8 +98,8 @@ export const SidebarUI = ({
 
       <nav className="flex-1 p-4 space-y-1.5">
         {menuItems.map((item) => {
-          const isActive = pathname.startsWith(item.href);
-
+          const isActive = pathname === item.href;
+console.log(isActive);
           return (
             <button
               key={item.id}
