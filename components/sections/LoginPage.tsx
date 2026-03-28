@@ -47,8 +47,15 @@ export default function LoginPage() {
       { email: data.email, password: data.password },
       {
         onSuccess: () => {
-          const deviceId = localStorage.getItem("X-Device-ID");
-          if (deviceId) mergeCart.mutate(deviceId);
+            const token = localStorage.getItem("access");
+            const deviceId = localStorage.getItem("X-Device-ID");
+
+            if (deviceId && token) {
+              mergeCart.mutate(deviceId, {
+                // ابعت الـ token في الـ header بشكل صريح
+                // أو استخدم apiClient مع set header يدوي
+              });
+            }
           showNotification(t.login.success, "success");
           setTimeout(() => router.push(`/${currentLocale}`), 1000);
         },

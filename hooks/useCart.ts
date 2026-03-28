@@ -81,7 +81,6 @@ export const useClearCart = () => {
 
 export const useCartMerge = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (payload: string) =>
       cartAPI.mergeCart(payload),
