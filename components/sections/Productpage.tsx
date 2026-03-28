@@ -42,12 +42,6 @@ export default function ProductPage() {
         onError: (error: AxiosError<ErrorResponse>) => {
           showNotification(
             error?.response?.data?.message ||
-              error?.response?.data?.detail ||
-              error?.response?.data?.error ||
-              error?.response?.data?.status ||
-              error?.response?.data?.non_field_errors ||
-              error?.response?.data?.name ||
-              error?.message ||
               t.product.addToCartError,
             "error",
           );

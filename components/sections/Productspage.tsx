@@ -552,7 +552,7 @@ export default function ProductsPage() {
   const openDeleteConfirm = (id: number) => setConfirmDeletePid(id);
 
   const handleCreateStep1 = () => {
-    if (!cf.name || !cf.category) {
+    if (!cf.name_en || !cf.name_ar || !cf.categories) {
       showNotification(p.errors.nameAndCategoryRequired, "error");
       return;
     }
@@ -722,7 +722,11 @@ export default function ProductsPage() {
           isArabic={isArabic}
         >
           <ConfirmDelete
-            label={`"${products.find((x: any) => x.id === confirmDeletePid)?.name ?? confirmDeletePid}"`}
+            label={`"${
+              products.find((x: any) => x.id === confirmDeletePid)?.[
+                isArabic ? "name_ar" : "name_en"
+              ] ?? confirmDeletePid
+            }"`}
             busy={deletingProd}
             onConfirm={() => handleDeleteProduct(confirmDeletePid)}
             onCancel={() => setConfirmDeletePid(null)}
@@ -759,7 +763,7 @@ export default function ProductsPage() {
                 labelAr="الاسم بالعربي"
                 placeholderEn="Perfume name"
                 placeholderAr="اسم العطر"
-                valueEn={cf.name}
+                valueEn={cf.name_en}
                 valueAr={cf.name_ar ?? ""}
                 onChangeEn={sc("name")}
                 onChangeAr={sc("name_ar")}
@@ -769,7 +773,7 @@ export default function ProductsPage() {
                 labelAr="العائلة العطرية بالعربي"
                 placeholderEn="e.g. Woody"
                 placeholderAr="مثال: خشبي"
-                valueEn={cf.fragrance_family}
+                valueEn={cf.fragrance_family_en}
                 valueAr={cf.fragrance_family_ar ?? ""}
                 onChangeEn={sc("fragrance_family")}
                 onChangeAr={sc("fragrance_family_ar")}
@@ -781,7 +785,7 @@ export default function ProductsPage() {
                 </label>
                 <Select
                   options={catOptions}
-                  value={cf.category}
+                  value={cf.categories}
                   onChange={sc("category")}
                 />
               </div>
@@ -793,7 +797,7 @@ export default function ProductsPage() {
               labelAr="الوصف بالعربي"
               placeholderEn="Brief description..."
               placeholderAr="وصف مختصر..."
-              valueEn={cf.description}
+              valueEn={cf.description_en}
               valueAr={cf.description_ar ?? ""}
               onChangeEn={sc("description")}
               onChangeAr={sc("description_ar")}
@@ -895,8 +899,8 @@ export default function ProductsPage() {
       <Modal
         open={showEdit}
         title={
-          singleProduct?.name
-            ? `${p.modals.editProduct} · ${singleProduct.name}`
+          singleProduct?.name_en
+            ? `${p.modals.editProduct} · ${singleProduct.name_en}`
             : p.modals.editProduct
         }
         onClose={() => setShowEdit(false)}
@@ -914,7 +918,7 @@ export default function ProductsPage() {
                 labelAr="الاسم بالعربي"
                 placeholderEn="Product name"
                 placeholderAr="اسم المنتج"
-                valueEn={ef.name}
+                valueEn={ef.name_en}
                 valueAr={ef.name_ar ?? ""}
                 onChangeEn={se("name")}
                 onChangeAr={se("name_ar")}
@@ -924,7 +928,7 @@ export default function ProductsPage() {
                 labelAr="العائلة العطرية بالعربي"
                 placeholderEn="Woody"
                 placeholderAr="خشبي"
-                valueEn={ef.fragrance_family}
+                valueEn={ef.fragrance_family_en}
                 valueAr={ef.fragrance_family_ar ?? ""}
                 onChangeEn={se("fragrance_family")}
                 onChangeAr={se("fragrance_family_ar")}
@@ -934,7 +938,7 @@ export default function ProductsPage() {
                   {p.fields.categoryName}
                 </label>
                 <Select
-                  value={ef.category}
+                  value={ef.categories}
                   options={catOptions}
                   onChange={se("category")}
                 />
@@ -945,7 +949,7 @@ export default function ProductsPage() {
               labelAr="الوصف بالعربي"
               placeholderEn="Description..."
               placeholderAr="الوصف..."
-              valueEn={ef.description}
+              valueEn={ef.description_en}
               valueAr={ef.description_ar ?? ""}
               onChangeEn={se("description")}
               onChangeAr={se("description_ar")}
@@ -1118,15 +1122,15 @@ export default function ProductsPage() {
                         const vT = imgs.find((i) => i.is_thumbnail) ?? imgs[0];
                         return vT ? (
                           <Image
-                            width={40}
-                            height={40}
+                            width={120}
+                            height={120}
                             src={vT.url}
-                            className="w-10 h-10 rounded-lg object-cover"
+                            className="w-[120px] h-[120px] rounded-lg object-cover"
                             alt="thumb"
                             loading="lazy"
                           />
                         ) : (
-                          <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-600 text-sm">
+                          <div className="w-[120px] h-[120px] rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-600 text-sm">
                             ◻
                           </div>
                         );
@@ -1135,12 +1139,12 @@ export default function ProductsPage() {
                         <p className="text-[16px] font-semibold text-white">
                           {v.volume}
                         </p>
-                        <p className="text-[16px] text-gray-500 mt-0.5">
+                        <p className="text-[16px] text-white mt-0.5">
                           LE {parseFloat(v.price).toLocaleString()} · {v.stock}{" "}
                           {p.editVariant.inStock} ·{" "}
                           <span
                             className={
-                              v.is_active ? "text-emerald-400" : "text-gray-500"
+                              v.is_active ? "text-emerald-400" : "text-white"
                             }
                           >
                             {v.is_active ? p.fields.active : p.fields.inactive}

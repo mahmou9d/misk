@@ -50,7 +50,7 @@ function SuccessModal({
   onClose: () => void;
 }) {
   const { locale, t, isArabic: isRTL } = useTranslation();
-
+setTimeout(() => localStorage.removeItem("next_step"), 7000);
   return (
     <div
       onClick={(e) => e.target === e.currentTarget && onClose()}
@@ -268,7 +268,7 @@ export function PaymentPopup() {
   const router = useRouter();
 
   const successParam = params.get("success");
-
+const next_step = localStorage.getItem("next_step");
   useEffect(() => {
     if (successParam) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -311,7 +311,7 @@ export function PaymentPopup() {
       params.get("data.message") ?? params.get("error_occured") ?? undefined,
   };
 
-  return success ? (
+  return success || next_step !==null ? (
     <SuccessModal data={data} onClose={handleClose} />
   ) : (
     <FailedModal data={data} onClose={handleClose} />

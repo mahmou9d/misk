@@ -74,12 +74,12 @@ export function useProductPage({page,search}:{page:number,search:string}) {
   /* CREATE                                                            */
   /* ---------------------------------------------------------------- */
   const [cf, setCf] = useState({
-    name: "",
+    name_en: "",
     name_ar: "", // ← NEW
-    category: "",
-    fragrance_family: "",
+    categories: "",
+    fragrance_family_en: "",
     fragrance_family_ar: "", // ← NEW
-    description: "",
+    description_en: "",
     description_ar: "", // ← NEW
   });
   const [cvars, setCVars] = useState<Volume[]>([emptyV()]);
@@ -147,12 +147,12 @@ const sc =
   /* ---------------------------------------------------------------- */
   const [pid, setPid] = useState<number | null>(null);
   const [ef, setEf] = useState({
-    name: "",
+    name_en: "",
     name_ar: "", // ← NEW
-    category: "",
-    fragrance_family: "",
+    categories: "",
+    fragrance_family_en: "",
     fragrance_family_ar: "", // ← NEW
-    description: "",
+    description_en: "",
     description_ar: "", // ← NEW
     is_active: "true",
   });
@@ -169,14 +169,14 @@ const sc =
 useEffect(() => {
   if (singleProduct) {
     setEf({
-      name: singleProduct.name ?? "",
+      name_en: singleProduct.name_en ?? "",
       name_ar: singleProduct.name_ar ?? "", // ← NEW
-      category: String(
+      categories: String(
         singleProduct.category ?? singleProduct.category ?? "",
       ),
-      fragrance_family: singleProduct.fragrance_family ?? "",
+      fragrance_family_en: singleProduct.fragrance_family_en ?? "",
       fragrance_family_ar: singleProduct.fragrance_family_ar ?? "", // ← NEW
-      description: singleProduct.description ?? "",
+      description_en: singleProduct.description_en ?? "",
       description_ar: singleProduct.description_ar ?? "", // ← NEW
       is_active: String(singleProduct.is_active ?? true),
     });
@@ -302,20 +302,22 @@ useEffect(() => {
   /* Handlers                                                          */
   /* ---------------------------------------------------------------- */
   const handleCreate = async () => {
-    if (!cf.name || !cf.category) {
+    if (!cf.name_en || !cf.name_ar || !cf.categories) {
       showNotification("Name & category required.", "error");
       return;
     }
     setCStep("creating");
     try {
       const created: any = await createAsync({
-        name: cf.name,
-        category:
-          categories?.find((c) => String(c.id) === cf.category)?.name ??
-          cf.category,
-        description: cf.description,
-        fragrance_family: cf.fragrance_family,
-        
+        name_ar: cf.name_ar,
+        name_en: cf.name_en,
+        categories:
+          categories?.find((c) => String(c.id) === cf.categories)?.name ??
+          cf.categories,
+        description_ar: cf.description_ar,
+        description_en: cf.description_en,
+        fragrance_family_ar: cf.fragrance_family_ar,
+        fragrance_family_en: cf.fragrance_family_en,
       });
       const pid2: number = created?.id ?? created?.product_id;
       const filled = cvars.filter((v) => v.volume && v.price);
@@ -345,12 +347,12 @@ useEffect(() => {
       setCStep("done");
       showNotification("Product created!", "success");
       setCf({
-        name: "",
+        name_en: "",
         name_ar: "", // ← NEW
-        category: "",
-        fragrance_family: "",
+        categories: "",
+        fragrance_family_en: "",
         fragrance_family_ar: "", // ← NEW
-        description: "",
+        description_en: "",
         description_ar: "", // ← NEW
       });
       setCVars([emptyV()]);
@@ -392,10 +394,14 @@ useEffect(() => {
     }
     setEStep("updating");
     const payload: any = {};
-    if (ef.name) payload.name = ef.name;
-    if (ef.category) payload.category = ef.category;
-    if (ef.description) payload.description = ef.description;
-    if (ef.fragrance_family) payload.fragrance_family = ef.fragrance_family;
+    if (ef.name_en) payload.name = ef.name_en;
+    if (ef.name_ar) payload.name_ar = ef.name_ar; 
+    if (ef.categories) payload.category = ef.categories;
+    if (ef.description_en) payload.description = ef.description_en;
+    if (ef.description_ar) payload.description_ar = ef.description_ar; 
+    if (ef.fragrance_family_en) payload.fragrance_family = ef.fragrance_family_en;
+    if (ef.fragrance_family_ar)
+      payload.fragrance_family_ar = ef.fragrance_family_ar; 
     payload.is_active = ef.is_active === "true";
     try {
       await new Promise<void>((res, rej) =>

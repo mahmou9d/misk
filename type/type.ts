@@ -70,21 +70,21 @@ export interface SalesOrder {
 
 export type Product = {
   id: number;
-  name: string;
+  name_en: string;
   name_ar?: string;
   category_name: string;
   category: string;
+  categories:string
   lowest_price: string;
   thumbnail: string | null;
   is_active: boolean;
   average_rating: number | null;
   review_count: number;
   created_at: string;
-  description?: string | null;
+  description_en?: string | null;
   description_ar?: string | null;
   fragrance_family_ar?: string | null;
-  fragrance_family?: string | null;
-  
+  fragrance_family_en?: string | null;
 
   quantity?: number;
   price?: string;
@@ -219,11 +219,13 @@ export interface TopSellingResponse {
 }
 
 export interface CreateProduct {
-  name: string;
-  description: string;
-  
-  category: string;
-  fragrance_family: string;
+  name_ar: string;
+  name_en: string;
+  description_ar: string;
+  description_en: string;
+  categories: string;
+  fragrance_family_ar: string;
+  fragrance_family_en: string;
 }
 export interface SubVariant {
   id: number;
@@ -310,6 +312,7 @@ export interface PayPalCaptureResponse {
 export interface PlaceOrderResponse {
   order_id: number;
   message?: string;
+  next_step?: string;
 }
 
 export interface ProductsData {

@@ -19,9 +19,9 @@ export function Spinner({ label }: { label: string }) {
   const { isArabic } = useTranslation();
   return (
     <div
-      className={`mb-2 flex items-center gap-1.5 ${isArabic ? "text-[13px] flex-row-reverse justify-end" : "text-[12px]"} text-gray-400`}
+      className={`mb-2 flex items-center gap-1.5 ${isArabic ? "text-[16px] flex-row-reverse justify-end" : "text-[12px]"} text-gray-400`}
     >
-      <span className="inline-block w-2.5 h-2.5 rounded-full border-2 border-[#fff] border-t-transparent animate-spin flex-shrink-0" />
+      <span className="inline-block w-4 h-4 rounded-full border-2 border-[#fff] border-t-transparent animate-spin flex-shrink-0" />
       {label}
     </div>
   );
@@ -47,7 +47,7 @@ export function ConfirmDelete({
       dir={isArabic ? "rtl" : "ltr"}
     >
       <p
-        className={`${isArabic ? "text-[14px]" : "text-[13px]"} text-red-400 mb-2.5`}
+        className={`${isArabic ? "text-[16px]" : "text-[16px]"} text-red-400 mb-2.5`}
       >
         {c.deleteConfirm} {label}?
       </p>
@@ -141,12 +141,6 @@ export function ImgGallery({
       onError: (error: AxiosError<ErrorResponse>) =>
         onNotify(
           error?.response?.data?.message ||
-            error?.response?.data?.detail ||
-            error?.response?.data?.error ||
-            error?.response?.data?.status ||
-            error?.response?.data?.non_field_errors ||
-            error?.response?.data?.name ||
-            error?.message ||
             c.failed,
           "error",
         ),
@@ -156,7 +150,7 @@ export function ImgGallery({
   return (
     <div className="mb-3" dir={isArabic ? "rtl" : "ltr"}>
       <label
-        className={`${isArabic ? "text-[13px]" : "text-[12px]"} text-gray-400 block mb-1.5`}
+        className={`${isArabic ? "text-[20px]" : "text-[16px]"} text-gray-400 block mb-1.5`}
       >
         {c.images}
       </label>
@@ -169,18 +163,18 @@ export function ImgGallery({
             onMouseLeave={() => setHoveredId(null)}
           >
             <Image
-              width={64}
-              height={64}
+              width={200}
+              height={200}
               loading="lazy"
               alt="Image Product"
               src={img.url || "heros.jpg"}
-              className={`w-16 h-16 object-cover rounded-xl block border-2 ${
+              className={`w-[200px] h-[200px] object-cover rounded-xl block border-2 ${
                 img.is_thumbnail ? "border-[#fff]" : "border-white/10"
               }`}
             />
             {img.is_thumbnail && (
               <span
-                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white text-[7px] rounded-[3px] px-1 py-px pointer-events-none -wider font-bold`}
+                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white text-[15px] rounded-[3px] px-1 py-px pointer-events-none -wider font-bold`}
               >
                 {c.mainBadge}
               </span>
@@ -194,7 +188,7 @@ export function ImgGallery({
                 <button
                   title={c.setMainTitle}
                   onClick={() => handleSetThumb(img.id)}
-                  className="text-[9px] font-bold bg-[#fff] text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer -wider"
+                  className="text-[15px] font-bold bg-amber-600 text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer -wider"
                 >
                   {c.mainBadge}
                 </button>
@@ -202,7 +196,7 @@ export function ImgGallery({
               <button
                 title={c.deleteImgTitle}
                 onClick={() => handleDelete(img.id)}
-                className="text-[9px] font-bold bg-red-500 text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer -wider"
+                className="text-[15px] font-bold bg-red-500 text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer -wider"
               >
                 {c.delBadge}
               </button>
@@ -214,17 +208,17 @@ export function ImgGallery({
         <div
           onClick={() => !uploading && fileRef.current?.click()}
           title={c.addImgTitle}
-          className={`w-16 h-16 border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center shrink-0 bg-white/5 select-none gap-0.5 ${
+          className={`w-[200px] h-[200px] border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center shrink-0 bg-white/5 select-none gap-0.5 ${
             uploading
               ? "cursor-not-allowed opacity-60"
               : "cursor-pointer hover:bg-white/10 hover:border-white/20 transition-colors"
           }`}
         >
-          <span className="text-[10px] font-bold -wider text-gray-500">
+          <span className="text-[16px] font-bold -wider text-gray-500">
             {uploading ? "..." : c.addBadge}
           </span>
           {!uploading && (
-            <span className="text-[11px] text-gray-600 font-semibold">
+            <span className="text-[16px] text-gray-600 font-semibold">
               {c.maxSize}
             </span>
           )}
@@ -243,7 +237,7 @@ export function ImgGallery({
       </div>
       {images.length === 0 && !uploading && (
         <p
-          className={`${isArabic ? "text-[12px]" : "text-[11px]"} text-gray-600 mt-1.5`}
+          className={`${isArabic ? "text-[16px]" : "text-[16px]"} text-gray-600 mt-1.5`}
         >
           {c.noImages}
         </p>
@@ -294,17 +288,17 @@ export function MultiImgPicker({
           >
             <Image
               src={src}
-              width={52}
-              height={52}
+              width={200}
+              height={200}
               loading="lazy"
               alt="Image Product"
-              className={`w-[52px] h-[52px] object-cover rounded-xl block border-2 ${
+              className={`w-[200px] h-[200px] object-cover rounded-xl block border-2 ${
                 thumbnailIndex === fi ? "border-[#fff]" : "border-white/10"
               }`}
             />
             {thumbnailIndex === fi && (
               <span
-                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white text-[7px] rounded-sm px-1 py-px pointer-events-none font-bold -wider`}
+                className={`absolute top-0.5 ${isArabic ? "right-0.5" : "left-0.5"} bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white text-[15px] rounded-sm px-1 py-px pointer-events-none font-bold -wider`}
               >
                 {c.mainBadge}
               </span>
@@ -317,14 +311,14 @@ export function MultiImgPicker({
               {thumbnailIndex !== fi && (
                 <button
                   onClick={() => onSetThumb(fi)}
-                  className="text-[8px] font-bold bg-[#fff] text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer -wider"
+                  className="text-[15px] font-bold bg-[#fff] text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer -wider"
                 >
                   {c.mainBadge}
                 </button>
               )}
               <button
                 onClick={() => onRemove(fi)}
-                className="text-[8px] font-bold bg-red-500 text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer -wider"
+                className="text-[15px] font-bold bg-red-500 text-white border-none rounded-[3px] px-1.5 py-0.5 cursor-pointer -wider"
               >
                 {c.delBadge}
               </button>
@@ -335,12 +329,12 @@ export function MultiImgPicker({
         <div
           onClick={() => fileRef.current?.click()}
           title={c.addImgsTitle}
-          className="w-[52px] h-[52px] border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center cursor-pointer bg-white/5 shrink-0 select-none gap-px hover:bg-white/10 hover:border-white/20 transition-colors"
+          className="w-[200px] h-[200px] border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center cursor-pointer bg-white/5 shrink-0 select-none gap-px hover:bg-white/10 hover:border-white/20 transition-colors"
         >
-          <span className="text-[9px] font-bold text-gray-500 -widest">
+          <span className="text-[15px] font-bold text-gray-500 -widest">
             {c.addBadge}
           </span>
-          <span className="text-[11px] text-gray-600 font-semibold">
+          <span className="text-[15px] text-gray-600 font-semibold">
             {c.maxSize}
           </span>
         </div>
@@ -359,7 +353,7 @@ export function MultiImgPicker({
       </div>
       {sizeErr && (
         <p
-          className={`${isArabic ? "text-[12px]" : "text-[11px]"} text-red-400 mt-1`}
+          className={`${isArabic ? "text-[15px]" : "text-[15px]"} text-red-400 mt-1`}
         >
           {sizeErr}
         </p>

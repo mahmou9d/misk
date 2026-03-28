@@ -19,6 +19,7 @@ export  function RedirectResetPassword() {
   const searchParams = useSearchParams();
   const router = useRouter();
 const { locale } = useTranslation();
+
   useEffect(() => {
     const token = searchParams.get("token");
 

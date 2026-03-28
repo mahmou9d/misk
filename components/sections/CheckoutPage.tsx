@@ -25,7 +25,6 @@ const SHIPPING = 85;
 export default function CheckoutPage() {
   const { t, isArabic, dir, locale } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const [cash, setCash] = useState(false);
   const [showPayModal, setShowPayModal] = useState(false);
   const [pendingOrderId, setPendingOrderId] = useState<string | null>(null);
   const [pendingPhone, setPendingPhone] = useState("");
@@ -58,8 +57,12 @@ export default function CheckoutPage() {
         phone_number: values.phone,
         country: `Egypt - ${values.gov}`,
         order_notes: "",
-        payment_method: cash ? "cod" : "",
+        payment_method: values.payment_method,
       });
+      const nextStep = localStorage.setItem("next_step", String(result.next_step));
+      if(nextStep!==null){
+        window.location.href = "/";
+      }
       const orderId = String(result.order_id);
       if (values.payment_method === "cod") {
         showNotification(t.checkout.orderSuccess, "success");
