@@ -7,53 +7,143 @@ import {
   CheckCircle,
   RefreshCw,
   Plus,
+  Pencil,
+  Trash2,
+  X,
+  Check,
 } from "lucide-react";
-import { useGetCategory, useCreateCategory } from "@/hooks/useDashboard";
+import {
+  useGetCategory,
+  useCreateCategory,
+  usePatchCategory,
+  useDeleteCategory,
+} from "@/hooks/useDashboard";
 import { useShowNotification } from "@/utils/showNotification";
 import { ErrorResponse, NotificationState } from "@/type/type";
 import Notification from "../layout/Notification";
-import { AxiosError } from "axios";
+import { all, AxiosError } from "axios";
 import { useTranslation } from "@/lib/Usetranslation";
 
 export default function CategoriesPage() {
   const { t, dir } = useTranslation();
   const c = t.adminCategories;
 
-  const [name, setName] = useState("");
+  const [name_en, setNameEn] = useState("");
   const [nameAr, setNameAr] = useState("");
   const [notification, setNotification] = useState<NotificationState | null>(
     null,
   );
+
+  // Edit state
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editNameAr, setEditNameAr] = useState("");
+  const [editIsActive, setEditIsActive] = useState(true);
+
+  // Per-item patching state (replaces global `patching` boolean)
+  const [patchingId, setPatchingId] = useState<number | null>(null);
+
+  // Delete confirm state
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
+
   const showNotification = useShowNotification(setNotification);
 
-  const { data: categories, isLoading } = useGetCategory();
+  const { data: categories, isLoading } = useGetCategory({ all: true });
   const { mutate, isPending, isSuccess, isError } = useCreateCategory();
+  const { mutate: patchCategory } = usePatchCategory();
+  const { mutate: deleteCategory, isPending: deleting } = useDeleteCategory({
+    hard: true,
+  });
 
   const create = () => {
-    if (!name.trim()) return;
+    if (!name_en.trim()) return;
     mutate(
-      { name, name_ar: nameAr },
+      { name_en, name_ar: nameAr },
       {
         onSuccess: () => {
-          showNotification(`"${name}" ${c.created}`, "success");
-          setName("");
+          showNotification(`"${name_en}" ${c.created}`, "success");
+          setNameEn("");
           setNameAr("");
         },
         onError: (error: AxiosError<ErrorResponse>) => {
           showNotification(
-            error?.response?.data?.message ||
-              error?.response?.data?.detail ||
-              error?.response?.data?.error ||
-              error?.response?.data?.status ||
-              error?.response?.data?.non_field_errors ||
-              error?.response?.data?.name ||
-              error?.message ||
-              c.createFailed,
+            error?.response?.data?.message || c.createFailed,
             "error",
           );
         },
       },
     );
+  };
+
+  const startEdit = (cat: {
+    id: number;
+    name_en: string;
+    name_ar?: string;
+    is_active?: boolean;
+  }) => {
+    setEditingId(cat.id);
+    setEditName(cat.name_en ?? "");
+    setEditNameAr(cat.name_ar ?? "");
+    setEditIsActive(cat.is_active ?? true);
+    setConfirmDeleteId(null);
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditName("");
+    setEditNameAr("");
+    setEditIsActive(true);
+  };
+
+  const saveEdit = (id: number) => {
+    if (!editName.trim()) return;
+    setPatchingId(id);
+    patchCategory(
+      {
+        id,
+        body: {
+          name_en: editName,
+          name_ar: editNameAr,
+          is_active: editIsActive,
+        },
+      },
+      {
+        onSuccess: () => {
+          showNotification(`"${editName}" updated`, "success");
+          setPatchingId(null);
+          cancelEdit();
+        },
+        onError: (error: AxiosError<ErrorResponse>) => {
+          showNotification(
+            error?.response?.data?.message ||
+              error?.response?.data?.detail ||
+              error?.message ||
+              "Update failed",
+            "error",
+          );
+          setPatchingId(null);
+        },
+      },
+    );
+  };
+
+  const handleDelete = (id: number, catName: string) => {
+    deleteCategory(id, {
+      onSuccess: () => {
+        showNotification(`"${catName}" deleted`, "success");
+        setConfirmDeleteId(null);
+      },
+      onError: (error: AxiosError<ErrorResponse>) => {
+        showNotification(
+          error?.response?.data?.message ||
+            error?.response?.data?.detail ||
+            error?.message ||
+            "Delete failed",
+          "error",
+        );
+        setConfirmDeleteId(null);
+      },
+    });
   };
 
   return (
@@ -93,16 +183,14 @@ export default function CategoriesPage() {
               <div>
                 <label className="block text-sm font-bold text-white mb-3">
                   {c.nameLabel}{" "}
-                  <span className="text-[#fff] font-normal text-xs">
-                    (EN)
-                  </span>{" "}
+                  <span className="text-[#fff] font-normal text-xs">(EN)</span>
                 </label>
                 <div className="relative">
                   <Tag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={name_en}
+                    onChange={(e) => setNameEn(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && create()}
                     placeholder={c.namePlaceholder}
                     disabled={isPending}
@@ -158,7 +246,7 @@ export default function CategoriesPage() {
             {/* Button */}
             <button
               onClick={create}
-              disabled={isPending || !name.trim()}
+              disabled={isPending || !name_en.trim()}
               className="w-full px-8 py-4 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl font-bold text-lg shadow-xl shadow-[#fff]/25 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isPending ? (
@@ -215,29 +303,257 @@ export default function CategoriesPage() {
               {categories?.map((cat) => (
                 <div
                   key={cat.id}
-                  className="flex justify-between items-center p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-[#fff]/20 cursor-pointer transition-all"
+                  className={`rounded-xl border transition-all overflow-hidden ${
+                    editingId === cat.id
+                      ? "border-white/20 bg-white/5"
+                      : cat.is_active
+                        ? "border-emerald-500/15 hover:border-emerald-500/30 hover:bg-emerald-500/5"
+                        : "border-white/5 hover:border-white/15 hover:bg-white/3"
+                  }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#fff]/20 to-[#000]/20 flex items-center justify-center">
-                      <Tag className="w-4 h-4 text-[#fff]" />
-                    </div>
-                    <div>
-                      <span className="text-sm font-bold text-white block">
-                        {cat.name}
-                      </span>
-                      {cat.name_ar && (
-                        <span
-                          className="text-xs text-[#fff]/70 block"
-                          dir="rtl"
+                  {/* Normal row */}
+                  {editingId !== cat.id && (
+                    <div className="flex justify-between items-center p-4">
+                      {/* Left: icon + names */}
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
+                            cat.is_active
+                              ? "bg-emerald-500/15 border border-emerald-500/30"
+                              : "bg-white/5 border border-white/10"
+                          }`}
                         >
-                          {cat.name_ar}
+                          <Tag
+                            className={`w-4 h-4 ${
+                              cat.is_active
+                                ? "text-emerald-400"
+                                : "text-gray-500"
+                            }`}
+                          />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-bold text-white">
+                              {cat.name_en}
+                            </span>
+                            {/* Active / Inactive badge */}
+                            <span
+                              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold tracking-wide ${
+                                cat.is_active
+                                  ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25"
+                                  : "bg-gray-700/50 text-gray-500 border border-gray-600/30"
+                              }`}
+                            >
+                              <span
+                                className={`w-1.5 h-1.5 rounded-full ${
+                                  cat.is_active
+                                    ? "bg-emerald-400"
+                                    : "bg-gray-500"
+                                }`}
+                              />
+                              {cat.is_active ? "Active" : "Inactive"}
+                            </span>
+                          </div>
+                          {cat.name_ar && (
+                            <span
+                              className="text-xs text-white/50 block mt-0.5"
+                              dir="rtl"
+                            >
+                              {cat.name_ar}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Right: id + action buttons */}
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs text-gray-600 font-mono me-1">
+                          #{cat.id}
                         </span>
-                      )}
+
+                        {/* Toggle active — green pill button */}
+                        <button
+                          onClick={() => {
+                            setPatchingId(cat.id);
+                            patchCategory(
+                              {
+                                id: cat.id,
+                                body: { is_active: !cat.is_active },
+                              },
+                              {
+                                onSuccess: () => {
+                                  setPatchingId(null);
+                                  showNotification(
+                                    `"${cat.name_en}" ${cat.is_active ? "deactivated" : "activated"}`,
+                                    "success",
+                                  );
+                                },
+                                onError: (error: AxiosError<ErrorResponse>) => {
+                                  setPatchingId(null);
+                                  showNotification(
+                                    error?.response?.data?.message ||
+                                      error?.response?.data?.detail ||
+                                      error?.message ||
+                                      "Update failed",
+                                    "error",
+                                  );
+                                },
+                              },
+                            );
+                          }}
+                          disabled={patchingId === cat.id}
+                          title={cat.is_active ? "Deactivate" : "Activate"}
+                          className={`h-7 px-2.5 rounded-lg border text-[10px] font-bold tracking-wide flex items-center gap-1.5 transition-all ${
+                            cat.is_active
+                              ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30"
+                              : "bg-gray-700/40 border-gray-600/30 text-gray-500 hover:bg-gray-600/40 hover:text-gray-300"
+                          }`}
+                        >
+                          {patchingId === cat.id ? (
+                            <RefreshCw className="w-3 h-3 animate-spin" />
+                          ) : cat.is_active ? (
+                            <>
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                              ON
+                            </>
+                          ) : (
+                            <>
+                              <span className="w-1.5 h-1.5 rounded-full bg-gray-500" />
+                              OFF
+                            </>
+                          )}
+                        </button>
+
+                        {/* Edit — blue */}
+                        <button
+                          onClick={() => startEdit(cat)}
+                          title="Edit"
+                          className="w-7 h-7 rounded-lg bg-blue-500/10 border border-blue-500/25 text-blue-400 hover:bg-blue-500/25 hover:border-blue-500/50 flex items-center justify-center transition-all"
+                        >
+                          <Pencil className="w-3.5 h-3.5" />
+                        </button>
+
+                        {/* Delete / Confirm delete — red */}
+                        {confirmDeleteId === cat.id ? (
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => handleDelete(cat.id, cat.name_en)}
+                              disabled={deleting}
+                              title="Confirm delete"
+                              className="w-7 h-7 rounded-lg bg-red-500/25 border border-red-500/50 text-red-400 hover:bg-red-500/40 flex items-center justify-center transition-all"
+                            >
+                              {deleting ? (
+                                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                              ) : (
+                                <Check className="w-3.5 h-3.5" />
+                              )}
+                            </button>
+                            <button
+                              onClick={() => setConfirmDeleteId(null)}
+                              title="Cancel"
+                              className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:bg-white/10 flex items-center justify-center transition-all"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              setConfirmDeleteId(cat.id);
+                              cancelEdit();
+                            }}
+                            title="Delete"
+                            className="w-7 h-7 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/25 hover:border-red-500/40 hover:text-red-400 flex items-center justify-center transition-all"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <span className="text-xs text-gray-500 font-medium">
-                    #{cat.id}
-                  </span>
+                  )}
+
+                  {/* Edit inline row */}
+                  {editingId === cat.id && (
+                    <div className="p-4 bg-white/5 border border-white/20 rounded-xl space-y-3">
+                      <input
+                        type="text"
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") saveEdit(cat.id);
+                          if (e.key === "Escape") cancelEdit();
+                        }}
+                        dir="ltr"
+                        placeholder="Category name (EN)"
+                        className="w-full px-3 py-2 bg-[#0f1117] border border-white/10 rounded-lg text-white text-sm placeholder-gray-500 focus:outline-none focus:border-white/40"
+                        autoFocus
+                      />
+                      <input
+                        type="text"
+                        value={editNameAr}
+                        onChange={(e) => setEditNameAr(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") saveEdit(cat.id);
+                          if (e.key === "Escape") cancelEdit();
+                        }}
+                        dir="rtl"
+                        placeholder="اسم الفئة بالعربي"
+                        className="w-full px-3 py-2 bg-[#0f1117] border border-white/10 rounded-lg text-white text-sm placeholder-gray-500 focus:outline-none focus:border-white/40"
+                      />
+
+                      {/* is_active toggle */}
+                      <button
+                        type="button"
+                        onClick={() => setEditIsActive((v) => !v)}
+                        className={`flex items-center gap-3 px-3 py-2 rounded-lg border transition-all w-full ${
+                          editIsActive
+                            ? "bg-emerald-500/10 border-emerald-500/30"
+                            : "bg-white/5 border-white/10"
+                        }`}
+                      >
+                        <span
+                          className={`w-8 h-4 rounded-full flex items-center transition-all duration-200 px-0.5 ${
+                            editIsActive ? "bg-emerald-500" : "bg-gray-600"
+                          }`}
+                        >
+                          <span
+                            className={`w-3 h-3 rounded-full bg-white shadow transition-transform duration-200 ${
+                              editIsActive ? "translate-x-4" : "translate-x-0"
+                            }`}
+                          />
+                        </span>
+                        <span
+                          className={`text-sm font-medium ${
+                            editIsActive ? "text-emerald-400" : "text-gray-500"
+                          }`}
+                        >
+                          {editIsActive ? "Active" : "Inactive"}
+                        </span>
+                      </button>
+
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => saveEdit(cat.id)}
+                          disabled={patchingId === cat.id || !editName.trim()}
+                          className="flex-1 py-2 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-lg text-sm font-bold flex items-center justify-center gap-2 disabled:opacity-50"
+                        >
+                          {patchingId === cat.id ? (
+                            <RefreshCw className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <Check className="w-4 h-4" />
+                          )}
+                          Save
+                        </button>
+                        <button
+                          onClick={cancelEdit}
+                          className="px-4 py-2 bg-white/5 border border-white/10 text-gray-400 rounded-lg text-sm flex items-center gap-2 hover:bg-white/10"
+                        >
+                          <X className="w-4 h-4" />
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

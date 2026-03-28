@@ -79,17 +79,63 @@ export const dashboardAPI = {
     return data || [];
   },
 
-  getCategories: async (): Promise<{ id: number; name: string, name_ar: string,name_en: string }[]> => {
-    const { data } = await apiClient.get<{ id: number; name: string, name_ar: string,name_en: string }[]>(
-      "/dashboard/categories/",
-    );
+  getCategories: async (params?: {
+    all?: boolean;
+  }): Promise<
+    {
+      id: number;
+      name: string;
+      name_ar: string;
+      name_en: string;
+      is_active: boolean;
+    }[]
+  > => {
+    const { data } = await apiClient.get<
+      {
+        id: number;
+        name: string;
+        name_ar: string;
+        name_en: string;
+        is_active: boolean;
+      }[]
+    >("/dashboard/categories/", {
+      params: params?.all ? { all: true } : undefined,
+    });
     return data;
   },
-  createCategory: async (payload: { name: string; name_ar: string }) => {
+
+  createCategory: async (payload: { name_en: string; name_ar: string }) => {
     const { data } = await apiClient.post("/dashboard/categories/", payload);
     return data;
   },
 
+  patchCategory: async (payload: {
+    id: number;
+    body: Partial<{
+      name_ar: string;
+      name_en: string;
+      is_active: boolean;
+    }>;
+  }): Promise<{
+    id: number;
+    name_ar: string;
+    name_en: string;
+    is_active: boolean;
+  }> => {
+    const { data } = await apiClient.patch<{
+      id: number;
+      name_ar: string;
+      name_en: string;
+      is_active: boolean;
+    }>(`/dashboard/categories/${payload.id}/`, payload.body);
+    return data;
+  },
+
+  deleteCategory: async (id: number, hard?: boolean): Promise<void> => {
+    await apiClient.delete(`/dashboard/categories/${id}/`, {
+      params: hard ? { hard: true } : undefined,
+    });
+  },
   // TODO
   getAllReviews: async (page: number = 1): Promise<ReviewsDataRes> => {
     const { data } = await apiClient.get<ReviewsDataRes>(

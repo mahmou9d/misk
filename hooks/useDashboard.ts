@@ -49,7 +49,6 @@ export const dashboardKeys = {
   dashboardSettings: () => [...dashboardKeys.settings(), "dashboard"] as const,
 };
 
-// الـ hook
 export const useGetRecentOrders = (
   page: number,
   search: string = "",
@@ -66,7 +65,6 @@ export const useGetRecentOrders = (
     queryFn: () =>
       dashboardAPI.getRecentOrders({
         page: isFiltered ? undefined : page,
-        // all: isFiltered ? true : undefined,
         search: search || undefined,
         status: status || undefined,
       }),
@@ -124,10 +122,10 @@ export const usePatchOrders = () => {
   });
 };
 
-export const useGetCategory = () => {
+export const useGetCategory = (params?: { all?: boolean }) => {
   return useQuery({
     queryKey: dashboardKeys.categories(),
-    queryFn: dashboardAPI.getCategories,
+    queryFn: () => dashboardAPI.getCategories(params),
     staleTime: 60 * 1000,
   });
 };
@@ -136,7 +134,7 @@ export const useCreateCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: { name: string, name_ar: string }) =>
+    mutationFn: (payload: { name_en: string; name_ar: string }) =>
       dashboardAPI.createCategory(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: dashboardKeys.categories() });
@@ -146,6 +144,43 @@ export const useCreateCategory = () => {
     },
   });
 };
+
+export const usePatchCategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: {
+      id: number;
+      body: Partial<{
+        name: string;
+        name_ar: string;
+        name_en: string;
+        is_active: boolean;
+      }>;
+    }) => dashboardAPI.patchCategory(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.categories() });
+    },
+    onError: (error: AxiosError<ErrorResponse>) => {
+      // console.error("Patch category failed:", error);
+    },
+  });
+};
+
+export const useDeleteCategory = (options?: { hard?: boolean }) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) => dashboardAPI.deleteCategory(id, options?.hard),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.categories() });
+    },
+    onError: (error: AxiosError<ErrorResponse>) => {
+      // console.error("Delete category failed:", error);
+    },
+  });
+};
+
 // ─── Banners ───────────────────────────────────────────────────────────────
 export const useGetBannersPublic = () => {
   return useQuery({
@@ -154,6 +189,7 @@ export const useGetBannersPublic = () => {
     staleTime: 5 * 60 * 1000,
   });
 };
+
 export const useGetBanners = () => {
   return useQuery({
     queryKey: dashboardKeys.banners(),
@@ -182,7 +218,7 @@ export const usePatchBanner = () => {
   return useMutation({
     mutationFn: (payload: {
       id: number;
-      body: Partial<{ title: string; link: string; order: number; is_active: boolean }>;
+      body: Partial<{ name_ar: string; name_en: string; is_active: boolean }>;
     }) => dashboardAPI.patchBanner(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: dashboardKeys.banners() });
@@ -215,6 +251,7 @@ export const useGetPublicSettings = () => {
     staleTime: 10 * 60 * 1000,
   });
 };
+
 export const useGetDashboardSettings = () => {
   return useQuery({
     queryKey: dashboardKeys.dashboardSettings(),
@@ -237,6 +274,7 @@ export const usePatchDashboardSettings = () => {
     },
   });
 };
+
 // TODO
 
 export const useGetAllReviews = (page: number = 1) => {
@@ -246,6 +284,7 @@ export const useGetAllReviews = (page: number = 1) => {
     staleTime: 60 * 1000,
   });
 };
+
 export const useGetSalesOrders = () => {
   return useQuery({
     queryKey: dashboardKeys.salesOrders(),
@@ -253,6 +292,7 @@ export const useGetSalesOrders = () => {
     staleTime: 5 * 60 * 1000,
   });
 };
+
 export const useMakeAdmin = () => {
   const queryClient = useQueryClient();
 

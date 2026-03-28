@@ -473,7 +473,7 @@ hover:before:opacity-100`}
             <AnimatePresence>
               {!catsOpen && (
                 <motion.nav
-                  className={`fixed z-40 bg-white xl:hidden flex flex-col ${data.is_announcement_active ? "top-[105px]" : "top-[67px]"}  bottom-0 left-0 right-0 overflow-y-hidden`}
+                  className={`fixed z-40 bg-white xl:hidden flex flex-col ${data?.is_announcement_active ? "top-[105px]" : "top-[67px]"}  bottom-0 left-0 right-0 overflow-y-hidden`}
                   dir={dir}
                   initial={{ x: isArabic ? "100%" : "-100%" }}
                   animate={{ x: 0 }}
