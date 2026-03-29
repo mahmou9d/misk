@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { CartDrawer } from "./Cartdrawer";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, useGetRole } from "@/hooks/useAuth";
 import { useGetCartItems } from "@/hooks/useCart";
 import { useCats } from "@/lib/CatsContext";
 import { useTranslation } from "@/lib/Usetranslation";
@@ -23,6 +23,7 @@ import {
   UserIcon,
 } from "@/public/svg/Svgs";
 import { useGetCategory, useGetPublicSettings } from "@/hooks/useDashboard";
+import { useQueryClient } from "@tanstack/react-query";
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 const Logo = ({ locale }: { locale: string }) => (
@@ -83,24 +84,23 @@ function IconBtn({
   );
 }
 
-// ─── UserActions ──────────────────────────────────────────────────────────────
 function UserActions({ locale }: { locale: string }) {
-  const { isAuthenticated, isLoading, logout, isAdmin } = useAuth();
+  const { isAuthenticated, isLoading, logout } = useAuth();
   const { t } = useTranslation();
-
   const [mounted, setMounted] = useState(false);
+  const [isAdmin, setIsAdmin] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
+    setIsAdmin(localStorage.getItem("role"));
   }, []);
 
-  if (!mounted) {
+  if (!mounted)
     return (
       <div className="p-2.5">
         <div className="w-5 h-5" />
       </div>
     );
-  }
 
   if (isLoading)
     return (
@@ -135,18 +135,15 @@ function UserActions({ locale }: { locale: string }) {
               <DashboardIcon />
             </span>
           </Link>
-          {/* Divider */}
           <span className="block xl:hidden w-1 h-8 [background:linear-gradient(180deg,transparent,rgba(201,168,76,0.3),transparent)]" />
         </>
       )}
-
       <IconBtn onClick={() => logout()} title={t.navbar.signOut}>
         <LogoutIcon />
       </IconBtn>
     </div>
   );
 }
-
 // ─── LangSwitcher ─────────────────────────────────────────────────────────────
 function LangSwitcher() {
   const pathname = usePathname();
@@ -156,12 +153,13 @@ function LangSwitcher() {
   const [enRef, setEnRef] = useState<HTMLSpanElement | null>(null);
   const [thumbStyle, setThumbStyle] = useState<React.CSSProperties>({});
   const [loading, setLoading] = useState(false);
-
+const queryClient = useQueryClient();
   const switchLang = () => {
     if (loading) return;
     setLoading(true);
     const newLocale = isArabic ? "en" : "ar";
     const currentPath = pathname.replace(/^\/(ar|en)/, "") || "/";
+    queryClient.clear();
     router.push(`/${newLocale}${currentPath}`);
   };
 
@@ -284,8 +282,8 @@ export default function Navbar() {
   const [ddOpen, setDdOpen] = useState(false);
   const { data: cartData } = useGetCartItems();
   const { data: categories } = useGetCategory();
-const { data } = useGetPublicSettings();
-console.log(data)
+  const { data } = useGetPublicSettings();
+
   const cartCount = cartData?.reduce(
     (acc, item) => acc + Number(item?.quantity),
     0,
@@ -391,17 +389,17 @@ console.log(data)
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: i * 0.05, duration: 0.15 }}
                               className={`relative 
-before:content-['']
-before:absolute
-${isArabic ? "before:right-0" : "before:left-0"}
-before:top-[20%]
-before:bottom-[20%]
-before:w-[2px]
-before:bg-[linear-gradient(180deg,transparent,var(--gold),transparent)]
-before:opacity-0
-before:transition-opacity
-before:duration-200
-hover:before:opacity-100`}
+                                  before:content-['']
+                                  before:absolute
+                                  ${isArabic ? "before:right-0" : "before:left-0"}
+                                  before:top-[20%]
+                                  before:bottom-[20%]
+                                  before:w-[2px]
+                                  before:bg-[linear-gradient(180deg,transparent,var(--gold),transparent)]
+                                  before:opacity-0
+                                  before:transition-opacity
+                                  before:duration-200
+                                  hover:before:opacity-100`}
                             >
                               <Link
                                 href={`/${locale.toLowerCase()}/collections/${cat.name_en.toLowerCase()}`}

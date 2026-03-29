@@ -4,7 +4,7 @@ import axios from "axios";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ||
-  "https://web-production-1ab2d.up.railway.app/api/";
+  "https://hopeful-flow-production-c143.up.railway.app/api/";
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -62,8 +62,8 @@ apiClient.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${data.access}`;
         return apiClient(originalRequest);
       } catch (refreshError) {
-        localStorage.removeItem("access");
-        localStorage.removeItem("refresh");
+        // localStorage.removeItem("access");
+        // localStorage.removeItem("refresh");
         // window.location.href = "/login";
         return Promise.reject(refreshError);
       }

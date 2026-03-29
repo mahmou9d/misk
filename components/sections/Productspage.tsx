@@ -23,7 +23,7 @@ const INPUT_CLS =
   "transition-all outline-none";
 
 /* ══════════════════════════════════════════════════════════
-   DualInput  –  one label + EN input, then AR label + AR input
+   DualInput
    ══════════════════════════════════════════════════════════ */
 function DualInput({
   label,
@@ -48,7 +48,6 @@ function DualInput({
 }) {
   return (
     <div className="flex flex-col gap-1 mb-1">
-      {/* English */}
       <label className="text-[16px] text-gray-400 font-medium">{label}</label>
       <input
         type={type}
@@ -58,7 +57,6 @@ function DualInput({
         className={INPUT_CLS}
         dir="ltr"
       />
-      {/* Arabic */}
       <label className="text-[16px] text-gray-500 font-medium mt-0.5">
         {labelAr}
       </label>
@@ -361,25 +359,25 @@ function ProductCard({
       <div className="border-t border-white/10 bg-[#0f1117] px-4 py-3 flex items-center gap-2 flex-wrap">
         <button
           onClick={onEdit}
-          className="text-[16px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
+          className="text-[14px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
         >
           {labels.edit}
         </button>
         <button
           onClick={onAddVariant}
-          className="text-[16px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
+          className="text-[14px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
         >
           {labels.addVariant}
         </button>
         <button
           onClick={onEditVariant}
-          className="text-[16px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
+          className="text-[14px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
         >
           {labels.editVariant}
         </button>
         <button
           onClick={onDelete}
-          className={`${isArabic ? "mr-auto" : "ml-auto"} text-[16px] font-medium text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2 hover:bg-red-500/20 transition-colors cursor-pointer`}
+          className={`${isArabic ? "mr-auto" : "ml-auto"} text-[14px] font-medium text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2 hover:bg-red-500/20 transition-colors cursor-pointer`}
         >
           {labels.delete}
         </button>
@@ -427,6 +425,7 @@ export default function ProductsPage() {
     loadingProducts,
     cf,
     sc,
+    setCfCategories, // ✅ مضاف
     cvars,
     setCVars,
     cStep,
@@ -442,6 +441,7 @@ export default function ProductsPage() {
     setPid,
     ef,
     se,
+    setEfCategories, // ✅ مضاف
     eStep,
     singleProduct,
     loadingSingle,
@@ -552,7 +552,8 @@ export default function ProductsPage() {
   const openDeleteConfirm = (id: number) => setConfirmDeletePid(id);
 
   const handleCreateStep1 = () => {
-    if (!cf.name_en || !cf.name_ar || !cf.categories) {
+    // ✅ تصحيح الـ validation — كانت !cf.categories وده غلط مع array
+    if (!cf.name_en || !cf.name_ar || !cf.categories.length) {
       showNotification(p.errors.nameAndCategoryRequired, "error");
       return;
     }
@@ -568,7 +569,6 @@ export default function ProductsPage() {
     inactive: p.fields.inactive,
   };
 
-  /* small helper to avoid repeating the justify logic */
   const ActRow = ({ children }: { children: React.ReactNode }) => (
     <div
       className={`flex gap-2 mt-6 ${isArabic ? "justify-start flex-row-reverse" : "justify-end"}`}
@@ -577,7 +577,6 @@ export default function ProductsPage() {
     </div>
   );
 
-  /* ── reusable cancel button ── */
   const CancelBtn = ({ onClick }: { onClick: () => void }) => (
     <button
       onClick={onClick}
@@ -757,7 +756,6 @@ export default function ProductsPage() {
         {createStep === 1 && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
-              {/* Name EN + AR */}
               <DualInput
                 label={p.fields.name}
                 labelAr="الاسم بالعربي"
@@ -765,7 +763,7 @@ export default function ProductsPage() {
                 placeholderAr="اسم العطر"
                 valueEn={cf.name_en}
                 valueAr={cf.name_ar ?? ""}
-                onChangeEn={sc("name")}
+                onChangeEn={sc("name_en")}
                 onChangeAr={sc("name_ar")}
               />
               <DualInput
@@ -775,23 +773,47 @@ export default function ProductsPage() {
                 placeholderAr="مثال: خشبي"
                 valueEn={cf.fragrance_family_en}
                 valueAr={cf.fragrance_family_ar ?? ""}
-                onChangeEn={sc("fragrance_family")}
+                onChangeEn={sc("fragrance_family_en")}
                 onChangeAr={sc("fragrance_family_ar")}
               />
-              {/* Category */}
+
               <div className="flex flex-col gap-1 mb-1">
                 <label className="text-[16px] text-gray-400 font-medium">
                   {p.fields.category}
                 </label>
                 <Select
                   options={catOptions}
-                  value={cf.categories}
-                  onChange={sc("category")}
+                  value=""
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val && !cf.categories.includes(val))
+                      setCfCategories([...cf.categories, val]);
+                  }}
                 />
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {cf.categories.map((cat) => (
+                    <span
+                      key={cat}
+                      className="flex items-center gap-1.5 px-3 py-1 bg-white/10 border border-white/20 rounded-full text-[13px] text-white"
+                    >
+                      {catOptions.find((o) => o.value === cat)?.label ?? cat}
+                      <button
+                        onClick={() =>
+                          setCfCategories(
+                            cf.categories.filter((c) => c !== cat),
+                          )
+                        }
+                        className="text-gray-400 hover:text-white leading-none"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
               </div>
-              {/* Fragrance EN + AR */}
             </div>
-            {/* Description EN + AR */}
+
             <DualTextarea
               label={p.fields.description}
               labelAr="الوصف بالعربي"
@@ -799,7 +821,7 @@ export default function ProductsPage() {
               placeholderAr="وصف مختصر..."
               valueEn={cf.description_en}
               valueAr={cf.description_ar ?? ""}
-              onChangeEn={sc("description")}
+              onChangeEn={sc("description_en")}
               onChangeAr={sc("description_ar")}
             />
             <ActRow>
@@ -920,9 +942,9 @@ export default function ProductsPage() {
                 placeholderAr="اسم المنتج"
                 valueEn={ef.name_en}
                 valueAr={ef.name_ar ?? ""}
-                onChangeEn={se("name")}
+                onChangeEn={se("name_en")}
                 onChangeAr={se("name_ar")}
-              />{" "}
+              />
               <DualInput
                 label={p.fields.fragranceFamily}
                 labelAr="العائلة العطرية بالعربي"
@@ -930,20 +952,47 @@ export default function ProductsPage() {
                 placeholderAr="خشبي"
                 valueEn={ef.fragrance_family_en}
                 valueAr={ef.fragrance_family_ar ?? ""}
-                onChangeEn={se("fragrance_family")}
+                onChangeEn={se("fragrance_family_en")}
                 onChangeAr={se("fragrance_family_ar")}
               />
+
               <div className="flex flex-col gap-1 mb-1">
                 <label className="text-[16px] text-gray-400 font-medium">
                   {p.fields.categoryName}
                 </label>
                 <Select
-                  value={ef.categories}
                   options={catOptions}
-                  onChange={se("category")}
+                  value=""
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val && !ef.categories.includes(val))
+                      setEfCategories([...ef.categories, val]);
+                  }}
                 />
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {ef.categories.map((cat) => (
+                    <span
+                      key={cat}
+                      className="flex items-center gap-1.5 px-3 py-1 bg-white/10 border border-white/20 rounded-full text-[15px] text-white"
+                    >
+                      {catOptions.find((o) => o.value === cat)?.label ?? cat}
+                      <button
+                        onClick={() =>
+                          setEfCategories(
+                            ef.categories.filter((c) => c !== cat),
+                          )
+                        }
+                        className="text-gray-400 hover:text-white leading-none"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
+
             <DualTextarea
               label={p.fields.description}
               labelAr="الوصف بالعربي"
@@ -951,7 +1000,7 @@ export default function ProductsPage() {
               placeholderAr="الوصف..."
               valueEn={ef.description_en}
               valueAr={ef.description_ar ?? ""}
-              onChangeEn={se("description")}
+              onChangeEn={se("description_en")}
               onChangeAr={se("description_ar")}
             />
             <div className="flex flex-col gap-1 mb-1">
@@ -1184,7 +1233,6 @@ export default function ProductsPage() {
               {p.editVariant.editSelected}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
-              {/* volume / price / compare / stock – numbers, no AR version needed */}
               {[
                 {
                   lbl: p.fields.volume,

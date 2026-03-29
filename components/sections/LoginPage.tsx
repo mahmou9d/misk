@@ -52,8 +52,6 @@ export default function LoginPage() {
 
             if (deviceId && token) {
               mergeCart.mutate(deviceId, {
-                // ابعت الـ token في الـ header بشكل صريح
-                // أو استخدم apiClient مع set header يدوي
               });
             }
           showNotification(t.login.success, "success");

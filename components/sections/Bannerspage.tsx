@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -8,6 +9,9 @@ import {
   useDeleteBanner,
   useGetDashboardSettings,
   usePatchDashboardSettings,
+  useGetDashboardGovernorates,
+  usePatchGovernorate,
+  usePostGovernorate,
 } from "@/hooks/useDashboard";
 import { P } from "@/components/layout/Adminui";
 import { NotificationState, Banner, ErrorResponse } from "@/type/type";
@@ -60,8 +64,8 @@ function StatusBadge({ active }: { active: boolean }) {
     <span
       className={`text-sm font-semibold text-white rounded-full px-3 py-1 whitespace-nowrap ${
         active
-          ? "bg-gradient-to-r from-[#fff]/30 to-[#000]/30 text-[#fff] border border-[#fff]/20"
-          : "bg-white/5 text-gray-500 border border-white/10"
+          ? "bg-gradient-to-r from-[#fda481] to-[#b4182d] text-[#fff] "
+          : "bg-white/5 text-gray-500 "
       }`}
     >
       {active
@@ -76,7 +80,7 @@ const inputClass =
 
 // ─── Tab type ─────────────────────────────────────────────────────────────────
 
-type Tab = "banners" | "settings";
+type Tab = "banners" | "governorates" | "settings";
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
@@ -100,11 +104,11 @@ export default function BannersSettingsPage() {
       <div className="bg-[#1a1d29] rounded-2xl border border-white/10 overflow-hidden max-w-[860px]">
         {/* Tabs */}
         <div className="flex gap-1 border-b border-white/10 px-6 pt-4">
-          {(["banners", "settings"] as Tab[]).map((tab) => (
+          {(["banners", "governorates", "settings"] as Tab[]).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-5 py-2.5 text-sm font-semibold capitalize rounded-t-md transition-colors -mb-px border-b-2 ${
+              className={`px-5 py-2.5 text-[16px] font-semibold capitalize rounded-t-md transition-colors -mb-px border-b-2 ${
                 activeTab === tab
                   ? "border-[#fff] text-[#fff] bg-transparent"
                   : "border-transparent text-gray-500 hover:text-gray-300"
@@ -112,17 +116,23 @@ export default function BannersSettingsPage() {
             >
               {tab === "banners"
                 ? t.bannersSettings.tabs.banners
-                : t.bannersSettings.tabs.settings}
+                : tab === "governorates"
+                  ? t.bannersSettings.tabs.governorates
+                  : t.bannersSettings.tabs.settings}
             </button>
           ))}
         </div>
 
         <div className="p-6">
-          {activeTab === "banners" ? (
-            <BannersTab showNotification={showNotification} />
-          ) : (
-            <SettingsTab showNotification={showNotification} />
-          )}
+          <div className="p-6">
+            {activeTab === "banners" ? (
+              <BannersTab showNotification={showNotification} />
+            ) : activeTab === "governorates" ? (
+              <GovernoratesTab showNotification={showNotification} />
+            ) : (
+              <SettingsTab showNotification={showNotification} />
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -136,7 +146,7 @@ function BannersTab({
 }: {
   showNotification: (msg: string, type: "success" | "error") => void;
 }) {
-  const { t } = useTranslation();
+  const { t ,isArabic} = useTranslation();
   const b = t.bannersSettings.banners;
 
   const { data: banners, isLoading, isError } = useGetBanners();
@@ -725,6 +735,313 @@ function BannersTab({
             </div>
           );
         })}
+      </div>
+    </div>
+  );
+}
+
+// ─── Governorates Tab ──────────────────────────────────────────────────────────────
+
+function GovernoratesTab({
+  showNotification,
+}: {
+  showNotification: (msg: string, type: "success" | "error") => void;
+}) {
+  const { data, isLoading, isError } = useGetDashboardGovernorates();
+  const { mutate: patchGov, isPending: patching } = usePatchGovernorate();
+  const { mutate: postGov, isPending: posting } = usePostGovernorate();
+  const { t, isArabic } = useTranslation();
+
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editFields, setEditFields] = useState<{
+    name_en: string;
+    name_ar: string;
+    shipping_fee: number;
+    is_active: boolean;
+  }>({ name_en: "", name_ar: "", shipping_fee: 0, is_active: true });
+
+  const [showCreate, setShowCreate] = useState(false);
+  const [newFields, setNewFields] = useState({
+    name_en: "",
+    name_ar: "",
+    shipping_fee: 0,
+  });
+
+  const govList = Array.isArray(data) ? data : ((data as any)?.results ?? []);
+
+  const handleEditOpen = (gov: any) => {
+    setEditingId(gov.id);
+    setEditFields({
+      name_en: gov.name_en,
+      name_ar: gov.name_ar,
+      shipping_fee: gov.shipping_fee,
+      is_active: gov.is_active,
+    });
+  };
+
+  const handleEditSave = (id: number) => {
+    patchGov(
+      { id, body: editFields },
+      {
+        onSuccess: () => {
+          showNotification(
+            isArabic ? "تم التحديث بنجاح" : "Updated successfully",
+            "success",
+          );
+          setEditingId(null);
+        },
+        onError: (error: AxiosError<ErrorResponse>) => {
+          showNotification(
+            error?.response?.data?.message ||
+              error?.response?.data?.detail ||
+              error?.response?.data?.error ||
+              (isArabic ? "حدث خطأ" : "Something went wrong"),
+            "error",
+          );
+        },
+      },
+    );
+  };
+
+  const handleCreate = () => {
+    postGov(newFields, {
+      onSuccess: () => {
+        showNotification(
+          isArabic ? "تم الإضافة بنجاح" : "Added successfully",
+          "success",
+        );
+        setShowCreate(false);
+        setNewFields({ name_en: "", name_ar: "", shipping_fee: 0 });
+      },
+      onError: (error: AxiosError<ErrorResponse>) => {
+        showNotification(
+          error?.response?.data?.message ||
+            (isArabic ? "حدث خطأ" : "Something went wrong"),
+          "error",
+        );
+      },
+    });
+  };
+
+  if (isLoading)
+    return (
+      <div className="flex items-center gap-3 text-gray-400">
+        <RefreshCw className="w-4 h-4 animate-spin" />
+        <p className="text-sm">{isArabic ? "جاري التحميل..." : "Loading..."}</p>
+      </div>
+    );
+
+  if (isError)
+    return (
+      <p className="text-sm text-red-400 font-medium">
+        {isArabic ? "حدث خطأ في التحميل" : "Failed to load"}
+      </p>
+    );
+
+  return (
+    <div>
+      {/* Add Button */}
+      <div className="flex justify-start mb-5">
+        <button
+          onClick={() => setShowCreate((v) => !v)}
+          className="text-sm font-bold px-6 py-2.5 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl shadow-lg flex items-center gap-2 hover:opacity-90 transition-opacity"
+        >
+          <span className="text-lg leading-none">+</span>
+          {isArabic ? "إضافة محافظة" : "Add Governorate"}
+        </button>
+      </div>
+
+      {/* Create Form */}
+      {showCreate && (
+        <div className="mb-5 p-5 border border-white/10 rounded-2xl bg-[#0f1117]">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+            <div>
+              <label className="text-sm text-gray-400 mb-1.5 block font-bold">
+                {isArabic ? "الاسم" : "Name"} (EN)
+              </label>
+              <input
+                className={inputClass}
+                value={newFields.name_en}
+                onChange={(e) =>
+                  setNewFields((f) => ({ ...f, name_en: e.target.value }))
+                }
+                placeholder="Cairo"
+                dir="ltr"
+              />
+            </div>
+            <div>
+              <label className="text-sm text-gray-400 mb-1.5 block font-bold">
+                {isArabic ? "الاسم" : "Name"} (AR)
+              </label>
+              <input
+                className={inputClass}
+                value={newFields.name_ar}
+                onChange={(e) =>
+                  setNewFields((f) => ({ ...f, name_ar: e.target.value }))
+                }
+                placeholder="القاهرة"
+                dir="rtl"
+              />
+            </div>
+            <div>
+              <label className="text-sm text-gray-400 mb-1.5 block font-bold">
+                {isArabic ? "رسوم الشحن (EGP)" : "Shipping Fee (EGP)"}
+              </label>
+              <input
+                type="number"
+                min={0}
+                className={inputClass}
+                value={newFields.shipping_fee}
+                onChange={(e) =>
+                  setNewFields((f) => ({
+                    ...f,
+                    shipping_fee: Number(e.target.value),
+                  }))
+                }
+              />
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={handleCreate}
+              disabled={posting}
+              className="h-10 px-6 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl text-sm font-bold disabled:opacity-50"
+            >
+              {posting
+                ? isArabic
+                  ? "جاري الحفظ..."
+                  : "Saving..."
+                : isArabic
+                  ? "حفظ"
+                  : "Save"}
+            </button>
+            <button
+              onClick={() => setShowCreate(false)}
+              className="h-10 px-4 bg-white/5 text-gray-400 border border-white/10 rounded-xl text-sm"
+            >
+              {isArabic ? "إلغاء" : "Cancel"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* List */}
+      <div className="flex flex-col gap-2">
+        {govList.map((gov: any) => (
+          <div
+            key={gov.id}
+            className="border border-white/10 rounded-2xl overflow-hidden"
+          >
+            {editingId === gov.id ? (
+              <div className="p-5 bg-[#0f1117]">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                  <div>
+                    <label className="text-sm text-gray-400 mb-1.5 block font-bold">
+                      {isArabic ? "الاسم" : "Name"} (EN)
+                    </label>
+                    <input
+                      className={inputClass}
+                      value={editFields.name_en}
+                      onChange={(e) =>
+                        setEditFields((f) => ({
+                          ...f,
+                          name_en: e.target.value,
+                        }))
+                      }
+                      dir="ltr"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-gray-400 mb-1.5 block font-bold">
+                      {isArabic ? "الاسم" : "Name"} (AR)
+                    </label>
+                    <input
+                      className={inputClass}
+                      value={editFields.name_ar}
+                      onChange={(e) =>
+                        setEditFields((f) => ({
+                          ...f,
+                          name_ar: e.target.value,
+                        }))
+                      }
+                      dir="rtl"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-gray-400 mb-1.5 block font-bold">
+                      {isArabic ? "رسوم الشحن (EGP)" : "Shipping Fee (EGP)"}
+                    </label>
+                    <input
+                      type="number"
+                      min={0}
+                      className={inputClass}
+                      value={editFields.shipping_fee}
+                      onChange={(e) =>
+                        setEditFields((f) => ({
+                          ...f,
+                          shipping_fee: Number(e.target.value),
+                        }))
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 mb-4">
+                  <label className="text-sm text-gray-400 font-bold">
+                    {isArabic ? "مفعل" : "Active"}
+                  </label>
+                  <Toggle
+                    checked={editFields.is_active}
+                    onChange={() =>
+                      setEditFields((f) => ({ ...f, is_active: !f.is_active }))
+                    }
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleEditSave(gov.id)}
+                    disabled={patching}
+                    className="h-10 px-6 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl text-sm font-bold disabled:opacity-50"
+                  >
+                    {patching
+                      ? isArabic
+                        ? "جاري الحفظ..."
+                        : "Saving..."
+                      : isArabic
+                        ? "حفظ"
+                        : "Save"}
+                  </button>
+                  <button
+                    onClick={() => setEditingId(null)}
+                    className="h-10 px-4 bg-white/5 text-gray-400 border border-white/10 rounded-xl text-sm"
+                  >
+                    {isArabic ? "إلغاء" : "Cancel"}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-4 p-4 bg-[#0f1117] flex-wrap">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold text-white">
+                    {isArabic ? gov.name_ar : gov.name_en}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {isArabic ? gov.name_en : gov.name_ar}
+                  </p>
+                </div>
+                <span className="text-sm font-bold text-[#c9a84c]">
+                  EGP {gov.shipping_fee}
+                </span>
+                <StatusBadge active={gov.is_active} />
+                <button
+                  onClick={() => handleEditOpen(gov)}
+                  className="text-sm font-bold text-white bg-white/5 border border-white/10 px-4 py-2 rounded-xl hover:bg-white/10 transition-all"
+                >
+                  ✏ {isArabic ? "تعديل" : "Edit"}
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

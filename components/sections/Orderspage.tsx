@@ -25,7 +25,6 @@ import {
   MapPin,
   Phone,
   Calendar,
-  DollarSign,
   Eye,
   AlertCircle,
   MoreVertical,
@@ -85,6 +84,342 @@ const statusOptions = [
 
 const orderStatusOptions = statusOptions.filter((o) => o.value !== "all");
 
+// ── Mobile Order Card ────────────────────────────────────────────────────────
+// ── Mobile Order Card ────────────────────────────────────────────────────────
+// الإصلاح: نقلنا isStatusOpen و statusRef جوا الكارد نفسه
+// عشان كل كارد يتحكم في dropdown بتاعته بشكل مستقل
+
+function OrderCard({
+  order,
+  isExpanded,
+  isEditing,
+  newStatus,
+  patching,
+  patchSuccess,
+  patchError,
+  isArabic,
+  o,
+  currentOpt,
+  getLabel,
+  onToggleExpand,
+  onEdit,
+  onCancelEdit,
+  onSave,
+  onStatusSelect,
+}: any) {
+  // ✅ State و Ref خاصين بكل كارد منفردًا
+  const [isStatusOpen, setIsStatusOpen] = useState(false);
+  const statusRef = useRef<HTMLDivElement>(null);
+
+  // ✅ إغلاق الـ dropdown لما تضغط برا
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (statusRef.current && !statusRef.current.contains(e.target as Node)) {
+        setIsStatusOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div className="bg-[#1a1d29] border border-white/10 rounded-2xl mb-3">
+      {/* Card Header - always visible */}
+      <div className="p-4 cursor-pointer" onClick={onToggleExpand}>
+        <div
+          className={`flex items-start justify-between gap-3 ${isArabic ? "flex-row-reverse" : ""}`}
+        >
+          {/* Left: ID + Customer */}
+          <div className={`flex-1 min-w-0 ${isArabic ? "text-right" : ""}`}>
+            <div
+              className={`flex items-center gap-2 mb-1 ${isArabic ? "flex-row-reverse" : ""}`}
+            >
+              <span className="font-bold text-white text-sm">
+                #{String(order.id).slice(0, 8)}
+              </span>
+              <span
+                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold border ${currentOpt.bgColor} ${currentOpt.color} border-current/20`}
+              >
+                <currentOpt.icon className="w-2.5 h-2.5" />
+                {isArabic
+                  ? getLabel(currentOpt)
+                  : order.status.charAt(0).toUpperCase() +
+                    order.status.slice(1)}
+              </span>
+            </div>
+            <p className="font-semibold text-white text-sm truncate">
+              {order.full_name || o.customer}
+            </p>
+            <p
+              className={`text-xs text-gray-400 flex items-center gap-1 mt-0.5 ${isArabic ? "flex-row-reverse justify-end" : ""}`}
+            >
+              <MapPin className="w-3 h-3 shrink-0" />
+              <span className="truncate">{order.country || "—"}</span>
+            </p>
+          </div>
+
+          {/* Right: Total + Date */}
+          <div
+            className={`flex flex-col items-end gap-1 shrink-0 ${isArabic ? "items-start" : ""}`}
+          >
+            <span className="font-bold text-white text-base">
+              LE {parseFloat(order.total_price || 0).toLocaleString()}
+            </span>
+            <span className="text-xs text-gray-400">
+              {order.created_at
+                ? new Date(order.created_at).toLocaleDateString(
+                    isArabic ? "ar-EG" : "en-US",
+                    { month: "short", day: "numeric", year: "numeric" },
+                  )
+                : "—"}
+            </span>
+          </div>
+        </div>
+
+        {/* Products preview */}
+        <div
+          className={`flex items-center gap-2 mt-3 ${isArabic ? "flex-row-reverse" : ""}`}
+        >
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#fff]/20 to-[#000]/20 flex items-center justify-center shrink-0">
+            <Package className="w-3.5 h-3.5 text-[#fff]" />
+          </div>
+          <p className="text-sm text-white font-medium truncate">
+            {order.items?.[0]?.variant_name || "—"}
+            {order.items?.length > 1 && (
+              <span className="text-gray-400 ml-1">
+                +{order.items.length - 1} {isArabic ? "أكثر" : "more"}
+              </span>
+            )}
+          </p>
+          <div
+            className={`${isArabic ? "mr-auto" : "ml-auto"} flex items-center gap-1`}
+          >
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleExpand();
+              }}
+              className="p-2 rounded-xl hover:bg-white/5 text-[#fff]"
+            >
+              <Eye className="w-4 h-4" />
+            </button>
+            <button
+              onClick={(e) => e.stopPropagation()}
+              className="p-2 rounded-xl hover:bg-white/5 text-gray-400"
+            >
+              <MoreVertical className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Expanded Panel */}
+      {isExpanded && (
+        <div className="border-t border-white/10">
+          {/* Items */}
+          {order.items?.length > 0 && (
+            <div className="p-4 border-b border-white/10">
+              <p className="text-xs font-bold text-[#fff] uppercase tracking-wider mb-3">
+                {o.items}
+              </p>
+              <div className="space-y-2">
+                {order.items.map((item: any, i: number) => (
+                  <div
+                    key={i}
+                    className={`flex justify-between items-center p-3 rounded-lg bg-white/5 border border-white/5 ${isArabic ? "flex-row-reverse" : ""}`}
+                  >
+                    <div
+                      className={`flex items-center gap-2 min-w-0 ${isArabic ? "flex-row-reverse" : ""}`}
+                    >
+                      <div className="w-5 h-5 rounded-md bg-[#fff]/10 border border-[#fff]/20 flex items-center justify-center shrink-0">
+                        <span className="text-[#fff] text-xs font-bold">
+                          {i + 1}
+                        </span>
+                      </div>
+                      <span className="text-sm text-white font-medium truncate">
+                        {item.variant_name}
+                        {item.variant_volume ? ` · ${item.variant_volume}` : ""}
+                        <span className="text-gray-400 mx-1">×</span>
+                        {item.quantity}
+                      </span>
+                    </div>
+                    <span className="text-sm font-bold text-white shrink-0 ml-2">
+                      LE{" "}
+                      {parseFloat(
+                        item.subtotal || item.price || 0,
+                      ).toLocaleString()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Address + Phone + Date */}
+          <div className="p-4 border-b border-white/10 space-y-2">
+            {(order.full_address || order.country) && (
+              <p
+                className={`text-sm text-gray-400 flex items-start gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+              >
+                <MapPin className="w-4 h-4 text-[#fff] shrink-0 mt-0.5" />
+                <span>
+                  {[order.full_address, order.country]
+                    .filter(Boolean)
+                    .join(", ")}
+                </span>
+              </p>
+            )}
+            {order.phone_number && (
+              <p
+                className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+              >
+                <Phone className="w-4 h-4 text-[#fff] shrink-0" />
+                {order.phone_number}
+              </p>
+            )}
+            {order.created_at && (
+              <p
+                className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+              >
+                <Calendar className="w-4 h-4 text-[#fff] shrink-0" />
+                {new Date(order.created_at).toLocaleDateString(
+                  isArabic ? "ar-EG" : "en-US",
+                  { day: "2-digit", month: "short", year: "numeric" },
+                )}
+              </p>
+            )}
+          </div>
+
+          {/* Status Change */}
+          <div className="p-4">
+            {isEditing ? (
+              <div className="space-y-3" ref={statusRef}>
+                {/* Status Dropdown */}
+                <div className="relative z-[100]">
+                  <button
+                    onClick={() => setIsStatusOpen(!isStatusOpen)}
+                    className="w-full px-4 py-3 bg-[#0f1117] border border-white/10 rounded-xl flex items-center gap-3 hover:border-[#fff]/30"
+                  >
+                    <div
+                      className={`w-8 h-8 rounded-lg ${currentOpt.bgColor} flex items-center justify-center shrink-0`}
+                    >
+                      <currentOpt.icon
+                        className={`w-4 h-4 ${currentOpt.color}`}
+                      />
+                    </div>
+                    <div
+                      className={`flex-1 ${isArabic ? "text-right" : "text-left"}`}
+                    >
+                      <p className="text-xs text-gray-400">{o.newStatus}</p>
+                      <p className="font-bold text-white text-sm">
+                        {getLabel(currentOpt)}
+                      </p>
+                    </div>
+                    <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" />
+                  </button>
+                  {isStatusOpen && (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-[#0f1117] border border-white/10 rounded-xl shadow-2xl z-50">
+                      <div className="p-2">
+                        {orderStatusOptions.map((opt) => {
+                          const Icon = opt.icon;
+                          const isSel = opt.value === newStatus;
+                          return (
+                            <button
+                              key={opt.value}
+                              onClick={() => {
+                                onStatusSelect(opt.value);
+                                setIsStatusOpen(false);
+                              }}
+                              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg ${
+                                isSel
+                                  ? "bg-gradient-to-r from-[#fff]/20 to-[#000]/20 border border-[#fff]/30"
+                                  : "hover:bg-white/5 border border-transparent"
+                              } ${isArabic ? "flex-row-reverse" : ""}`}
+                            >
+                              <div
+                                className={`w-8 h-8 rounded-lg ${opt.bgColor} flex items-center justify-center shrink-0`}
+                              >
+                                <Icon className={`w-4 h-4 ${opt.color}`} />
+                              </div>
+                              <span
+                                className={`text-sm font-semibold flex-1 ${isArabic ? "text-right" : ""} ${isSel ? "text-white" : "text-gray-300"}`}
+                              >
+                                {getLabel(opt)}
+                              </span>
+                              {isSel && (
+                                <Check className="w-4 h-4 text-[#fff]" />
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Save / Cancel */}
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => onSave(String(order.id))}
+                    disabled={patching}
+                    className="flex-1 px-4 py-3 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl font-bold text-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {patching ? (
+                      <>
+                        <span className="animate-spin">↻</span> {o.saving}
+                      </>
+                    ) : (
+                      o.save
+                    )}
+                  </button>
+                  <button
+                    onClick={onCancelEdit}
+                    className="px-4 py-3 bg-white/5 border border-white/10 text-gray-400 rounded-xl text-sm hover:bg-white/10"
+                  >
+                    {o.cancel}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit();
+                }}
+                className="w-full px-4 py-2.5 bg-white/5 border border-white/10 text-white rounded-xl text-sm font-medium hover:border-[#fff]/30 hover:bg-white/10 flex items-center justify-center gap-2"
+              >
+                ✏ {o.changeStatus}
+              </button>
+            )}
+
+            {patchSuccess && (
+              <div
+                className={`mt-3 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+              >
+                <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span className="text-emerald-400 text-sm font-medium">
+                  {o.updateSuccess}
+                </span>
+              </div>
+            )}
+            {patchError && (
+              <div
+                className={`mt-3 p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+              >
+                <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                <span className="text-red-400 text-sm font-medium">
+                  {o.updateError}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Main Page ────────────────────────────────────────────────────────────────
 export default function OrdersPage() {
   const { t, isArabic, dir } = useTranslation();
   const o = t.adminOrders;
@@ -139,7 +474,6 @@ export default function OrdersPage() {
 
   const ordersData = data?.orders || [];
 
-  // ── helpers ──────────────────────────────────────────────────────────────────
   const getLabel = (opt: (typeof statusOptions)[0]) =>
     isArabic ? opt.labelAr : opt.labelEn;
 
@@ -186,12 +520,6 @@ export default function OrdersPage() {
         onError: (error: AxiosError<ErrorResponse>) => {
           showNotification(
             error?.response?.data?.message ||
-              error?.response?.data?.detail ||
-              error?.response?.data?.error ||
-              error?.response?.data?.status ||
-              error?.response?.data?.non_field_errors ||
-              error?.response?.data?.name ||
-              error?.message ||
               o.updateError,
             "error",
           );
@@ -205,94 +533,94 @@ export default function OrdersPage() {
       {notification && (
         <Notification type={notification.type} message={notification.message} />
       )}
+
       {/* ── Header ── */}
-      <div className="mb-10">
-        <h1 className="text-4xl font-bold text-white mb-3">{o.title}</h1>
-        <p className="text-gray-400 text-base">{o.subtitle}</p>
+      <div className="mb-6 md:mb-10">
+        <h1 className="text-2xl md:text-4xl font-bold text-white mb-2">
+          {o.title}
+        </h1>
+        <p className="text-gray-400 text-sm md:text-base">{o.subtitle}</p>
       </div>
 
       {/* ── Filter + Search ── */}
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-6">
-        {/* Status Filter Dropdown */}
-        <div className="relative" ref={filterRef}>
-          <button
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="px-5 py-3 bg-[#1a1d29] border border-white/10 text-white rounded-xl font-semibold text-[16px] hover:border-[#fff]/30 flex items-center gap-3 min-w-[200px]"
-          >
-            <div
-              className={`w-8 h-8 rounded-lg ${selectedFilter.bgColor} flex items-center justify-center`}
+      <div className="flex flex-col gap-3 mb-5">
+        {/* Row: Filter + Search side by side on mobile */}
+        <div className="flex items-center gap-2">
+          {/* Status Filter Dropdown - compact on mobile */}
+          <div className="relative shrink-0" ref={filterRef}>
+            <button
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className="h-11 px-3 md:px-5 bg-[#1a1d29] border border-white/10 text-white rounded-xl font-semibold hover:border-[#fff]/30 flex items-center gap-2 md:gap-3 md:min-w-[200px]"
             >
-              <selectedFilter.icon
-                className={`w-4 h-4 ${selectedFilter.color}`}
-              />
-            </div>
-            <div className={`flex-1 ${isArabic ? "text-right" : "text-left"}`}>
-              <p className="text-[16px] text-gray-400">
-                {isArabic ? "الحالة" : "Status"}
-              </p>
-              <p className="font-bold text-white text-[16px]">
-                {getLabel(selectedFilter)}
-              </p>
-            </div>
-            <ChevronDown className="w-5 h-5 text-gray-400" />
-          </button>
-
-          <AnimatePresence>
-            {isFilterOpen && (
               <div
-                className={`absolute top-full ${isArabic ? "right-0" : "left-0"} mt-2 w-full min-w-[260px] bg-[#0f1117] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50`}
+                className={`w-7 h-7 md:w-8 md:h-8 rounded-lg ${selectedFilter.bgColor} flex items-center justify-center shrink-0`}
               >
-                <div className="p-2">
-                  {statusWithCounts.map((opt) => {
-                    const isSelected = opt.value === status;
-                    const Icon = opt.icon;
-                    return (
-                      <button
-                        key={opt.value}
-                        onClick={() => {
-                          setStatus(opt.value);
-                          setPage(1);
-                          setIsFilterOpen(false);
-                        }}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg ${
-                          isSelected
-                            ? "bg-gradient-to-r from-[#fff]/20 to-[#000]/20 border border-[#fff]/30"
-                            : "hover:bg-white/5 border border-transparent"
-                        }`}
-                      >
-                        <div
-                          className={`w-10 h-10 rounded-lg ${opt.bgColor} flex items-center justify-center shrink-0`}
-                        >
-                          <Icon className={`w-5 h-5 ${opt.color}`} />
-                        </div>
-                        <div
-                          className={`flex-1 ${isArabic ? "text-right" : "text-left"}`}
-                        >
-                          <p
-                            className={`font-semibold text-[16px] ${isSelected ? "text-white" : "text-gray-300"}`}
-                          >
-                            {getLabel(opt)}
-                          </p>
-                        </div>
-                        {isSelected && (
-                          <div className="w-6 h-6 rounded-full bg-[#fff] flex items-center justify-center">
-                            <Check className="w-4 h-4 text-white" />
-                          </div>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
+                <selectedFilter.icon
+                  className={`w-3.5 h-3.5 md:w-4 md:h-4 ${selectedFilter.color}`}
+                />
               </div>
-            )}
-          </AnimatePresence>
-        </div>
+              {/* Show label only on md+ */}
+              <span className="hidden md:block text-sm text-white font-bold">
+                {getLabel(selectedFilter)}
+              </span>
+              <ChevronDown className="w-4 h-4 text-gray-400" />
+            </button>
 
-        {/* Search */}
-        <div className={`flex-1 w-full ${isArabic ? "mr-auto" : "ml-auto"}`}>
-          <div className="relative">
+            <AnimatePresence>
+              {isFilterOpen && (
+                <div
+                  className={`absolute top-full ${isArabic ? "right-0" : "left-0"} mt-2 w-56 bg-[#0f1117] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50`}
+                >
+                  <div className="p-2">
+                    {statusWithCounts.map((opt) => {
+                      const isSelected = opt.value === status;
+                      const Icon = opt.icon;
+                      return (
+                        <button
+                          key={opt.value}
+                          onClick={() => {
+                            setStatus(opt.value);
+                            setPage(1);
+                            setIsFilterOpen(false);
+                          }}
+                          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg ${
+                            isSelected
+                              ? "bg-gradient-to-r from-[#fff]/20 to-[#000]/20 border border-[#fff]/30"
+                              : "hover:bg-white/5 border border-transparent"
+                          }`}
+                        >
+                          <div
+                            className={`w-8 h-8 rounded-lg ${opt.bgColor} flex items-center justify-center shrink-0`}
+                          >
+                            <Icon className={`w-4 h-4 ${opt.color}`} />
+                          </div>
+                          <div
+                            className={`flex-1 ${isArabic ? "text-right" : "text-left"}`}
+                          >
+                            <p
+                              className={`font-semibold text-sm ${isSelected ? "text-white" : "text-gray-300"}`}
+                            >
+                              {getLabel(opt)}
+                            </p>
+                          </div>
+                          {isSelected && (
+                            <div className="w-5 h-5 rounded-full bg-[#fff] flex items-center justify-center shrink-0">
+                              <Check className="w-3 h-3 text-black" />
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Search - takes remaining space */}
+          <div className="flex-1 relative">
             <Search
-              className={`absolute ${isArabic ? "right-4" : "left-4"} top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400`}
+              className={`absolute ${isArabic ? "right-3" : "left-3"} top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400`}
             />
             <input
               value={search}
@@ -300,34 +628,84 @@ export default function OrdersPage() {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              placeholder={isArabic ? "ابحث عن الطلبات..." : "Search orders..."}
-              className={`w-full ${isArabic ? "pr-12 pl-4" : "pl-12 pr-4"} py-3 bg-[#1a1d29] border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#fff]/50`}
+              placeholder={isArabic ? "ابحث..." : "Search orders..."}
+              className={`w-full h-11 ${isArabic ? "pr-10 pl-10" : "pl-10 pr-10"} bg-[#1a1d29] border border-white/10 rounded-xl text-white text-sm placeholder-gray-500 focus:outline-none focus:border-[#fff]/50`}
             />
             {search && (
               <button
                 onClick={() => setSearch("")}
-                className={`absolute ${isArabic ? "left-4" : "right-4"} top-1/2 -translate-y-1/2 text-gray-400 hover:text-white`}
+                className={`absolute ${isArabic ? "left-3" : "right-3"} top-1/2 -translate-y-1/2 text-gray-400 hover:text-white`}
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             )}
           </div>
         </div>
       </div>
 
-      {/* ── Orders Table ── */}
-      <div className="bg-[#1a1d29] rounded-2xl border border-white/10 overflow-hidden">
-        {isLoading && (
-          <p className="text-[16px] text-gray-400 animate-pulse p-6">
-            {o.loading}
-          </p>
-        )}
-        {isError && (
-          <p className="text-[16px] text-red-400 font-medium p-6">
-            {o.loadError}
-          </p>
-        )}
+      {/* ── Loading / Error States ── */}
+      {isLoading && (
+        <p className="text-sm text-gray-400 animate-pulse py-4">{o.loading}</p>
+      )}
+      {isError && (
+        <p className="text-sm text-red-400 font-medium py-4">{o.loadError}</p>
+      )}
 
+      {/* ── Mobile Cards (< md) ── */}
+      <div className="block md:hidden">
+        {ordersData.length > 0
+          ? ordersData.map((order: any) => {
+              const isExpanded = expandedId === String(order.id);
+              const isEditing = editingOrder?.id === String(order.id);
+              const currentOpt =
+                orderStatusOptions.find(
+                  (s) => s.value === (isEditing ? newStatus : order.status),
+                ) || orderStatusOptions[0];
+
+              return (
+                <OrderCard
+                  key={order.id}
+                  order={order}
+                  isExpanded={isExpanded}
+                  isEditing={isEditing}
+                  newStatus={newStatus}
+                  isStatusOpen={isStatusOpen}
+                  patching={patching}
+                  patchSuccess={patchSuccess}
+                  patchError={patchError}
+                  isArabic={isArabic}
+                  o={o}
+                  currentOpt={currentOpt}
+                  statusRef={statusRef}
+                  getLabel={getLabel}
+                  onToggleExpand={() =>
+                    setExpandedId(isExpanded ? null : String(order.id))
+                  }
+                  onEdit={() => {
+                    setEditingOrder({ id: String(order.id) });
+                    setNewStatus(order.status);
+                    setExpandedId(String(order.id));
+                  }}
+                  onCancelEdit={() => setEditingOrder(null)}
+                  onSave={handleSave}
+                  onStatusOpen={() => setIsStatusOpen(!isStatusOpen)}
+                  onStatusSelect={(val: string) => {
+                    setNewStatus(val as OrderStatus);
+                    setIsStatusOpen(false);
+                  }}
+                />
+              );
+            })
+          : !isLoading && (
+              <div className="py-16 text-center">
+                <Package className="w-12 h-12 mx-auto mb-4 text-gray-600 opacity-20" />
+                <p className="text-gray-400 font-semibold">{o.empty}</p>
+              </div>
+            )}
+      </div>
+
+      {/* ── Desktop Table (>= md) ── */}
+      <div className="hidden md:block bg-[#1a1d29] rounded-2xl border border-white/10 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-[#0f1117] border-b border-white/10">
@@ -335,7 +713,7 @@ export default function OrdersPage() {
                 {tableHeaders.map((h) => (
                   <th
                     key={h}
-                    className={`px-6 py-5 ${isArabic ? "text-right" : "text-left"} text-[16px] font-bold text-[#fff] uppercase -wider`}
+                    className={`px-6 py-5 ${isArabic ? "text-right" : "text-left"} text-sm font-bold text-[#fff] uppercase tracking-wider`}
                   >
                     {h}
                   </th>
@@ -364,7 +742,7 @@ export default function OrdersPage() {
                         >
                           {/* Order ID */}
                           <td className="px-6 py-5 whitespace-nowrap">
-                            <span className="font-bold text-white text-[16px]">
+                            <span className="font-bold text-white">
                               #{String(order.id).slice(0, 8)}
                             </span>
                           </td>
@@ -375,7 +753,7 @@ export default function OrdersPage() {
                               {order.full_name || o.customer}
                             </p>
                             <p
-                              className={`text-[16px] text-gray-400 flex items-center gap-1 ${isArabic ? "flex-row-reverse justify-end" : ""}`}
+                              className={`text-sm text-gray-400 flex items-center gap-1 ${isArabic ? "flex-row-reverse justify-end" : ""}`}
                             >
                               <MapPin className="w-3 h-3" />
                               {order.country || "—"}
@@ -391,11 +769,11 @@ export default function OrdersPage() {
                                 <Package className="w-4 h-4 text-[#fff]" />
                               </div>
                               <div>
-                                <p className="text-white font-medium text-[16px]">
+                                <p className="text-white font-medium text-sm">
                                   {order.items?.[0]?.variant_name || "—"}
                                 </p>
                                 {order.items?.length > 1 && (
-                                  <p className="text-[16px] text-gray-400">
+                                  <p className="text-xs text-gray-400">
                                     +{order.items.length - 1}{" "}
                                     {isArabic ? "أكثر" : "more"}
                                   </p>
@@ -417,7 +795,7 @@ export default function OrdersPage() {
                           {/* Status */}
                           <td className="px-6 py-5">
                             <span
-                              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[16px] font-bold border ${currentOpt.bgColor} ${currentOpt.color} border-current/20`}
+                              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold border ${currentOpt.bgColor} ${currentOpt.color} border-current/20`}
                             >
                               <currentOpt.icon className="w-3 h-3" />
                               {isArabic
@@ -428,7 +806,7 @@ export default function OrdersPage() {
                           </td>
 
                           {/* Date */}
-                          <td className="px-6 py-5 text-gray-400 font-medium text-[16px]">
+                          <td className="px-6 py-5 text-gray-400 font-medium text-sm">
                             {order.created_at
                               ? new Date(order.created_at).toLocaleDateString(
                                   isArabic ? "ar-EG" : "en-US",
@@ -465,7 +843,7 @@ export default function OrdersPage() {
                           </td>
                         </tr>
 
-                        {/* ── Expanded Panel ── */}
+                        {/* ── Desktop Expanded Panel ── */}
                         {isExpanded && (
                           <tr key={`${order.id}-expanded`}>
                             <td colSpan={7} className="px-6 py-0">
@@ -473,7 +851,7 @@ export default function OrdersPage() {
                                 {/* Items */}
                                 {order.items?.length > 0 && (
                                   <div className="p-5 border-b border-white/10">
-                                    <p className="text-[16px] font-bold text-[#fff] uppercase -wider mb-3">
+                                    <p className="text-xs font-bold text-[#fff] uppercase tracking-wider mb-3">
                                       {o.items}
                                     </p>
                                     <div className="space-y-2">
@@ -487,11 +865,11 @@ export default function OrdersPage() {
                                               className={`flex items-center gap-3 ${isArabic ? "flex-row-reverse" : ""}`}
                                             >
                                               <div className="w-6 h-6 rounded-md bg-[#fff]/10 border border-[#fff]/20 flex items-center justify-center">
-                                                <span className="text-[#fff] text-[16px] font-bold">
+                                                <span className="text-[#fff] text-xs font-bold">
                                                   {i + 1}
                                                 </span>
                                               </div>
-                                              <span className="text-[16px] text-white font-medium">
+                                              <span className="text-sm text-white font-medium">
                                                 {item.variant_name}
                                                 {item.variant_volume
                                                   ? ` · ${item.variant_volume}`
@@ -502,7 +880,7 @@ export default function OrdersPage() {
                                                 {item.quantity}
                                               </span>
                                             </div>
-                                            <span className="text-[16px] font-bold text-white">
+                                            <span className="text-sm font-bold text-white">
                                               LE{" "}
                                               {parseFloat(
                                                 item.subtotal ||
@@ -521,7 +899,7 @@ export default function OrdersPage() {
                                 <div className="p-5 border-b border-white/10 space-y-2">
                                   {(order.full_address || order.country) && (
                                     <p
-                                      className={`text-[16px] text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+                                      className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
                                     >
                                       <MapPin className="w-4 h-4 text-[#fff] shrink-0" />
                                       {[order.full_address, order.country]
@@ -531,7 +909,7 @@ export default function OrdersPage() {
                                   )}
                                   {order.phone_number && (
                                     <p
-                                      className={`text-[16px] text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+                                      className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
                                     >
                                       <Phone className="w-4 h-4 text-[#fff] shrink-0" />
                                       {order.phone_number}
@@ -539,7 +917,7 @@ export default function OrdersPage() {
                                   )}
                                   {order.created_at && (
                                     <p
-                                      className={`text-[16px] text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+                                      className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
                                     >
                                       <Calendar className="w-4 h-4 text-[#fff] shrink-0" />
                                       {new Date(
@@ -560,7 +938,7 @@ export default function OrdersPage() {
                                 <div className="p-5">
                                   {isEditing ? (
                                     <div
-                                      className={`flex flex-wrap gap-3 items-center`}
+                                      className="flex flex-wrap gap-3 items-center"
                                       ref={statusRef}
                                     >
                                       <div className="relative min-w-[200px] z-[100]">
@@ -580,10 +958,10 @@ export default function OrdersPage() {
                                           <div
                                             className={`flex-1 ${isArabic ? "text-right" : "text-left"}`}
                                           >
-                                            <p className="text-[16px] text-gray-400">
+                                            <p className="text-xs text-gray-400">
                                               {o.newStatus}
                                             </p>
-                                            <p className="font-bold text-white text-[16px]">
+                                            <p className="font-bold text-white text-sm">
                                               {getLabel(currentOpt)}
                                             </p>
                                           </div>
@@ -619,7 +997,7 @@ export default function OrdersPage() {
                                                       />
                                                     </div>
                                                     <span
-                                                      className={`text-[16px] font-semibold flex-1 ${isArabic ? "text-right" : ""} ${isSel ? "text-white" : "text-gray-300"}`}
+                                                      className={`text-sm font-semibold flex-1 ${isArabic ? "text-right" : ""} ${isSel ? "text-white" : "text-gray-300"}`}
                                                     >
                                                       {getLabel(opt)}
                                                     </span>
@@ -639,7 +1017,7 @@ export default function OrdersPage() {
                                           handleSave(String(order.id))
                                         }
                                         disabled={patching}
-                                        className="px-6 py-3 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl font-bold text-[16px] disabled:opacity-50 flex items-center gap-2"
+                                        className="px-6 py-3 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl font-bold text-sm disabled:opacity-50 flex items-center gap-2"
                                       >
                                         {patching ? (
                                           <>
@@ -654,7 +1032,7 @@ export default function OrdersPage() {
                                       </button>
                                       <button
                                         onClick={() => setEditingOrder(null)}
-                                        className="px-4 py-3 bg-white/5 border border-white/10 text-gray-400 rounded-xl text-[16px] hover:bg-white/10"
+                                        className="px-4 py-3 bg-white/5 border border-white/10 text-gray-400 rounded-xl text-sm hover:bg-white/10"
                                       >
                                         {o.cancel}
                                       </button>
@@ -668,7 +1046,7 @@ export default function OrdersPage() {
                                         });
                                         setNewStatus(order.status);
                                       }}
-                                      className="px-5 py-2.5 bg-white/5 border border-white/10 text-white rounded-xl text-[16px] font-medium hover:border-[#fff]/30 hover:bg-white/10 flex items-center gap-2"
+                                      className="px-5 py-2.5 bg-white/5 border border-white/10 text-white rounded-xl text-sm font-medium hover:border-[#fff]/30 hover:bg-white/10 flex items-center gap-2"
                                     >
                                       ✏ {o.changeStatus}
                                     </button>
@@ -679,7 +1057,7 @@ export default function OrdersPage() {
                                       className={`mt-3 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
                                     >
                                       <CheckCircle className="w-4 h-4 text-emerald-400" />
-                                      <span className="text-emerald-400 text-[16px] font-medium">
+                                      <span className="text-emerald-400 text-sm font-medium">
                                         {o.updateSuccess}
                                       </span>
                                     </div>
@@ -689,7 +1067,7 @@ export default function OrdersPage() {
                                       className={`mt-3 p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
                                     >
                                       <AlertCircle className="w-4 h-4 text-red-400" />
-                                      <span className="text-red-400 text-[16px] font-medium">
+                                      <span className="text-red-400 text-sm font-medium">
                                         {o.updateError}
                                       </span>
                                     </div>
@@ -716,12 +1094,12 @@ export default function OrdersPage() {
           </table>
         </div>
 
-        {/* ── Pagination ── */}
+        {/* ── Desktop Pagination ── */}
         {!isFiltered && (data?.next || data?.previous || page > 1) && (
           <div
             className={`flex items-center justify-between px-6 py-4 border-t border-white/10 ${isArabic ? "flex-row-reverse" : ""}`}
           >
-            <p className="text-[16px] text-gray-400">
+            <p className="text-sm text-gray-400">
               {o.page} <span className="font-bold text-white">{page}</span>
             </p>
             <div className="flex items-center gap-2">
@@ -736,7 +1114,7 @@ export default function OrdersPage() {
                   <ChevronLeft className="w-5 h-5" />
                 )}
               </button>
-              <span className="text-[16px] text-gray-400 px-2">
+              <span className="text-sm text-gray-400 px-2">
                 {o.page} {page}
               </span>
               <button
@@ -751,6 +1129,43 @@ export default function OrdersPage() {
                 )}
               </button>
             </div>
+          </div>
+        )}
+      </div>
+
+      {/* ── Mobile Pagination ── */}
+      <div className="block md:hidden">
+        {!isFiltered && (data?.next || data?.previous || page > 1) && (
+          <div
+            className={`flex items-center justify-between py-4 ${isArabic ? "flex-row-reverse" : ""}`}
+          >
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={!data?.previous}
+              className="flex items-center gap-1.5 px-4 py-2.5 bg-[#1a1d29] border border-white/10 rounded-xl text-sm text-gray-400 disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              {isArabic ? (
+                <ChevronRight className="w-4 h-4" />
+              ) : (
+                <ChevronLeft className="w-4 h-4" />
+              )}
+              {isArabic ? "السابق" : "Prev"}
+            </button>
+            <span className="text-sm text-gray-400">
+              {o.page} <span className="font-bold text-white">{page}</span>
+            </span>
+            <button
+              onClick={() => setPage((p) => p + 1)}
+              disabled={!data?.next}
+              className="flex items-center gap-1.5 px-4 py-2.5 bg-[#1a1d29] border border-white/10 rounded-xl text-sm text-gray-400 disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              {isArabic ? "التالي" : "Next"}
+              {isArabic ? (
+                <ChevronLeft className="w-4 h-4" />
+              ) : (
+                <ChevronRight className="w-4 h-4" />
+              )}
+            </button>
           </div>
         )}
       </div>

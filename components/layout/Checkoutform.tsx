@@ -8,38 +8,7 @@ import { useTranslation } from "@/lib/Usetranslation";
 import { CheckoutFormValues } from "@/type/type";
 import { checkoutSchema } from "@/utils/validation";
 import Image from "next/image";
-
-const SHIPPING = 85;
-
-const governorates = [
-  "Cairo",
-  "Giza",
-  "Alexandria",
-  "Dakahlia",
-  "Red Sea",
-  "Beheira",
-  "Fayoum",
-  "Gharbiya",
-  "Ismailia",
-  "Menofia",
-  "Minya",
-  "Qaliubiya",
-  "New Valley",
-  "Suez",
-  "Aswan",
-  "Assiut",
-  "Beni Suef",
-  "Port Said",
-  "Damietta",
-  "Sharkia",
-  "South Sinai",
-  "Kafr El Sheikh",
-  "Matrouh",
-  "Luxor",
-  "Qena",
-  "North Sinai",
-  "Sohag",
-];
+import { useGetShippingGovernorates } from "@/hooks/useDashboard";
 
 const governoratesAr = [
   "القاهرة",
@@ -71,21 +40,27 @@ const governoratesAr = [
   "سوهاج",
 ];
 
+type Governorate = {
+  id: number;
+  name: string;
+  shipping_fee: string;
+};
+
 /* ── Card Icons ── */
 function VisaIcon() {
   return (
     <div className="flex items-center bg-white border border-[#DDD] rounded px-2 h-[26px]">
-<Image src="/visa.svg" width={36} height={26} alt="Visa" />
+      <Image src="/visa.svg" width={36} height={26} alt="Visa" />
     </div>
   );
 }
-
 function MastercardIcon() {
-  return <Image src="/mastercard.svg" width={36} height={26} alt="Visa" />;
+  return (
+    <Image src="/mastercard.svg" width={36} height={26} alt="Mastercard" />
+  );
 }
-
 function MeezaIcon() {
-  return <Image src="/meeza.svg" width={36} height={26} alt="Visa" />;
+  return <Image src="/meeza.svg" width={36} height={26} alt="Meeza" />;
 }
 
 /* ── Field ── */
@@ -100,9 +75,7 @@ function Field({
   return (
     <div className="flex flex-col gap-1.5">
       {label && (
-        <label className="text-[12px] font-semibold text-[#555] ">
-          {label}
-        </label>
+        <label className="text-[12px] font-semibold text-[#555]">{label}</label>
       )}
       <input
         {...props}
@@ -122,9 +95,7 @@ function Field({
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-[18px]">
-      <p className="text-[10px]  text-[#C9A84C] uppercase mb-1.5">
-        {children}
-      </p>
+      <p className="text-[10px] text-[#C9A84C] uppercase mb-1.5">{children}</p>
       <div className="h-[1.5px] bg-[#E8E2D6]" />
     </div>
   );
@@ -175,6 +146,7 @@ export function CheckoutForm({
   loading: boolean;
 }) {
   const { t, isArabic, locale, dir } = useTranslation();
+  const { data: governorates } = useGetShippingGovernorates();
 
   const {
     register,
@@ -183,11 +155,23 @@ export function CheckoutForm({
     formState: { errors },
   } = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
-    defaultValues: { gov: "Cairo", payment_method: "cod", billing: "same" },
+    defaultValues: {
+      governorate_id: governorates?.[0]?.id ?? "",
+      payment_method: "cod",
+      billing: "same",
+    },
   });
 
   const payment = watch("payment_method");
   const billing = watch("billing");
+
+  // ── الـ shipping_fee بتاعت المحافظة المختارة ──
+  const selectedGovId = watch("governorate_id");
+  const selectedGov = governorates?.find(
+    (g: Governorate) => g.id === Number(selectedGovId),
+  );
+  const shippingFee =
+    selectedGov?.shipping_fee ?? governorates?.[0]?.shipping_fee ?? "0";
 
   const translatedErrors = {
     email: errors.email ? t.checkoutForm.errors.email : undefined,
@@ -195,11 +179,11 @@ export function CheckoutForm({
     lastName: errors.lastName ? t.checkoutForm.errors.lastName : undefined,
     address: errors.address ? t.checkoutForm.errors.address : undefined,
     city: errors.city ? t.checkoutForm.errors.city : undefined,
-    gov: errors.gov ? t.checkoutForm.errors.gov : undefined,
+    governorate_id: errors.governorate_id
+      ? t.checkoutForm.errors.gov
+      : undefined,
     phone: errors.phone ? t.checkoutForm.errors.phone : undefined,
   };
-
-  const govList = isArabic ? governoratesAr : governorates;
 
   return (
     <motion.div
@@ -245,7 +229,6 @@ export function CheckoutForm({
       <div>
         <SectionLabel>{t.checkoutForm.delivery}</SectionLabel>
         <div className="flex flex-col gap-4">
-          {/* Country */}
           <div className="flex items-center justify-between h-[52px] px-4 bg-[#F4F1EB] border-2 border-[#DDD8CC] rounded-[10px]">
             <span className="text-[16px] font-medium text-[#666]">
               {t.checkoutForm.country}
@@ -283,7 +266,6 @@ export function CheckoutForm({
             error={translatedErrors.address}
             {...register("address")}
           />
-
           <Field
             label={t.checkoutForm.apt}
             placeholder="Apartment, floor (optional)"
@@ -298,12 +280,13 @@ export function CheckoutForm({
               {...register("city")}
             />
 
+            {/* ── Governorate Select ── */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-[12px] font-semibold text-[#555] ">
+              <label className="text-[12px] font-semibold text-[#555]">
                 {isArabic ? "المحافظة" : "Governorate"}
               </label>
               <select
-                {...register("gov")}
+                {...register("governorate_id")}
                 className="h-[52px] px-4 text-[16px] text-[#1a1a1a] bg-white rounded-[10px] border-2 border-[#DDD8CC] outline-none appearance-none cursor-pointer focus:border-[#C9A84C] transition-colors duration-150"
                 style={{
                   backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
@@ -311,12 +294,20 @@ export function CheckoutForm({
                   backgroundPosition: "right 14px center",
                 }}
               >
-                {governorates.map((g, i) => (
-                  <option key={g} value={g}>
-                    {govList[i]}
+                <option value="" disabled>
+                  {isArabic ? "اختر المحافظة" : "Governorate"}
+                </option>
+                {governorates?.map((g: Governorate, i: number) => (
+                  <option key={g.id} value={g.id}>
+                    {isArabic ? (governoratesAr[i] ?? g.name) : g.name}
                   </option>
                 ))}
               </select>
+              {translatedErrors.governorate_id && (
+                <span className="text-[13px] text-red-400">
+                  {translatedErrors.governorate_id}
+                </span>
+              )}
             </div>
 
             <Field
@@ -359,8 +350,9 @@ export function CheckoutForm({
               {isArabic ? "٣–٥ أيام عمل" : "3–5 business days"}
             </span>
           </div>
+          {/* ── shipping_fee الديناميكي ── */}
           <span className="text-[18px] font-bold text-[#C9A84C]">
-            EGP {SHIPPING}.00
+            EGP {parseFloat(shippingFee).toFixed(2)}
           </span>
         </div>
       </div>
@@ -381,7 +373,6 @@ export function CheckoutForm({
           </svg>
           <span>{t.checkoutForm.paymentSecure}</span>
         </div>
-
         <RadioCard
           label={t.checkoutForm.cod}
           value="cod"

@@ -2,18 +2,21 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "@/lib/Usetranslation";
 import {
   LayoutDashboard,
   ShoppingCart,
   Package,
   Users,
+  Image, // للـ banners
+  Tag, // للـ categories
   ShoppingBag,
   Menu,
   X,
   ChevronRight,
   ChevronLeft,
 } from "lucide-react";
-import { useTranslation } from "@/lib/Usetranslation";
+
 
 export const SidebarUI = ({
   sidebarOpen,
@@ -33,38 +36,38 @@ export const SidebarUI = ({
       setSidebarOpen(false);
   };
 
-  const menuItems = [
-    {
-      id: "dashboard",
-      icon: LayoutDashboard,
-      label: a.dashboard,
-      href: `/${locale.toLowerCase()}/admin`,
-    },
-    {
-      id: "categories",
-      icon: Package,
-      label: a.categories,
-      href: `/${locale.toLowerCase()}/admin/categories`,
-    },
-    {
-      id: "products",
-      icon: Package,
-      label: a.products,
-      href: `/${locale.toLowerCase()}/admin/products`,
-    },
-    {
-      id: "orders",
-      icon: ShoppingCart,
-      label: a.orders,
-      href: `/${locale.toLowerCase()}/admin/orders`,
-    },
-    {
-      id: "banners",
-      icon: Users,
-      label: a.banners,
-      href: `/${locale.toLowerCase()}/admin/banners`,
-    },
-  ];
+const menuItems = [
+  {
+    id: "dashboard",
+    icon: LayoutDashboard,
+    label: a.dashboard,
+    href: `/${locale.toLowerCase()}/admin`,
+  },
+  {
+    id: "categories",
+    icon: Tag,
+    label: a.categories,
+    href: `/${locale.toLowerCase()}/admin/categories`,
+  },
+  {
+    id: "products",
+    icon: Package,
+    label: a.products,
+    href: `/${locale.toLowerCase()}/admin/products`,
+  },
+  {
+    id: "orders",
+    icon: ShoppingCart,
+    label: a.orders,
+    href: `/${locale.toLowerCase()}/admin/orders`,
+  },
+  {
+    id: "banners",
+    icon: Image,
+    label: a.banners,
+    href: `/${locale.toLowerCase()}/admin/banners`,
+  },
+];
 
   const SidebarContent = () => (
     <>
@@ -129,12 +132,8 @@ console.log(isActive);
           <div
             className={`flex items-center gap-3 p-3.5 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer group ${isArabic ? "flex-row-reverse text-right" : ""}`}
           >
-            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#fda481] to-[#b4182d] flex items-center justify-center text-white font-bold text-sm shadow-lg">
-              MF
-            </div>
             <div className="flex-1 min-w-0">
-              <p className="font-bold text-white text-sm">Mohamed Fouad</p>
-              <p className="text-xs text-gray-500">Administrator</p>
+              <p className="text-xs text-gray-500">webvitas</p>
             </div>
             {isArabic ? (
               <ChevronLeft className="w-5 h-5 text-gray-500 group-hover:text-gray-400" />

@@ -158,13 +158,13 @@ export default function CategoriesPage() {
         <p className="text-gray-400 text-base">{c.subtitle}</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl items-start">
         {/* Create Category Card */}
         <div className="bg-[#1a1d29] rounded-2xl border border-white/10 overflow-hidden">
           {/* Card Header */}
           <div className="p-8 border-b border-white/10">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#fff]/20 to-[#000]/20 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#fda481] to-[#b4182d] flex items-center justify-center">
                 <FolderPlus className="w-8 h-8 text-[#fff]" />
               </div>
               <div>

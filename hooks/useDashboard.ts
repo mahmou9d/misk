@@ -47,6 +47,11 @@ export const dashboardKeys = {
 
   settings: () => [...dashboardKeys.all, "settings"] as const,
   dashboardSettings: () => [...dashboardKeys.settings(), "dashboard"] as const,
+
+  governorates: () => [...dashboardKeys.all, "governorates"] as const,
+  governorate: (id: number) => [...dashboardKeys.governorates(), id] as const,
+  shippingGovernorates: () =>
+    [...dashboardKeys.all, "shipping-governorates"] as const,
 };
 
 export const useGetRecentOrders = (
@@ -242,7 +247,59 @@ export const useDeleteBanner = () => {
     },
   });
 };
+// ─── Governorates ──────────────────────────────────────────────────────────
 
+export const useGetShippingGovernorates = () => {
+  return useQuery({
+    queryKey: dashboardKeys.governorates(),
+    queryFn: dashboardAPI.getShippingGovernorates,
+    staleTime: 10 * 60 * 1000,
+  });
+};
+
+export const useGetDashboardGovernorates = () => {
+  return useQuery({
+    queryKey: dashboardKeys.governorates(),
+    queryFn: dashboardAPI.getDashboardGovernorates,
+    staleTime: 10 * 60 * 1000,
+  });
+};
+
+export const usePostGovernorate = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (body: {
+      name_en: string;
+      name_ar: string;
+      shipping_fee: number;
+    }) => dashboardAPI.postDashboardGovernorates(body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.governorates() });
+    },
+    onError: (error: AxiosError<ErrorResponse>) => {},
+  });
+};
+
+export const usePatchGovernorate = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: {
+      id: number;
+      body: Partial<{
+        name_en: string;
+        name_ar: string;
+        shipping_fee: number;
+        is_active: boolean;
+      }>;
+    }) => dashboardAPI.patchGovernorate(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.governorates() });
+    },
+    onError: (error: AxiosError<ErrorResponse>) => {},
+  });
+};
 // ─── Settings ──────────────────────────────────────────────────────────────
 export const useGetPublicSettings = () => {
   return useQuery({

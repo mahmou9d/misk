@@ -60,7 +60,7 @@ export const checkoutSchema = z.object({
   address: z.string().min(1, "Address is required"),
   apt: z.string().optional(),
   city: z.string().min(1, "City is required"),
-  gov: z.string().min(1, "Governorate is required"),
+  governorate_id: z.string().min(1, "Governorate is required"),
   postal: z.string().optional(),
   phone: z.string().min(8, "Valid phone number is required"),
   saveInfo: z.boolean().optional(),

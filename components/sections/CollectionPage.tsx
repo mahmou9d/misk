@@ -101,7 +101,7 @@ export default function CollectionPage({ category }: { category: string }) {
   const categoryName = categories?.find(
     (c) => c.name_en.toUpperCase() === category.toUpperCase(),
   );
-
+console.log(allProducts);
   useEffect(() => {
     const products: Product[] = data?.products ?? [];
     if (page === 1) setAllProducts(products);
@@ -117,7 +117,7 @@ export default function CollectionPage({ category }: { category: string }) {
   let products =
     category === "all"
       ? [...allProducts]
-      : allProducts.filter((p) => p.category_name === categoryName?.name);
+      : allProducts.filter((p) => p.categories.includes(categoryName?.name as string));
   if (availFilter.includes("in-stock") && !availFilter.includes("out-of-stock"))
     products = products.filter((p) => p.is_active);
   if (availFilter.includes("out-of-stock") && !availFilter.includes("in-stock"))
@@ -129,10 +129,10 @@ export default function CollectionPage({ category }: { category: string }) {
 
   const sorted = applySort(products, sort);
   const inStockCount = allProducts.filter(
-    (p) => (category === "all" || p.category_name === category) && p.is_active,
+    (p) => (category === "all" || p.categories.includes(categoryName?.name as string)) && p.is_active,
   ).length;
   const outStockCount = allProducts.filter(
-    (p) => (category === "all" || p.category_name === category) && !p.is_active,
+    (p) => (category === "all" || p.categories.includes(categoryName?.name as string)) && !p.is_active,
   ).length;
   const toggleAvail = (v: string) =>
     setAvailFilter((f) =>

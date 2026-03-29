@@ -15,7 +15,7 @@ export const useGetRole = () => {
   return useQuery({
     queryKey: authKeys.role(),
     queryFn: authAPI.getRole,
-    enabled: typeof window !== "undefined" && !!storage.getToken("access"),
+    enabled: !!storage.getToken("access"),
     retry: false,
     staleTime: 5 * 60 * 1000,
   });

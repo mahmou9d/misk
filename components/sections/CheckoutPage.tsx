@@ -55,13 +55,21 @@ export default function CheckoutPage() {
           ? `${values.address}, ${values.apt}`
           : values.address,
         phone_number: values.phone,
-        country: `Egypt - ${values.gov}`,
+        country: `Egypt`,
         order_notes: "",
         payment_method: values.payment_method,
+        governorate_id: values.governorate_id,
       });
-      const nextStep = localStorage.setItem("next_step", String(result.next_step));
-      if(nextStep!==null){
-        window.location.href = "/";
+      const nextStep = localStorage.setItem(
+        "next_step",
+        JSON.stringify({
+          message: "Order placed successfully",
+          next_step: "success_page",
+          order_id: "a6241fc1-ef0b-4536-890e-557fd8babbc7",
+        }),
+      );
+      if (nextStep !== null) {
+        window.location.href = "/?success=true&order=" + result.order_id;
       }
       const orderId = String(result.order_id);
       if (values.payment_method === "cod") {
@@ -76,8 +84,7 @@ export default function CheckoutPage() {
     } catch (err: unknown) {
       const error = err as AxiosError<ErrorResponse>;
       showNotification(
-        error?.response?.data?.message ||
-          t.checkout.orderError,
+        error?.response?.data?.message || t.checkout.orderError,
         "error",
       );
       setLoading(false);
@@ -98,8 +105,7 @@ export default function CheckoutPage() {
     } catch (err: unknown) {
       const error = err as AxiosError<ErrorResponse>;
       showNotification(
-        error?.response?.data?.message ||
-          t.checkout.paymentError,
+        error?.response?.data?.message || t.checkout.paymentError,
         "error",
       );
     } finally {
@@ -117,14 +123,7 @@ export default function CheckoutPage() {
     } catch (err: unknown) {
       const error = err as AxiosError<ErrorResponse>;
       showNotification(
-        error?.response?.data?.message ||
-          error?.response?.data?.detail ||
-          error?.response?.data?.error ||
-          error?.response?.data?.status ||
-          error?.response?.data?.non_field_errors ||
-          error?.response?.data?.name ||
-          error?.message ||
-          t.checkout.paymentError,
+        error?.response?.data?.message || t.checkout.paymentError,
         "error",
       );
     } finally {

@@ -84,18 +84,6 @@ export default function ProductPage() {
     ? (Number(comparePrice) - Number(price)).toLocaleString()
     : null;
 
-  const trustBadges = isArabic
-    ? [
-        { icon: "✦", label: "أصلي 100%" },
-        { icon: "✦", label: "توصيل مجاني" },
-        { icon: "✦", label: "إرجاع سهل" },
-      ]
-    : [
-        { icon: "✦", label: "100% Authentic" },
-        { icon: "✦", label: "Free Delivery" },
-        { icon: "✦", label: "Easy Returns" },
-      ];
-
   return (
     <>
       <AnimatePresence>

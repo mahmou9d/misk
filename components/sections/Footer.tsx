@@ -127,7 +127,22 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar: Copyright + Payment Icons */}
-      <div className="border-t border-[rgba(201,168,76,0.12)] max-w-screen-xl mx-auto px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="border-t border-[rgba(201,168,76,0.12)] max-w-screen-xl mx-auto px-6 py-3 flex flex-col items-center justify-between gap-3">
+                {/* Payment Icons */}
+        <div className="flex flex-wrap justify-center sm:justify-end items-center gap-2 py-2">
+          {paymentMethods.map((method, i) => (
+            <motion.img
+              key={method.name}
+              src={method.src}
+              alt={method.name}
+              title={method.name}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.1 + i * 0.03, duration: 0.3 }}
+              className="h-5 w-auto object-contain max-w-[44px]"
+            />
+          ))}
+        </div>
         {/* Copyright + Developer */}
         <div className="flex flex-row items-center gap-4">
           <p
@@ -146,21 +161,7 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Payment Icons */}
-        <div className="flex flex-wrap justify-center sm:justify-end items-center gap-2">
-          {paymentMethods.map((method, i) => (
-            <motion.img
-              key={method.name}
-              src={method.src}
-              alt={method.name}
-              title={method.name}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 + i * 0.03, duration: 0.3 }}
-              className="h-5 w-auto object-contain max-w-[44px]"
-            />
-          ))}
-        </div>
+
       </div>
     </footer>
   );

@@ -66,6 +66,7 @@ export const productsAPI = {
   createProduct: async (
     payload: CreateProduct,
   ): Promise<CreateProductResponse> => {
+    console.log(payload)
     const { data } = await apiClient.post<CreateProductResponse>(
       "/dashboard/products/create/",
       payload,
@@ -102,6 +103,7 @@ export const productsAPI = {
     id: number,
     payload: updateProduct,
   ): Promise<updateProductResponse> => {
+    console.log(payload);
     const { data } = await apiClient.patch<updateProductResponse>(
       `/dashboard/products/${id}/manage/`,
       payload,

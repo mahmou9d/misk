@@ -8,15 +8,27 @@ import { useGetProducts } from "@/hooks/useProducts";
 import { Product } from "@/type/type";
 import { useTranslation } from "@/lib/Usetranslation";
 
+type TabKey = "men" | "unisex" | "women";
+
+const CATEGORY_MAP: Record<TabKey, { en: string; ar: string }> = {
+  men: { en: "Men", ar: "رجالي" },
+  unisex: { en: "Unisex", ar: "رجالى و نسائي" },
+  women: { en: "Women", ar: "نسائي" },
+};
 export default function ProductGrid() {
   const { t, isArabic, dir, locale } = useTranslation();
-  const [tab, setTab] = useState<"men" | "unisex" | "women">("men");
+
+  const [tab, setTab] = useState<TabKey>("men");
+
   const { data, isLoading } = useGetProducts();
   const allProducts: Product[] = data?.products ?? [];
-  const categories =
-    tab === "men" ? "رجالي" : tab === "unisex" ? "رجالى و نسائى" : "نسائي";
-  const products = isArabic ? categories : tab;
-  const filtered = allProducts.filter((p) => p.category_name === products);
+
+const filtered = allProducts.filter((p) =>
+  p.categories?.includes(
+    isArabic ? CATEGORY_MAP[tab].ar : CATEGORY_MAP[tab].en,
+  ),
+);
+
   return (
     <section
       className="w-full bg-[#fcfcfc] py-28 relative overflow-hidden"
@@ -24,13 +36,13 @@ export default function ProductGrid() {
     >
       {/* ── Background Decoration ── */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 opacity-[0.03] select-none pointer-events-none">
-        <h2 className="text-[90px] lg:text-[180px] font-serif font-bold whitespace-nowrap uppercase -tighter">
-          {tab === "men" ? "Men" : tab === "unisex" ? "Unisex" : "Women"}
+        <h2 className="text-[90px] lg:text-[180px] font-serif font-bold whitespace-nowrap uppercase">
+          {isArabic ? CATEGORY_MAP[tab].ar : CATEGORY_MAP[tab].en}
         </h2>
       </div>
 
       <div className="max-w-screen-xl mx-auto px-6 lg:px-12 relative z-10">
-        {/* ── Header & Premium Tabs ── */}
+        {/* ── Header & Tabs ── */}
         <div className="flex flex-col items-center mb-24">
           <span className="text-[#c9a84c] text-[20px] font-bold uppercase mb-10 opacity-80">
             {t.productGrid.title}
@@ -42,8 +54,8 @@ export default function ProductGrid() {
                 key={tabKey}
                 onClick={() => setTab(tabKey)}
                 className={`relative px-5 lg:px-12 py-3 rounded-full text-[13px] font-bold uppercase transition-all duration-500
-                ${tab === tabKey ? "text-white" : "text-gray-400 hover:text-gray-900"}
-                ${isArabic ? "-0 text-[16px]" : "-[0.2em]"}`}
+                  ${tab === tabKey ? "text-white" : "text-gray-400 hover:text-gray-900"}
+                  ${isArabic ? "text-[16px]" : "tracking-[0.2em]"}`}
               >
                 <span className="relative z-10">
                   {tabKey === "men"
@@ -99,22 +111,19 @@ export default function ProductGrid() {
           )}
         </div>
 
-        {/* ── THE "JAMED" VIEW ALL BUTTON ── */}
-
+        {/* ── View All Button ── */}
         <div className="flex justify-center mt-24">
           <Link
             href={`/${locale.toLowerCase()}/collections/all`}
             className="group relative bg-[#111] inline-flex items-center gap-4 px-8 lg:px-14 py-4 rounded-full border border-[#c9a84c]/40 transition-all duration-500 hover:border-[#ffbb00] hover:bg-[#ffbb00] no-underline shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_35px_rgba(201,168,76,0.2)]"
           >
-            {/* Text */}
             <span
               className={`text-white font-medium text-[13px] uppercase transition-colors duration-500 group-hover:text-[#111]
-      ${isArabic ? "-0 text-[16px] font-bold" : "-[0.2em]"}`}
+                ${isArabic ? "text-[16px] font-bold" : "tracking-[0.2em]"}`}
             >
               {t.productGrid.viewAll}
             </span>
 
-            {/* Simple Minimal Arrow */}
             <svg
               width="18"
               height="12"
@@ -131,7 +140,6 @@ export default function ProductGrid() {
               />
             </svg>
 
-            {/* Subtle Inner Shine (لمعة خفيفة وقت الهوفر) */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           </Link>
         </div>

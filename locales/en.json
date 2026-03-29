@@ -1076,6 +1076,7 @@
     "subtitle": "Manage homepage banners and global site configurations",
     "tabs": {
       "banners": "🖼 Banners",
+      "governorates": "🗺 Governorates",
       "settings": "⚙️ Settings"
     },
     "status": {

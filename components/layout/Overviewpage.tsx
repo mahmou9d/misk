@@ -269,7 +269,7 @@ export default function OverviewPage() {
                               }}
                               className={`w-full max-w-[50px] rounded-t-xl relative ${
                                 hasData
-                                  ? "bg-gradient-to-t from-[#000] via-[#fff] to-[#ffd4c1] cursor-pointer shadow-lg"
+                                  ? "bg-gradient-to-t from-[#eb0505] via-[#fff] to-[#ffd4c1] cursor-pointer shadow-lg"
                                   : "bg-gradient-to-t from-white/5 to-white/10"
                               }`}
                               style={{

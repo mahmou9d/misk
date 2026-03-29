@@ -26,6 +26,7 @@ import {
 import { useShowNotification } from "@/utils/showNotification";
 import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { useTranslation } from "@/lib/Usetranslation";
 
 export const emptyV = (): Volume => ({
   volume: "",
@@ -36,10 +37,17 @@ export const emptyV = (): Volume => ({
   imagePreviews: [],
   thumbnailIndex: 0,
 });
-export function useProductPage({page,search}:{page:number,search:string}) {
+
+export function useProductPage({
+  page,
+  search,
+}: {
+  page: number;
+  search: string;
+}) {
   const queryClient = useQueryClient();
   const [tab, setTab] = useState<TabType>("create");
-
+const {  isArabic } = useTranslation();
   const { data: categories } = useGetCategory();
   const productsParams = {
     all: true,
@@ -51,7 +59,7 @@ export function useProductPage({page,search}:{page:number,search:string}) {
 
   const catOptions = [
     { value: "", label: "Select category…" },
-    ...(categories?.map((c) => ({ value: c.name, label: c.name })) ?? []),
+    ...(categories?.map((c) => ({ value: isArabic ? c.name_ar : c.name_en, label:isArabic ? c.name_ar : c.name_en })) ?? []),
   ];
 
   /* ---- Notification ---- */
@@ -75,12 +83,12 @@ export function useProductPage({page,search}:{page:number,search:string}) {
   /* ---------------------------------------------------------------- */
   const [cf, setCf] = useState({
     name_en: "",
-    name_ar: "", // ← NEW
-    categories: "",
+    name_ar: "",
+    categories: [] as string[], // ✅ list of name strings
     fragrance_family_en: "",
-    fragrance_family_ar: "", // ← NEW
+    fragrance_family_ar: "",
     description_en: "",
-    description_ar: "", // ← NEW
+    description_ar: "",
   });
   const [cvars, setCVars] = useState<Volume[]>([emptyV()]);
   const [cStep, setCStep] = useState<
@@ -94,14 +102,19 @@ export function useProductPage({page,search}:{page:number,search:string}) {
   const { mutate: deleteProd, isPending: deletingProd } = useDeleteProduct();
   const [confirmDeletePid, setConfirmDeletePid] = useState<number | null>(null);
 
-const sc =
-  (k: string) =>
-  (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
-  ) =>
-    setCf((f) => ({ ...f, [k]: e.target.value }));
+  const sc =
+    (k: string) =>
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+      >,
+    ) =>
+      setCf((f) => ({ ...f, [k]: e.target.value }));
+
+  // ✅ setter خاص للـ categories (بتاخد string[])
+  const setCfCategories = (names: string[]) =>
+    setCf((f) => ({ ...f, categories: names }));
+
   const addCImgs = (i: number, files: File[]) =>
     setCVars((vs) =>
       vs.map((v, idx) =>
@@ -148,12 +161,12 @@ const sc =
   const [pid, setPid] = useState<number | null>(null);
   const [ef, setEf] = useState({
     name_en: "",
-    name_ar: "", // ← NEW
-    categories: "",
+    name_ar: "",
+    categories: [] as string[], // ✅ list of name strings
     fragrance_family_en: "",
-    fragrance_family_ar: "", // ← NEW
+    fragrance_family_ar: "",
     description_en: "",
-    description_ar: "", // ← NEW
+    description_ar: "",
     is_active: "true",
   });
   const [eStep, setEStep] = useState<"idle" | "updating" | "images" | "done">(
@@ -166,26 +179,28 @@ const sc =
   );
   const { mutate: updateMutate } = useUpdateProduct();
 
-useEffect(() => {
-  if (singleProduct) {
-    setEf({
-      name_en: singleProduct.name_en ?? "",
-      name_ar: singleProduct.name_ar ?? "", // ← NEW
-      categories: String(
-        singleProduct.category ?? singleProduct.category ?? "",
-      ),
-      fragrance_family_en: singleProduct.fragrance_family_en ?? "",
-      fragrance_family_ar: singleProduct.fragrance_family_ar ?? "", // ← NEW
-      description_en: singleProduct.description_en ?? "",
-      description_ar: singleProduct.description_ar ?? "", // ← NEW
-      is_active: String(singleProduct.is_active ?? true),
-    });
-  }
-  setEStep("idle");
-}, [singleProduct]);
+  useEffect(() => {
+    if (singleProduct) {
+      setEf({
+        name_en: singleProduct.name_en ?? "",
+        name_ar: singleProduct.name_ar ?? "",
+        categories: singleProduct.categories ?? [], // ✅ بيجي string[] من الـ API
+        fragrance_family_en: singleProduct.fragrance_family_en ?? "",
+        fragrance_family_ar: singleProduct.fragrance_family_ar ?? "",
+        description_en: singleProduct.description_en ?? "",
+        description_ar: singleProduct.description_ar ?? "",
+        is_active: String(singleProduct.is_active ?? true),
+      });
+    }
+    setEStep("idle");
+  }, [singleProduct]);
 
   const se = (k: string) => (e: any) =>
     setEf((f) => ({ ...f, [k]: e.target.value }));
+
+  // ✅ setter خاص للـ categories في Edit
+  const setEfCategories = (names: string[]) =>
+    setEf((f) => ({ ...f, categories: names }));
 
   /* ---------------------------------------------------------------- */
   /* ADD VARIANT                                                       */
@@ -258,7 +273,6 @@ useEffect(() => {
     if (!selectedVid || !varProduct?.variants) return;
     const v = varProduct.variants.find((x: Variant) => x.id === selectedVid);
     if (!v) return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setEvf({
       volume: v.volume ?? "",
       price: v.price ?? "",
@@ -302,7 +316,8 @@ useEffect(() => {
   /* Handlers                                                          */
   /* ---------------------------------------------------------------- */
   const handleCreate = async () => {
-    if (!cf.name_en || !cf.name_ar || !cf.categories) {
+    if (!cf.name_en || !cf.name_ar || !cf.categories.length) {
+      // ✅ .length
       showNotification("Name & category required.", "error");
       return;
     }
@@ -311,9 +326,7 @@ useEffect(() => {
       const created: any = await createAsync({
         name_ar: cf.name_ar,
         name_en: cf.name_en,
-        categories:
-          categories?.find((c) => String(c.id) === cf.categories)?.name ??
-          cf.categories,
+        categories: cf.categories, // ✅ ابعت الـ list مباشرة
         description_ar: cf.description_ar,
         description_en: cf.description_en,
         fragrance_family_ar: cf.fragrance_family_ar,
@@ -348,19 +361,19 @@ useEffect(() => {
       showNotification("Product created!", "success");
       setCf({
         name_en: "",
-        name_ar: "", // ← NEW
-        categories: "",
+        name_ar: "",
+        categories: [], // ✅ reset كـ empty array
         fragrance_family_en: "",
-        fragrance_family_ar: "", // ← NEW
+        fragrance_family_ar: "",
         description_en: "",
-        description_ar: "", // ← NEW
+        description_ar: "",
       });
       setCVars([emptyV()]);
       setTimeout(() => setCStep("idle"), 2000);
     } catch (err: unknown) {
       const e = err as AxiosError<ErrorResponse>;
       showNotification(
-        e?.response?.data?.detail || (e as any)?.message || "Failed.",
+        e?.response?.data?.message || (e as any)?.message || "Failed.",
         "error",
       );
       setCStep("idle");
@@ -378,7 +391,7 @@ useEffect(() => {
         },
         onError: (e: AxiosError<ErrorResponse>) => {
           showNotification(
-            e?.response?.data?.detail || "Delete failed.",
+            e?.response?.data?.message || "Delete failed.",
             "error",
           );
           setConfirmDeletePid(null);
@@ -395,13 +408,14 @@ useEffect(() => {
     setEStep("updating");
     const payload: any = {};
     if (ef.name_en) payload.name = ef.name_en;
-    if (ef.name_ar) payload.name_ar = ef.name_ar; 
-    if (ef.categories) payload.category = ef.categories;
+    if (ef.name_ar) payload.name_ar = ef.name_ar;
+    if (ef.categories.length) payload.categories = ef.categories; // ✅ .length
     if (ef.description_en) payload.description = ef.description_en;
-    if (ef.description_ar) payload.description_ar = ef.description_ar; 
-    if (ef.fragrance_family_en) payload.fragrance_family = ef.fragrance_family_en;
+    if (ef.description_ar) payload.description_ar = ef.description_ar;
+    if (ef.fragrance_family_en)
+      payload.fragrance_family = ef.fragrance_family_en;
     if (ef.fragrance_family_ar)
-      payload.fragrance_family_ar = ef.fragrance_family_ar; 
+      payload.fragrance_family_ar = ef.fragrance_family_ar;
     payload.is_active = ef.is_active === "true";
     try {
       await new Promise<void>((res, rej) =>
@@ -416,7 +430,7 @@ useEffect(() => {
     } catch (err: unknown) {
       const e = err as AxiosError<ErrorResponse>;
       showNotification(
-        e?.response?.data?.detail || (e as any)?.message || "Update failed.",
+        e?.response?.data?.message || (e as any)?.message || "Update failed.",
         "error",
       );
       setEStep("idle");
@@ -470,7 +484,7 @@ useEffect(() => {
     } catch (err: unknown) {
       const e = err as AxiosError<ErrorResponse>;
       showNotification(
-        e?.response?.data?.detail || (e as any)?.message || "Failed.",
+        e?.response?.data?.message || (e as any)?.message || "Failed.",
         "error",
       );
       setAvStep("idle");
@@ -496,7 +510,7 @@ useEffect(() => {
       setTimeout(() => setEvStep("idle"), 2000);
     } catch (err: any) {
       showNotification(
-        err?.response?.data?.detail || err?.message || "Failed.",
+        err?.response?.data?.message || err?.message || "Failed.",
         "error",
       );
       setEvStep("idle");
@@ -515,7 +529,7 @@ useEffect(() => {
         },
         onError: (e: AxiosError<ErrorResponse>) => {
           showNotification(
-            e?.response?.data?.detail || "Delete failed.",
+            e?.response?.data?.message || "Delete failed.",
             "error",
           );
           setConfirmDeleteVid(null);
@@ -536,6 +550,7 @@ useEffect(() => {
     /* create */
     cf,
     sc,
+    setCfCategories, // ✅ استخدمه في الـ MultiSelect بدل sc
     cvars,
     setCVars,
     cStep,
@@ -552,6 +567,7 @@ useEffect(() => {
     setPid,
     ef,
     se,
+    setEfCategories, // ✅ استخدمه في الـ MultiSelect بدل se
     eStep,
     singleProduct,
     loadingSingle,

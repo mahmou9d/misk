@@ -61,6 +61,7 @@ export const authAPI = {
 
   getRole: async (): Promise<Role> => {
     const { data } = await apiClient.get<Role>("/auth/me/");
+    localStorage.setItem("role", String(data?.is_admin));
     return data;
   },
   passwordReset: async (email: string): Promise<{ status :string}> => {

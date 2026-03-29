@@ -54,6 +54,7 @@ export const dashboardAPI = {
     );
     return data || [];
   },
+
   patchOrders: async (payload: {
     id: string;
     status: OrderStatus;
@@ -197,12 +198,52 @@ export const dashboardAPI = {
   deleteBanner: async (id: number): Promise<void> => {
     await apiClient.delete(`/dashboard/banners/${id}/`);
   },
+  // ─── Governorates ──────────────────────────────────────────────────────────
 
+  getShippingGovernorates: async () => {
+    const { data } = await apiClient.get("/shipping/governorates/");
+    return data;
+  },
+  getDashboardGovernorates: async () => {
+    const { data } = await apiClient.get<{
+      id: number;
+      name_en: string;
+      name_ar: string;
+      shipping_fee: number;
+    }>("/dashboard/governorates/?all=true");
+    return data;
+  },
+  postDashboardGovernorates: async (body: {
+    name_en: string;
+    name_ar: string;
+    shipping_fee: number;
+  }) => {
+    const { data } = await apiClient.post("/dashboard/governorates/", body);
+    return data;
+  },
+  patchGovernorate: async ({
+    id,
+    body,
+  }: {
+    id: number;
+    body: {
+      name_en: string;
+      name_ar: string;
+      shipping_fee: number;
+    };
+  }) => {
+    const { data } = await apiClient.patch(
+      `/dashboard/governorates/${id}/`,
+      body,
+    );
+    return data;
+  },
   // ─── Settings ──────────────────────────────────────────────────────────────
   getDashboardSettingsPublic: async (): Promise<SiteSettings> => {
     const { data } = await apiClient.get<SiteSettings>("/settings/");
     return data;
   },
+
   getDashboardSettings: async (): Promise<SiteSettings> => {
     const { data } = await apiClient.get<SiteSettings>("/dashboard/settings/");
     return data;
