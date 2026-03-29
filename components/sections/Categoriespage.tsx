@@ -284,7 +284,7 @@ export default function CategoriesPage() {
           </div>
 
           {/* List */}
-          <div className="p-8">
+          <div className="md:p-8">
             {isLoading && (
               <div className="flex items-center gap-3 text-gray-400">
                 <RefreshCw className="w-4 h-4 animate-spin" />
@@ -367,10 +367,6 @@ export default function CategoriesPage() {
 
                       {/* Right: id + action buttons */}
                       <div className="flex items-center gap-1.5">
-                        <span className="text-xs text-gray-600 font-mono me-1">
-                          #{cat.id}
-                        </span>
-
                         {/* Toggle active — green pill button */}
                         <button
                           onClick={() => {
@@ -423,8 +419,8 @@ export default function CategoriesPage() {
                             </>
                           )}
                         </button>
-
-                        {/* Edit — blue */}
+<div className="flex flex-col md:flex-row">
+                          {/* Edit — blue */}
                         <button
                           onClick={() => startEdit(cat)}
                           title="Edit"
@@ -468,6 +464,8 @@ export default function CategoriesPage() {
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         )}
+</div>
+
                       </div>
                     </div>
                   )}
