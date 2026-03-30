@@ -1,11 +1,28 @@
 // app/[locale]/layout.tsx
 import type { Metadata } from "next";
+import { Cairo, Roboto } from "next/font/google";
 
 const locales = ["en", "ar"] as const;
 type Locale = (typeof locales)[number];
 
 const BASE_URL = "https://perfume-site-bee1.vercel.app";
 
+// ─── Fonts ────────────────────────────────────────────────────────────────────
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+  variable: "--font-roboto",
+  display: "swap",
+});
+
+const cairo = Cairo({
+  subsets: ["arabic"],
+  weight: ["300", "400", "700"],
+  variable: "--font-cairo",
+  display: "swap",
+});
+
+// ─── Translations ─────────────────────────────────────────────────────────────
 const translations = {
   en: {
     title: "Misk Fragrances | Luxury Extrait De Parfum — Egypt",
@@ -217,8 +234,24 @@ export async function generateStaticParams() {
 
 export default async function LocaleLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
-  return <div>{children}</div>;
+  const { locale } = await params;
+  const isArabic = locale === "ar";
+
+  return (
+    <div
+      className={`${roboto.variable} ${cairo.variable}`}
+      style={{
+        fontFamily: isArabic
+          ? "var(--font-cairo), sans-serif"
+          : "var(--font-roboto), sans-serif",
+      }}
+    >
+      {children}
+    </div>
+  );
 }

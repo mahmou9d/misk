@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useAnimationControls } from "framer-motion";
 import Image from "next/image";
+import { useEffect } from "react";
 import { useTranslation } from "@/lib/Usetranslation";
 import { useGetBannersPublic } from "@/hooks/useDashboard";
 
-// ─── animation helpers (محسنة للسلاسة) ───────────────────────────────────────
+// ─── animation helpers ────────────────────────────────────────────────────────
 const EASE = [0.16, 1, 0.3, 1] as const;
 const fadeUp = (delay = 0, y = 32) => ({
   initial: { opacity: 0, y },
@@ -23,43 +24,64 @@ export default function HeroSection() {
   const { t, isArabic, locale } = useTranslation();
   const { data: banners } = useGetBannersPublic();
 
-  const stats = [
-    { value: "500+", label: isArabic ? "منتج" : "Products" },
-    { value: "50+", label: isArabic ? "علامة" : "Brands" },
-    { value: "10K+", label: isArabic ? "عميل" : "Clients" },
-  ];
+  // ── Zoom loop: scale 1 → 1.08 → 1 بشكل مستمر ──
+  const zoomControls = useAnimationControls();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const runLoop = async () => {
+      while (!cancelled) {
+        await zoomControls.start({
+          scale: 1.08,
+          transition: { duration: 8, ease: "easeInOut" },
+        });
+        if (cancelled) break;
+        await zoomControls.start({
+          scale: 1,
+          transition: { duration: 8, ease: "easeInOut" },
+        });
+      }
+    };
+
+    runLoop();
+    return () => {
+      cancelled = true;
+    };
+  }, [zoomControls]);
+
+  const imgSrc = banners?.[0]?.img_url || "/heros.jpg";
 
   return (
-    <section
-      className="relative w-full overflow-hidden bg-[#04020e] h-[600px] lg:h-[750px]"
-      
-    >
-      {/* ── Background (إضافة تأثير زووم هادئ جداً) ── */}
-      <div className="absolute inset-0">
+    <section className="relative w-full overflow-hidden bg-[#04020e] min-h-[500px] h-[100svh] max-h-[600px] lg:max-h-[750px]">
+      {/* ── Background with looping zoom ── */}
+      <div className="absolute inset-0 overflow-hidden">
         <motion.div
-          initial={{ scale: 1.15 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 15, ease: "linear" }}
+          animate={zoomControls}
+          initial={{ scale: 1 }}
           className="relative w-full h-full"
         >
           <Image
-            src={banners?.[0]?.img_url || "/heros.jpg"}
+            src={imgSrc}
             alt="Hero"
             fill
-            className="object-cover object-center brightness-[0.85]"
+            sizes="100vw"
+            className="object-cover object-center brightness-[0.85] !w-full !h-full"
+            style={{ objectFit: "cover", objectPosition: "center center" }}
             priority
+            unoptimized={imgSrc.startsWith("http")}
           />
         </motion.div>
       </div>
 
-
-      {/* ── Ambient Gold Glow (خليته أخف عشان ميبقاش "نور" مزعج) ── */}
+      {/* ── Ambient Gold Glow ── */}
       <div
         className="absolute z-10 pointer-events-none"
         style={{
-          [isArabic ? "right" : "left"]: "clamp(0px, 4vw, 60px)",
-          top: "15%",
-          width: 500,
+          left: "50%",
+          transform: "translateX(-50%)",
+          top: "10%",
+          width: 600,
           height: 500,
           background:
             "radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)",
@@ -95,11 +117,11 @@ export default function HeroSection() {
 
       {/* ── Main Content ── */}
       <div
-        className="absolute inset-0 z-20 flex flex-col justify-center"
-        style={{ padding: "0 clamp(28px, 9vw, 140px)", paddingBottom: 58 }}
+        className="absolute inset-0 z-20 flex flex-col justify-center items-center"
+        style={{ padding: "0 clamp(28px, 9vw, 140px)", paddingBottom: 120 }}
         dir={isArabic ? "rtl" : "ltr"}
       >
-        <div style={{ maxWidth: 700 }}>
+        <div style={{ maxWidth: 700, textAlign: "center" }}>
           {/* headline line 1 */}
           <div className="overflow-hidden">
             <motion.h1
@@ -147,11 +169,12 @@ export default function HeroSection() {
             initial={{ opacity: 0, scaleX: 0 }}
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 1, delay: 0.48, ease: EASE }}
-            className="flex items-center gap-3 mb-4"
-            style={{ transformOrigin: isArabic ? "right" : "left" }}
+            className="flex items-center justify-center gap-3 mb-4"
+            style={{ transformOrigin: "center" }}
           >
+            <span className="w-16 h-px bg-gradient-to-r from-transparent to-[#c9a84c]/60" />
             <span className="w-1 h-1 bg-[#c9a84c]/60 rotate-45" />
-            <span className="w-16 h-px bg-gradient-to-r from-[#c9a84c]/60 to-transparent" />
+            <span className="w-16 h-px bg-gradient-to-l from-transparent to-[#c9a84c]/60" />
           </motion.div>
 
           {/* subtitle */}
@@ -163,24 +186,23 @@ export default function HeroSection() {
               color: "white",
               lineHeight: 1.8,
               maxWidth: 420,
-              marginBottom: 20,
+              margin: "0 auto 20px auto",
               letterSpacing: "0.01em",
             }}
           >
-            {
-              (isArabic
-                ? "عطور مختارة بعناية لمن يفهمون لغة الرقي والأناقة"
-                : "Curated fragrances for those who understand the language of refinement")}
+            {isArabic
+              ? "عطور مختارة بعناية لمن يفهمون لغة الرقي والأناقة"
+              : "Curated fragrances for those who understand the language of refinement"}
           </motion.p>
 
-          {/* CTA row (بنافس الـ Styling الأصلي بتاعك) */}
+          {/* CTA row */}
           <motion.div
             {...fadeUp(0.7, 14)}
-            className="flex items-center gap-5 flex-wrap"
+            className="flex items-center justify-center gap-5 flex-wrap"
           >
             <Link
               href={`/${locale.toLowerCase()}/shop`}
-              className="group relative  text-[16px] md:text-[20px]  overflow-hidden inline-flex items-center gap-4 rounded-2xl no-underline"
+              className="group py-4 px-4 md:px-11 relative text-[15px] md:text-[20px] overflow-hidden inline-flex items-center gap-4 rounded-2xl no-underline"
               style={{
                 padding: "16px 45px",
                 background:
@@ -213,9 +235,8 @@ export default function HeroSection() {
 
             <Link
               href={`/${locale.toLowerCase()}/collections`}
-              className="inline-flex text-[16px] md:text-[20px] items-center rounded-2xl border border-white px-8 py-4 text-white transition-all duration-300 hover:border-[#c9a84c]/30 hover:text-[#c9a84c] hover:bg-white/[0.02]"
+              className="inline-flex text-[14px] md:text-[20px] items-center rounded-2xl border border-white px-4 md:px-8 py-4 text-white transition-all duration-300 hover:border-[#c9a84c]/30 hover:text-[#c9a84c] hover:bg-white/[0.02]"
               style={{
-                
                 fontWeight: 700,
                 letterSpacing: "0.15em",
                 textTransform: "uppercase",

@@ -293,7 +293,18 @@ export const usePatchGovernorate = () => {
         shipping_fee: number;
         is_active: boolean;
       }>;
-    }) => dashboardAPI.patchGovernorate(payload),
+    }) =>
+      dashboardAPI.patchGovernorate(
+        payload as {
+          id: number;
+          body: {
+            name_en: string;
+            name_ar: string;
+            shipping_fee: number;
+            is_active: boolean;
+          };
+        },
+      ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: dashboardKeys.governorates() });
     },

@@ -182,7 +182,8 @@ export const dashboardAPI = {
   patchBanner: async (payload: {
     id: number;
     body: Partial<{
-      title: string;
+      title_en: string;
+      title_ar: string;
       link: string;
       order: number;
       is_active: boolean;
@@ -191,7 +192,11 @@ export const dashboardAPI = {
     const { data } = await apiClient.patch<Banner>(
       `/dashboard/banners/${payload.id}/`,
       payload.body,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      },
     );
+    
     return data;
   },
 
@@ -230,6 +235,7 @@ export const dashboardAPI = {
       name_en: string;
       name_ar: string;
       shipping_fee: number;
+      is_active: boolean;
     };
   }) => {
     const { data } = await apiClient.patch(

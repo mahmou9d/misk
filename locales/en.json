@@ -1090,7 +1090,8 @@
       "loadError": "Failed to load banners.",
       "empty": "No banners yet.",
       "fields": {
-        "title": "Title",
+        "title_en": "Title",
+        "title_ar": "Title",
         "linkUrl": "Link URL",
         "order": "Order",
         "active": "Active",

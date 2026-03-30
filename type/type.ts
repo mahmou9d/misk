@@ -457,7 +457,7 @@ export type SortTranslations = {
 };
 export interface Banner {
   id: number;
-  title: string;
+  title_en: string;
   title_ar: string;
   link: string;
   order: number;
@@ -467,7 +467,7 @@ export interface Banner {
 }
 
 export interface SiteSettings {
-  announcement_text: string;
+  announcement_text_en: string;
   announcement_text_ar: string;
   announcement_link: string;
   is_announcement_active: boolean;

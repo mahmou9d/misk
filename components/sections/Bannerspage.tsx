@@ -21,6 +21,11 @@ import { AxiosError } from "axios";
 import { useTranslation } from "@/lib/Usetranslation";
 import { RefreshCw, AlertCircle } from "lucide-react";
 
+// ─── Image Size Limit ─────────────────────────────────────────────────────────
+
+const MAX_IMAGE_SIZE_MB = 3;
+const MAX_IMAGE_SIZE_BYTES = MAX_IMAGE_SIZE_MB * 1024 * 1024;
+
 // ─── Shared Sub-components ────────────────────────────────────────────────────
 
 function Toggle({
@@ -146,7 +151,7 @@ function BannersTab({
 }: {
   showNotification: (msg: string, type: "success" | "error") => void;
 }) {
-  const { t ,isArabic} = useTranslation();
+  const { t, isArabic } = useTranslation();
   const b = t.bannersSettings.banners;
 
   const { data: banners, isLoading, isError } = useGetBanners();
@@ -160,15 +165,15 @@ function BannersTab({
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const [editFields, setEditFields] = useState<{
-    title: string;
+    title_en: string;
     title_ar: string;
     link: string;
     order: number;
     is_active: boolean;
-  }>({ title: "", title_ar: "", link: "", order: 1, is_active: true });
+  }>({ title_en: "", title_ar: "", link: "", order: 1, is_active: true });
 
   // ── Create form state ──
-  const [newTitle, setNewTitle] = useState("");
+  const [newTitleEn, setNewTitleEn] = useState("");
   const [newTitleAr, setNewTitleAr] = useState("");
   const [newLink, setNewLink] = useState("");
   const [newOrder, setNewOrder] = useState(1);
@@ -181,14 +186,34 @@ function BannersTab({
   const [editImagePreview, setEditImagePreview] = useState<string | null>(null);
   const editFileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] ?? null;
-    setNewImage(file);
-    setPreviewUrl(file ? URL.createObjectURL(file) : null);
+  // ── Image size validation helper ──
+  const validateImageSize = (file: File): boolean => {
+    if (file.size > MAX_IMAGE_SIZE_BYTES) {
+      showNotification(
+        isArabic
+          ? `حجم الصورة يجب أن يكون أقل من ${MAX_IMAGE_SIZE_MB} ميجا`
+          : `Image size must be less than ${MAX_IMAGE_SIZE_MB}MB`,
+        "error",
+      );
+      return false;
+    }
+    return true;
   };
 
+const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0] ?? null;
+
+  if (file && !validateImageSize(file)) {
+    if (fileInputRef.current) fileInputRef.current.value = "";
+    return;
+  }
+
+  setNewImage(file);
+  setPreviewUrl(file ? URL.createObjectURL(file) : null);
+};
+
   const resetCreateForm = () => {
-    setNewTitle("");
+    setNewTitleEn("");
     setNewTitleAr("");
     setNewLink("");
     setNewOrder(1);
@@ -202,7 +227,7 @@ function BannersTab({
   const handleCreate = () => {
     if (!newImage) return;
     const fd = new FormData();
-    fd.append("title", newTitle);
+    fd.append("title_en", newTitleEn);
     fd.append("title_ar", newTitleAr);
     fd.append("link", newLink);
     fd.append("order", String(newOrder));
@@ -215,14 +240,7 @@ function BannersTab({
       },
       onError: (error: AxiosError<ErrorResponse>) => {
         showNotification(
-          error?.response?.data?.message ||
-            error?.response?.data?.detail ||
-            error?.response?.data?.error ||
-            error?.response?.data?.status ||
-            error?.response?.data?.non_field_errors ||
-            error?.response?.data?.name ||
-            error?.message ||
-            b.notifications.createFailed,
+          error?.response?.data?.message || b.notifications.createFailed,
           "error",
         );
       },
@@ -232,7 +250,7 @@ function BannersTab({
   const handleEditOpen = (banner: Banner) => {
     setEditingId(banner.id);
     setEditFields({
-      title: banner.title,
+      title_en: banner.title_en,
       title_ar: banner.title_ar,
       link: banner.link,
       order: banner.order,
@@ -252,25 +270,20 @@ function BannersTab({
     };
     const onError = (error: AxiosError<ErrorResponse>) => {
       showNotification(
-        error?.response?.data?.message ||
-          error?.response?.data?.detail ||
-          error?.response?.data?.error ||
-          error?.response?.data?.status ||
-          error?.response?.data?.non_field_errors ||
-          error?.response?.data?.name ||
-          error?.message,
+        error?.response?.data?.message || error?.message,
         "error",
       );
     };
 
     if (editImage) {
       const fd = new FormData();
-      fd.append("title", editFields.title);
+      fd.append("title_en", editFields.title_en);
       fd.append("title_ar", editFields.title_ar);
       fd.append("link", editFields.link);
       fd.append("order", String(editFields.order));
       fd.append("is_active", String(editFields.is_active));
       fd.append("image", editImage);
+      console.log(editFields.title_en);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       patchBanner({ id, body: fd as any }, { onSuccess, onError });
     } else {
@@ -345,13 +358,13 @@ function BannersTab({
             {/* Title EN */}
             <div>
               <label className="text-sm text-gray-400 mb-1.5 block font-bold">
-                {b.fields.title}{" "}
+                {b.fields.title_en}{" "}
                 <span className="text-[#fff] font-normal text-xs">(EN)</span>
               </label>
               <input
                 className={inputClass}
-                value={newTitle}
-                onChange={(e) => setNewTitle(e.target.value)}
+                value={newTitleEn}
+                onChange={(e) => setNewTitleEn(e.target.value)}
                 placeholder="Summer Sale"
                 dir="ltr"
               />
@@ -360,7 +373,7 @@ function BannersTab({
             {/* Title AR */}
             <div>
               <label className="text-sm text-gray-400 mb-1.5 block font-bold">
-                {b.fields.title}{" "}
+                {b.fields.title_ar}{" "}
                 <span className="text-[#fff] font-normal text-xs">(AR)</span>
               </label>
               <input
@@ -415,6 +428,11 @@ function BannersTab({
           <div className="mb-5">
             <label className="text-sm text-gray-400 mb-1.5 block font-bold">
               {b.fields.image}
+              <span className="text-gray-600 font-normal text-xs ml-2">
+                {isArabic
+                  ? `(الحد الأقصى ${MAX_IMAGE_SIZE_MB} ميجا)`
+                  : `(max ${MAX_IMAGE_SIZE_MB}MB)`}
+              </span>
             </label>
             <input
               ref={fileInputRef}
@@ -487,7 +505,7 @@ function BannersTab({
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={banner.img_url}
-                      alt={banner.title}
+                      alt={banner.title_en}
                       loading="lazy"
                       className="w-full h-full object-cover"
                     />
@@ -504,7 +522,7 @@ function BannersTab({
 
                 <div className="flex-1 min-w-[100px]">
                   <p className="text-sm font-bold text-white leading-tight">
-                    {banner.title || "—"}
+                    {banner.title_en || "—"}
                   </p>
                   {banner.title_ar && (
                     <p
@@ -548,7 +566,7 @@ function BannersTab({
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={banner.img_url}
-                        alt={banner.title}
+                        alt={banner.title_en}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -560,18 +578,18 @@ function BannersTab({
                         {/* Title EN */}
                         <div>
                           <label className="text-sm text-gray-400 mb-1.5 block font-bold">
-                            {b.fields.title}{" "}
+                            {b.fields.title_en}{" "}
                             <span className="text-[#fff] font-normal text-xs">
                               (EN)
                             </span>
                           </label>
                           <input
                             className={inputClass}
-                            value={editFields.title}
+                            value={editFields.title_en}
                             onChange={(e) =>
                               setEditFields((f) => ({
                                 ...f,
-                                title: e.target.value,
+                                title_en: e.target.value,
                               }))
                             }
                             dir="ltr"
@@ -581,7 +599,7 @@ function BannersTab({
                         {/* Title AR */}
                         <div>
                           <label className="text-sm text-gray-400 mb-1.5 block font-bold">
-                            {b.fields.title}{" "}
+                            {b.fields.title_ar}{" "}
                             <span className="text-[#fff] font-normal text-xs">
                               (AR)
                             </span>
@@ -660,6 +678,11 @@ function BannersTab({
                           <span className="text-gray-600 font-normal text-sm">
                             {b.fields.optional}
                           </span>
+                          <span className="text-gray-600 font-normal text-xs ml-2">
+                            {isArabic
+                              ? `(الحد الأقصى ${MAX_IMAGE_SIZE_MB} ميجا)`
+                              : `(max ${MAX_IMAGE_SIZE_MB}MB)`}
+                          </span>
                         </label>
                         <input
                           ref={editFileInputRef}
@@ -667,6 +690,13 @@ function BannersTab({
                           accept="image/*"
                           onChange={(e) => {
                             const file = e.target.files?.[0] ?? null;
+
+                            if (file && !validateImageSize(file)) {
+                              if (editFileInputRef.current)
+                                editFileInputRef.current.value = "";
+                              return;
+                            }
+
                             setEditImage(file);
                             setEditImagePreview(
                               file ? URL.createObjectURL(file) : null,
@@ -1061,7 +1091,7 @@ function SettingsTab({
   const { mutate: patchSettings, isPending: patching } =
     usePatchDashboardSettings();
 
-  const [announcementText, setAnnouncementText] = useState("");
+  const [announcementTextEn, setAnnouncementTextEn] = useState("");
   const [announcementTextAr, setAnnouncementTextAr] = useState("");
   const [announcementLink, setAnnouncementLink] = useState("");
   const [isAnnouncementActive, setIsAnnouncementActive] = useState(false);
@@ -1069,7 +1099,7 @@ function SettingsTab({
 
   useEffect(() => {
     if (data) {
-      setAnnouncementText(data.announcement_text ?? "");
+      setAnnouncementTextEn(data.announcement_text_en ?? "");
       setAnnouncementTextAr(data.announcement_text_ar ?? "");
       setAnnouncementLink(data.announcement_link ?? "");
       setIsAnnouncementActive(data.is_announcement_active ?? false);
@@ -1080,7 +1110,7 @@ function SettingsTab({
   const handleSave = () => {
     patchSettings(
       {
-        announcement_text: announcementText,
+        announcement_text_en: announcementTextEn,
         announcement_text_ar: announcementTextAr,
         announcement_link: announcementLink,
         is_announcement_active: isAnnouncementActive,
@@ -1145,7 +1175,7 @@ function SettingsTab({
               : "bg-white/5 text-gray-600 line-through border-b border-white/5"
           }`}
         >
-          {announcementText || s.announcementPreview}
+          {announcementTextEn || s.announcementPreview}
           {announcementTextAr && <span className="mx-2 opacity-50">|</span>}
           {announcementTextAr && <span dir="rtl">{announcementTextAr}</span>}
           {announcementLink && isAnnouncementActive && (
@@ -1164,9 +1194,9 @@ function SettingsTab({
               </label>
               <input
                 className={inputClass}
-                value={announcementText}
+                value={announcementTextEn}
                 onChange={(e) => {
-                  setAnnouncementText(e.target.value);
+                  setAnnouncementTextEn(e.target.value);
                   setIsDirty(true);
                 }}
                 placeholder={s.announcementPlaceholder}
