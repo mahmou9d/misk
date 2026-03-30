@@ -117,8 +117,8 @@ export default function HeroSection() {
 
       {/* ── Main Content ── */}
       <div
-        className="absolute inset-0 z-20 flex flex-col justify-center items-center"
-        style={{ padding: "0 clamp(28px, 9vw, 140px)", paddingBottom: 120 }}
+        className="absolute inset-0 z-20 flex flex-col justify- items-center"
+        style={{ paddingTop: 20, paddingBottom: 120 }}
         dir={isArabic ? "rtl" : "ltr"}
       >
         <div style={{ maxWidth: 700, textAlign: "center" }}>
@@ -202,9 +202,9 @@ export default function HeroSection() {
           >
             <Link
               href={`/${locale.toLowerCase()}/shop`}
-              className="group py-4 px-4 md:px-11 relative text-[15px] md:text-[20px] overflow-hidden inline-flex items-center gap-4 rounded-2xl no-underline"
+              className="group py-4 px-4 md:px-11 relative text-[14px] md:text-[20px] overflow-hidden inline-flex items-center gap-4 rounded-2xl no-underline"
               style={{
-                padding: "16px 45px",
+                
                 background:
                   "linear-gradient(135deg, #c9a84c 0%, #e8c847 50%, #b8912e 100%)",
                 color: "#06040c",
