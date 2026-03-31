@@ -7,24 +7,24 @@ import { useEffect } from "react";
 import { useTranslation } from "@/lib/Usetranslation";
 import { useGetBannersPublic } from "@/hooks/useDashboard";
 
-// ─── animation helpers ────────────────────────────────────────────────────────
+// ─── Animation Helpers ────────────────────────────────────────────────────────
 const EASE = [0.16, 1, 0.3, 1] as const;
-const fadeUp = (delay = 0, y = 32) => ({
+const fadeUp = (delay = 0, y = 30) => ({
   initial: { opacity: 0, y },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 1.05, delay, ease: EASE },
+  transition: { duration: 1.2, delay, ease: EASE },
 });
 const fadeIn = (delay = 0) => ({
   initial: { opacity: 0 },
   animate: { opacity: 1 },
-  transition: { duration: 0.9, delay },
+  transition: { duration: 1, delay, ease: EASE },
 });
 
 export default function HeroSection() {
   const { t, isArabic, locale } = useTranslation();
   const { data: banners } = useGetBannersPublic();
 
-  // ── Zoom loop: scale 1 → 1.08 → 1 بشكل مستمر ──
+  // ── Subtle Zoom Loop ──
   const zoomControls = useAnimationControls();
 
   useEffect(() => {
@@ -33,13 +33,13 @@ export default function HeroSection() {
     const runLoop = async () => {
       while (!cancelled) {
         await zoomControls.start({
-          scale: 1.08,
-          transition: { duration: 8, ease: "easeInOut" },
+          scale: 1.05, // Reduced from 1.08 for a slower, more elegant breathe
+          transition: { duration: 12, ease: "easeInOut" }, // Slowed down for luxury feel
         });
         if (cancelled) break;
         await zoomControls.start({
           scale: 1,
-          transition: { duration: 8, ease: "easeInOut" },
+          transition: { duration: 12, ease: "easeInOut" },
         });
       }
     };
@@ -53,107 +53,59 @@ export default function HeroSection() {
   const imgSrc = banners?.[0]?.img_url || "/heros.jpg";
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#04020e] min-h-[500px] h-[100svh] max-h-[600px] lg:max-h-[750px]">
-      {/* ── Background with looping zoom ── */}
-      <div className="absolute inset-0 overflow-hidden">
+    <section className="relative w-full overflow-hidden bg-[#04020e] min-h-[500px] h-[100svh] max-h-[700px] lg:max-h-[850px]">
+      {/* ── Background Image ── */}
+      <div className="absolute inset-0 overflow-hidden bg-black">
         <motion.div
           animate={zoomControls}
           initial={{ scale: 1 }}
-          className="relative w-full h-full"
+          className="absolute inset-0"
         >
           <Image
             src={imgSrc}
             alt="Hero"
             fill
             sizes="100vw"
-            className="object-cover object-center brightness-[0.85] !w-full !h-full"
-            style={{ objectFit: "cover", objectPosition: "center center" }}
+            className="object-cover object-center brightness-[0.65] opacity-90 transition-all"
             priority
             unoptimized={imgSrc.startsWith("http")}
           />
         </motion.div>
       </div>
-
-      {/* ── Ambient Gold Glow ── */}
-      <div
-        className="absolute z-10 pointer-events-none"
-        style={{
-          left: "50%",
-          transform: "translateX(-50%)",
-          top: "10%",
-          width: 600,
-          height: 500,
-          background:
-            "radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)",
-          filter: "blur(60px)",
-        }}
-      />
-
-      {/* ── Vertical side text ── */}
-      <motion.div
-        {...fadeIn(1.2)}
-        className="absolute hidden lg:flex z-20 flex-col items-center gap-4 pointer-events-none"
-        style={{
-          [isArabic ? "left" : "right"]: 32,
-          top: "50%",
-          transform: "translateY(-50%)",
-        }}
-      >
-        <span className="block w-px h-12 bg-gradient-to-b from-transparent to-[#c9a84c]/30" />
-        <span
-          style={{
-            fontSize: 9,
-            letterSpacing: "0.4em",
-            color: "rgba(201,168,76,0.3)",
-            writingMode: "vertical-rl",
-            textTransform: "uppercase",
-            fontWeight: 300,
-          }}
-        >
-          Misk Fragrance 2025
-        </span>
-        <span className="block w-px h-12 bg-gradient-to-t from-transparent to-[#c9a84c]/30" />
-      </motion.div>
-
       {/* ── Main Content ── */}
       <div
-        className="absolute inset-0 z-20 flex flex-col justify- items-center"
-        style={{ paddingTop: 20, paddingBottom: 120 }}
+        className="absolute inset-0 z-20 flex flex-col items-center mt-12 px-4"
         dir={isArabic ? "rtl" : "ltr"}
       >
-        <div style={{ maxWidth: 700, textAlign: "center" }}>
-          {/* headline line 1 */}
-          <div className="overflow-hidden">
+        <div className="w-full max-w-3xl text-center flex flex-col items-center">
+          {/* Headline Line 1 */}
+          <div className="overflow-hidden pb-2">
             <motion.h1
-              {...fadeUp(0.22, 60)}
-              className="m-0 text-white"
+              {...fadeUp(0.1, 40)}
+              className="m-0 text-white tracking-tight"
               style={{
                 fontFamily: "'Georgia', 'Times New Roman', serif",
-                fontWeight: 400,
-                fontSize: "clamp(52px, 8.5vw, 108px)",
-                lineHeight: 0.9,
-                letterSpacing: isArabic ? "0" : "-0.04em",
+                fontWeight: 300,
+                fontSize: "clamp(38px, 6vw, 76px)", // Scaled down for sleekness
+                lineHeight: 1,
               }}
             >
               {t.hero.title}
             </motion.h1>
           </div>
 
-          {/* headline line 2 — gold gradient */}
-          <div className="overflow-hidden mt-2">
-            <motion.div
-              {...fadeUp(0.32, 60)}
-              style={{ marginBottom: "clamp(25px, 3.5vw, 42px)" }}
-            >
+          {/* Headline Line 2 (Gold Gradient) */}
+          <div className="overflow-hidden pb-4">
+            <motion.div {...fadeUp(0.2, 40)}>
               <span
                 style={{
                   fontFamily: "'Georgia', 'Times New Roman', serif",
                   fontStyle: isArabic ? "normal" : "italic",
                   fontWeight: 400,
-                  fontSize: "clamp(52px, 8.5vw, 108px)",
+                  fontSize: "clamp(42px, 6.5vw, 84px)", // Slightly larger than line 1 for emphasis
                   lineHeight: 1,
                   background:
-                    "linear-gradient(135deg, #c9a84c 0%, #f7e882 45%, #b8912e 100%)",
+                    "linear-gradient(135deg, #dfc27d 0%, #f9f0b5 50%, #b8912e 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -164,64 +116,53 @@ export default function HeroSection() {
             </motion.div>
           </div>
 
-          {/* ornament line */}
-          <motion.div
-            initial={{ opacity: 0, scaleX: 0 }}
-            animate={{ opacity: 1, scaleX: 1 }}
-            transition={{ duration: 1, delay: 0.48, ease: EASE }}
-            className="flex items-center justify-center gap-3 mb-4"
-            style={{ transformOrigin: "center" }}
-          >
-            <span className="w-16 h-px bg-gradient-to-r from-transparent to-[#c9a84c]/60" />
-            <span className="w-1 h-1 bg-[#c9a84c]/60 rotate-45" />
-            <span className="w-16 h-px bg-gradient-to-l from-transparent to-[#c9a84c]/60" />
-          </motion.div>
-
-          {/* subtitle */}
+          {/* Subtitle */}
           <motion.p
-            {...fadeIn(0.58)}
+            {...fadeUp(0.5, 20)}
+            className="text-white/80 font-light max-w-md mx-auto mb-10"
             style={{
-              fontSize: "clamp(14px, 1.4vw, 16px)",
-              fontWeight: 300,
-              color: "white",
+              fontSize: "clamp(12px, 1.5vw, 15px)", // Reduced text size
               lineHeight: 1.8,
-              maxWidth: 420,
-              margin: "0 auto 20px auto",
-              letterSpacing: "0.01em",
+              letterSpacing: isArabic ? "0" : "0.03em",
             }}
           >
             {isArabic
-              ? "عطور مختارة بعناية لمن يفهمون لغة الرقي والأناقة"
-              : "Curated fragrances for those who understand the language of refinement"}
+              ? "حيث تلتقي المكوّنات النادرة بفنّ العطور الراقية"
+              : "Where rare ingredients meet the art of fine perfumery."}
           </motion.p>
 
-          {/* CTA row */}
+          {/* ── CTA Row (Side-by-Side on Mobile) ── */}
           <motion.div
-            {...fadeUp(0.7, 14)}
-            className="flex items-center justify-center gap-5 flex-wrap"
+            {...fadeUp(0.6, 20)}
+            className="flex flex-row items-center justify-center gap-3 sm:gap-5 w-full max-w-[480px] mx-auto"
           >
+            {/* Primary Button */}
             <Link
               href={`/${locale.toLowerCase()}/shop`}
-              className="group py-4 px-4 md:px-11 relative text-[14px] md:text-[20px] overflow-hidden inline-flex items-center gap-4 rounded-2xl no-underline"
+              className="group rounded-sm flex-1 relative overflow-hidden flex items-center justify-center gap-2 py-3.5 sm:py-4 px-2 sm:px-6 sm:rounded-sm"
               style={{
-                
                 background:
                   "linear-gradient(135deg, #c9a84c 0%, #e8c847 50%, #b8912e 100%)",
-                color: "#06040c",
-                fontWeight: 700,
-                letterSpacing: isArabic ? "0" : "0.22em",
-                textTransform: isArabic ? "none" : "uppercase",
-                boxShadow: "0 10px 35px rgba(201,168,76,0.3)",
-                transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                boxShadow: "0 8px 25px -5px rgba(201,168,76,0.3)",
+                transition: "all 0.4s ease-out",
               }}
             >
-              <span className="relative z-10">{t.hero.cta}</span>
+              <span
+                className="relative z-10 text-[#06040c] font-bold whitespace-nowrap"
+                style={{
+                  fontSize: "clamp(11px, 1.2vw, 13px)", // Much sleeker text
+                  letterSpacing: isArabic ? "0" : "0.15em",
+                  textTransform: isArabic ? "none" : "uppercase",
+                }}
+              >
+                {t.hero.cta}
+              </span>
               <svg
-                width="14"
-                height="14"
+                width="12"
+                height="12"
                 viewBox="0 0 14 14"
                 fill="none"
-                className={`transition-transform duration-300 group-hover:translate-x-1 ${isArabic ? "rotate-180" : ""}`}
+                className={`text-[#06040c] transition-transform duration-300 group-hover:translate-x-1 ${isArabic ? "rotate-180" : ""}`}
               >
                 <path
                   d="M2 7h10M7 3l4 4-4 4"
@@ -233,16 +174,21 @@ export default function HeroSection() {
               </svg>
             </Link>
 
+            {/* Secondary Button */}
             <Link
               href={`/${locale.toLowerCase()}/collections`}
-              className="inline-flex text-[14px] md:text-[20px] items-center rounded-2xl border border-white px-4 md:px-8 py-4 text-white transition-all duration-300 hover:border-[#c9a84c]/30 hover:text-[#c9a84c] hover:bg-white/[0.02]"
-              style={{
-                fontWeight: 700,
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-              }}
+              className="flex-1 rounded-sm flex items-center justify-center py-3.5 sm:py-4 px-2 sm:px-6 rounded-none sm:rounded-sm border border-white/30 text-white transition-all duration-400 hover:border-[#c9a84c] hover:bg-[#c9a84c]/5"
             >
-              {isArabic ? "تصفح المجموعة" : "Explore Collection"}
+              <span
+                className="whitespace-nowrap font-medium"
+                style={{
+                  fontSize: "clamp(11px, 1.2vw, 13px)", // Matches primary button
+                  letterSpacing: isArabic ? "0" : "0.15em",
+                  textTransform: isArabic ? "none" : "uppercase",
+                }}
+              >
+                {isArabic ? "مجموعاتنا" : "Our Collections"}
+              </span>
             </Link>
           </motion.div>
         </div>

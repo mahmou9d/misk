@@ -920,12 +920,12 @@
     "buyNow": "Buy it Now",
     "viewDetails": "View full details"
   },
-  "hero": {
-    "eyebrow": "New Exclusive Collection",
-    "title": "Luxury Redefined",
-    "titleEm": "in Every Drop",
-    "cta": "Discover Now"
-  },
+"hero": {
+    "eyebrow": "Exclusively Crafted for You",
+    "title": "Where Luxury Finds",
+    "titleEm": "Its True Secret",
+    "cta": "Explore the Scent"
+},
   "announcementBar": {
     "items": [
       {
