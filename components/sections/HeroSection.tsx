@@ -102,7 +102,7 @@ export default function HeroSection() {
           DESKTOP Content
       ════════════════════════════════════════ */}
       <div
-        className={`absolute inset-0 z-20 hidden md:flex flex-col justify-center px-[8%]`}
+        className={`absolute inset-0 z-20 hidden md:flex flex-col pt-14 px-[20%]`}
         dir={isArabic ? "rtl" : "ltr"}
       >
         <div
