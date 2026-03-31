@@ -102,17 +102,15 @@ export default function HeroSection() {
           DESKTOP Content
       ════════════════════════════════════════ */}
       <div
-        className={`absolute inset-0 z-20 hidden md:flex flex-col pt-14 px-[20%]`}
+        className={`absolute inset-0 z-20 hidden md:flex flex-col pt-14 px-[15%]`}
         dir={isArabic ? "rtl" : "ltr"}
       >
-        <div
-          className={`max-w-lg flex flex-col`}
-        >
+        <div className={`max-w-lg flex flex-col`}>
           {/* Headline */}
           <div className="overflow-hidden pb-2">
             <motion.h1
               {...fadeUp(0.1, 40)}
-              className="m-0 text-white tracking-tight"
+              className="m-0 text-[#eae8c8] tracking-tight"
               style={{
                 fontFamily: isArabic
                   ? "'Noto Serif Arabic', serif"
@@ -132,13 +130,13 @@ export default function HeroSection() {
           {/* Subtitle */}
           <motion.p
             {...fadeUp(0.4, 20)}
-            className="text-white/75 font-light mt-3"
+            className="text-[#eae8c8] font-light mt-3"
             style={{
               fontFamily: isArabic
                 ? "'Noto Serif Arabic', serif"
                 : "'Cormorant Garamond', serif",
               fontStyle: isArabic ? "normal" : "italic",
-              fontSize: "clamp(12px, 1.5vw, 15px)",
+              fontSize: "25px",
               lineHeight: 1.8,
               letterSpacing: isArabic ? "0" : "0.02em",
             }}
@@ -161,33 +159,26 @@ export default function HeroSection() {
           <motion.div {...fadeUp(0.65, 20)} className="mt-7">
             <Link
               href={`/${locale.toLowerCase()}/shop`}
-              className="group inline-flex items-center gap-2 py-3.5 px-7 rounded-sm"
-              style={{
-                background:
-                  "linear-gradient(135deg, #c9a84c 0%, #e8c847 50%, #b8912e 100%)",
-                boxShadow: "0 8px 25px -5px rgba(201,168,76,0.35)",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.transform =
-                  "translateY(-1px)";
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "0 14px 32px -4px rgba(201,168,76,0.55)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.transform =
-                  "translateY(0)";
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "0 8px 25px -5px rgba(201,168,76,0.35)";
-              }}
+              className="group inline-flex items-center gap-2 py-3.5 px-7 rounded-sm bg-transparent border border-[#eece64]"
             >
+              <span
+                className="text-[#eae8c8] font-medium whitespace-nowrap text-[16px]"
+                style={{
+                  fontFamily: isArabic
+                    ? "'Noto Serif Arabic', sans-serif"
+                    : "'Montserrat', sans-serif",
+                  letterSpacing: isArabic ? "0" : "0.15em",
+                }}
+              >
+                {t.hero.cta}
+              </span>{" "}
               {isArabic && (
                 <svg
                   width="12"
                   height="12"
                   viewBox="0 0 14 14"
                   fill="none"
-                  className="text-[#06040c] rotate-180 transition-transform duration-300 group-hover:-translate-x-1"
+                  className="text-[#eae8c8] rotate-180 transition-transform duration-300 group-hover:-translate-x-1"
                 >
                   <path
                     d="M2 7h10M7 3l4 4-4 4"
@@ -198,26 +189,13 @@ export default function HeroSection() {
                   />
                 </svg>
               )}
-              <span
-                className="text-[#06040c] font-bold whitespace-nowrap"
-                style={{
-                  fontFamily: isArabic
-                    ? "'Noto Serif Arabic', sans-serif"
-                    : "'Montserrat', sans-serif",
-                  fontSize: isArabic ? "13px" : "clamp(11px, 1.2vw, 13px)",
-                  letterSpacing: isArabic ? "0" : "0.15em",
-                  textTransform: isArabic ? "none" : "uppercase",
-                }}
-              >
-                {t.hero.cta}
-              </span>
               {!isArabic && (
                 <svg
                   width="12"
                   height="12"
                   viewBox="0 0 14 14"
                   fill="none"
-                  className="text-[#06040c] transition-transform duration-300 group-hover:translate-x-1"
+                  className="text-[#eae8c8] transition-transform duration-300 group-hover:translate-x-1"
                 >
                   <path
                     d="M2 7h10M7 3l4 4-4 4"
@@ -236,15 +214,12 @@ export default function HeroSection() {
       {/* ════════════════════════════════════════
           MOBILE Content — text at TOP with badge
       ════════════════════════════════════════ */}
-      <div
-        className="absolute inset-0 z-20 flex md:hidden flex-col items-center pt-10 px-6"
-        
-      >
+      <div className="absolute inset-0 z-20 flex md:hidden flex-col items-center pt-10 px-6">
         {/* ── Headline ── */}
         <div className="overflow-hidden pb-2 text-center">
           <motion.h1
             {...fadeUp(0.2, 40)}
-            className="m-0 text-white tracking-tight text-center"
+            className="m-0 text-[#eae8c8] tracking-tight text-center"
             style={{
               fontFamily: isArabic
                 ? "'Noto Serif Arabic', serif"
@@ -264,13 +239,13 @@ export default function HeroSection() {
         {/* ── Subtitle ── */}
         <motion.p
           {...fadeUp(0.4, 20)}
-          className="text-white/70 font-light mt-1 text-center max-w-[280px]"
+          className="text-[#eae8c8] font-light mt-1 text-center max-w-[280px]"
           style={{
             fontFamily: isArabic
               ? "'Noto Serif Arabic', serif"
               : "'Cormorant Garamond', serif",
             fontStyle: isArabic ? "normal" : "italic",
-            fontSize: "14px",
+            fontSize: "18px",
             lineHeight: 1.8,
           }}
         >
@@ -282,20 +257,15 @@ export default function HeroSection() {
         {/* ── Gold line ── */}
         <motion.div
           {...fadeUp(0.5, 10)}
-          className="mt-2 h-px w-10"
+          className="mt-3 h-px w-10"
           style={{ background: "linear-gradient(to right, #c9a84c, #e8c847)" }}
         />
 
         {/* ── CTA ── */}
-        <motion.div {...fadeUp(0.6, 20)} className="mt-6">
+        <motion.div {...fadeUp(0.6, 20)} className="mt-2">
           <Link
             href={`/${locale.toLowerCase()}/shop`}
-            className="group inline-flex items-center gap-2 py-3.5 px-8 rounded-sm"
-            style={{
-              background:
-                "linear-gradient(135deg, #c9a84c 0%, #e8c847 50%, #b8912e 100%)",
-              boxShadow: "0 8px 25px -5px rgba(201,168,76,0.4)",
-            }}
+            className="group inline-flex items-center gap-2 py-3.5 px-8 rounded-sm bg-transparent border-2 border-[#eece64]"
           >
             {isArabic && (
               <svg
@@ -303,7 +273,7 @@ export default function HeroSection() {
                 height="12"
                 viewBox="0 0 14 14"
                 fill="none"
-                className="text-[#06040c] rotate-180"
+                className="text-[#eece64] rotate-180"
               >
                 <path
                   d="M2 7h10M7 3l4 4-4 4"
@@ -315,12 +285,12 @@ export default function HeroSection() {
               </svg>
             )}
             <span
-              className="text-[#06040c] font-bold whitespace-nowrap"
+              className="text-[#eae8c8] font-bold whitespace-nowrap"
               style={{
                 fontFamily: isArabic
                   ? "'Noto Serif Arabic', sans-serif"
                   : "'Montserrat', sans-serif",
-                fontSize: isArabic ? "13px" : "11px",
+                fontSize: "14px",
                 letterSpacing: isArabic ? "0" : "0.16em",
                 textTransform: isArabic ? "none" : "uppercase",
               }}
@@ -333,7 +303,7 @@ export default function HeroSection() {
                 height="12"
                 viewBox="0 0 14 14"
                 fill="none"
-                className="text-[#06040c]"
+                className="text-[#eece64]"
               >
                 <path
                   d="M2 7h10M7 3l4 4-4 4"
