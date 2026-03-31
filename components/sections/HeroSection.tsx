@@ -59,9 +59,9 @@ export default function HeroSection() {
   }, [zoomControls]);
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#04020e] min-h-[500px] h-[100svh] max-h-[700px] lg:max-h-[850px]">
+    <section className="relative w-full overflow-hidden  min-h-[500px] h-[100svh]  lg:max-h-[600px]">
       {/* ── DESKTOP Background (md+) ── */}
-      <div className="absolute inset-0 overflow-hidden bg-black hidden md:block">
+      <div className="absolute inset-0 overflow-hidden  hidden md:block">
         <motion.div
           animate={zoomControls}
           initial={{ scale: 1 }}
@@ -80,7 +80,7 @@ export default function HeroSection() {
       </div>
 
       {/* ── MOBILE Background ── */}
-      <div className="absolute inset-0 overflow-hidden bg-black md:hidden">
+      <div className="absolute inset-0 overflow-hidden  md:hidden">
         <motion.div
           animate={zoomControls}
           initial={{ scale: 1 }}
