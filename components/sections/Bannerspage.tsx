@@ -108,7 +108,7 @@ export default function BannersSettingsPage() {
       {/* Card */}
       <div className="bg-[#1a1d29] rounded-2xl border border-white/10 overflow-hidden max-w-[860px]">
         {/* Tabs */}
-        <div className="flex gap-1 border-b border-white/10 px-6 pt-4">
+        <div className="flex gap-1 border-b border-white/10  pt-4">
           {(["banners", "governorates", "settings"] as Tab[]).map((tab) => (
             <button
               key={tab}
@@ -128,8 +128,8 @@ export default function BannersSettingsPage() {
           ))}
         </div>
 
-        <div className="p-6">
-          <div className="p-6">
+        <div className="p-2">
+          <div className="p-2">
             {activeTab === "banners" ? (
               <BannersTab showNotification={showNotification} />
             ) : activeTab === "governorates" ? (

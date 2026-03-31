@@ -44,7 +44,7 @@ export default function CheckoutPage() {
     0,
   );
   const discountAmt = discountApplied ? Math.round(subtotal * 0.1) : 0;
-  const total = subtotal - discountAmt + SHIPPING;
+  
 
   const handleSubmit = async (values: CheckoutFormValues) => {
     setLoading(true);
@@ -190,7 +190,7 @@ export default function CheckoutPage() {
             </Link>
             <div className="bg-[#1a1a1a] text-[#F0D080] text-[14px] font-semibold px-4 py-2 rounded-full -[0.3px]">
               {t.checkout.currency}
-              {total.toLocaleString()}.00
+              {subtotal.toLocaleString()}.00
             </div>
           </div>
         </div>
@@ -266,38 +266,9 @@ export default function CheckoutPage() {
             <span className="text-[11px] text-[#aaa] uppercase -[1.5px]">
               {t.checkout.subtotal || "Subtotal"}
             </span>
-            <span className="text-[15px] font-semibold text-[#1a1a1a]">
-              {t.checkout.currency}
-              {subtotal.toLocaleString()}.00
-            </span>
-          </div>
-          {discountApplied && (
-            <div className="flex flex-col gap-0.5">
-              <span className="text-[11px] text-[#aaa] uppercase -[1.5px]">
-                {t.checkout.discount || "Discount"}
-              </span>
-              <span className="text-[15px] font-semibold text-green-600">
-                −{t.checkout.currency}
-                {discountAmt.toLocaleString()}.00
-              </span>
-            </div>
-          )}
-          <div className="flex flex-col gap-0.5">
-            <span className="text-[11px] text-[#aaa] uppercase -[1.5px]">
-              {t.checkout.shipping || "Shipping"}
-            </span>
-            <span className="text-[15px] font-semibold text-[#1a1a1a]">
-              {t.checkout.currency}
-              {SHIPPING}.00
-            </span>
-          </div>
-          <div className="flex flex-col gap-0.5 ml-auto">
-            <span className="text-[11px] text-[#aaa] uppercase -[1.5px]">
-              {t.checkout.total || "Total"}
-            </span>
             <span className="text-[15px] font-bold text-[#C9A84C]">
               {t.checkout.currency}
-              {total.toLocaleString()}.00
+              {subtotal.toLocaleString()}.00
             </span>
           </div>
         </div>

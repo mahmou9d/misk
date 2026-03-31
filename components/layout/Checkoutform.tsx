@@ -10,35 +10,7 @@ import { checkoutSchema } from "@/utils/validation";
 import Image from "next/image";
 import { useGetShippingGovernorates } from "@/hooks/useDashboard";
 
-const governoratesAr = [
-  "القاهرة",
-  "الجيزة",
-  "الإسكندرية",
-  "الدقهلية",
-  "البحر الأحمر",
-  "البحيرة",
-  "الفيوم",
-  "الغربية",
-  "الإسماعيلية",
-  "المنوفية",
-  "المنيا",
-  "القليوبية",
-  "الوادي الجديد",
-  "السويس",
-  "أسوان",
-  "أسيوط",
-  "بني سويف",
-  "بورسعيد",
-  "دمياط",
-  "الشرقية",
-  "جنوب سيناء",
-  "كفر الشيخ",
-  "مطروح",
-  "الأقصر",
-  "قنا",
-  "شمال سيناء",
-  "سوهاج",
-];
+
 
 type Governorate = {
   id: number;
@@ -193,38 +165,6 @@ export function CheckoutForm({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* ── Contact ── */}
-      <div>
-        <SectionLabel>{t.checkoutForm.contact}</SectionLabel>
-        <div className="flex flex-col gap-4">
-          <Field
-            label={t.checkoutForm.emailPlaceholder}
-            placeholder="you@example.com"
-            type="email"
-            error={translatedErrors.email}
-            {...register("email")}
-          />
-          <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2.5 cursor-pointer">
-              <input
-                type="checkbox"
-                {...register("newsEmail")}
-                className="w-[18px] h-[18px] accent-[#C9A84C]"
-              />
-              <span className="text-[15px] text-[#888]">
-                {t.checkoutForm.newsEmail}
-              </span>
-            </label>
-            <Link
-              href={`/${locale.toLowerCase()}/login`}
-              className="text-[14px] font-semibold text-[#C9A84C] underline underline-offset-[3px] hover:opacity-70 transition-opacity"
-            >
-              {t.checkoutForm.signIn}
-            </Link>
-          </div>
-        </div>
-      </div>
-
       {/* ── Delivery ── */}
       <div>
         <SectionLabel>{t.checkoutForm.delivery}</SectionLabel>
@@ -299,7 +239,7 @@ export function CheckoutForm({
                 </option>
                 {governorates?.map((g: Governorate, i: number) => (
                   <option key={g.id} value={g.id}>
-                    {isArabic ? (governoratesAr[i] ?? g.name) : g.name}
+                    {isArabic ? ( g.name) : g.name}
                   </option>
                 ))}
               </select>
@@ -309,12 +249,6 @@ export function CheckoutForm({
                 </span>
               )}
             </div>
-
-            <Field
-              label={t.checkoutForm.postalCode}
-              placeholder="11511"
-              {...register("postal")}
-            />
           </div>
 
           <Field
@@ -393,22 +327,6 @@ export function CheckoutForm({
         </RadioCard>
       </div>
 
-      {/* ── Billing ── */}
-      <div>
-        <SectionLabel>{t.checkoutForm.billingAddress}</SectionLabel>
-        <RadioCard
-          label={t.checkoutForm.billingSame}
-          value="same"
-          checked={billing === "same"}
-          {...register("billing")}
-        />
-        <RadioCard
-          label={t.checkoutForm.billingDifferent}
-          value="different"
-          checked={billing === "different"}
-          {...register("billing")}
-        />
-      </div>
 
       {/* ── Submit ── */}
       <motion.button
