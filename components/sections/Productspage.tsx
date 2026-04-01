@@ -359,25 +359,25 @@ function ProductCard({
       <div className="border-t border-white/10 bg-[#0f1117] px-4 py-3 flex items-center gap-2 flex-wrap">
         <button
           onClick={onEdit}
-          className="text-[11px] md:text-[14px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
+          className="text-[11px] md:text-[13px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
         >
           {labels.edit}
         </button>
         <button
           onClick={onAddVariant}
-          className="text-[11px] md:text-[14px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
+          className="text-[11px] md:text-[13px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
         >
           {labels.addVariant}
         </button>
         <button
           onClick={onEditVariant}
-          className="text-[11px] md:text-[14px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
+          className="text-[11px] md:text-[13px] font-medium text-gray-300 bg-white/5 border border-white/10 rounded-lg px-3 py-2 hover:bg-white/10 hover:border-white/20 transition-colors cursor-pointer"
         >
           {labels.editVariant}
         </button>
         <button
           onClick={onDelete}
-          className={`${isArabic ? "mr-auto" : "ml-auto"} text-[11px] md:text-[14px] font-medium text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2 hover:bg-red-500/20 transition-colors cursor-pointer`}
+          className={`${isArabic ? "mr-auto" : "ml-auto"} text-[11px] md:text-[13px] font-medium text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2 hover:bg-red-500/20 transition-colors cursor-pointer`}
         >
           {labels.delete}
         </button>
