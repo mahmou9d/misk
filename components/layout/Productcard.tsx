@@ -15,6 +15,7 @@ interface Props {
 export default function ProductCard({ index, p, fill = false }: Props) {
   const { t, isArabic, locale } = useTranslation();
   const price = parseFloat(String(p.lowest_price));
+
   const fallbackImage = "/heros.jpg";
   const rawImageSrc = p?.thumbnail ? String(p.thumbnail) : fallbackImage;
   const currency = isArabic ? "ج.م" : "LE";
@@ -69,8 +70,8 @@ export default function ProductCard({ index, p, fill = false }: Props) {
             {p.name}
           </h3>
           <div className="h-[1px] mb-[7px] bg-gradient-to-r from-[#c9a84c40] to-transparent rtl:bg-gradient-to-l" />
-          <div className="flex items-center justify-between">
-            <span className=" text-[20px] font-semibold animate-gold-shimmer bg-[linear-gradient(90deg,#c9a84c_0%,#f0d080_40%,#c9a84c_70%,#e8c860_100%)] bg-[length:200%_auto] bg-clip-text text-transparent">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[20px] font-semibold animate-gold-shimmer bg-[linear-gradient(90deg,#c9a84c_0%,#f0d080_40%,#c9a84c_70%,#e8c860_100%)] bg-[length:200%_auto] bg-clip-text text-transparent">
               {currency}{" "}
               {isNaN(price)
                 ? "—"
@@ -78,6 +79,7 @@ export default function ProductCard({ index, p, fill = false }: Props) {
                     minimumFractionDigits: 2,
                   })}
             </span>
+
           </div>
         </div>
       </Link>

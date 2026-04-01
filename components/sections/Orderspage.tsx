@@ -84,11 +84,30 @@ const statusOptions = [
 
 const orderStatusOptions = statusOptions.filter((o) => o.value !== "all");
 
-// ── Mobile Order Card ────────────────────────────────────────────────────────
-// ── Mobile Order Card ────────────────────────────────────────────────────────
-// الإصلاح: نقلنا isStatusOpen و statusRef جوا الكارد نفسه
-// عشان كل كارد يتحكم في dropdown بتاعته بشكل مستقل
+// ── Payment Method Label Helper ──────────────────────────────────────────────
+function getPaymentLabel(method: string, isArabic: boolean): string {
+  if (isArabic) {
+    switch (method) {
+      case "cod":
+        return "الدفع عند الاستلام";
+      case "visa":
+        return "فيزا";
+      default:
+        return method;
+    }
+  } else {
+    switch (method) {
+      case "cod":
+        return "Cash on Delivery";
+      case "visa":
+        return "Visa";
+      default:
+        return method;
+    }
+  }
+}
 
+// ── Mobile Order Card ────────────────────────────────────────────────────────
 function OrderCard({
   order,
   isExpanded,
@@ -107,11 +126,9 @@ function OrderCard({
   onSave,
   onStatusSelect,
 }: any) {
-  // ✅ State و Ref خاصين بكل كارد منفردًا
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const statusRef = useRef<HTMLDivElement>(null);
 
-  // ✅ إغلاق الـ dropdown لما تضغط برا
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (statusRef.current && !statusRef.current.contains(e.target as Node)) {
@@ -255,7 +272,7 @@ function OrderCard({
             </div>
           )}
 
-          {/* Address + Phone + Date */}
+          {/* Address + Phone + Governorate + Shipping + Payment + Date */}
           <div className="p-4 border-b border-white/10 space-y-2">
             {(order.full_address || order.country) && (
               <p
@@ -269,12 +286,41 @@ function OrderCard({
                 </span>
               </p>
             )}
+            {(order.governorate_name_en || order.governorate_name_ar) && (
+              <p
+                className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+              >
+                <MapPin className="w-4 h-4 text-[#fff] shrink-0" />
+                {isArabic
+                  ? order.governorate_name_ar
+                  : order.governorate_name_en}
+              </p>
+            )}
             {order.phone_number && (
               <p
                 className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
               >
                 <Phone className="w-4 h-4 text-[#fff] shrink-0" />
                 {order.phone_number}
+              </p>
+            )}
+            {order.shipping_fee && (
+              <p
+                className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+              >
+                <Truck className="w-4 h-4 text-[#fff] shrink-0" />
+                {isArabic ? "رسوم الشحن:" : "Shipping:"}{" "}
+                <span className="text-white font-semibold">
+                  LE {parseFloat(order.shipping_fee).toLocaleString()}
+                </span>
+              </p>
+            )}
+            {order.payment_method && (
+              <p
+                className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+              >
+                <CreditCard className="w-4 h-4 text-[#fff] shrink-0" />
+                {getPaymentLabel(order.payment_method, isArabic)}
               </p>
             )}
             {order.created_at && (
@@ -519,8 +565,7 @@ export default function OrdersPage() {
         },
         onError: (error: AxiosError<ErrorResponse>) => {
           showNotification(
-            error?.response?.data?.message ||
-              o.updateError,
+            error?.response?.data?.message || o.updateError,
             "error",
           );
         },
@@ -544,9 +589,8 @@ export default function OrdersPage() {
 
       {/* ── Filter + Search ── */}
       <div className="flex flex-col gap-3 mb-5">
-        {/* Row: Filter + Search side by side on mobile */}
         <div className="flex items-center gap-2">
-          {/* Status Filter Dropdown - compact on mobile */}
+          {/* Status Filter Dropdown */}
           <div className="relative shrink-0" ref={filterRef}>
             <button
               onClick={() => setIsFilterOpen(!isFilterOpen)}
@@ -559,7 +603,6 @@ export default function OrdersPage() {
                   className={`w-3.5 h-3.5 md:w-4 md:h-4 ${selectedFilter.color}`}
                 />
               </div>
-              {/* Show label only on md+ */}
               <span className="hidden md:block text-sm text-white font-bold">
                 {getLabel(selectedFilter)}
               </span>
@@ -617,7 +660,7 @@ export default function OrdersPage() {
             </AnimatePresence>
           </div>
 
-          {/* Search - takes remaining space */}
+          {/* Search */}
           <div className="flex-1 relative">
             <Search
               className={`absolute ${isArabic ? "right-3" : "left-3"} top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400`}
@@ -895,7 +938,7 @@ export default function OrdersPage() {
                                   </div>
                                 )}
 
-                                {/* Address + Phone */}
+                                {/* Address + Phone + Governorate + Shipping + Payment */}
                                 <div className="p-5 border-b border-white/10 space-y-2">
                                   {(order.full_address || order.country) && (
                                     <p
@@ -907,12 +950,48 @@ export default function OrdersPage() {
                                         .join(", ")}
                                     </p>
                                   )}
+                                  {(order.governorate_name_en ||
+                                    order.governorate_name_ar) && (
+                                    <p
+                                      className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+                                    >
+                                      <MapPin className="w-4 h-4 text-[#fff] shrink-0" />
+                                      {isArabic
+                                        ? order.governorate_name_ar
+                                        : order.governorate_name_en}
+                                    </p>
+                                  )}
                                   {order.phone_number && (
                                     <p
                                       className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
                                     >
                                       <Phone className="w-4 h-4 text-[#fff] shrink-0" />
                                       {order.phone_number}
+                                    </p>
+                                  )}
+                                  {order.shipping_fee && (
+                                    <p
+                                      className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+                                    >
+                                      <Truck className="w-4 h-4 text-[#fff] shrink-0" />
+                                      {isArabic ? "رسوم الشحن:" : "Shipping:"}{" "}
+                                      <span className="text-white font-semibold">
+                                        LE{" "}
+                                        {parseFloat(
+                                          order.shipping_fee,
+                                        ).toLocaleString()}
+                                      </span>
+                                    </p>
+                                  )}
+                                  {order.payment_method && (
+                                    <p
+                                      className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+                                    >
+                                      <CreditCard className="w-4 h-4 text-[#fff] shrink-0" />
+                                      {getPaymentLabel(
+                                        order.payment_method,
+                                        isArabic,
+                                      )}
                                     </p>
                                   )}
                                   {order.created_at && (

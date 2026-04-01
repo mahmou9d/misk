@@ -131,7 +131,7 @@ export const useGetCategory = (params?: { all?: boolean }) => {
   return useQuery({
     queryKey: dashboardKeys.categories(),
     queryFn: () => dashboardAPI.getCategories(params),
-    staleTime: 60 * 1000,
+    staleTime: 0,
   });
 };
 

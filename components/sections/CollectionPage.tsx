@@ -14,14 +14,7 @@ import { useTranslation } from "@/lib/Usetranslation";
 import { ArrowDown } from "@/public/svg/Svgs";
 import { useGetCategory } from "@/hooks/useDashboard";
 
-/* ── Dropdown: تحسين الشكل ليكون أكثر عصرية ── */
-function Dropdown({
-  trigger,
-  children,
-  open,
-  setOpen,
-  isArabic,
-}: {
+function Dropdown({ trigger, children, open, setOpen, isArabic }: {
   trigger: React.ReactNode;
   children: React.ReactNode;
   open: boolean;
@@ -29,6 +22,8 @@ function Dropdown({
   isArabic: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [coords, setCoords] = useState({ top: 0, left: 0, width: 260 });
+
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node))
@@ -37,6 +32,35 @@ function Dropdown({
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, [setOpen]);
+
+  useEffect(() => {
+    if (open && ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      const dropdownWidth = 260;
+      const screenWidth = window.innerWidth;
+      const padding = 8;
+
+      let left = isArabic
+        ? rect.right - dropdownWidth // في العربي ابدأ من يمين الزرار
+        : rect.left; // في الإنجليزي ابدأ من يسار الزرار
+
+      // لو بتخرج من يمين الشاشة
+      if (left + dropdownWidth > screenWidth - padding) {
+        left = screenWidth - dropdownWidth - padding;
+      }
+
+      // لو بتخرج من يسار الشاشة
+      if (left < padding) {
+        left = padding;
+      }
+
+      setCoords({
+        top: rect.bottom + window.scrollY + 8,
+        left: left,
+        width: Math.min(dropdownWidth, screenWidth - padding * 2),
+      });
+    }
+  }, [open, isArabic]);
 
   return (
     <div ref={ref} className="relative">
@@ -60,8 +84,13 @@ function Dropdown({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
-            className={`absolute top-full bg-white min-w-[260px] mt-3 z-[100] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-[#c9a84c15] overflow-hidden
-              ${isArabic ? "right-0" : "left-0"}`}
+            style={{
+              position: "fixed",
+              top: coords.top,
+              left: coords.left,
+              width: coords.width,
+            }}
+            className="z-[9999] bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-[#c9a84c15] overflow-hidden"
           >
             {children}
           </motion.div>
@@ -71,7 +100,6 @@ function Dropdown({
   );
 }
 
-/* ── Skeleton: متناسق مع تصميم الـ Product Card الجديد ── */
 function ProductSkeleton() {
   return (
     <div className="animate-pulse space-y-4">
@@ -90,18 +118,21 @@ export default function CollectionPage({ category }: { category: string }) {
   const [sortOpen, setSortOpen] = useState(false);
   const [availOpen, setAvailOpen] = useState(false);
   const [priceOpen, setPriceOpen] = useState(false);
+  const [categoryOpen, setCategoryOpen] = useState(false);
   const [availFilter, setAvailFilter] = useState<string[]>([]);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [page, setPage] = useState(1);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
+
   const { data: categories } = useGetCategory();
   const { data, isLoading, isError } = useGetProducts({ page });
   const nextPage = data?.next ?? null;
   const categoryName = categories?.find(
     (c) => c.name_en.toUpperCase() === category.toUpperCase(),
   );
-console.log(allProducts);
+
   useEffect(() => {
     const products: Product[] = data?.products ?? [];
     if (page === 1) setAllProducts(products);
@@ -110,14 +141,29 @@ console.log(allProducts);
 
   useEffect(() => {
     setPage(1);
-  }, [availFilter, minPrice, maxPrice, categoryName, isArabic]);
+  }, [
+    availFilter,
+    minPrice,
+    maxPrice,
+    categoryName,
+    isArabic,
+    selectedCategories,
+  ]);
 
   const sortOptions = getSortOptions(t.collectionPage.sortData);
 
   let products =
     category === "all"
       ? [...allProducts]
-      : allProducts.filter((p) => p.categories.includes(categoryName?.name as string));
+      : allProducts.filter((p) =>
+          p.categories.includes(categoryName?.name as string),
+        );
+
+  if (selectedCategories.length > 0)
+    products = products.filter((p) =>
+      selectedCategories.some((c) => p.categories.includes(c)),
+    );
+
   if (availFilter.includes("in-stock") && !availFilter.includes("out-of-stock"))
     products = products.filter((p) => p.is_active);
   if (availFilter.includes("out-of-stock") && !availFilter.includes("in-stock"))
@@ -129,10 +175,16 @@ console.log(allProducts);
 
   const sorted = applySort(products, sort);
   const inStockCount = allProducts.filter(
-    (p) => (category === "all" || p.categories.includes(categoryName?.name as string)) && p.is_active,
+    (p) =>
+      (category === "all" ||
+        p.categories.includes(categoryName?.name as string)) &&
+      p.is_active,
   ).length;
   const outStockCount = allProducts.filter(
-    (p) => (category === "all" || p.categories.includes(categoryName?.name as string)) && !p.is_active,
+    (p) =>
+      (category === "all" ||
+        p.categories.includes(categoryName?.name as string)) &&
+      !p.is_active,
   ).length;
   const toggleAvail = (v: string) =>
     setAvailFilter((f) =>
@@ -141,7 +193,10 @@ console.log(allProducts);
   const currentSortLabel =
     sortOptions.find((o) => o.value === sort)?.label ??
     t.collectionPage.sortData.featured;
-  const activeFilters = availFilter.length + (minPrice || maxPrice ? 1 : 0);
+  const activeFilters =
+    availFilter.length +
+    (minPrice || maxPrice ? 1 : 0) +
+    selectedCategories.length;
 
   return (
     <>
@@ -151,23 +206,21 @@ console.log(allProducts);
       <div dir={dir} className="bg-white">
         <section className="w-full pt-16 pb-24">
           <div className="max-w-screen-xl mx-auto px-6 lg:px-10">
-            {/* Title Section: تصميم أنضف وأكبر */}
             <div className="mb-12">
-              <span
-                className={`text-[14px] font-bold text-[#c9a84c] block mb-3 uppercase -[4px]`}
-              >
+              <span className="text-[14px] font-bold text-[#c9a84c] block mb-3 uppercase">
                 {t.collectionPage.collectionLabel}
               </span>
-              <h1 className="text-[#111] font-bold text-[clamp(36px,5vw,52px)] leading-none -tight">
+              <h1 className="text-[#111] font-bold text-[clamp(36px,5vw,52px)] leading-none">
                 {category === "all" ? t.collectionPage.all : categoryName?.name}
               </h1>
               <div className="mt-6 h-[2px] w-16 bg-[#c9a84c]" />
             </div>
 
-            {/* Filter / Sort bar: شريط أنيق جداً */}
-            <div className="flex items-center justify-between flex-wrap gap-6 mb-10 py-6 border-y border-gray-100">
-              <div className="flex items-center gap-8 flex-wrap">
-                <div className="flex items-center gap-2 uppercase -[2px] text-[13px] font-bold text-gray-400">
+            {/* Filter / Sort bar */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10 py-6 border-y border-gray-100">
+              {/* Filters */}
+              <div className="flex flex-wrap items-center gap-4 sm:gap-5">
+                <div className="w-full sm:w-auto flex items-center gap-2 uppercase text-[13px] font-bold text-gray-400">
                   {t.collectionPage.filter}
                   {activeFilters > 0 && (
                     <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#c9a84c] text-white text-[10px] font-bold">
@@ -181,10 +234,11 @@ console.log(allProducts);
                   setOpen={setAvailOpen}
                   isArabic={isArabic}
                   trigger={t.collectionPage.availability}
+                  
                 >
                   <div className="p-6">
                     <div className="flex justify-between items-center mb-4">
-                      <span className="text-[13px] font-bold text-gray-400 uppercase -wider">
+                      <span className="text-[13px] font-bold text-gray-400 uppercase">
                         {availFilter.length} {t.collectionPage.selected}
                       </span>
                       <button
@@ -235,9 +289,9 @@ console.log(allProducts);
                   isArabic={isArabic}
                   trigger={t.collectionPage.price}
                 >
-                  <div className="p-6 min-w-[280px]">
+                  <div className="p-6">
                     <div className="flex justify-between items-center mb-5">
-                      <span className="text-[13px] font-bold text-gray-400 uppercase -wider">
+                      <span className="text-[13px] font-bold text-gray-400 uppercase">
                         {t.collectionPage.priceRange}
                       </span>
                       <button
@@ -268,9 +322,53 @@ console.log(allProducts);
                     </div>
                   </div>
                 </Dropdown>
+
+                <Dropdown
+                  open={categoryOpen}
+                  setOpen={setCategoryOpen}
+                  isArabic={isArabic}
+                  trigger={t.collectionPage.category}
+                >
+                  <div className="p-6">
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="text-[13px] font-bold text-gray-400 uppercase tracking-wider">
+                        {selectedCategories.length} {t.collectionPage.selected}
+                      </span>
+                      <button
+                        onClick={() => setSelectedCategories([])}
+                        className="text-[13px] font-bold text-[#c9a84c] underline bg-transparent border-none cursor-pointer"
+                      >
+                        {t.collectionPage.reset}
+                      </button>
+                    </div>
+                    {categories?.map((cat) => (
+                      <label
+                        key={cat.id}
+                        className="flex items-center gap-3 cursor-pointer py-2 hover:translate-x-1 transition-transform"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedCategories.includes(cat.name)}
+                          onChange={() =>
+                            setSelectedCategories((prev) =>
+                              prev.includes(cat.name)
+                                ? prev.filter((x) => x !== cat.name)
+                                : [...prev, cat.name],
+                            )
+                          }
+                          className="w-5 h-5 accent-[#c9a84c]"
+                        />
+                        <span className="text-[15px] font-medium text-gray-700">
+                          {cat.name}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </Dropdown>
               </div>
 
-              <div className="flex items-center gap-6">
+              {/* Sort + Count */}
+              <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-6">
                 <Dropdown
                   open={sortOpen}
                   setOpen={setSortOpen}
@@ -292,14 +390,18 @@ console.log(allProducts);
                           setSort(o.value);
                           setSortOpen(false);
                         }}
-                        className={`w-full text-start px-6 py-3 text-[15px] transition-colors ${sort === o.value ? "text-[#c9a84c] bg-gray-50 font-bold" : "text-gray-600 hover:bg-gray-50"}`}
+                        className={`w-full text-start px-6 py-3 text-[15px] transition-colors ${
+                          sort === o.value
+                            ? "text-[#c9a84c] bg-gray-50 font-bold"
+                            : "text-gray-600 hover:bg-gray-50"
+                        }`}
                       >
                         {o.label}
                       </button>
                     ))}
                   </div>
                 </Dropdown>
-                <span className="text-[14px] font-bold text-gray-300 uppercase -widest">
+                <span className="text-[14px] font-bold text-gray-300 uppercase">
                   {products.length} {t.collectionPage.products}
                 </span>
               </div>
@@ -329,17 +431,16 @@ console.log(allProducts);
                 </div>
 
                 {products.length === 0 && (
-                  <div className="text-center py-40 text-gray-400 text-[18px] font-medium -wide">
+                  <div className="text-center py-40 text-gray-400 text-[18px] font-medium">
                     {t.collectionPage.noMatch}
                   </div>
                 )}
 
-                {/* Load More: زر احترافي */}
                 {!isLoading && nextPage && (
                   <div className="flex justify-center mt-24">
                     <button
                       onClick={() => setPage((p) => p + 1)}
-                      className="px-12 py-4 rounded-full border-2 border-gray-100 text-[#111] font-bold text-[15px] uppercase -[2px] hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all duration-300"
+                      className="px-12 py-4 rounded-full border-2 border-gray-100 text-[#111] font-bold text-[15px] uppercase hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all duration-300"
                     >
                       {t.collectionPage.loadMore}
                     </button>

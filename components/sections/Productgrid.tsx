@@ -36,7 +36,7 @@ const filtered = allProducts.filter((p) =>
     >
       {/* ── Background Decoration ── */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 opacity-[0.03] select-none pointer-events-none">
-        <h2 className="text-[90px] lg:text-[180px] font-serif font-bold whitespace-nowrap uppercase">
+        <h2 className="text-[60px] md:text-[90px] lg:text-[180px] font-serif font-bold whitespace-nowrap uppercase">
           {isArabic ? CATEGORY_MAP[tab].ar : CATEGORY_MAP[tab].en}
         </h2>
       </div>
@@ -55,7 +55,7 @@ const filtered = allProducts.filter((p) =>
                 onClick={() => setTab(tabKey)}
                 className={`relative px-5 lg:px-12 py-3 rounded-full text-[13px] font-bold uppercase transition-all duration-500
                   ${tab === tabKey ? "text-white" : "text-gray-400 hover:text-gray-900"}
-                  ${isArabic ? "text-[16px]" : "tracking-[0.2em]"}`}
+                  ${isArabic ? "text-[14px]" : "tracking-[0.2em]"}`}
               >
                 <span className="relative z-10">
                   {tabKey === "men"
@@ -115,10 +115,10 @@ const filtered = allProducts.filter((p) =>
         <div className="flex justify-center mt-24">
           <Link
             href={`/${locale.toLowerCase()}/collections/all`}
-            className="group relative bg-[#111] inline-flex items-center gap-4 px-8 lg:px-14 py-4 rounded-full border border-[#c9a84c]/40 transition-all duration-500 hover:border-[#ffbb00] hover:bg-[#ffbb00] no-underline shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_35px_rgba(201,168,76,0.2)]"
+            className="group relative bg-[#111] inline-flex items-center gap-1 px-5 lg:px-14 py-4 rounded-full border border-[#c9a84c]/40 transition-all duration-500 hover:border-[#ffbb00] hover:bg-[#ffbb00] no-underline shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_35px_rgba(201,168,76,0.2)]"
           >
             <span
-              className={`text-white font-medium text-[13px] uppercase transition-colors duration-500 group-hover:text-[#111]
+              className={`text-white font-medium text-[13px] transition-colors duration-500 group-hover:text-[#111]
                 ${isArabic ? "text-[16px] font-bold" : "tracking-[0.2em]"}`}
             >
               {t.productGrid.viewAll}

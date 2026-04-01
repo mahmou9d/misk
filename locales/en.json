@@ -781,6 +781,7 @@
     "all": "All Products",
     "featured": "Featured",
     "filter": "Filter",
+    "category": "Category",
     "availability": "Availability",
     "selected": "selected",
     "reset": "Reset",
@@ -1031,7 +1032,15 @@
     "stock": "Stock",
     "date": "Date",
     "status": "Status",
-    "total": "Total"
+    "total": "Total",
+    "revenueAnalytics": "Revenue Analytics",
+    "monthlyPerformance": "Monthly performance overview",
+    "revenue": "Revenue",
+    "totalSales": "Total Sales",
+    "avgOrder": "Avg. Order",
+    "noSalesData": "No sales data available",
+    "startSelling": "Start selling to see your analytics",
+    "reviewsWillAppear": "Reviews will appear here"
   },
   "paymentPopup": {
     "success": {

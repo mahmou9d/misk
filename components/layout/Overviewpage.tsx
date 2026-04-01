@@ -27,7 +27,7 @@ import {
 import { useTranslation } from "@/lib/Usetranslation";
 
 export default function OverviewPage() {
-  const { t } = useTranslation();
+  const { t, isArabic } = useTranslation();
   const a = t.admin;
 
   const { data: stats, isLoading: l1 } = useGetStatusCount();
@@ -92,7 +92,7 @@ export default function OverviewPage() {
     },
   ];
 
-  // ── chart helpers (نفس DashboardPage بالظبط) ────────────────────────────────
+  // ── chart helpers ────────────────────────────────────────────────────────────
   const getChartData = () => {
     if (!salesData || salesData.length === 0)
       return { maxValue: 0, steps: [] as number[] };
@@ -171,15 +171,15 @@ export default function OverviewPage() {
 
       {/* ── Charts Section ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        {/* Revenue Analytics — نفس DashboardPage بالظبط */}
+        {/* Revenue Analytics */}
         <div className="lg:col-span-2 bg-[#1a1d29] rounded-2xl p-8 border border-white/10">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h2 className="text-xl font-bold text-white mb-2">
-                Revenue Analytics
+                {a.revenueAnalytics}
               </h2>
               <p className="text-sm text-gray-400 font-medium">
-                Monthly performance overview
+                {a.monthlyPerformance}
               </p>
             </div>
             <div className="flex items-center gap-3">
@@ -193,7 +193,7 @@ export default function OverviewPage() {
                       : "text-gray-400 hover:text-white"
                   }`}
                 >
-                  Sales
+                  {a.sales}
                 </button>
                 <button
                   onClick={() => setChartView("orders")}
@@ -203,12 +203,9 @@ export default function OverviewPage() {
                       : "text-gray-400 hover:text-white"
                   }`}
                 >
-                  Orders
+                  {a.orders}
                 </button>
               </div>
-              <button className="p-3 rounded-xl hover:bg-white/5 border border-white/10">
-                <Download className="w-5 h-5 text-gray-400" />
-              </button>
             </div>
           </div>
 
@@ -297,8 +294,8 @@ export default function OverviewPage() {
                                     </p>
                                     <p className="text-xs text-gray-500">
                                       {chartView === "sales"
-                                        ? `${monthData.orders} orders`
-                                        : `$${monthData.sales} revenue`}
+                                        ? `${monthData.orders} ${a.orders}`
+                                        : `$${monthData.sales} ${a.revenue}`}
                                     </p>
                                   </div>
                                   <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
@@ -332,14 +329,15 @@ export default function OverviewPage() {
               </div>
 
               {/* Summary Stats */}
-              <div className="mt-8 grid grid-cols-3 gap-4">
-                <div className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-[#fff]/30">
+              <div className="mt-8 grid grid-cols-2 gap-4">
+                {/* كارت 1: Total Sales */}
+                <div className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-white/30 transition-colors">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 flex items-center justify-center">
                       <DollarSign className="w-4 h-4 text-emerald-400" />
                     </div>
                     <p className="text-xs text-gray-400 font-medium">
-                      Total Sales
+                      {a.totalSales}
                     </p>
                   </div>
                   <p className="text-[16px] md:text-2xl font-bold text-white">
@@ -349,13 +347,15 @@ export default function OverviewPage() {
                       .toLocaleString()}
                   </p>
                 </div>
-                <div className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-[#fff]/30">
+
+                {/* كارت 2: Total Orders */}
+                <div className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-white/30 transition-colors">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center">
                       <ShoppingCart className="w-4 h-4 text-blue-400" />
                     </div>
                     <p className="text-xs text-gray-400 font-medium">
-                      Total Orders
+                      {a.totalOrders}
                     </p>
                   </div>
                   <p className="text-[16px] md:text-2xl font-bold text-white">
@@ -365,13 +365,15 @@ export default function OverviewPage() {
                     )}
                   </p>
                 </div>
-                <div className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-[#fff]/30">
+
+                {/* كارت 3: Avg Order — يأخذ الصف كامل */}
+                <div className="col-span-2 bg-white/5 rounded-xl p-4 border border-white/10 hover:border-white/30 transition-colors">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#fff]/20 to-[#000]/20 flex items-center justify-center">
-                      <TrendingUp className="w-4 h-4 text-[#fff]" />
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-white/20 to-black/20 flex items-center justify-center">
+                      <TrendingUp className="w-4 h-4 text-white" />
                     </div>
                     <p className="text-xs text-gray-400 font-medium">
-                      Avg. Order
+                      {a.avgOrder}
                     </p>
                   </div>
                   <p className="text-[16px] md:text-2xl font-bold text-white">
@@ -394,12 +396,8 @@ export default function OverviewPage() {
           ) : (
             <div className="h-[400px] flex flex-col items-center justify-center text-gray-400">
               <BarChart3 className="w-20 h-20 mb-4 opacity-20" />
-              <p className="text-xl font-semibold mb-2">
-                No sales data available
-              </p>
-              <p className="text-sm text-gray-500">
-                Start selling to see your analytics
-              </p>
+              <p className="text-xl font-semibold mb-2">{a.noSalesData}</p>
+              <p className="text-sm text-gray-500">{a.startSelling}</p>
             </div>
           )}
         </div>
@@ -435,7 +433,7 @@ export default function OverviewPage() {
                 <Star className="w-12 h-12 mx-auto mb-3 opacity-20" />
                 <p className="font-semibold">{a.noReviewData}</p>
                 <p className="text-sm text-gray-500 mt-1">
-                  Reviews will appear here
+                  {a.reviewsWillAppear}
                 </p>
               </div>
             )}

@@ -75,7 +75,7 @@ export type Product = {
   name_ar?: string;
   category_name: string;
   category: string;
-  categories:string[]
+  categories: string[];
   lowest_price: string;
   thumbnail: string | null;
   is_active: boolean;
@@ -91,6 +91,7 @@ export type Product = {
   quantity?: number;
   price?: string;
   variants?: Variant[];
+  highest_price?: string;
 };
 
 export interface WishlistResponse {

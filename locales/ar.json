@@ -776,6 +776,7 @@
     "women": "نسائي",
     "all": "كل العطور",
     "featured": "المميزة",
+    "category": "الفئة",
     "filter": "تصفية",
     "availability": "التوفر",
     "selected": "محدد",
@@ -1028,7 +1029,15 @@
     "stock": "المخزون",
     "date": "التاريخ",
     "status": "الحالة",
-    "total": "الإجمالي"
+    "total": "الإجمالي",
+    "revenueAnalytics": "تحليل الإيرادات",
+    "revenue": "الإيرادات",
+    "totalSales": "إجمالي المبيعات",
+    "avgOrder": "متوسط الطلب",
+    "noSalesData": "لا توجد بيانات مبيعات",
+    "startSelling": "ابدأ البيع لرؤية التحليلات",
+    "reviewsWillAppear": "ستظهر التقييمات هنا",
+    "monthlyPerformance": "نظرة عامة على الأداء الشهري"
   },
   "paymentPopup": {
     "success": {
