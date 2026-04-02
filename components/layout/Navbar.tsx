@@ -24,6 +24,7 @@ import {
 } from "@/public/svg/Svgs";
 import { useGetCategory, useGetPublicSettings } from "@/hooks/useDashboard";
 import { useQueryClient } from "@tanstack/react-query";
+import { useOrderHistory } from "@/hooks/usePayment";
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 const Logo = ({ locale }: { locale: string }) => (
@@ -283,7 +284,8 @@ export default function Navbar() {
   const { data: cartData } = useGetCartItems();
   const { data: categories } = useGetCategory();
   const { data } = useGetPublicSettings();
-
+const {data: orderHistory} = useOrderHistory()
+console.log(orderHistory,"o")
   const cartCount = cartData?.reduce(
     (acc, item) => acc + Number(item?.quantity),
     0,
@@ -314,11 +316,18 @@ export default function Navbar() {
     },
     { label: t.navbar.categories, href: "", active: false, dropdown: true },
     {
+      label: t.navbar.orderhistory,
+      href: `/${locale.toLowerCase()}/orderhistory`,
+      active: cleanPath === `/${locale.toLowerCase()}/orderhistory`,
+      dropdown: false,
+    },
+    {
       label: t.navbar.returnPolicy,
       href: `/${locale.toLowerCase()}/pages/return-policy`,
       active: cleanPath === `/${locale.toLowerCase()}/pages/return-policy`,
       dropdown: false,
     },
+
     {
       label: t.navbar.businesshourslocation,
       href: `/${locale.toLowerCase()}/businesshourslocation`,
@@ -402,7 +411,7 @@ export default function Navbar() {
                                   hover:before:opacity-100`}
                             >
                               <Link
-                                href={`/${locale.toLowerCase()}/collections/${cat.name_en.toLowerCase()}`}
+                                href={`/${locale.toLowerCase()}/collections/${cat.name.toLowerCase()}`}
                                 onClick={closeAll}
                                 className="flex items-center gap-2 py-[11px] px-5 text-gray-600 hover:text-[var(--purple-deep)] hover:bg-purple-50 transition-all text-[length:16px] [letter-spacing:0.2px]"
                               >
@@ -550,7 +559,7 @@ export default function Navbar() {
                       transition={{ delay: 0.08 + ci * 0.05, duration: 0.18 }}
                     >
                       <Link
-                        href={`/${locale.toLowerCase()}/collections/${cat.name_en.toLowerCase()}`}
+                        href={`/${locale.toLowerCase()}/collections/${cat.name.toLowerCase()}`}
                         onClick={closeAll}
                         className="flex items-center gap-3 h-14 px-5 text-gray-700 hover:text-[var(--purple-deep)] hover:bg-purple-50 transition-colors border-b border-black/5 text-[length:15px]  [border-inline-start:2px_solid_transparent]"
                       >

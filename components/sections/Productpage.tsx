@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useAddToCart } from "@/hooks/useCart";
-import { useGetProducts, useGetSingleProduct } from "@/hooks/useProducts";
+import { useGetBestsellers, useGetProducts, useGetSingleProduct } from "@/hooks/useProducts";
 import { ErrorResponse, NotificationState } from "@/type/type";
 import { useShowNotification } from "@/utils/showNotification";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,6 +21,7 @@ export default function ProductPage() {
   const { data: product, isLoading } = useGetSingleProduct(firstProductId ?? 0);
   const { mutate: addToCart, isPending } = useAddToCart();
   const { setCartOpen } = useCats();
+  const { data: bestsellers } = useGetBestsellers();
   const router = useRouter();
   const [added, setAdded] = useState(false);
   const [notification, setNotification] = useState<NotificationState | null>(

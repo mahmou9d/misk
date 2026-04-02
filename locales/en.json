@@ -2,6 +2,7 @@
   "navbar": {
     "home": "Home",
     "categories": "Categories",
+    "orderhistory": "Order previous",
     "returnPolicy": "Return & Exchange Policy",
     "search": "Search",
     "signIn": "Sign in",
@@ -390,6 +391,7 @@
     "products": "Products",
     "noProducts": "No products found",
     "searchFor": "Search for",
+    "category": "Category",
     "allResults": "All results"
   },
   "adminOrders": {
@@ -921,11 +923,11 @@
     "buyNow": "Buy it Now",
     "viewDetails": "View full details"
   },
-"hero": {
+  "hero": {
     "eyebrow": "Exclusively Crafted for You",
     "title": "Luxury Fragrances Collection",
     "cta": "Shop Now"
-},
+  },
   "announcementBar": {
     "items": [
       {
@@ -1040,7 +1042,11 @@
     "avgOrder": "Avg. Order",
     "noSalesData": "No sales data available",
     "startSelling": "Start selling to see your analytics",
-    "reviewsWillAppear": "Reviews will appear here"
+    "reviewsWillAppear": "Reviews will appear here",
+    "topProducts": "Top Products",
+    "sold": "sold",
+    "noProductsYet": "No products yet",
+    "productsWillAppear": "Products will appear here"
   },
   "paymentPopup": {
     "success": {
@@ -1146,5 +1152,34 @@
         "updateFailed": "Failed to update settings."
       }
     }
-  }
+  },
+    "orderHistory": {
+    "pageTitle": "My Orders",
+    "pageSubtitle": {
+      "withOrders": "You have {{count}} registered orders",
+      "empty": "No orders yet"
+    },
+    "orderNumber": "Order #",
+    "address": "Address",
+    "total": "Total",
+    "currency": "EGP",
+    "showLess": "Show less",
+    "showMore": "+{{count}} more items",
+    "emptyState": "No orders in this category",
+    "filters": {
+      "all": "All",
+      "pending": "Pending",
+      "paid": "Paid",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "status": {
+      "pending": "Pending",
+      "shipped": "Shipped",
+      "paid": "Paid",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    }
+    }
 }

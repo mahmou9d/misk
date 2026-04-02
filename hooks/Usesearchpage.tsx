@@ -5,6 +5,7 @@ import { useGetProducts } from "@/hooks/useProducts";
 import { applySort } from "@/lib/Products";
 import { Product } from "@/type/type";
 import { useTranslation } from "@/lib/Usetranslation";
+import { useGetCategory } from "./useDashboard";
 
 export function useSearchPage({ page, search }: { page: number; search: string }) {
   const { locale } = useTranslation();
@@ -14,7 +15,8 @@ export function useSearchPage({ page, search }: { page: number; search: string }
   const [inputVal, setInputVal] = useState(urlQuery);
   const [showSuggest, setShowSuggest] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-
+  const { data: categories } = useGetCategory();
+const [selectedCategory, setSelectedCategory] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
@@ -23,13 +25,17 @@ export function useSearchPage({ page, search }: { page: number; search: string }
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
  const isSearchMode = urlQuery.trim().length > 0;
-const { data, isLoading } = useGetProducts({
-  all: isSearchMode ? true : undefined,
-  page: isSearchMode || minPrice || maxPrice ? undefined : page,
-  search: urlQuery || undefined,
-  min_price: minPrice ? Number(minPrice) : undefined,
-  max_price: maxPrice ? Number(maxPrice) : undefined,
-});
+  const { data, isLoading } = useGetProducts({
+    all: isSearchMode || selectedCategory ? true : undefined,
+    page:
+      isSearchMode || minPrice || maxPrice || selectedCategory
+        ? undefined
+        : page,
+    search: urlQuery || undefined,
+    category: selectedCategory || urlQuery || undefined,
+    min_price: minPrice ? Number(minPrice) : undefined,
+    max_price: maxPrice ? Number(maxPrice) : undefined,
+  });
   const nextPage = data?.next;
   const prevPage = data?.previous;
   const allProducts: Product[] = data?.products ?? [];
@@ -46,7 +52,7 @@ const { data, isLoading } = useGetProducts({
               .flatMap((p) => [
                 p.name.toLowerCase(),
                 p.category_name?.toLowerCase() ?? "",
-                p.fragrance_family?.toLowerCase() ?? "",
+                p.fregrance_family?.toLowerCase() ?? "",
               ])
               .filter(
                 (s) =>
@@ -68,19 +74,21 @@ const { data, isLoading } = useGetProducts({
   /* ── Filtered + sorted results ── */
  
 
-  let results = isSearchMode
-    ? allProducts.filter(
-        (p) =>
-          p.name.toLowerCase().includes(urlQuery.toLowerCase()) ||
-          (p.fragrance_family ?? "")
-            .toLowerCase()
-            .includes(urlQuery.toLowerCase()) ||
-          (p.category_name ?? "")
-            .toLowerCase()
-            .includes(urlQuery.toLowerCase()) ||
-          (p.description ?? "").toLowerCase().includes(urlQuery.toLowerCase()),
-      )
-    : allProducts;
+ let results = allProducts.filter((p) => {
+   const matchSearch =
+     !isSearchMode ||
+     p.name.toLowerCase().includes(urlQuery.toLowerCase()) ||
+     (p.fregrance_family ?? "")
+       .toLowerCase()
+       .includes(urlQuery.toLowerCase()) ||
+     (p.category_name ?? "").toLowerCase().includes(urlQuery.toLowerCase()) ||
+     (p.description ?? "").toLowerCase().includes(urlQuery.toLowerCase());
+   const matchCategory =
+     !selectedCategory ||
+     String(p.categories) === selectedCategory ||
+     String(p.categories) === selectedCategory;
+   return matchSearch && matchCategory;
+ });
 
   if (availFilter.includes("in-stock") && !availFilter.includes("out-of-stock"))
     results = results.filter((p) => p.is_active);
@@ -95,17 +103,18 @@ const { data, isLoading } = useGetProducts({
   const inCount = results.filter((p) => p.is_active).length;
   const outCount = results.filter((p) => !p.is_active).length;
 
-  const activeFilters =
-    availFilter.length +
-    (minPrice || maxPrice ? 1 : 0) +
-    (sort !== "relevance" ? 1 : 0);
-
+ const activeFilters =
+   availFilter.length +
+   (minPrice || maxPrice ? 1 : 0) +
+   (sort !== "relevance" ? 1 : 0) +
+   (selectedCategory ? 1 : 0);
   /* ── Actions ── */
   const clearAllFilters = () => {
     setAvailFilter([]);
     setMinPrice("");
     setMaxPrice("");
     setSort("relevance");
+    setSelectedCategory(""); // ✅ جديد
   };
 
   const doSearch = useCallback(
@@ -179,6 +188,9 @@ const { data, isLoading } = useGetProducts({
     setMaxPrice,
     activeFilters,
     clearAllFilters,
+    categories,
+    selectedCategory,
+    setSelectedCategory,
     /* results */
     allProducts,
     isLoading,

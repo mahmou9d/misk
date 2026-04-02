@@ -92,6 +92,7 @@ export type Product = {
   price?: string;
   variants?: Variant[];
   highest_price?: string;
+  is_bestseller:boolean
 };
 
 export interface WishlistResponse {
@@ -213,7 +214,7 @@ export interface LowStockResponse {
 
 export interface TopSellingProduct {
   product__name: string;
-  color_name: string;
+  volume: string;
   total_sold: number;
 }
 
@@ -229,6 +230,7 @@ export interface CreateProduct {
   categories: string[];
   fragrance_family_ar: string;
   fragrance_family_en: string;
+  is_bestseller: boolean;
 }
 export interface SubVariant {
   id: number;
@@ -405,11 +407,20 @@ export interface OrderData {
   status: string;
   total_price: number;
   created_at: string;
-  items: OrderItem[];
+  items: {
+    variant_name: string;
+    variant_volume: string;
+    quantity: number;
+    price: string;
+    subtotal: number;
+    created_at: string;
+  }[];
   full_name: string;
   full_address: string;
   phone_number: string;
   country: string;
+  shipping_fee: string;
+  governorate_name: string;
 }
 
 export type OrderHistoryResponse = OrderData[];

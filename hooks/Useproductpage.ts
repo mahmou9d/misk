@@ -41,19 +41,24 @@ export const emptyV = (): Volume => ({
 export function useProductPage({
   page,
   search,
+  category,
 }: {
   page: number;
   search: string;
+  category?: string;
 }) {
   const queryClient = useQueryClient();
   const [tab, setTab] = useState<TabType>("create");
 const {  isArabic } = useTranslation();
   const { data: categories } = useGetCategory();
-  const productsParams = {
-    all: true,
-    search: search || undefined,
-    ...(search ? {} : { page: page }),
-  };
+  const categoriesEn = categories?.filter((c) => c.name===category);
+  console.log(categoriesEn,"p")
+const productsParams = {
+  all: true,
+  search: search || undefined,
+  category: category || undefined,
+  ...(search || category ? {} : { page: page }),
+};
   const { data: productsData, isLoading: loadingProducts } =
     useGetProducts(productsParams);
 
@@ -89,6 +94,7 @@ const {  isArabic } = useTranslation();
     fragrance_family_ar: "",
     description_en: "",
     description_ar: "",
+    is_bestseller: false,
   });
   const [cvars, setCVars] = useState<Volume[]>([emptyV()]);
   const [cStep, setCStep] = useState<
@@ -102,14 +108,19 @@ const {  isArabic } = useTranslation();
   const { mutate: deleteProd, isPending: deletingProd } = useDeleteProduct();
   const [confirmDeletePid, setConfirmDeletePid] = useState<number | null>(null);
 
-  const sc =
-    (k: string) =>
-    (
-      e: React.ChangeEvent<
-        HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-      >,
-    ) =>
-      setCf((f) => ({ ...f, [k]: e.target.value }));
+const sc =
+  (k: string) =>
+  (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const value =
+      e.target.type === "checkbox"
+        ? (e.target as HTMLInputElement).checked
+        : e.target.value;
+    setCf((f) => ({ ...f, [k]: value }));
+  };
 
   // ✅ setter خاص للـ categories (بتاخد string[])
   const setCfCategories = (names: string[]) =>
@@ -168,6 +179,7 @@ const {  isArabic } = useTranslation();
     description_en: "",
     description_ar: "",
     is_active: "true",
+    is_bestseller: false,
   });
   const [eStep, setEStep] = useState<"idle" | "updating" | "images" | "done">(
     "idle",
@@ -190,14 +202,17 @@ const {  isArabic } = useTranslation();
         description_en: singleProduct.description_en ?? "",
         description_ar: singleProduct.description_ar ?? "",
         is_active: String(singleProduct.is_active ?? true),
+        is_bestseller: singleProduct.is_bestseller ?? false,
       });
     }
     setEStep("idle");
   }, [singleProduct]);
 
-  const se = (k: string) => (e: any) =>
-    setEf((f) => ({ ...f, [k]: e.target.value }));
-
+const se = (k: string) => (e: any) => {
+  const value =
+    e.target.type === "checkbox" ? e.target.checked : e.target.value;
+  setEf((f) => ({ ...f, [k]: value }));
+};
   // ✅ setter خاص للـ categories في Edit
   const setEfCategories = (names: string[]) =>
     setEf((f) => ({ ...f, categories: names }));
@@ -331,6 +346,7 @@ const {  isArabic } = useTranslation();
         description_en: cf.description_en,
         fragrance_family_ar: cf.fragrance_family_ar,
         fragrance_family_en: cf.fragrance_family_en,
+        is_bestseller: cf.is_bestseller,
       });
       const pid2: number = created?.id ?? created?.product_id;
       const filled = cvars.filter((v) => v.volume && v.price);
@@ -367,6 +383,7 @@ const {  isArabic } = useTranslation();
         fragrance_family_ar: "",
         description_en: "",
         description_ar: "",
+        is_bestseller: false,
       });
       setCVars([emptyV()]);
       setTimeout(() => setCStep("idle"), 2000);
@@ -417,6 +434,7 @@ const {  isArabic } = useTranslation();
     if (ef.fragrance_family_ar)
       payload.fragrance_family_ar = ef.fragrance_family_ar;
     payload.is_active = ef.is_active === "true";
+    payload.is_bestseller = ef.is_bestseller;
     try {
       await new Promise<void>((res, rej) =>
         updateMutate(
@@ -599,5 +617,7 @@ const {  isArabic } = useTranslation();
     handleEditVariant,
     handleDeleteVariant,
     queryClient,
+    setCf,
+    setEf
   };
 }

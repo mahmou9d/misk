@@ -33,34 +33,37 @@ function Dropdown({ trigger, children, open, setOpen, isArabic }: {
     return () => document.removeEventListener("mousedown", handler);
   }, [setOpen]);
 
-  useEffect(() => {
-    if (open && ref.current) {
-      const rect = ref.current.getBoundingClientRect();
-      const dropdownWidth = 260;
-      const screenWidth = window.innerWidth;
-      const padding = 8;
+useEffect(() => {
+  if (!open) return;
 
-      let left = isArabic
-        ? rect.right - dropdownWidth // في العربي ابدأ من يمين الزرار
-        : rect.left; // في الإنجليزي ابدأ من يسار الزرار
+  const updateCoords = () => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const dropdownWidth = 260;
+    const screenWidth = window.innerWidth;
+    const padding = 8;
 
-      // لو بتخرج من يمين الشاشة
-      if (left + dropdownWidth > screenWidth - padding) {
-        left = screenWidth - dropdownWidth - padding;
-      }
+    let left = isArabic ? rect.right - dropdownWidth : rect.left;
+    if (left + dropdownWidth > screenWidth - padding)
+      left = screenWidth - dropdownWidth - padding;
+    if (left < padding) left = padding;
 
-      // لو بتخرج من يسار الشاشة
-      if (left < padding) {
-        left = padding;
-      }
+    setCoords({
+      top: rect.bottom + 8,
+      left,
+      width: Math.min(dropdownWidth, screenWidth - padding * 2),
+    });
+  };
 
-      setCoords({
-        top: rect.bottom + window.scrollY + 8,
-        left: left,
-        width: Math.min(dropdownWidth, screenWidth - padding * 2),
-      });
-    }
-  }, [open, isArabic]);
+  updateCoords();
+  window.addEventListener("scroll", updateCoords, true);
+  window.addEventListener("resize", updateCoords);
+
+  return () => {
+    window.removeEventListener("scroll", updateCoords, true);
+    window.removeEventListener("resize", updateCoords);
+  };
+}, [open, isArabic]);
 
   return (
     <div ref={ref} className="relative">
@@ -125,14 +128,18 @@ export default function CollectionPage({ category }: { category: string }) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [page, setPage] = useState(1);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-
+const decodedOnce = decodeURIComponent(category);
+const decodedTwice = decodeURIComponent(decodedOnce);
   const { data: categories } = useGetCategory();
-  const { data, isLoading, isError } = useGetProducts({ page });
+  const { data, isLoading, isError } = useGetProducts({
+    page,
+    category: decodedTwice==="all"?undefined:decodedTwice,
+  });
   const nextPage = data?.next ?? null;
   const categoryName = categories?.find(
-    (c) => c.name_en.toUpperCase() === category.toUpperCase(),
+    (c) => c.name.toUpperCase() === decodedTwice.toUpperCase(),
   );
-
+console.log(data)
   useEffect(() => {
     const products: Product[] = data?.products ?? [];
     if (page === 1) setAllProducts(products);
@@ -211,7 +218,9 @@ export default function CollectionPage({ category }: { category: string }) {
                 {t.collectionPage.collectionLabel}
               </span>
               <h1 className="text-[#111] font-bold text-[clamp(36px,5vw,52px)] leading-none">
-                {category === "all" ? t.collectionPage.all : categoryName?.name}
+                {decodedTwice === "all"
+                  ? t.collectionPage.all
+                  : categoryName?.name}
               </h1>
               <div className="mt-6 h-[2px] w-16 bg-[#c9a84c]" />
             </div>
@@ -234,7 +243,6 @@ export default function CollectionPage({ category }: { category: string }) {
                   setOpen={setAvailOpen}
                   isArabic={isArabic}
                   trigger={t.collectionPage.availability}
-                  
                 >
                   <div className="p-6">
                     <div className="flex justify-between items-center mb-4">

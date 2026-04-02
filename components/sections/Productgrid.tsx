@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import ProductCard from "@/components/layout/Productcard";
-import { useGetProducts } from "@/hooks/useProducts";
+import { useGetBestsellers, useGetProducts } from "@/hooks/useProducts";
 import { Product } from "@/type/type";
 import { useTranslation } from "@/lib/Usetranslation";
 
@@ -19,6 +19,7 @@ export default function ProductGrid() {
   const { t, isArabic, dir, locale } = useTranslation();
 
   const [tab, setTab] = useState<TabKey>("men");
+
 
   const { data, isLoading } = useGetProducts();
   const allProducts: Product[] = data?.products ?? [];

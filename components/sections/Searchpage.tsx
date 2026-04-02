@@ -10,6 +10,7 @@ import {
   SearchBox,
   SidebarContent,
   ActiveFilterPills,
+  CategoryDropdown,
 } from "@/components/sections/ComponetsSearchPage";
 import { useSearchPage } from "@/hooks/Usesearchpage";
 import { useTranslation } from "@/lib/Usetranslation";
@@ -64,6 +65,9 @@ export default function SearchPage() {
     nextPage,
     prevPage,
     allProducts,
+    categories,
+    selectedCategory,
+    setSelectedCategory,
   } = searchParams;
 
   // Optimized Handlers
@@ -99,6 +103,13 @@ export default function SearchPage() {
               className="relative max-w-4xl mx-auto mb-12"
             >
               <div className="group flex flex-col md:flex-row gap-4 items-center bg-gray-50/80 backdrop-blur-sm p-2 rounded-[24px] border border-gray-100 shadow-sm focus-within:shadow-md focus-within:border-[#c9a84c/40] transition-all duration-300">
+                <CategoryDropdown
+                  categories={categories ?? []}
+                  selectedCategory={selectedCategory}
+                  onSelect={setSelectedCategory}
+                />
+
+                <div className="hidden lg:block h-8 w-[1px] bg-gray-200" />
                 <div className="flex-1 w-full">
                   <SearchBox
                     value={inputVal}

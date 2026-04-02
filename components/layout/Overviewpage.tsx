@@ -32,7 +32,7 @@ export default function OverviewPage() {
 
   const { data: stats, isLoading: l1 } = useGetStatusCount();
   const { data: reviews, isLoading: l2 } = useGetReviewsCount();
-  const { data: topSell, isLoading: l3 } = useGetTopSelling();
+  const { data: topSellingData, isLoading: l3 } = useGetTopSelling();
   const { data: lowStock, isLoading: l4 } = useGetProductLow();
   const { data: categories } = useGetCategory();
   const { data: salesData } = useGetSalesOrders();
@@ -402,38 +402,49 @@ export default function OverviewPage() {
           )}
         </div>
 
-        {/* Reviews */}
+        {/* Top Products */}
         <div className="bg-[#1a1d29] rounded-2xl p-8 border border-white/10">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-white">{a.reviews}</h2>
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/20 to-yellow-700/20 flex items-center justify-center">
-              <Star className="w-5 h-5 text-yellow-400" />
+            <h2 className="text-xl font-bold text-white">{a.topProducts}</h2>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#fda481]/20 to-[#b4182d]/20 flex items-center justify-center">
+              <Package className="w-5 h-5 text-[#fda481]" />
             </div>
           </div>
           <div className="space-y-4">
-            {reviewEntries.length > 0 ? (
-              reviewEntries.map(([k, v], index) => (
+            {topSellingData?.topSelling &&
+            topSellingData.topSelling.length > 0 ? (
+              topSellingData.topSelling.map((product, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 cursor-pointer group border border-transparent hover:border-[#fff]/20"
+                  className="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5  cursor-pointer group border border-transparent hover:border-[#fda481]/20"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500/30 to-yellow-700/30 flex items-center justify-center border border-white/10">
-                    <Star className="w-6 h-6 text-yellow-400" />
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#fda481]/30 to-[#b4182d]/30 flex items-center justify-center border border-white/10">
+                    <Package className="w-6 h-6 text-[#fda481]" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-bold text-white text-sm truncate mb-1 capitalize">
-                      {k.replace(/_/g, " ")}
+                    <p className="font-bold text-white text-sm truncate mb-1">
+                      {product.product__name}
                     </p>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs text-gray-400 font-medium">
+                        {product.total_sold} {a.sold}
+                      </span>
+                      <span className="text-xs text-[#fda481] font-medium">
+                        • {product.volume}
+                      </span>
+                    </div>
                   </div>
-                  <span className="text-xs font-bold text-[#fff]">{v}</span>
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                  </div>
                 </div>
               ))
             ) : (
               <div className="text-center text-gray-400 py-12">
-                <Star className="w-12 h-12 mx-auto mb-3 opacity-20" />
-                <p className="font-semibold">{a.noReviewData}</p>
+                <Package className="w-12 h-12 mx-auto mb-3 opacity-20" />
+                <p className="font-semibold">{a.noProductsYet}</p>
                 <p className="text-sm text-gray-500 mt-1">
-                  {a.reviewsWillAppear}
+                  {a.productsWillAppear}
                 </p>
               </div>
             )}

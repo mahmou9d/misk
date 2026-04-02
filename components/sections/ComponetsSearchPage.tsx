@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/static-components */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Product } from "@/type/type";
 import { getSortOptions } from "@/lib/Products";
 import { useTranslation } from "@/lib/Usetranslation";
 import Image from "next/image";
+import { createPortal } from "react-dom";
 
 /* ── Tailwind Design Tokens (Mapped) ── 
    Gold: #c9a84c (text-[#c9a84c])
@@ -161,7 +162,168 @@ export function PriceSidebar({ min, max, setMin, setMax }: any) {
     </SidebarSection>
   );
 }
+/* ── Category Dropdown ── */
 
+
+export function CategoryDropdown({
+  categories,
+  selectedCategory,
+  onSelect,
+}: {
+  categories: { name: string }[];
+  selectedCategory: string;
+  onSelect: (catId: string) => void;
+}) {
+  const { isArabic } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0, width: 0 });
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // ✅ احسب position الـ button عشان تحط الـ dropdown تحته بالظبط
+  const handleOpen = () => {
+    if (triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setDropdownPos({
+        top: rect.bottom + window.scrollY + 8,
+        left: isArabic ? rect.left-50 : rect.right - 150, // 180 = min-width
+        width: Math.max(rect.width, 180),
+      });
+    }
+    setOpen((v) => !v);
+  };
+
+  // Close on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (
+        triggerRef.current &&
+        !triggerRef.current.contains(e.target as Node) &&
+        panelRef.current &&
+        !panelRef.current.contains(e.target as Node)
+      )
+        setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const selectedName = categories?.find(
+    (c) => String(c.name) === selectedCategory,
+  )?.name;
+
+  const panel = (
+    <motion.div
+      ref={panelRef}
+      initial={{ opacity: 0, y: -8, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -8, scale: 0.97 }}
+      transition={{ duration: 0.15 }}
+      style={{
+        position: "absolute",
+        top: dropdownPos.top,
+        left: dropdownPos.left ,
+        minWidth: dropdownPos.width,
+        zIndex: 9999, // ✅ فوق كل حاجة
+      }}
+      className="bg-white rounded-2xl border border-[#c9a84c]/15 shadow-[0_20px_60px_rgba(45,27,105,0.13)] overflow-hidden"
+    >
+      <div className="py-1.5 max-h-[280px] overflow-y-auto">
+        <button
+          onClick={() => {
+            onSelect("");
+            setOpen(false);
+          }}
+          className={`w-full text-start px-4 py-2.5 text-[13px] font-bold flex items-center justify-between transition-colors
+            ${selectedCategory === "" ? "text-[#c9a84c] bg-[#c9a84c]/6" : "text-[#4a4255] hover:bg-[#c9a84c]/5 hover:text-[#2d1b69]"}`}
+        >
+          {isArabic ? "كل الفئات" : "All Categories"}
+          {selectedCategory === "" && (
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#c9a84c"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          )}
+        </button>
+        <div className="h-px bg-[#c9a84c]/10 mx-3 my-1" />
+        {categories?.map((cat) => {
+          const active = String(cat.name) === selectedCategory;
+          return (
+            <button
+              key={cat.name}
+              onClick={() => {
+                onSelect(String(cat.name));
+                setOpen(false);
+              }}
+              className={`w-full text-start px-4 py-2.5 text-[13px] flex items-center justify-between transition-colors
+                ${active ? "text-[#c9a84c] bg-[#c9a84c]/6 font-bold" : "text-[#4a4255] hover:bg-[#c9a84c]/5 hover:text-[#2d1b69] font-medium"}`}
+            >
+              {cat.name}
+              {active && (
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#c9a84c"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+
+  return (
+    <div className="relative">
+      {/* Trigger */}
+      <button
+        ref={triggerRef}
+        onClick={handleOpen}
+        className={`flex items-center gap-2 h-[38px] px-4 rounded-[3px] border-2 text-sm font-bold transition-all duration-200 whitespace-nowrap
+          ${
+            selectedCategory
+              ? "bg-gradient-to-br from-[#c9a84c] to-[#e8b840] text-[#1a0a3d] border-transparent shadow-[0_4px_12px_rgba(201,168,76,0.35)]"
+              : "bg-white border-[#c9a84c]/30 text-[#8a7f99] hover:border-[#c9a84c] hover:text-[#c9a84c]"
+          }`}
+      >
+        <FilterIcon />
+        <span>{selectedName ?? (isArabic ? "الفئة" : "Category")}</span>
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+
+      {/* ✅ Portal — يتعرض على body مباشرةً فوق كل حاجة */}
+      {typeof window !== "undefined" &&
+        createPortal(
+          <AnimatePresence>{open && panel}</AnimatePresence>,
+          document.body,
+        )}
+    </div>
+  );
+}
 /* ── Shared Sidebar Content ── */
 export function SidebarContent({
   minPrice,

@@ -27,8 +27,8 @@ export const productsAPI = {
       params: {
         page: params?.page,
         all: params?.all,
-        search: params?.search,
-        category: params?.category,
+        search: (params?.search),
+        category: (params?.category),
         max_price: params?.max_price,
         min_price: params?.min_price,
       },
@@ -152,4 +152,8 @@ export const productsAPI = {
     );
     return data;
   },
+    getBestsellers: async (): Promise<Product> => {
+      const { data } = await apiClient.get<Product>("/products/best-sellers/");
+      return data;
+    },
 };

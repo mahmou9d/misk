@@ -2,6 +2,7 @@
   "navbar": {
     "home": "الرئيسية",
     "categories": "الفئات",
+    "orderhistory": "الطلبات السابقة",
     "returnPolicy": "سياسة الإستبدال والإسترجاع",
     "search": "بحث",
     "signIn": "تسجيل الدخول",
@@ -386,6 +387,7 @@
     "products": "المنتجات",
     "noProducts": "لا توجد نتائج",
     "searchFor": "البحث عن",
+    "category": "الفئة",
     "allResults": "كل النتائج"
   },
   "adminOrders": {
@@ -1037,7 +1039,10 @@
     "noSalesData": "لا توجد بيانات مبيعات",
     "startSelling": "ابدأ البيع لرؤية التحليلات",
     "reviewsWillAppear": "ستظهر التقييمات هنا",
-    "monthlyPerformance": "نظرة عامة على الأداء الشهري"
+    "monthlyPerformance": "نظرة عامة على الأداء الشهري",
+    "topProducts": "المنتجات الأعلى مبيعاً",
+    "noProductsYet": "لا توجد منتجات بعد",
+    "productsWillAppear": "ستظهر المنتجات هنا"
   },
   "paymentPopup": {
     "success": {
@@ -1143,5 +1148,34 @@
         "updateFailed": "فشل تحديث الإعدادات."
       }
     }
-  }
+  },
+    "orderHistory": {
+      "pageTitle": "طلباتي",
+      "pageSubtitle": {
+        "withOrders": "لديك {{count}} طلب مسجّل",
+        "empty": "لا توجد طلبات بعد"
+      },
+      "orderNumber": "رقم الطلب",
+      "address": "العنوان",
+      "total": "المجموع",
+      "currency": "ج.م",
+      "showLess": "عرض أقل",
+      "showMore": "+{{count}} منتجات أخرى",
+      "emptyState": "لا توجد طلبات في هذه الفئة",
+      "filters": {
+        "all": "الكل",
+        "pending": "قيد الانتظار",
+        "paid": "تم الدفع",
+        "shipped": "تم الشحن",
+        "delivered": "تم التسليم",
+        "cancelled": "ملغي"
+      },
+      "status": {
+        "pending": "قيد الانتظار",
+        "paid": "تم الدفع",
+        "shipped": "تم الشحن",
+        "delivered": "تم التسليم",
+        "cancelled": "ملغي"
+      }
+    }
 }

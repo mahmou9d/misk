@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Select, Btn } from "@/components/layout/Adminui";
 import { GalleryImage, Variant } from "@/type/type";
-import {
+import AdminCategoryDropdown, {
   Spinner,
   ConfirmDelete,
   ImgGallery,
@@ -13,6 +13,7 @@ import { useProductPage } from "@/hooks/Useproductpage";
 import Notification from "../layout/Notification";
 import { useTranslation } from "@/lib/Usetranslation";
 import Image from "next/image";
+import { useGetBestsellers } from "@/hooks/useProducts";
 
 /* ══════════════════════════════════════════════════════════
    Shared input style
@@ -410,6 +411,7 @@ export default function ProductsPage() {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(searchTerm);
@@ -471,7 +473,13 @@ export default function ProductsPage() {
     handleEditVariant,
     handleDeleteVariant,
     showNotification,
-  } = useProductPage({ page, search: debouncedSearch });
+    setCf,
+    setEf,
+  } = useProductPage({
+    page,
+    search: debouncedSearch,
+    category: selectedCategory || undefined,
+  });
 
   const C_STEP_LBL: Record<string, string> = {
     idle: p.steps.create.idle,
@@ -595,6 +603,15 @@ export default function ProductsPage() {
       {/* ── Toolbar ── */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div className="flex items-center gap-4 flex-1">
+          <AdminCategoryDropdown
+            categories={catOptions}
+            selectedCategory={selectedCategory}
+            onSelect={(val) => {
+              setSelectedCategory(val);
+              setPage(1);
+            }}
+            isArabic={isArabic}
+          />
           <div className="relative w-full max-w-md">
             <div
               className={`absolute inset-y-0 ${isArabic ? "right-0 pr-3.5" : "left-0 pl-3.5"} flex items-center pointer-events-none`}
@@ -824,6 +841,55 @@ export default function ProductsPage() {
               onChangeEn={sc("description_en")}
               onChangeAr={sc("description_ar")}
             />
+            {/* Create */}
+            <div className="flex items-center gap-3 mt-2 mb-1">
+              <div
+                className="relative cursor-pointer"
+                onClick={() =>
+                  setCf((f) => ({ ...f, is_bestseller: !f.is_bestseller }))
+                }
+              >
+                <div
+                  className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all
+        ${
+          cf.is_bestseller
+            ? "bg-gradient-to-br from-[#fda481] to-[#b4182d] border-transparent"
+            : "border-white/20 bg-white/5 hover:border-white/40"
+        }`}
+                >
+                  {cf.is_bestseller && (
+                    <svg
+                      className="w-3 h-3 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={3}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  )}
+                </div>
+              </div>
+              <div
+                className="cursor-pointer"
+                onClick={() =>
+                  setCf((f) => ({ ...f, is_bestseller: !f.is_bestseller }))
+                }
+              >
+                <p className="text-[16px] font-medium text-white">
+                  {isArabic ? "الأكثر مبيعاً" : "Best Seller"}
+                </p>
+                <p className="text-[13px] text-gray-500">
+                  {isArabic
+                    ? "سيظهر المنتج في قسم الأكثر مبيعاً"
+                    : "Product will appear in bestsellers section"}
+                </p>
+              </div>
+            </div>
             <ActRow>
               <CancelBtn onClick={() => setShowCreate(false)} />
               <button
@@ -1016,6 +1082,55 @@ export default function ProductsPage() {
                   { value: "false", label: p.fields.inactive },
                 ]}
               />
+            </div>
+            {/* Edit */}
+            <div className="flex items-center gap-3 mt-2 mb-1">
+              <div
+                className="relative cursor-pointer"
+                onClick={() =>
+                  setEf((f) => ({ ...f, is_bestseller: !f.is_bestseller }))
+                }
+              >
+                <div
+                  className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all
+        ${
+          ef.is_bestseller
+            ? "bg-gradient-to-br from-[#fda481] to-[#b4182d] border-transparent"
+            : "border-white/20 bg-white/5 hover:border-white/40"
+        }`}
+                >
+                  {ef.is_bestseller && (
+                    <svg
+                      className="w-3 h-3 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={3}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  )}
+                </div>
+              </div>
+              <div
+                className="cursor-pointer"
+                onClick={() =>
+                  setEf((f) => ({ ...f, is_bestseller: !f.is_bestseller }))
+                }
+              >
+                <p className="text-[16px] font-medium text-white">
+                  {isArabic ? "الأكثر مبيعاً" : "Best Seller"}
+                </p>
+                <p className="text-[13px] text-gray-500">
+                  {isArabic
+                    ? "سيظهر المنتج في قسم الأكثر مبيعاً"
+                    : "Product will appear in bestsellers section"}
+                </p>
+              </div>
             </div>
             {isEBusy && <Spinner label={E_STEP_LBL[eStep]} />}
             <ActRow>

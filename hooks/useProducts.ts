@@ -22,8 +22,8 @@ export const productKeys = {
   all: ["products"] as const,
 
   lists: () => [...productKeys.all, "list"] as const,
-  list: (page?: number, all?: boolean) =>
-    [...productKeys.lists(), { page, all }] as const,
+  list: (page?: number, all?: boolean, category?: string, search?: string) =>
+    [...productKeys.lists(), { page, all, category, search }] as const,
 
   details: () => [...productKeys.all, "detail"] as const,
   detail: (id: number, all?: boolean) =>
@@ -32,6 +32,7 @@ export const productKeys = {
   variant: (id: number) => [...productKeys.all, "variant", id] as const,
 
   count: () => [...productKeys.all, "count"] as const,
+  bestsellers: () => [...productKeys.all, "bestsellers"] as const,
 };
 
 export const useGetProducts = (params?: {
@@ -265,5 +266,12 @@ export const useDeleteThumbnail = () => {
     onError: (error: AxiosError<ErrorResponse>) => {
       // console.error("Delete thumbnail failed:", error);
     },
+  });
+};
+export const useGetBestsellers = () => {
+  return useQuery({
+    queryKey: ["bestsellers"],
+    queryFn: productsAPI.getBestsellers,
+    staleTime: 10 * 60 * 1000,
   });
 };
