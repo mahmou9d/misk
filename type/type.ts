@@ -485,3 +485,5 @@ export interface SiteSettings {
   is_announcement_active: boolean;
 }
 
+export type TabKey1 = "Men" | "Unisex" | "Women";
+export type TabKey2 = "BodySplash" | "Niche";

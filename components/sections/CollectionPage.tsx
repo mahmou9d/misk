@@ -133,7 +133,7 @@ const decodedTwice = decodeURIComponent(decodedOnce);
   const { data: categories } = useGetCategory();
   const { data, isLoading, isError } = useGetProducts({
     page,
-    category: decodedTwice==="all"?undefined:decodedTwice,
+    category:  decodedTwice==="all"?undefined:decodedTwice,
   });
   const nextPage = data?.next ?? null;
   const categoryName = categories?.find(

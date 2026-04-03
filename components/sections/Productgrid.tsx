@@ -1,34 +1,37 @@
 "use client";
 
 import { useState } from "react";
+import { useId } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import ProductCard from "@/components/layout/Productcard";
-import { useGetBestsellers, useGetProducts } from "@/hooks/useProducts";
+import { useGetProducts } from "@/hooks/useProducts";
 import { Product } from "@/type/type";
 import { useTranslation } from "@/lib/Usetranslation";
 
-type TabKey = "men" | "unisex" | "women";
+type CategoryMap = Record<string, { ar: string; en: string }>;
 
-const CATEGORY_MAP: Record<TabKey, { en: string; ar: string }> = {
-  men: { en: "Men", ar: "رجالي" },
-  unisex: { en: "Unisex", ar: "رجالى و نسائي" },
-  women: { en: "Women", ar: "نسائي" },
-};
-export default function ProductGrid() {
+export default function ProductGrid({
+  CATEGORY_MAP,
+}: {
+  CATEGORY_MAP: CategoryMap;
+}) {
   const { t, isArabic, dir, locale } = useTranslation();
+  const id = useId();
 
-  const [tab, setTab] = useState<TabKey>("men");
+  const tabs = Object.keys(CATEGORY_MAP) as string[];
+  const [tab, setTab] = useState<string>(tabs[0]);
 
+const category = isArabic ? CATEGORY_MAP[tab].ar : CATEGORY_MAP[tab].en;
 
-  const { data, isLoading } = useGetProducts();
-  const allProducts: Product[] = data?.products ?? [];
+const { data, isLoading } = useGetProducts({ category });
+  const filtered: Product[] = data?.products ?? [];
 
-const filtered = allProducts.filter((p) =>
-  p.categories?.includes(
-    isArabic ? CATEGORY_MAP[tab].ar : CATEGORY_MAP[tab].en,
-  ),
-);
+  // const filtered = allProducts.filter((p) =>
+  //   p.categories?.includes(
+  //     isArabic ? CATEGORY_MAP[tab].ar : CATEGORY_MAP[tab].en,
+  //   ),
+  // );
 
   return (
     <section
@@ -50,7 +53,7 @@ const filtered = allProducts.filter((p) =>
           </span>
 
           <div className="inline-flex items-center p-1.5 bg-white border border-gray-100 rounded-full shadow-sm">
-            {(["men", "unisex", "women"] as const).map((tabKey) => (
+            {tabs.map((tabKey) => (
               <button
                 key={tabKey}
                 onClick={() => setTab(tabKey)}
@@ -59,15 +62,11 @@ const filtered = allProducts.filter((p) =>
                   ${isArabic ? "text-[14px]" : "tracking-[0.2em]"}`}
               >
                 <span className="relative z-10">
-                  {tabKey === "men"
-                    ? t.productGrid.men
-                    : tabKey === "unisex"
-                      ? t.productGrid.unisex
-                      : t.productGrid.women}
+                  {isArabic ? CATEGORY_MAP[tabKey].ar : CATEGORY_MAP[tabKey].en}
                 </span>
                 {tab === tabKey && (
                   <motion.div
-                    layoutId="activeTabGlow"
+                    layoutId={`activeTabGlow-${id}`}
                     className="absolute inset-0 bg-[#0a051a] rounded-full shadow-[0_10px_20px_rgba(0,0,0,0.2)]"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
