@@ -151,38 +151,6 @@ export default function TermsOfService() {
             </p>
           </motion.div>
 
-          {/* Quick Nav */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.4 }}
-            className="py-6 md:py-7 border-b border-[#c9a84c1f] mb-2"
-          >
-            <div className="flex items-center justify-between mb-3.5">
-              <p className=" text-[9px] -[3.5px] uppercase text-[#c8c0d4] m-0">
-                {t.termsOfService.sections_label}
-              </p>
-              <button
-                onClick={handleToggleAll}
-                className=" text-[11px] -[1px] text-[#8a7f99] bg-transparent border border-[#c9a84c1f] rounded-[3px] px-3 py-1 cursor-pointer transition-all duration-200 hover:border-[#c9a84ca1] hover:text-[#c9a84c]"
-              >
-                {allOpen
-                  ? t.termsOfService.collapseAll
-                  : t.termsOfService.expandAll}
-              </button>
-            </div>
-            <div className="flex flex-wrap gap-x-2.5 gap-y-[7px]">
-              {sections.map((s, i) => (
-                <span
-                  key={i}
-                  className=" text-[12px] text-[#8a7f99] bg-[#faf9fc] border border-[#c9a84c1f] px-2.5 py-[3px] rounded-full"
-                >
-                  {s.short}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-
           {/* Accordion */}
           <motion.div
             key={key}
@@ -201,31 +169,6 @@ export default function TermsOfService() {
             ))}
           </motion.div>
 
-          {/* Footer callout */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.4 }}
-            className="mt-12 px-7 py-6 bg-[#faf9fc] border border-[#c9a84c1f] rounded-[3px] flex items-start gap-3.5"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#c9a84c"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              className="flex-shrink-0 mt-0.5"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="8" x2="12" y2="12" />
-              <line x1="12" y1="16" x2="12.01" y2="16" />
-            </svg>
-            <p className=" text-sm text-[#8a7f99] leading-[1.8] m-0">
-              {t.termsOfService.contactNote}
-            </p>
-          </motion.div>
         </div>
       </section>
       <Footer />

@@ -146,15 +146,6 @@ export default function HeroSection() {
               : "Crafted to Define Your Presence"}
           </motion.p>
 
-          {/* Gold line */}
-          <motion.div
-            {...fadeUp(0.55, 10)}
-            className="mt-4 h-px w-12"
-            style={{
-              background: "linear-gradient(to right, #c9a84c, #e8c847)",
-            }}
-          />
-
           {/* CTA */}
           <motion.div {...fadeUp(0.65, 20)} className="mt-7">
             <Link
@@ -253,13 +244,6 @@ export default function HeroSection() {
             ? "حيث تلتقي المكوّنات النادرة بفنّ العطور الراقية"
             : "Crafted to Define Your Presence"}
         </motion.p>
-
-        {/* ── Gold line ── */}
-        <motion.div
-          {...fadeUp(0.5, 10)}
-          className="mt-3 h-px w-10"
-          style={{ background: "linear-gradient(to right, #c9a84c, #e8c847)" }}
-        />
 
         {/* ── CTA ── */}
         <motion.div {...fadeUp(0.6, 20)} className="mt-2">

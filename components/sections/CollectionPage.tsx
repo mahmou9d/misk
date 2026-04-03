@@ -28,7 +28,7 @@ function Dropdown({
   isArabic: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [coords, setCoords] = useState({ top: 0, left: 0, width: 260 });
+  const [coords, setCoords] = useState({ top: 0, left: 0, width: 275 });
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -45,7 +45,7 @@ function Dropdown({
     const updateCoords = () => {
       if (!ref.current) return;
       const rect = ref.current.getBoundingClientRect();
-      const dropdownWidth = 260;
+      const dropdownWidth = 275;
       const screenWidth = window.innerWidth;
       const padding = 8;
 
@@ -124,8 +124,6 @@ function ProductSkeleton() {
 export default function CollectionPage({ category }: { category: string }) {
   const { t, isArabic, dir } = useTranslation();
   const [sort, setSort] = useState("featured");
-  const [sortOpen, setSortOpen] = useState(false);
-  const [availOpen, setAvailOpen] = useState(false);
   const [priceOpen, setPriceOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [availFilter, setAvailFilter] = useState<string[]>([]);
@@ -150,6 +148,8 @@ const { data, isLoading, isError } = useGetProducts({
       : selectedCategories.length > 0
         ? selectedCategories.join(",")
         : decodedTwice,
+  min_price: minPrice ? Number(minPrice) : undefined,
+  max_price: maxPrice ? Number(maxPrice) : undefined,
 });
 
   const nextPage = data?.next ?? null;
@@ -174,51 +174,14 @@ const { data, isLoading, isError } = useGetProducts({
     selectedCategories,
   ]);
 
-  const sortOptions = getSortOptions(t.collectionPage.sortData);
-
-  // ✅ فلترة الكاتيجوري الأساسية من الـ URL
   let products = data?.products ?? [];
 
-  // ✅ لو في selectedCategories هيفلتر بيهم (multi-select)
-  // بيجيب المنتجات اللي فيها أي كاتيجوري من المختارين
   if (selectedCategories.length > 0)
     products = products.filter((p) =>
       selectedCategories.some((c) => p.categories.includes(c)),
     );
 
-  if (availFilter.includes("in-stock") && !availFilter.includes("out-of-stock"))
-    products = products.filter((p) => p.is_active);
-  if (availFilter.includes("out-of-stock") && !availFilter.includes("in-stock"))
-    products = products.filter((p) => !p.is_active);
-  if (minPrice)
-    products = products.filter((p) => Number(p.price) >= Number(minPrice));
-  if (maxPrice)
-    products = products.filter((p) => Number(p.price) <= Number(maxPrice));
-
   const sorted = applySort(products, sort);
-
-  const inStockCount = allProducts.filter(
-    (p) =>
-      (decodedTwice === "all" ||
-        p.categories.includes(categoryName?.name as string)) &&
-      p.is_active,
-  ).length;
-
-  const outStockCount = allProducts.filter(
-    (p) =>
-      (decodedTwice === "all" ||
-        p.categories.includes(categoryName?.name as string)) &&
-      !p.is_active,
-  ).length;
-
-  const toggleAvail = (v: string) =>
-    setAvailFilter((f) =>
-      f.includes(v) ? f.filter((x) => x !== v) : [...f, v],
-    );
-
-  const currentSortLabel =
-    sortOptions.find((o) => o.value === sort)?.label ??
-    t.collectionPage.sortData.featured;
 
   const activeFilters =
     availFilter.length +
@@ -263,58 +226,6 @@ const { data, isLoading, isError } = useGetProducts({
                   )}
                 </div>
 
-                <Dropdown
-                  open={availOpen}
-                  setOpen={setAvailOpen}
-                  isArabic={isArabic}
-                  trigger={t.collectionPage.availability}
-                >
-                  <div className="p-6">
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-[13px] font-bold text-gray-400 uppercase">
-                        {availFilter.length} {t.collectionPage.selected}
-                      </span>
-                      <button
-                        onClick={() => setAvailFilter([])}
-                        className="text-[13px] font-bold text-[#c9a84c] underline bg-transparent border-none cursor-pointer"
-                      >
-                        {t.collectionPage.reset}
-                      </button>
-                    </div>
-                    {[
-                      {
-                        value: "in-stock",
-                        label: t.collectionPage.inStock,
-                        count: inStockCount,
-                      },
-                      {
-                        value: "out-of-stock",
-                        label: t.collectionPage.outOfStock,
-                        count: outStockCount,
-                      },
-                    ].map((opt) => (
-                      <label
-                        key={opt.value}
-                        className="flex items-center justify-between cursor-pointer py-2 hover:translate-x-1 transition-transform"
-                      >
-                        <div className="flex items-center gap-3">
-                          <input
-                            type="checkbox"
-                            checked={availFilter.includes(opt.value)}
-                            onChange={() => toggleAvail(opt.value)}
-                            className="w-5 h-5 accent-[#c9a84c]"
-                          />
-                          <span className="text-[15px] font-medium text-gray-700">
-                            {opt.label}
-                          </span>
-                        </div>
-                        <span className="text-[13px] text-gray-400">
-                          ({opt.count})
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </Dropdown>
 
                 <Dropdown
                   open={priceOpen}
@@ -401,39 +312,7 @@ const { data, isLoading, isError } = useGetProducts({
 
               {/* Sort + Count */}
               <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-6">
-                <Dropdown
-                  open={sortOpen}
-                  setOpen={setSortOpen}
-                  isArabic={isArabic}
-                  trigger={
-                    <>
-                      <span className="text-gray-400 font-normal">
-                        {t.collectionPage.sort}:
-                      </span>{" "}
-                      {currentSortLabel}
-                    </>
-                  }
-                >
-                  <div className="py-2">
-                    {sortOptions.map((o) => (
-                      <button
-                        key={o.value}
-                        onClick={() => {
-                          setSort(o.value);
-                          setSortOpen(false);
-                        }}
-                        className={`w-full text-start px-6 py-3 text-[15px] transition-colors ${
-                          sort === o.value
-                            ? "text-[#c9a84c] bg-gray-50 font-bold"
-                            : "text-gray-600 hover:bg-gray-50"
-                        }`}
-                      >
-                        {o.label}
-                      </button>
-                    ))}
-                  </div>
-                </Dropdown>
-                <span className="text-[14px] font-bold text-gray-300 uppercase">
+                <span className="text-[14px] font-bold text-gray-600 uppercase">
                   {products.length} {t.collectionPage.products}
                 </span>
               </div>

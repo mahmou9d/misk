@@ -214,39 +214,6 @@ export default function ReturnPolicy() {
               </motion.div>
             ))}
           </motion.div>
-
-          {/* Footer Note - شكل "Glassmorphism" خفيف */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-20 p-8 md:p-10 bg-gray-50 rounded-[32px] border border-gray-100 flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-start"
-          >
-            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#c9a84c"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="12" />
-                <line x1="12" y1="16" x2="12.01" y2="16" />
-              </svg>
-            </div>
-            <p
-              className={`text-[15px] md:text-[16px] text-gray-500 font-medium m-0 ${isArabic ? "leading-[2]" : "leading-[1.7]"}`}
-            >
-              {t.returnPolicy.footerNote}{" "}
-              <span className="text-[#c9a84c] font-bold uppercase -wider">
-                {t.returnPolicy.footerSuffix}
-              </span>
-            </p>
-          </motion.div>
         </div>
       </section>
       <Footer />

@@ -152,30 +152,6 @@ export default function PrivacyPolicy() {
             </p>
           </motion.div>
 
-          {/* Quick Nav */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.4 }}
-            className="py-6 md:py-8 border-b border-[#c9a84c1f] mb-2"
-          >
-            <p
-              className={` text-[9px] text-[#c8c0d4] mb-3.5 ${isArabic ? "-[0px] normal-case" : "-[3.5px] uppercase"}`}
-            >
-              {t.privacyPolicy.contents}
-            </p>
-            <div className="flex flex-wrap gap-x-3 gap-y-2">
-              {sections.map((s, i) => (
-                <span
-                  key={i}
-                  className={` text-[12.5px] text-[#8a7f99] bg-[#faf9fc] border border-[#c9a84c1f] px-2.5 py-0.5 rounded-full ${isArabic ? "-[0px]" : "-[0.2px]"}`}
-                >
-                  {s.short}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-
           {/* Accordion */}
           <motion.div
             variants={{ show: { transition: { staggerChildren: 0.05 } } }}
