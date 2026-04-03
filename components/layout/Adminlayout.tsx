@@ -11,7 +11,8 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { isArabic } = useTranslation(); // جلب حالة اللغة
+  const { isArabic } = useTranslation(); 
+
 
   return (
     <div

@@ -41,7 +41,13 @@ const { data, isLoading } = useGetProducts({ category });
       {/* ── Background Decoration ── */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 opacity-[0.03] select-none pointer-events-none">
         <h2 className="text-[45px] md:text-[90px] lg:text-[180px] font-serif font-bold whitespace-nowrap uppercase">
-          {isArabic ? CATEGORY_MAP[tab].ar : CATEGORY_MAP[tab].en}
+          {CATEGORY_MAP[tab].en === "Men" ||
+          CATEGORY_MAP[tab].en === "Women" ||
+          CATEGORY_MAP[tab].en === "Unisex"
+            ? CATEGORY_MAP[tab].en
+            : isArabic
+              ? CATEGORY_MAP[tab].ar
+              : CATEGORY_MAP[tab].en}
         </h2>
       </div>
 
@@ -49,7 +55,7 @@ const { data, isLoading } = useGetProducts({ category });
         {/* ── Header & Tabs ── */}
         <div className="flex flex-col items-center mb-24">
           <span className="text-[#c9a84c] text-[20px] font-bold uppercase mb-10 opacity-80">
-            {t.productGrid.title}
+            Misk Perfume
           </span>
 
           <div className="inline-flex items-center p-1.5 bg-white border border-gray-100 rounded-full shadow-sm">
@@ -57,12 +63,18 @@ const { data, isLoading } = useGetProducts({ category });
               <button
                 key={tabKey}
                 onClick={() => setTab(tabKey)}
-                className={`relative px-5 lg:px-12 py-3 rounded-full text-[13px] font-bold uppercase transition-all duration-500
+                className={`relative px-4 lg:px-12 py-2 md:py-4 rounded-full text-[13px] font-bold uppercase transition-all duration-500
                   ${tab === tabKey ? "text-white" : "text-gray-400 hover:text-gray-900"}
                   ${isArabic ? "text-[14px]" : "tracking-[0.2em]"}`}
               >
                 <span className="relative z-10">
-                  {isArabic ? CATEGORY_MAP[tabKey].ar : CATEGORY_MAP[tabKey].en}
+                  {CATEGORY_MAP[tabKey].en === "Men" ||
+                  CATEGORY_MAP[tabKey].en === "Women" ||
+                  CATEGORY_MAP[tabKey].en === "Unisex"
+                    ? CATEGORY_MAP[tabKey].en
+                    : isArabic
+                      ? CATEGORY_MAP[tabKey].ar
+                      : CATEGORY_MAP[tabKey].en}
                 </span>
                 {tab === tabKey && (
                   <motion.div

@@ -28,6 +28,8 @@ export default function Page() {
     const CATEGORY_MAP2: Record<TabKey2, { en: string; ar: string }> = {
       BodySplash: { en: "Body Splash", ar: "بادي سبلاش" },
       Niche: { en: "Niche", ar: "النيش" },
+      Makhmaryat: { en: "Makhmaryat", ar: "مخمريات" },
+      incense: { en: "incense", ar: "بخور" },
     };
   return (
     <main>

@@ -90,6 +90,7 @@ function UserActions({ locale }: { locale: string }) {
   const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
   const [isAdmin, setIsAdmin] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     setMounted(true);
@@ -123,6 +124,10 @@ function UserActions({ locale }: { locale: string }) {
       </Link>
     );
 
+  const handleDashboardClick = () => {
+    queryClient.clear();
+  };
+
   return (
     <div className="flex items-center gap-[12px]">
       {isAdmin && (
@@ -131,6 +136,7 @@ function UserActions({ locale }: { locale: string }) {
             href={`/${locale.toLowerCase()}/admin`}
             className="p-2.5 rounded-full transition-all duration-200 flex items-center group text-[#666]"
             title={t.navbar.dashboard}
+            onClick={handleDashboardClick}
           >
             <span className="group-hover:text-[var(--purple-deep)] transition-colors">
               <DashboardIcon />
@@ -276,6 +282,7 @@ const EASE: [number, number, number, number] = [0.32, 0.132, 0, 1];
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
+  
   const { t, isArabic, locale, dir } = useTranslation();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [catsOpen, setCatsOpen] = useState(false);

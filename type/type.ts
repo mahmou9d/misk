@@ -486,4 +486,4 @@ export interface SiteSettings {
 }
 
 export type TabKey1 = "Men" | "Unisex" | "Women";
-export type TabKey2 = "BodySplash" | "Niche";
+export type TabKey2 = "BodySplash" | "Niche"|"Makhmaryat"| "incense";
