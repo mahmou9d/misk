@@ -103,7 +103,7 @@ export default function SearchPage() {
               ref={searchContainerRef}
               className="relative max-w-4xl mx-auto mb-12"
             >
-              <div className="flex flex-col md:flex-row gap-3 items-center bg-white px-3 py-2 rounded-2xl border border-gray-200 shadow-sm focus-within:shadow-md focus-within:border-yellow-400/60 transition-all duration-300">
+              <div className="flex flex-col md:flex-row gap-3 items-end bg-white px-3 py-2 rounded-2xl border border-gray-200 shadow-sm focus-within:shadow-md focus-within:border-yellow-400/60 transition-all duration-300">
                 <CategoryDropdown
                   categories={categories ?? []}
                   selectedCategories={selectedCategories}
