@@ -40,7 +40,7 @@ const { data, isLoading } = useGetProducts({ category });
     >
       {/* ── Background Decoration ── */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 opacity-[0.03] select-none pointer-events-none">
-        <h2 className="text-[60px] md:text-[90px] lg:text-[180px] font-serif font-bold whitespace-nowrap uppercase">
+        <h2 className="text-[45px] md:text-[90px] lg:text-[180px] font-serif font-bold whitespace-nowrap uppercase">
           {isArabic ? CATEGORY_MAP[tab].ar : CATEGORY_MAP[tab].en}
         </h2>
       </div>
