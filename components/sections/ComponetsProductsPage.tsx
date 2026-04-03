@@ -445,13 +445,13 @@ export function VRow({
 /* ─── Admin Category Dropdown ─── */
 export default function AdminCategoryDropdown({
   categories,
-  selectedCategory,
+  selectedCategories,
   onSelect,
   isArabic,
 }: {
   categories: { value: string; label: string }[];
-  selectedCategory: string;
-  onSelect: (catId: string) => void;
+  selectedCategories: string[];
+  onSelect: (cats: string[]) => void;
   isArabic: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -459,30 +459,59 @@ export default function AdminCategoryDropdown({
   const panelRef = useRef<HTMLDivElement>(null);
   const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
 
-  const selectedName = categories?.find((c) => c.value === selectedCategory)?.label;
+  const hasSelection = selectedCategories.length > 0;
 
   const handleOpen = () => {
     if (triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect();
-      const panelWidth = 200;
+      const panelWidth = 220;
       let left = isArabic ? rect.left : rect.right - panelWidth;
       if (left < 8) left = 8;
-      if (left + panelWidth > window.innerWidth - 8) left = window.innerWidth - panelWidth - 8;
+      if (left + panelWidth > window.innerWidth - 8)
+        left = window.innerWidth - panelWidth - 8;
       setDropdownPos({ top: rect.bottom + 8, left });
     }
     setOpen((v) => !v);
   };
 
+  const toggle = (val: string) => {
+    if (!val) {
+      onSelect([]);
+      return;
+    }
+    if (selectedCategories.includes(val)) {
+      onSelect(selectedCategories.filter((c) => c !== val));
+    } else {
+      onSelect([...selectedCategories, val]);
+    }
+  };
+
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (
-        triggerRef.current && !triggerRef.current.contains(e.target as Node) &&
-        panelRef.current && !panelRef.current.contains(e.target as Node)
-      ) setOpen(false);
+        triggerRef.current &&
+        !triggerRef.current.contains(e.target as Node) &&
+        panelRef.current &&
+        !panelRef.current.contains(e.target as Node)
+      )
+        setOpen(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+  const triggerLabel = () => {
+    if (!hasSelection) return isArabic ? "الفئة" : "Category";
+    if (selectedCategories.length === 1) {
+      return (
+        categories.find((c) => c.value === selectedCategories[0])?.label ??
+        selectedCategories[0]
+      );
+    }
+    return isArabic
+      ? `${selectedCategories.length} فئات`
+      : `${selectedCategories.length} Categories`;
+  };
 
   const panel = (
     <div
@@ -491,26 +520,37 @@ export default function AdminCategoryDropdown({
         position: "fixed",
         top: dropdownPos.top,
         left: dropdownPos.left,
-        minWidth: 200,
+        minWidth: 220,
         zIndex: 9999,
         direction: isArabic ? "rtl" : "ltr",
       }}
-      className="bg-[#1a1d29] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden"
+      className="bg-[#1a1d29] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden border border-white/10"
     >
-      <div className="py-1.5 max-h-[280px] overflow-y-auto">
-        {/* All option */}
+      <div className="py-1.5 max-h-[300px] overflow-y-auto">
+        {/* Clear All */}
         <button
-          onClick={() => { onSelect(""); setOpen(false); }}
+          onClick={() => {
+            onSelect([]);
+            setOpen(false);
+          }}
           className={`w-full text-start px-4 py-2.5 text-[13px] font-bold flex items-center justify-between transition-colors
-            ${selectedCategory === ""
-              ? "text-[#fda481] bg-white/5"
-              : "text-gray-400 hover:bg-white/5 hover:text-white"
+            ${
+              !hasSelection
+                ? "text-[#fda481] bg-white/5"
+                : "text-gray-400 hover:bg-white/5 hover:text-white"
             }`}
         >
           {isArabic ? "كل الفئات" : "All Categories"}
-          {selectedCategory === "" && (
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-              stroke="#fda481" strokeWidth="2.5" strokeLinecap="round">
+          {!hasSelection && (
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#fda481"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            >
               <polyline points="20 6 9 17 4 12" />
             </svg>
           )}
@@ -518,29 +558,67 @@ export default function AdminCategoryDropdown({
 
         <div className="h-px bg-white/10 mx-3 my-1" />
 
-        {categories.slice(1)?.map((cat) => {
-          const active = cat.value === selectedCategory;
+        {categories.slice(1).map((cat) => {
+          const active = selectedCategories.includes(cat.value);
           return (
             <button
               key={cat.value}
-              onClick={() => { onSelect(cat.value); setOpen(false); }}
-              className={`w-full text-start px-4 py-2.5 text-[13px] flex items-center justify-between transition-colors
-                ${active
-                  ? "text-[#fda481] bg-white/5 font-bold"
-                  : "text-gray-400 hover:bg-white/5 hover:text-white font-medium"
+              onClick={() => toggle(cat.value)}
+              className={`w-full text-start px-4 py-2.5 text-[13px] flex items-center gap-2.5 transition-colors
+                ${
+                  active
+                    ? "text-[#fda481] bg-white/5 font-bold"
+                    : "text-gray-400 hover:bg-white/5 hover:text-white font-medium"
                 }`}
             >
+              {/* Checkbox */}
+              <span
+                className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all
+                ${
+                  active
+                    ? "bg-gradient-to-br from-[#fda481] to-[#b4182d] border-transparent"
+                    : "border-white/20 bg-white/5"
+                }`}
+              >
+                {active && (
+                  <svg
+                    className="w-2.5 h-2.5 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                )}
+              </span>
               {cat.label}
-              {active && (
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                  stroke="#fda481" strokeWidth="2.5" strokeLinecap="round">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              )}
             </button>
           );
         })}
       </div>
+
+      {/* Footer — apply & clear */}
+      {hasSelection && (
+        <div className="border-t border-white/10 px-3 py-2 flex gap-2">
+          <button
+            onClick={() => onSelect([])}
+            className="flex-1 text-[12px] text-gray-400 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+          >
+            {isArabic ? "مسح الكل" : "Clear"}
+          </button>
+          <button
+            onClick={() => setOpen(false)}
+            className="flex-1 text-[12px] font-bold text-white py-1.5 rounded-lg bg-gradient-to-r from-[#fda481] to-[#b4182d] hover:opacity-90 transition-opacity"
+          >
+            {isArabic ? "تطبيق" : "Apply"}
+          </button>
+        </div>
+      )}
     </div>
   );
 
@@ -550,33 +628,46 @@ export default function AdminCategoryDropdown({
         ref={triggerRef}
         onClick={handleOpen}
         className={`flex items-center gap-2 h-[42px] px-4 rounded-xl border text-[13px] font-bold transition-all duration-200 whitespace-nowrap cursor-pointer
-          ${selectedCategory
-            ? "bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white border-transparent shadow-lg shadow-[#b4182d]/20"
-            : "bg-[#1a1d29] border-white/10 text-gray-400 hover:border-white/20 hover:text-white"
+          ${
+            hasSelection
+              ? "bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white border-transparent shadow-lg shadow-[#b4182d]/20"
+              : "bg-[#1a1d29] border-white/10 text-gray-400 hover:border-white/20 hover:text-white"
           }`}
       >
-        {/* Filter icon */}
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+        <svg
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        >
           <line x1="4" y1="6" x2="20" y2="6" />
           <line x1="8" y1="12" x2="16" y2="12" />
           <line x1="11" y1="18" x2="13" y2="18" />
         </svg>
-        <span>{ (isArabic ? "الفئة" : "Category")}</span>
-        {/* Chevron */}
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
-          className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}>
+        <span>{triggerLabel()}</span>
+        {hasSelection && (
+          <span className="w-4 h-4 rounded-full bg-white/20 text-[10px] font-black flex items-center justify-center">
+            {selectedCategories.length}
+          </span>
+        )}
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        >
           <polyline points="6 9 12 15 18 9" />
         </svg>
       </button>
-
       {typeof window !== "undefined" &&
-        createPortal(
-          open ? panel : null,
-          document.body
-        )
-      }
+        createPortal(open ? panel : null, document.body)}
     </div>
   );
 }

@@ -14,7 +14,13 @@ import { useTranslation } from "@/lib/Usetranslation";
 import { ArrowDown } from "@/public/svg/Svgs";
 import { useGetCategory } from "@/hooks/useDashboard";
 
-function Dropdown({ trigger, children, open, setOpen, isArabic }: {
+function Dropdown({
+  trigger,
+  children,
+  open,
+  setOpen,
+  isArabic,
+}: {
   trigger: React.ReactNode;
   children: React.ReactNode;
   open: boolean;
@@ -33,37 +39,37 @@ function Dropdown({ trigger, children, open, setOpen, isArabic }: {
     return () => document.removeEventListener("mousedown", handler);
   }, [setOpen]);
 
-useEffect(() => {
-  if (!open) return;
+  useEffect(() => {
+    if (!open) return;
 
-  const updateCoords = () => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const dropdownWidth = 260;
-    const screenWidth = window.innerWidth;
-    const padding = 8;
+    const updateCoords = () => {
+      if (!ref.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const dropdownWidth = 260;
+      const screenWidth = window.innerWidth;
+      const padding = 8;
 
-    let left = isArabic ? rect.right - dropdownWidth : rect.left;
-    if (left + dropdownWidth > screenWidth - padding)
-      left = screenWidth - dropdownWidth - padding;
-    if (left < padding) left = padding;
+      let left = isArabic ? rect.right - dropdownWidth : rect.left;
+      if (left + dropdownWidth > screenWidth - padding)
+        left = screenWidth - dropdownWidth - padding;
+      if (left < padding) left = padding;
 
-    setCoords({
-      top: rect.bottom + 8,
-      left,
-      width: Math.min(dropdownWidth, screenWidth - padding * 2),
-    });
-  };
+      setCoords({
+        top: rect.bottom + 8,
+        left,
+        width: Math.min(dropdownWidth, screenWidth - padding * 2),
+      });
+    };
 
-  updateCoords();
-  window.addEventListener("scroll", updateCoords, true);
-  window.addEventListener("resize", updateCoords);
+    updateCoords();
+    window.addEventListener("scroll", updateCoords, true);
+    window.addEventListener("resize", updateCoords);
 
-  return () => {
-    window.removeEventListener("scroll", updateCoords, true);
-    window.removeEventListener("resize", updateCoords);
-  };
-}, [open, isArabic]);
+    return () => {
+      window.removeEventListener("scroll", updateCoords, true);
+      window.removeEventListener("resize", updateCoords);
+    };
+  }, [open, isArabic]);
 
   return (
     <div ref={ref} className="relative">
@@ -128,18 +134,29 @@ export default function CollectionPage({ category }: { category: string }) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [page, setPage] = useState(1);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-const decodedOnce = decodeURIComponent(category);
-const decodedTwice = decodeURIComponent(decodedOnce);
+
+  const decodedOnce = decodeURIComponent(category);
+  const decodedTwice = decodeURIComponent(decodedOnce);
+
   const { data: categories } = useGetCategory();
-  const { data, isLoading, isError } = useGetProducts({
-    page,
-    category:  decodedTwice==="all"?undefined:decodedTwice,
-  });
+
+const { data, isLoading, isError } = useGetProducts({
+  page,
+  category:
+    decodedTwice === "all"
+      ? selectedCategories.length > 0
+        ? selectedCategories.join(",")
+        : undefined
+      : selectedCategories.length > 0
+        ? selectedCategories.join(",")
+        : decodedTwice,
+});
+
   const nextPage = data?.next ?? null;
   const categoryName = categories?.find(
     (c) => c.name.toUpperCase() === decodedTwice.toUpperCase(),
   );
-console.log(data)
+
   useEffect(() => {
     const products: Product[] = data?.products ?? [];
     if (page === 1) setAllProducts(products);
@@ -159,13 +176,11 @@ console.log(data)
 
   const sortOptions = getSortOptions(t.collectionPage.sortData);
 
-  let products =
-    category === "all"
-      ? [...allProducts]
-      : allProducts.filter((p) =>
-          p.categories.includes(categoryName?.name as string),
-        );
+  // ✅ فلترة الكاتيجوري الأساسية من الـ URL
+  let products = data?.products ?? [];
 
+  // ✅ لو في selectedCategories هيفلتر بيهم (multi-select)
+  // بيجيب المنتجات اللي فيها أي كاتيجوري من المختارين
   if (selectedCategories.length > 0)
     products = products.filter((p) =>
       selectedCategories.some((c) => p.categories.includes(c)),
@@ -181,29 +196,40 @@ console.log(data)
     products = products.filter((p) => Number(p.price) <= Number(maxPrice));
 
   const sorted = applySort(products, sort);
+
   const inStockCount = allProducts.filter(
     (p) =>
-      (category === "all" ||
+      (decodedTwice === "all" ||
         p.categories.includes(categoryName?.name as string)) &&
       p.is_active,
   ).length;
+
   const outStockCount = allProducts.filter(
     (p) =>
-      (category === "all" ||
+      (decodedTwice === "all" ||
         p.categories.includes(categoryName?.name as string)) &&
       !p.is_active,
   ).length;
+
   const toggleAvail = (v: string) =>
     setAvailFilter((f) =>
       f.includes(v) ? f.filter((x) => x !== v) : [...f, v],
     );
+
   const currentSortLabel =
     sortOptions.find((o) => o.value === sort)?.label ??
     t.collectionPage.sortData.featured;
+
   const activeFilters =
     availFilter.length +
     (minPrice || maxPrice ? 1 : 0) +
     selectedCategories.length;
+
+  // ✅ toggle كاتيجوري - يضيف أو يشيل من المختارين
+  const toggleCategory = (name: string) =>
+    setSelectedCategories((prev) =>
+      prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name],
+    );
 
   return (
     <>
@@ -227,7 +253,6 @@ console.log(data)
 
             {/* Filter / Sort bar */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10 py-6 border-y border-gray-100">
-              {/* Filters */}
               <div className="flex flex-wrap items-center gap-4 sm:gap-5">
                 <div className="w-full sm:w-auto flex items-center gap-2 uppercase text-[13px] font-bold text-gray-400">
                   {t.collectionPage.filter}
@@ -335,7 +360,12 @@ console.log(data)
                   open={categoryOpen}
                   setOpen={setCategoryOpen}
                   isArabic={isArabic}
-                  trigger={t.collectionPage.category}
+                  trigger={
+                    // ✅ الـ trigger بيوضح عدد الكاتيجوريز المختارة
+                    selectedCategories.length > 0
+                      ? `${t.collectionPage.category} (${selectedCategories.length})`
+                      : t.collectionPage.category
+                  }
                 >
                   <div className="p-6">
                     <div className="flex justify-between items-center mb-4">
@@ -357,13 +387,7 @@ console.log(data)
                         <input
                           type="checkbox"
                           checked={selectedCategories.includes(cat.name)}
-                          onChange={() =>
-                            setSelectedCategories((prev) =>
-                              prev.includes(cat.name)
-                                ? prev.filter((x) => x !== cat.name)
-                                : [...prev, cat.name],
-                            )
-                          }
+                          onChange={() => toggleCategory(cat.name)}
                           className="w-5 h-5 accent-[#c9a84c]"
                         />
                         <span className="text-[15px] font-medium text-gray-700">

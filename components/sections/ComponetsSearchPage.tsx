@@ -167,12 +167,12 @@ export function PriceSidebar({ min, max, setMin, setMax }: any) {
 
 export function CategoryDropdown({
   categories,
-  selectedCategory,
+  selectedCategories,
   onSelect,
 }: {
   categories: { name: string }[];
-  selectedCategory: string;
-  onSelect: (catId: string) => void;
+  selectedCategories: string[];
+  onSelect: (cats: string[]) => void;
 }) {
   const { isArabic } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -180,20 +180,18 @@ export function CategoryDropdown({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // ✅ احسب position الـ button عشان تحط الـ dropdown تحته بالظبط
   const handleOpen = () => {
     if (triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect();
       setDropdownPos({
         top: rect.bottom + window.scrollY + 8,
-        left: isArabic ? rect.left-50 : rect.right - 150, // 180 = min-width
+        left: isArabic ? rect.left - 50 : rect.right - 150,
         width: Math.max(rect.width, 180),
       });
     }
     setOpen((v) => !v);
   };
 
-  // Close on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (
@@ -208,9 +206,14 @@ export function CategoryDropdown({
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const selectedName = categories?.find(
-    (c) => String(c.name) === selectedCategory,
-  )?.name;
+  // ✅ toggle كاتيجوري - يضيف أو يشيل
+  const toggleCategory = (name: string) => {
+    if (selectedCategories.includes(name)) {
+      onSelect(selectedCategories.filter((x) => x !== name));
+    } else {
+      onSelect([...selectedCategories, name]);
+    }
+  };
 
   const panel = (
     <motion.div
@@ -222,23 +225,25 @@ export function CategoryDropdown({
       style={{
         position: "absolute",
         top: dropdownPos.top,
-        left: dropdownPos.left ,
+        left: dropdownPos.left,
         minWidth: dropdownPos.width,
-        zIndex: 9999, // ✅ فوق كل حاجة
+        zIndex: 9999,
       }}
       className="bg-white rounded-2xl border border-[#c9a84c]/15 shadow-[0_20px_60px_rgba(45,27,105,0.13)] overflow-hidden"
     >
       <div className="py-1.5 max-h-[280px] overflow-y-auto">
+        {/* ✅ زر Reset */}
         <button
-          onClick={() => {
-            onSelect("");
-            setOpen(false);
-          }}
+          onClick={() => onSelect([])}
           className={`w-full text-start px-4 py-2.5 text-[13px] font-bold flex items-center justify-between transition-colors
-            ${selectedCategory === "" ? "text-[#c9a84c] bg-[#c9a84c]/6" : "text-[#4a4255] hover:bg-[#c9a84c]/5 hover:text-[#2d1b69]"}`}
+            ${
+              selectedCategories.length === 0
+                ? "text-[#c9a84c] bg-[#c9a84c]/6"
+                : "text-[#4a4255] hover:bg-[#c9a84c]/5 hover:text-[#2d1b69]"
+            }`}
         >
           {isArabic ? "كل الفئات" : "All Categories"}
-          {selectedCategory === "" && (
+          {selectedCategories.length === 0 && (
             <svg
               width="12"
               height="12"
@@ -253,32 +258,40 @@ export function CategoryDropdown({
           )}
         </button>
         <div className="h-px bg-[#c9a84c]/10 mx-3 my-1" />
+
         {categories?.map((cat) => {
-          const active = String(cat.name) === selectedCategory;
+          const active = selectedCategories.includes(cat.name);
           return (
             <button
               key={cat.name}
-              onClick={() => {
-                onSelect(String(cat.name));
-                setOpen(false);
-              }}
+              onClick={() => toggleCategory(cat.name)}
               className={`w-full text-start px-4 py-2.5 text-[13px] flex items-center justify-between transition-colors
-                ${active ? "text-[#c9a84c] bg-[#c9a84c]/6 font-bold" : "text-[#4a4255] hover:bg-[#c9a84c]/5 hover:text-[#2d1b69] font-medium"}`}
+                ${
+                  active
+                    ? "text-[#c9a84c] bg-[#c9a84c]/6 font-bold"
+                    : "text-[#4a4255] hover:bg-[#c9a84c]/5 hover:text-[#2d1b69] font-medium"
+                }`}
             >
               {cat.name}
-              {active && (
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#c9a84c"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              )}
+              {/* ✅ checkbox بدل checkmark عشان يوضح إن في multi-select */}
+              <div
+                className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-colors
+                ${active ? "bg-[#c9a84c] border-[#c9a84c]" : "border-gray-300"}`}
+              >
+                {active && (
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                )}
+              </div>
             </button>
           );
         })}
@@ -288,19 +301,26 @@ export function CategoryDropdown({
 
   return (
     <div className="relative">
-      {/* Trigger */}
       <button
         ref={triggerRef}
         onClick={handleOpen}
-        className={`flex items-center gap-2 h-[38px] px-4 rounded-[3px] border-2 text-sm font-bold transition-all duration-200 whitespace-nowrap
-          ${
-            selectedCategory
-              ? "bg-gradient-to-br from-[#c9a84c] to-[#e8b840] text-[#1a0a3d] border-transparent shadow-[0_4px_12px_rgba(201,168,76,0.35)]"
-              : "bg-white border-[#c9a84c]/30 text-[#8a7f99] hover:border-[#c9a84c] hover:text-[#c9a84c]"
-          }`}
+        className={`flex items-center gap-2 h-[46px] px-4 rounded-xl text-sm font-semibold transition-all duration-200 whitespace-nowrap
+    ${
+      selectedCategories.length > 0
+        ? "bg-gradient-to-br from-[#c9a84c] to-[#e8b840] text-[#1a0a3d] shadow-[0_2px_12px_rgba(201,168,76,0.3)]"
+        : "bg-[#faf9fc] text-[#8a7f99] hover:bg-[#fff8e6] hover:text-[#c9a84c]"
+    }`}
       >
         <FilterIcon />
-        <span>{selectedName ?? (isArabic ? "الفئة" : "Category")}</span>
+        <span>
+          {selectedCategories.length > 0
+            ? isArabic
+              ? `${selectedCategories.length} فئات`
+              : `${selectedCategories.length} Categories`
+            : isArabic
+              ? "الفئة"
+              : "Category"}
+        </span>
         <svg
           width="10"
           height="10"
@@ -315,7 +335,6 @@ export function CategoryDropdown({
         </svg>
       </button>
 
-      {/* ✅ Portal — يتعرض على body مباشرةً فوق كل حاجة */}
       {typeof window !== "undefined" &&
         createPortal(
           <AnimatePresence>{open && panel}</AnimatePresence>,
@@ -407,8 +426,8 @@ export function SearchBox({
   const [focused, setFocused] = useState(false);
   return (
     <div
-      className={`flex flex-1 items-center gap-[10px] rounded-[3px] h-[52px] ps-4 pe-[6px] transition-all duration-[220ms] border-[1.5px] 
-      ${focused ? "bg-white border-[#c9a84c]/45 shadow-[0_6px_28px_rgba(201,168,76,0.12)]" : "bg-[#faf9fc] border-[#c9a84c]/12"}`}
+      className={`flex flex-1 items-center gap-2 rounded-xl h-[46px] ps-3 pe-[5px] transition-all duration-200 border-2 border-[#c9a84c]
+      ${focused ? "bg-[#fffdf5]" : "bg-transparent"}`}
     >
       <span
         className={`flex shrink-0 transition-colors duration-200 ${focused ? "text-[#c9a84c]" : "text-[#c8c0d4]"}`}
@@ -427,7 +446,7 @@ export function SearchBox({
         }}
         onBlur={() => setFocused(false)}
         placeholder={t.searchComponents.placeholder}
-        className={`flex-1 bg-transparent border-none outline-none text-base text-[#1a1522] text-start ${isArabic ? "-normal" : "-[0.3px]"}`}
+        className={`flex-1 bg-transparent border-none outline-none text-[15px] text-[#1a1522] placeholder:text-[#c8c0d4] text-start ${isArabic ? "tracking-normal" : "tracking-[-0.3px]"}`}
       />
       <AnimatePresence>
         {value && (
@@ -437,17 +456,17 @@ export function SearchBox({
             exit={{ opacity: 0, scale: 0.7 }}
             transition={{ duration: 0.12 }}
             onClick={() => onChange({ target: { value: "" } } as any)}
-            className="bg-black/5 border-none rounded-full w-[22px] h-[22px] cursor-pointer flex items-center justify-center shrink-0 text-[#8a7f99]"
+            className="bg-gray-100 hover:bg-gray-200 border-none rounded-full w-5 h-5 cursor-pointer flex items-center justify-center shrink-0 text-[#8a7f99] transition-colors"
           >
-            <CloseIcon size={9} />
+            <CloseIcon size={8} />
           </motion.button>
         )}
       </AnimatePresence>
       <button
         onClick={() => onSearch(value)}
-        className={`h-[38px] px-[18px] bg-gradient-to-br from-[#2d1b69] to-[#4a2d9e] border-none rounded-[3px] cursor-pointer text-white flex items-center gap-[6px] text-xs shrink-0 transition-all shadow-[0_2px_12px_rgba(45,27,105,0.2)] ${isArabic ? "-normal normal-case" : "-[2px] uppercase"}`}
+        className={`h-[36px] px-5 bg-gradient-to-br from-[#2d1b69] to-[#4a2d9e] hover:from-[#3d2580] hover:to-[#5a3dae] border-none rounded-xl cursor-pointer text-white flex items-center gap-[6px] text-xs shrink-0 transition-all duration-200 shadow-[0_2px_10px_rgba(45,27,105,0.25)] hover:shadow-[0_4px_16px_rgba(45,27,105,0.35)] ${isArabic ? "tracking-normal normal-case" : "tracking-[1.5px] uppercase"}`}
       >
-        <span className="hidden sm:inline leading-[1]">
+        <span className="hidden sm:inline leading-[1] font-semibold">
           {t.searchComponents.searchBtn}
         </span>
         <ArrowIcon flipped={isArabic} />

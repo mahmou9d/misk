@@ -53,7 +53,6 @@ export const loginSchema = z.object({
   });
 // ── Schema ──────────────────────────────────────────────────────────────────
 export const checkoutSchema = z.object({
-  email: z.string().email("Invalid email address"),
   newsEmail: z.boolean().optional(),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),

@@ -46,50 +46,49 @@ export default function CheckoutPage() {
   const discountAmt = discountApplied ? Math.round(subtotal * 0.1) : 0;
   
 
-  const handleSubmit = async (values: CheckoutFormValues) => {
-    setLoading(true);
-    try {
-      const result = await placeOrder({
-        full_name: `${values.firstName} ${values.lastName}`,
-        full_address: values.apt
-          ? `${values.address}, ${values.apt}`
-          : values.address,
-        phone_number: values.phone,
-        country: `Egypt`,
-        order_notes: "",
-        payment_method: values.payment_method,
-        governorate_id: values.governorate_id,
-      });
-      const nextStep = localStorage.setItem(
-        "next_step",
-        JSON.stringify({
-          message: "Order placed successfully",
-          next_step: "success_page",
-          order_id: "a6241fc1-ef0b-4536-890e-557fd8babbc7",
-        }),
-      );
-      if (nextStep !== null) {
-        window.location.href = "/?success=true&order=" + result.order_id;
-      }
-      const orderId = String(result.order_id);
-      if (values.payment_method === "cod") {
-        showNotification(t.checkout.orderSuccess, "success");
-        setLoading(false);
-        return;
-      }
-      setPendingOrderId(orderId);
-      setPendingPhone(values.phone);
+const handleSubmit = async (values: CheckoutFormValues) => {
+  setLoading(true);
+  try {
+    const result = await placeOrder({
+      full_name: `${values.firstName} ${values.lastName}`,
+      full_address: values.apt
+        ? `${values.address}, ${values.apt}`
+        : values.address,
+      phone_number: values.phone,
+      country: `Egypt`,
+      order_notes: "",
+      payment_method: values.payment_method,
+      governorate_id: values.governorate_id,
+    });
+
+    // امسح الـ localStorage block ده كله
+    // const nextStep = localStorage.setItem(...)  ← احذفه
+    // if (nextStep !== null) { ... }              ← احذفه
+
+    const orderId = String(result.order_id);
+
+    if (values.payment_method === "cod") {
+      showNotification(t.checkout.orderSuccess, "success");
       setLoading(false);
-      setShowPayModal(true);
-    } catch (err: unknown) {
-      const error = err as AxiosError<ErrorResponse>;
-      showNotification(
-        error?.response?.data?.message || t.checkout.orderError,
-        "error",
-      );
-      setLoading(false);
+      // هنا تعمل redirect للـ success page
+      window.location.href = "/?success=true&order=" + orderId;
+      return;
     }
-  };
+
+    // Paymob
+    setPendingOrderId(orderId);
+    setPendingPhone(values.phone);
+    setLoading(false);
+    setShowPayModal(true);
+  } catch (err: unknown) {
+    const error = err as AxiosError<ErrorResponse>;
+    showNotification(
+      error?.response?.data?.message || t.checkout.orderError,
+      "error",
+    );
+    setLoading(false);
+  }
+};
 
   const handlePayWithWallet = async (walletNumber: string) => {
     if (!pendingOrderId) return;

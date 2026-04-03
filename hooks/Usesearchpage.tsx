@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -7,7 +8,13 @@ import { Product } from "@/type/type";
 import { useTranslation } from "@/lib/Usetranslation";
 import { useGetCategory } from "./useDashboard";
 
-export function useSearchPage({ page, search }: { page: number; search: string }) {
+export function useSearchPage({
+  page,
+  search,
+}: {
+  page: number;
+  search: string;
+}) {
   const { locale } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -16,7 +23,7 @@ export function useSearchPage({ page, search }: { page: number; search: string }
   const [showSuggest, setShowSuggest] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const { data: categories } = useGetCategory();
-const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
@@ -24,15 +31,16 @@ const [selectedCategory, setSelectedCategory] = useState("");
   const [availFilter, setAvailFilter] = useState<string[]>([]);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
- const isSearchMode = urlQuery.trim().length > 0;
+  const isSearchMode = urlQuery.trim().length > 0;
   const { data, isLoading } = useGetProducts({
-    all: isSearchMode || selectedCategory ? true : undefined,
+    all: undefined,
     page:
-      isSearchMode || minPrice || maxPrice || selectedCategory
+      isSearchMode || minPrice || maxPrice || selectedCategories.length > 0
         ? undefined
         : page,
     search: urlQuery || undefined,
-    category: selectedCategory || urlQuery || undefined,
+    category:
+      selectedCategories.length > 0 ? selectedCategories.join(",") : undefined,
     min_price: minPrice ? Number(minPrice) : undefined,
     max_price: maxPrice ? Number(maxPrice) : undefined,
   });
@@ -72,23 +80,40 @@ const [selectedCategory, setSelectedCategory] = useState("");
       : allProducts;
 
   /* ── Filtered + sorted results ── */
- 
 
- let results = allProducts.filter((p) => {
-   const matchSearch =
-     !isSearchMode ||
-     p.name.toLowerCase().includes(urlQuery.toLowerCase()) ||
-     (p.fregrance_family ?? "")
-       .toLowerCase()
-       .includes(urlQuery.toLowerCase()) ||
-     (p.category_name ?? "").toLowerCase().includes(urlQuery.toLowerCase()) ||
-     (p.description ?? "").toLowerCase().includes(urlQuery.toLowerCase());
-   const matchCategory =
-     !selectedCategory ||
-     String(p.categories) === selectedCategory ||
-     String(p.categories) === selectedCategory;
-   return matchSearch && matchCategory;
- });
+  // غير فلترة الـ results
+  // في useSearchPage — غيّر الـ results filter
+  let results = allProducts.filter((p) => {
+    const matchSearch =
+      !isSearchMode ||
+      p.name.toLowerCase().includes(urlQuery.toLowerCase()) ||
+      (p.fregrance_family ?? "")
+        .toLowerCase()
+        .includes(urlQuery.toLowerCase()) ||
+      (p.category_name ?? "").toLowerCase().includes(urlQuery.toLowerCase()) ||
+      (p.description ?? "").toLowerCase().includes(urlQuery.toLowerCase());
+
+    // ✅ الفلتر الصح
+    const matchCategory =
+      selectedCategories.length === 0 ||
+      selectedCategories.some((selected) => {
+        // جرب كل الحالات الممكنة للـ shape
+        const cats: string[] = Array.isArray(p.categories)
+          ? p.categories.map((c: any) =>
+              typeof c === "object" ? (c.name ?? c.name_en ?? "") : String(c),
+            )
+          : [];
+
+        return (
+          cats.includes(selected) ||
+          p.category_name === selected ||
+          (p as any).category_name_ar === selected ||
+          (p as any).category_name_en === selected
+        );
+      });
+
+    return matchSearch && matchCategory;
+  });
 
   if (availFilter.includes("in-stock") && !availFilter.includes("out-of-stock"))
     results = results.filter((p) => p.is_active);
@@ -103,18 +128,19 @@ const [selectedCategory, setSelectedCategory] = useState("");
   const inCount = results.filter((p) => p.is_active).length;
   const outCount = results.filter((p) => !p.is_active).length;
 
- const activeFilters =
-   availFilter.length +
-   (minPrice || maxPrice ? 1 : 0) +
-   (sort !== "relevance" ? 1 : 0) +
-   (selectedCategory ? 1 : 0);
+  // غير activeFilters
+  const activeFilters =
+    availFilter.length +
+    (minPrice || maxPrice ? 1 : 0) +
+    (sort !== "relevance" ? 1 : 0) +
+    (selectedCategories.length > 0 ? selectedCategories.length : 0);
   /* ── Actions ── */
   const clearAllFilters = () => {
     setAvailFilter([]);
     setMinPrice("");
     setMaxPrice("");
     setSort("relevance");
-    setSelectedCategory(""); // ✅ جديد
+    setSelectedCategories([]); // ✅
   };
 
   const doSearch = useCallback(
@@ -189,8 +215,8 @@ const [selectedCategory, setSelectedCategory] = useState("");
     activeFilters,
     clearAllFilters,
     categories,
-    selectedCategory,
-    setSelectedCategory,
+    selectedCategories,
+    setSelectedCategories,
     /* results */
     allProducts,
     isLoading,

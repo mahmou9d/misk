@@ -49,22 +49,26 @@ export function useProductPage({
 }) {
   const queryClient = useQueryClient();
   const [tab, setTab] = useState<TabType>("create");
-const {  isArabic } = useTranslation();
+  const { isArabic } = useTranslation();
   const { data: categories } = useGetCategory();
-  const categoriesEn = categories?.filter((c) => c.name===category);
-  console.log(categoriesEn,"p")
-const productsParams = {
-  all: true,
-  search: search || undefined,
-  category: category || undefined,
-  ...(search || category ? {} : { page: page }),
-};
+  const categoriesEn = categories?.filter((c) => c.name === category);
+  console.log(categoriesEn, "p");
+  
+  const productsParams = {
+    all: true,
+    search: search || undefined,
+    category: category || undefined,
+    ...(search || category ? {} : { page: page }),
+  };
   const { data: productsData, isLoading: loadingProducts } =
     useGetProducts(productsParams);
 
   const catOptions = [
     { value: "", label: "Select category…" },
-    ...(categories?.map((c) => ({ value: isArabic ? c.name_ar : c.name_en, label:isArabic ? c.name_ar : c.name_en })) ?? []),
+    ...(categories?.map((c) => ({
+      value: isArabic ? c.name_ar : c.name_en,
+      label: isArabic ? c.name_ar : c.name_en,
+    })) ?? []),
   ];
 
   /* ---- Notification ---- */
@@ -108,19 +112,19 @@ const productsParams = {
   const { mutate: deleteProd, isPending: deletingProd } = useDeleteProduct();
   const [confirmDeletePid, setConfirmDeletePid] = useState<number | null>(null);
 
-const sc =
-  (k: string) =>
-  (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
-  ) => {
-    const value =
-      e.target.type === "checkbox"
-        ? (e.target as HTMLInputElement).checked
-        : e.target.value;
-    setCf((f) => ({ ...f, [k]: value }));
-  };
+  const sc =
+    (k: string) =>
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+      >,
+    ) => {
+      const value =
+        e.target.type === "checkbox"
+          ? (e.target as HTMLInputElement).checked
+          : e.target.value;
+      setCf((f) => ({ ...f, [k]: value }));
+    };
 
   // ✅ setter خاص للـ categories (بتاخد string[])
   const setCfCategories = (names: string[]) =>
@@ -208,11 +212,11 @@ const sc =
     setEStep("idle");
   }, [singleProduct]);
 
-const se = (k: string) => (e: any) => {
-  const value =
-    e.target.type === "checkbox" ? e.target.checked : e.target.value;
-  setEf((f) => ({ ...f, [k]: value }));
-};
+  const se = (k: string) => (e: any) => {
+    const value =
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    setEf((f) => ({ ...f, [k]: value }));
+  };
   // ✅ setter خاص للـ categories في Edit
   const setEfCategories = (names: string[]) =>
     setEf((f) => ({ ...f, categories: names }));
@@ -618,6 +622,6 @@ const se = (k: string) => (e: any) => {
     handleDeleteVariant,
     queryClient,
     setCf,
-    setEf
+    setEf,
   };
 }

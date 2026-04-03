@@ -411,7 +411,7 @@ export default function ProductsPage() {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(searchTerm);
@@ -476,10 +476,10 @@ export default function ProductsPage() {
     setCf,
     setEf,
   } = useProductPage({
-    page,
-    search: debouncedSearch,
-    category: selectedCategory || undefined,
-  });
+      page,
+      search: debouncedSearch,
+      category: selectedCategories.join(",") || undefined,
+    });
 
   const C_STEP_LBL: Record<string, string> = {
     idle: p.steps.create.idle,
@@ -605,9 +605,9 @@ export default function ProductsPage() {
         <div className="flex items-center gap-4 flex-1">
           <AdminCategoryDropdown
             categories={catOptions}
-            selectedCategory={selectedCategory}
-            onSelect={(val) => {
-              setSelectedCategory(val);
+            selectedCategories={selectedCategories}
+            onSelect={(cats) => {
+              setSelectedCategories(cats);
               setPage(1);
             }}
             isArabic={isArabic}

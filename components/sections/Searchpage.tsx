@@ -66,8 +66,9 @@ export default function SearchPage() {
     prevPage,
     allProducts,
     categories,
-    selectedCategory,
-    setSelectedCategory,
+    selectedCategories,
+    setSelectedCategories,
+    sorted,
   } = searchParams;
 
   // Optimized Handlers
@@ -102,30 +103,32 @@ export default function SearchPage() {
               ref={searchContainerRef}
               className="relative max-w-4xl mx-auto mb-12"
             >
-              <div className="group flex flex-col md:flex-row gap-4 items-center bg-gray-50/80 backdrop-blur-sm p-2 rounded-[24px] border border-gray-100 shadow-sm focus-within:shadow-md focus-within:border-[#c9a84c/40] transition-all duration-300">
+              <div className="flex flex-col md:flex-row gap-3 items-center bg-white px-3 py-2 rounded-2xl border border-gray-200 shadow-sm focus-within:shadow-md focus-within:border-yellow-400/60 transition-all duration-300">
                 <CategoryDropdown
                   categories={categories ?? []}
-                  selectedCategory={selectedCategory}
-                  onSelect={setSelectedCategory}
+                  selectedCategories={selectedCategories}
+                  onSelect={setSelectedCategories}
                 />
 
-                <div className="hidden lg:block h-8 w-[1px] bg-gray-200" />
+                <div className="hidden lg:block h-7 w-px bg-gray-100" />
+
                 <div className="flex-1 w-full">
                   <SearchBox
                     value={inputVal}
                     onChange={(e: any) => {
                       setInputVal(e.target.value);
                       setShowSuggest(true);
-                      setSearchTerm(e.target.value); // Sync with our debounce
+                      setSearchTerm(e.target.value);
                     }}
                     onSearch={doSearch}
                     onFocus={() => setShowSuggest(true)}
                     inputRef={inputRef}
                   />
                 </div>
-                <div className="hidden lg:block h-8 w-[1px] bg-gray-200 mx-2" />
-                <div className="w-full md:w-auto px-4">
-                  {/* Filter Trigger / Sidebar */}
+
+                <div className="hidden lg:block h-7 w-px bg-gray-100" />
+
+                <div className="w-full md:w-auto">
                   <SidebarContent {...sidebarProps} />
                 </div>
               </div>
@@ -150,8 +153,8 @@ export default function SearchPage() {
                       </h1>
                       {!isLoading && (
                         <span className="text-xs font-bold text-gray-500 bg-gray-100 px-3 py-1.5 rounded-full">
-                          {allProducts.length}{" "}
-                          {allProducts.length === 1
+                          {sorted.length}{" "}
+                          {sorted.length === 1
                             ? t.search.result
                             : t.search.results}
                         </span>
@@ -185,7 +188,7 @@ export default function SearchPage() {
                   <ProductSkeleton key={i} />
                 ))}
               </div>
-            ) : allProducts.length === 0 ? (
+            ) : sorted.length === 0 ? (
               /* No Results State - Enhanced UI */
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -218,7 +221,7 @@ export default function SearchPage() {
                   className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-8 md:gap-y-12"
                   layout
                 >
-                  {allProducts.map((p, i) => (
+                  {sorted.map((p, i) => (
                     <motion.div
                       key={p.id}
                       initial={{ opacity: 0, y: 20 }}

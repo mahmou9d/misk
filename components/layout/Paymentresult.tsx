@@ -137,7 +137,7 @@ function CodSuccessModal({ onClose }: { onClose: () => void }) {
               {t.paymentPopup.success.continueShopping}
             </Link>
             <Link
-              href={`/${locale.toLowerCase()}`}
+              href={`/${locale.toLowerCase()}/orderhistory`}
               onClick={onClose}
               className="w-full py-3.5 rounded-xl border border-green-600 text-green-600 hover:bg-green-50 text-[0.9rem] font-bold text-center no-underline transition-colors block"
             >

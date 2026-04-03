@@ -146,7 +146,6 @@ export function CheckoutForm({
     selectedGov?.shipping_fee ?? governorates?.[0]?.shipping_fee ?? "0";
 
   const translatedErrors = {
-    email: errors.email ? t.checkoutForm.errors.email : undefined,
     firstName: errors.firstName ? t.checkoutForm.errors.firstName : undefined,
     lastName: errors.lastName ? t.checkoutForm.errors.lastName : undefined,
     address: errors.address ? t.checkoutForm.errors.address : undefined,
@@ -239,7 +238,7 @@ export function CheckoutForm({
                 </option>
                 {governorates?.map((g: Governorate, i: number) => (
                   <option key={g.id} value={g.id}>
-                    {isArabic ? ( g.name) : g.name}
+                    {isArabic ? g.name : g.name}
                   </option>
                 ))}
               </select>
@@ -258,17 +257,6 @@ export function CheckoutForm({
             error={translatedErrors.phone}
             {...register("phone")}
           />
-
-          <label className="flex items-center gap-2.5 cursor-pointer">
-            <input
-              type="checkbox"
-              {...register("saveInfo")}
-              className="w-[18px] h-[18px] accent-[#C9A84C]"
-            />
-            <span className="text-[15px] text-[#888]">
-              {t.checkoutForm.saveInfo}
-            </span>
-          </label>
         </div>
       </div>
 
@@ -327,11 +315,21 @@ export function CheckoutForm({
         </RadioCard>
       </div>
 
-
       {/* ── Submit ── */}
       <motion.button
         whileTap={{ scale: 0.99 }}
-        onClick={handleSubmit(onSubmit)}
+        onClick={() => {
+          console.log("Button clicked!");
+          handleSubmit(
+            (values) => {
+              console.log("✅ Values:", values);
+              onSubmit(values);
+            },
+            (errors) => {
+              console.log("❌ Errors:", errors);
+            },
+          )();
+        }}
         disabled={loading}
         className={`w-full h-[58px] rounded-[12px] text-[14px] font-semibold uppercase transition-all duration-150
           ${
