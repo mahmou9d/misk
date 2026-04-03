@@ -1,6 +1,6 @@
 // app/[locale]/layout.tsx
 import type { Metadata } from "next";
-import { Cairo, Roboto } from "next/font/google";
+import { Amiri, Bodoni_Moda, Cairo, DM_Serif_Display, EB_Garamond, Lateef, Libre_Baskerville, Noto_Naskh_Arabic, Noto_Serif, Playfair_Display, Reem_Kufi, Roboto, Scheherazade_New } from "next/font/google";
 
 const locales = ["en", "ar"] as const;
 type Locale = (typeof locales)[number];
@@ -22,6 +22,28 @@ const cairo = Cairo({
   display: "swap",
 });
 
+const fontEn = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-en",
+});
+
+const fontAr = Amiri({
+  subsets: ["arabic"],
+  weight: ["400", "700"],
+  variable: "--font-ar",
+});
+// const fontEn = EB_Garamond({
+//   subsets: ["latin"],
+//   weight: ["400", "700"],
+//   variable: "--font-en",
+// });
+
+// const fontAr = Noto_Naskh_Arabic({
+//   subsets: ["arabic"],
+//   weight: ["400", "700"],
+//   variable: "--font-ar",
+// });
 // ─── Translations ─────────────────────────────────────────────────────────────
 const translations = {
   en: {
@@ -244,7 +266,7 @@ export default async function LocaleLayout({
 
   return (
     <div
-      className={`${roboto.variable} ${cairo.variable}`}
+      className={`${roboto.variable} ${cairo.variable} ${fontEn.variable} ${fontAr.variable}`}
       style={{
         fontFamily: isArabic
           ? "var(--font-cairo), sans-serif"

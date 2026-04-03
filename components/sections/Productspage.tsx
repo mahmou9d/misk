@@ -14,6 +14,7 @@ import Notification from "../layout/Notification";
 import { useTranslation } from "@/lib/Usetranslation";
 import Image from "next/image";
 import { useGetBestsellers } from "@/hooks/useProducts";
+import { X } from "lucide-react";
 
 /* ══════════════════════════════════════════════════════════
    Shared input style
@@ -171,7 +172,7 @@ function Modal({
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 transition-colors text-gray-400 hover:text-white text-lg leading-none cursor-pointer border-none flex-shrink-0"
           >
-            ×
+            <X/>
           </button>
         </div>
         <div className="overflow-y-auto px-6 py-5 flex-1">{children}</div>
@@ -644,7 +645,7 @@ export default function ProductsPage() {
                 onClick={() => setSearchTerm("")}
                 className={`absolute inset-y-0 ${isArabic ? "left-3" : "right-3"} flex items-center text-gray-500 hover:text-gray-300`}
               >
-                ×
+                <X/>
               </button>
             )}
           </div>
@@ -821,9 +822,9 @@ export default function ProductsPage() {
                             cf.categories.filter((c) => c !== cat),
                           )
                         }
-                        className="text-gray-400 hover:text-white leading-none"
+                        className="text-gray-400 text-[7px] hover:text-white leading-none"
                       >
-                        ×
+                  <X/>
                       </button>
                     </span>
                   ))}
@@ -1051,7 +1052,7 @@ export default function ProductsPage() {
                         }
                         className="text-gray-400 hover:text-white leading-none"
                       >
-                        ×
+                        <X/>
                       </button>
                     </span>
                   ))}

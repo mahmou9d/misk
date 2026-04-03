@@ -221,7 +221,11 @@ export default function ProductPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.22, duration: 0.45 }}
-                className={`text-[#1a0a3d] text-[28px] md:text-[34px] font-bold mb-3 ${isArabic ? "leading-normal" : "leading-[1.15] -tight"}`}
+                className={`text-[#1a0a3d] text-[28px] md:text-[34px] font-bold mb-3 ${
+                  isArabic
+                    ? "leading-normal font-[family-name:var(--font-ar)]"
+                    : "leading-[1.15] tracking-tight font-[family-name:var(--font-en)]"
+                }`}
               >
                 {product.name}
               </motion.h1>
@@ -231,7 +235,7 @@ export default function ProductPage() {
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.27, duration: 0.4 }}
-                  className={`text-[#4d4c4c] text-[16px] leading-relaxed mb-4 line-clamp-3 ${isArabic ? "" : "-[0.2px]"}`}
+                  className={`text-[#4d4c4c] text-[16px] leading-relaxed mb-4 line-clamp-3 ${isArabic ? " font-[family-name:var(--font-ar)]" : " font-[family-name:var(--font-en)]"}`}
                 >
                   {product.description}
                 </motion.p>

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -20,6 +19,7 @@ import Notification from "../layout/Notification";
 import { AxiosError } from "axios";
 import { useTranslation } from "@/lib/Usetranslation";
 import { RefreshCw, AlertCircle } from "lucide-react";
+import Image from "next/image";
 
 // ─── Image Size Limit ─────────────────────────────────────────────────────────
 
@@ -299,11 +299,6 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onError: (error: AxiosError<ErrorResponse>) => {
           showNotification(
             error?.response?.data?.message ||
-              error?.response?.data?.detail ||
-              error?.response?.data?.error ||
-              error?.response?.data?.status ||
-              error?.response?.data?.non_field_errors ||
-              error?.response?.data?.name ||
               error?.message,
             "error",
           );
@@ -323,11 +318,6 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       onError: (error: AxiosError<ErrorResponse>) => {
         showNotification(
           error?.response?.data?.message ||
-            error?.response?.data?.detail ||
-            error?.response?.data?.error ||
-            error?.response?.data?.status ||
-            error?.response?.data?.non_field_errors ||
-            error?.response?.data?.name ||
             error?.message,
           "error",
         );
@@ -502,10 +492,11 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               >
                 <div className="w-14 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0 bg-white/5">
                   {banner.image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={banner.img_url}
                       alt={banner.title_en}
+                      width={56}
+                      height={40}
                       loading="lazy"
                       className="w-full h-full object-cover"
                     />
@@ -563,10 +554,11 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 <div className="bg-[#1a1d29] border-t border-white/10 p-5">
                   {banner.img_url && (
                     <div className="mb-5 rounded-xl overflow-hidden border border-white/10 w-full max-h-40">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <Image
                         src={banner.img_url}
                         alt={banner.title_en}
+                        width={500}
+                        height={300}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -780,7 +772,7 @@ function GovernoratesTab({
   const { data, isLoading, isError } = useGetDashboardGovernorates();
   const { mutate: patchGov, isPending: patching } = usePatchGovernorate();
   const { mutate: postGov, isPending: posting } = usePostGovernorate();
-  const { t, isArabic } = useTranslation();
+  const { isArabic } = useTranslation();
 
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editFields, setEditFields] = useState<{
@@ -797,9 +789,15 @@ function GovernoratesTab({
     shipping_fee: 0,
   });
 
-  const govList = Array.isArray(data) ? data : ((data as any)?.results ?? []);
+  const govList = Array.isArray(data) ? data : [];
 
-  const handleEditOpen = (gov: any) => {
+  const handleEditOpen = (gov: {
+    id: number;
+    name_en: string;
+    name_ar: string;
+    shipping_fee: number;
+    is_active: boolean;
+  }) => {
     setEditingId(gov.id);
     setEditFields({
       name_en: gov.name_en,
@@ -823,8 +821,6 @@ function GovernoratesTab({
         onError: (error: AxiosError<ErrorResponse>) => {
           showNotification(
             error?.response?.data?.message ||
-              error?.response?.data?.detail ||
-              error?.response?.data?.error ||
               (isArabic ? "حدث خطأ" : "Something went wrong"),
             "error",
           );
@@ -957,121 +953,132 @@ function GovernoratesTab({
 
       {/* List */}
       <div className="flex flex-col gap-2">
-        {govList.map((gov: any) => (
-          <div
-            key={gov.id}
-            className="border border-white/10 rounded-2xl overflow-hidden"
-          >
-            {editingId === gov.id ? (
-              <div className="p-5 bg-[#0f1117]">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                  <div>
-                    <label className="text-sm text-gray-400 mb-1.5 block font-bold">
-                      {isArabic ? "الاسم" : "Name"} (EN)
+        {govList.map(
+          (gov: {
+            id: number;
+            name_en: string;
+            name_ar: string;
+            shipping_fee: number;
+            is_active: boolean;
+          }) => (
+            <div
+              key={gov.id}
+              className="border border-white/10 rounded-2xl overflow-hidden"
+            >
+              {editingId === gov.id ? (
+                <div className="p-5 bg-[#0f1117]">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                    <div>
+                      <label className="text-sm text-gray-400 mb-1.5 block font-bold">
+                        {isArabic ? "الاسم" : "Name"} (EN)
+                      </label>
+                      <input
+                        className={inputClass}
+                        value={editFields.name_en}
+                        onChange={(e) =>
+                          setEditFields((f) => ({
+                            ...f,
+                            name_en: e.target.value,
+                          }))
+                        }
+                        dir="ltr"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-400 mb-1.5 block font-bold">
+                        {isArabic ? "الاسم" : "Name"} (AR)
+                      </label>
+                      <input
+                        className={inputClass}
+                        value={editFields.name_ar}
+                        onChange={(e) =>
+                          setEditFields((f) => ({
+                            ...f,
+                            name_ar: e.target.value,
+                          }))
+                        }
+                        dir="rtl"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-400 mb-1.5 block font-bold">
+                        {isArabic ? "رسوم الشحن (EGP)" : "Shipping Fee (EGP)"}
+                      </label>
+                      <input
+                        type="number"
+                        min={0}
+                        className={inputClass}
+                        value={editFields.shipping_fee}
+                        onChange={(e) =>
+                          setEditFields((f) => ({
+                            ...f,
+                            shipping_fee: Number(e.target.value),
+                          }))
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <label className="text-sm text-gray-400 font-bold">
+                      {isArabic ? "مفعل" : "Active"}
                     </label>
-                    <input
-                      className={inputClass}
-                      value={editFields.name_en}
-                      onChange={(e) =>
+                    <Toggle
+                      checked={editFields.is_active}
+                      onChange={() =>
                         setEditFields((f) => ({
                           ...f,
-                          name_en: e.target.value,
+                          is_active: !f.is_active,
                         }))
                       }
-                      dir="ltr"
                     />
                   </div>
-                  <div>
-                    <label className="text-sm text-gray-400 mb-1.5 block font-bold">
-                      {isArabic ? "الاسم" : "Name"} (AR)
-                    </label>
-                    <input
-                      className={inputClass}
-                      value={editFields.name_ar}
-                      onChange={(e) =>
-                        setEditFields((f) => ({
-                          ...f,
-                          name_ar: e.target.value,
-                        }))
-                      }
-                      dir="rtl"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm text-gray-400 mb-1.5 block font-bold">
-                      {isArabic ? "رسوم الشحن (EGP)" : "Shipping Fee (EGP)"}
-                    </label>
-                    <input
-                      type="number"
-                      min={0}
-                      className={inputClass}
-                      value={editFields.shipping_fee}
-                      onChange={(e) =>
-                        setEditFields((f) => ({
-                          ...f,
-                          shipping_fee: Number(e.target.value),
-                        }))
-                      }
-                    />
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEditSave(gov.id)}
+                      disabled={patching}
+                      className="h-10 px-6 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl text-sm font-bold disabled:opacity-50"
+                    >
+                      {patching
+                        ? isArabic
+                          ? "جاري الحفظ..."
+                          : "Saving..."
+                        : isArabic
+                          ? "حفظ"
+                          : "Save"}
+                    </button>
+                    <button
+                      onClick={() => setEditingId(null)}
+                      className="h-10 px-4 bg-white/5 text-gray-400 border border-white/10 rounded-xl text-sm"
+                    >
+                      {isArabic ? "إلغاء" : "Cancel"}
+                    </button>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 mb-4">
-                  <label className="text-sm text-gray-400 font-bold">
-                    {isArabic ? "مفعل" : "Active"}
-                  </label>
-                  <Toggle
-                    checked={editFields.is_active}
-                    onChange={() =>
-                      setEditFields((f) => ({ ...f, is_active: !f.is_active }))
-                    }
-                  />
-                </div>
-                <div className="flex gap-2">
+              ) : (
+                <div className="flex items-center gap-4 p-4 bg-[#0f1117] flex-wrap">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-white">
+                      {isArabic ? gov.name_ar : gov.name_en}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {isArabic ? gov.name_en : gov.name_ar}
+                    </p>
+                  </div>
+                  <span className="text-sm font-bold text-[#c9a84c]">
+                    EGP {gov.shipping_fee}
+                  </span>
+                  <StatusBadge active={gov.is_active} />
                   <button
-                    onClick={() => handleEditSave(gov.id)}
-                    disabled={patching}
-                    className="h-10 px-6 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl text-sm font-bold disabled:opacity-50"
+                    onClick={() => handleEditOpen(gov)}
+                    className="text-sm font-bold text-white bg-white/5 border border-white/10 px-4 py-2 rounded-xl hover:bg-white/10 transition-all"
                   >
-                    {patching
-                      ? isArabic
-                        ? "جاري الحفظ..."
-                        : "Saving..."
-                      : isArabic
-                        ? "حفظ"
-                        : "Save"}
-                  </button>
-                  <button
-                    onClick={() => setEditingId(null)}
-                    className="h-10 px-4 bg-white/5 text-gray-400 border border-white/10 rounded-xl text-sm"
-                  >
-                    {isArabic ? "إلغاء" : "Cancel"}
+                    ✏ {isArabic ? "تعديل" : "Edit"}
                   </button>
                 </div>
-              </div>
-            ) : (
-              <div className="flex items-center gap-4 p-4 bg-[#0f1117] flex-wrap">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-white">
-                    {isArabic ? gov.name_ar : gov.name_en}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {isArabic ? gov.name_en : gov.name_ar}
-                  </p>
-                </div>
-                <span className="text-sm font-bold text-[#c9a84c]">
-                  EGP {gov.shipping_fee}
-                </span>
-                <StatusBadge active={gov.is_active} />
-                <button
-                  onClick={() => handleEditOpen(gov)}
-                  className="text-sm font-bold text-white bg-white/5 border border-white/10 px-4 py-2 rounded-xl hover:bg-white/10 transition-all"
-                >
-                  ✏ {isArabic ? "تعديل" : "Edit"}
-                </button>
-              </div>
-            )}
-          </div>
-        ))}
+              )}
+            </div>
+          ),
+        )}
       </div>
     </div>
   );

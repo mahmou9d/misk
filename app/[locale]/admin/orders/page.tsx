@@ -1,4 +1,3 @@
-// app/admin/orders/page.tsx
 
 import AdminLayout from "@/components/layout/Adminlayout";
 import OrdersPage from "@/components/sections/Orderspage";

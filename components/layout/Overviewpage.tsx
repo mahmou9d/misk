@@ -1,55 +1,43 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   BarChart3,
   DollarSign,
-  Download,
-  LayoutGrid,
   Package,
   ShoppingCart,
   Star,
   Users,
   TrendingUp,
   TrendingDown,
-  AlertTriangle,
 } from "lucide-react";
 import {
   useGetStatusCount,
-  useGetReviewsCount,
   useGetTopSelling,
-  useGetProductLow,
-  useGetCategory,
   useGetSalesOrders,
 } from "@/hooks/useDashboard";
 import { useTranslation } from "@/lib/Usetranslation";
 
 export default function OverviewPage() {
-  const { t, isArabic } = useTranslation();
+  const { t } = useTranslation();
   const a = t.admin;
 
   const { data: stats, isLoading: l1 } = useGetStatusCount();
-  const { data: reviews, isLoading: l2 } = useGetReviewsCount();
   const { data: topSellingData, isLoading: l3 } = useGetTopSelling();
-  const { data: lowStock, isLoading: l4 } = useGetProductLow();
-  const { data: categories } = useGetCategory();
   const { data: salesData } = useGetSalesOrders();
 
-  const loading = l1 || l2 || l3 || l4;
+  const loading = l1  || l3 ;
 
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const [chartView, setChartView] = useState<"sales" | "orders">("sales");
 
   // ── raw values ──────────────────────────────────────────────────────────────
-  const orders = (stats as any)?.orders;
+  const orders = stats?.orders;
   const totalOrders = orders?.total ?? null;
-  const totalProducts = (stats as any)?.products?.count ?? null;
-  const totalStock = (stats as any)?.products?.total_stock ?? null;
-  const totalUsers = (stats as any)?.users ?? null;
-  const totalSales = (stats as any)?.sales ?? null;
-  const totalCats = categories?.length ?? null;
+  const totalStock = stats?.products?.total_stock ?? null;
+  const totalUsers = stats?.users ?? null;
+  const totalSales = stats?.sales ?? null;
 
   // ── stat cards ──────────────────────────────────────────────────────────────
   const statCards = [
@@ -97,7 +85,7 @@ export default function OverviewPage() {
     if (!salesData || salesData.length === 0)
       return { maxValue: 0, steps: [] as number[] };
     const maxValue = Math.max(
-      ...salesData.map((d: any) =>
+      ...salesData.map((d) =>
         chartView === "sales" ? d.sales : d.orders,
       ),
       1,
@@ -115,13 +103,6 @@ export default function OverviewPage() {
   };
 
   const { maxValue, steps } = getChartData();
-
-  // ── supporting data ─────────────────────────────────────────────────────────
-  const reviewEntries = reviews
-    ? Object.entries(reviews as Record<string, any>).filter(
-        ([, v]) => typeof v === "number",
-      )
-    : [];
 
   return (
     <>
@@ -234,7 +215,7 @@ export default function OverviewPage() {
 
                   {/* Bars */}
                   <div className="relative h-[400px] flex items-end justify-between gap-2 px-2 pb-12 pt-2">
-                    {salesData.map((monthData: any, index: number) => {
+                    {salesData.map((monthData, index: number) => {
                       const value =
                         chartView === "sales"
                           ? monthData.sales
@@ -310,12 +291,9 @@ export default function OverviewPage() {
                     })}
                   </div>
 
-                  {/* X-axis line */}
-                  <div className="absolute bottom-12 left-0 right-0 border-t-2 border-white/20" />
-
                   {/* X-axis labels */}
                   <div className="absolute bottom-0 left-0 right-0 h-12 flex items-center justify-between px-2 gap-2">
-                    {salesData.map((monthData: any, index: number) => (
+                    {salesData.map((monthData, index: number) => (
                       <div key={index} className="flex-1 text-center">
                         <span
                           className={`text-xs font-bold ${hoveredBar === index ? "text-[#fff]" : "text-gray-400"}`}
@@ -330,7 +308,6 @@ export default function OverviewPage() {
 
               {/* Summary Stats */}
               <div className="mt-8 grid grid-cols-2 gap-4">
-                {/* كارت 1: Total Sales */}
                 <div className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-white/30 transition-colors">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 flex items-center justify-center">
@@ -343,12 +320,12 @@ export default function OverviewPage() {
                   <p className="text-[16px] md:text-2xl font-bold text-white">
                     $
                     {salesData
-                      .reduce((sum: number, d: any) => sum + d.sales, 0)
+                      .reduce((sum: number, d) => sum + d.sales, 0)
                       .toLocaleString()}
                   </p>
                 </div>
 
-                {/* كارت 2: Total Orders */}
+              
                 <div className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-white/30 transition-colors">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center">
@@ -360,13 +337,11 @@ export default function OverviewPage() {
                   </div>
                   <p className="text-[16px] md:text-2xl font-bold text-white">
                     {salesData.reduce(
-                      (sum: number, d: any) => sum + d.orders,
+                      (sum: number, d) => sum + d.orders,
                       0,
                     )}
                   </p>
                 </div>
-
-                {/* كارت 3: Avg Order — يأخذ الصف كامل */}
                 <div className="col-span-2 bg-white/5 rounded-xl p-4 border border-white/10 hover:border-white/30 transition-colors">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-white/20 to-black/20 flex items-center justify-center">
@@ -380,11 +355,11 @@ export default function OverviewPage() {
                     $
                     {(() => {
                       const ts = salesData.reduce(
-                        (sum: number, d: any) => sum + d.sales,
+                        (sum: number, d) => sum + d.sales,
                         0,
                       );
                       const to = salesData.reduce(
-                        (sum: number, d: any) => sum + d.orders,
+                        (sum: number, d) => sum + d.orders,
                         0,
                       );
                       return to > 0 ? (ts / to).toFixed(2) : "0.00";
