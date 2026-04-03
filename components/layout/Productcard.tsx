@@ -62,7 +62,7 @@ export default function ProductCard({ index, p, fill = false }: Props) {
             </span>
           </div>
         </div>
-        <div className="pt-3">
+        <div className="pt-3 flex flex-col items-center md:items-baseline">
           <p className=" text-[16px] -[3px] uppercase text-[#c9a84cbf] mb-1">
             {p.category_name}
           </p>

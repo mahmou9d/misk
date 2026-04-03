@@ -106,7 +106,7 @@ export default function ProductPage() {
     ? (Number(comparePrice) - Number(price)).toLocaleString()
     : null;
 
-  const arrowBase = `shrink-0 w-10 h-10 md:w-11 md:h-11 rounded-full border-2 flex items-center justify-center transition-all duration-300`;
+  const arrowBase = `shrink-0 w-8 h-10 md:w-11 md:h-11 rounded-full border-2 flex items-center justify-center transition-all duration-300`;
   const arrowActive = `border-[rgba(201,168,76,0.45)] text-[#1a0a3d] hover:border-[#c9a84c] hover:bg-[rgba(201,168,76,0.08)] hover:shadow-[0_0_18px_rgba(201,168,76,0.18)] cursor-pointer`;
   const arrowDisabled = `border-[#ffaf00] text-[#ffaf00] cursor-not-allowed opacity-40`;
 
@@ -419,14 +419,14 @@ export default function ProductPage() {
         className="w-full flex justify-center bg-[#fafaf8] pt-10 pb-20"
         dir={dir}
       >
-        <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-10">
-          <div className="flex items-center gap-3 md:gap-5">
+        <div className="w-full max-w-screen-xl mx-auto px-1 sm:px-6 lg:px-10">
+          <div className="flex items-center gap-1 md:gap-5">
             {/* ─ سهم يسار ─ */}
             <motion.button
               whileTap={{ scale: 0.92 }}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className={`${arrowBase} ${page === 1 ? arrowDisabled : arrowActive}`}
+              className={`${arrowBase} ${page === 1 ? arrowDisabled : arrowActive} mb-12`}
             >
               <svg
                 width="15"
@@ -474,7 +474,7 @@ export default function ProductPage() {
               whileTap={{ scale: 0.92 }}
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className={`${arrowBase} ${page === totalPages ? arrowDisabled : arrowActive}`}
+              className={`${arrowBase} ${page === totalPages ? arrowDisabled : arrowActive}  mb-12`}
             >
               <svg
                 width="15"
