@@ -178,13 +178,11 @@ function BannersTab({
   const [newLink, setNewLink] = useState("");
   const [newOrder, setNewOrder] = useState(1);
   const [newIsActive, setNewIsActive] = useState(true);
-  const [desktopImage, setDesktopImage] = useState<File | null>(null);
-  const [mobileImage, setMobileImage] = useState<File | null>(null);
+  const [newImage, setNewImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [editDesktopImage, setEditDesktopImage] = useState<File | null>(null);
-  const [editMobileImage, setEditMobileImage] = useState<File | null>(null);
+  const [editImage, setEditImage] = useState<File | null>(null);
   const [editImagePreview, setEditImagePreview] = useState<string | null>(null);
   const editFileInputRef = useRef<HTMLInputElement>(null);
 
@@ -285,8 +283,7 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       fd.append("link", editFields.link);
       fd.append("order", String(editFields.order));
       fd.append("is_active", String(editFields.is_active));
-      fd.append("desktop_image", editImage);
-      fd.append("mobile_image", editImage);
+      fd.append("image", editImage);
       console.log(editFields.title_en);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       patchBanner({ id, body: fd as any }, { onSuccess, onError });
