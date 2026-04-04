@@ -7,9 +7,8 @@ import {
   LayoutDashboard,
   ShoppingCart,
   Package,
-  Users,
-  Image, // للـ banners
-  Tag, // للـ categories
+  Image, 
+  Tag, 
   ShoppingBag,
   Menu,
   X,

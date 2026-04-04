@@ -1,306 +1,54 @@
 "use client";
 
-import Link from "next/link";
-import { motion, useAnimationControls } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import { useEffect } from "react";
 import { useTranslation } from "@/lib/Usetranslation";
 import { useGetBannersPublic } from "@/hooks/useDashboard";
 
-// ─── Animation Helpers ────────────────────────────────────────────────────────
-const EASE = [0.16, 1, 0.3, 1] as const;
-const fadeUp = (delay = 0, y = 30) => ({
-  initial: { opacity: 0, y },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 1.2, delay, ease: EASE },
-});
-const fadeIn = (delay = 0) => ({
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  transition: { duration: 1, delay, ease: EASE },
-});
-
-// ─── Image Sources ─────────────────────────────────────────────────────────────
-const IMG_EN = "/banner1.jpg";
-const IMG_AR = "/banner2.jpg";
+const IMG_DESKTOP = "/banner1.jpg";
+const IMG_DESKTOP_AR = "/banner2.jpg";
 const IMG_MOBILE = "/banner3.jpg";
 
 export default function HeroSection() {
-  const { t, isArabic, locale } = useTranslation();
+  const { isArabic } = useTranslation();
   const { data: banners } = useGetBannersPublic();
 
-  const imgEn =  IMG_EN;
-  const imgAr =  IMG_AR;
-  const imgMobile =  IMG_MOBILE;
-
-  const desktopImg = isArabic ? imgAr : imgEn;
-
-  // ── Zoom Loop ──
-  const zoomControls = useAnimationControls();
-  useEffect(() => {
-    let cancelled = false;
-    const runLoop = async () => {
-      while (!cancelled) {
-        await zoomControls.start({
-          scale: 1.05,
-          transition: { duration: 12, ease: "easeInOut" },
-        });
-        if (cancelled) break;
-        await zoomControls.start({
-          scale: 1,
-          transition: { duration: 12, ease: "easeInOut" },
-        });
-      }
-    };
-    runLoop();
-    return () => {
-      cancelled = true;
-    };
-  }, [zoomControls]);
+  const desktopSrc = banners?.[0]?.desktop_img_url || (isArabic ? IMG_DESKTOP_AR : IMG_DESKTOP);
+  const mobileSrc = banners?.[0]?.mobile_img_url || IMG_MOBILE;
 
   return (
-    <section className="relative w-full overflow-hidden  min-h-[500px] h-[100svh] max-h-[700px] lg:max-h-[600px]">
-      {/* ── DESKTOP Background (md+) ── */}
-      <div className="absolute inset-0 overflow-hidden  hidden md:block">
-        <motion.div
-          animate={zoomControls}
-          initial={{ scale: 1 }}
-          className="absolute inset-0"
-        >
+    <section className="relative w-full overflow-hidden min-h-[500px] h-[100svh] max-h-[700px] lg:max-h-[600px]">
+      
+      {/* ── DESKTOP ── */}
+      <div className="absolute inset-0 overflow-hidden hidden md:block">
+        <motion.div className="absolute inset-0">
           <Image
-            src={desktopImg}
+            src={desktopSrc}
             alt="Hero"
             fill
             sizes="100vw"
-            className="object-cover object-center brightness-[0.65] opacity-90"
+            className="object-cover object-center"
             priority
-            unoptimized={desktopImg.startsWith("http")}
+            unoptimized={desktopSrc.startsWith("http")}
           />
         </motion.div>
       </div>
 
-      {/* ── MOBILE Background ── */}
+      {/* ── MOBILE ── */}
       <div className="absolute inset-0 overflow-hidden md:hidden">
-        <motion.div
-          animate={zoomControls}
-          initial={{ scale: 1 }}
-          className="absolute inset-0"
-        >
+        <motion.div className="absolute inset-0">
           <Image
-            src={imgMobile}
+            src={mobileSrc}
             alt="Hero"
             fill
             sizes="100vw"
-            className="object-cover object-center brightness-[0.55] opacity-90"
+            className="object-cover object-center"
             priority
-            unoptimized={imgMobile.startsWith("http")}
+            unoptimized={mobileSrc.startsWith("http")}
           />
         </motion.div>
       </div>
 
-      {/* ════════════════════════════════════════
-          DESKTOP Content
-      ════════════════════════════════════════ */}
-      <div
-        className={`absolute inset-0 z-20 hidden md:flex flex-col pt-14 px-[8%]`}
-        dir={isArabic ? "rtl" : "ltr"}
-      >
-        <div className={`max-w-lg flex flex-col`}>
-          {/* Headline */}
-          <div className="overflow-hidden pb-2">
-            <motion.h1
-              {...fadeUp(0.1, 40)}
-              className="m-0 text-[#eae8c8] tracking-tight"
-              style={{
-                fontFamily: isArabic
-                  ? "'Noto Serif Arabic', serif"
-                  : "'Cormorant Garamond', 'Georgia', serif",
-                fontWeight: 300,
-                fontStyle: isArabic ? "normal" : "italic",
-                fontSize: isArabic
-                  ? "clamp(32px, 5vw, 62px)"
-                  : "clamp(38px, 6vw, 76px)",
-                lineHeight: isArabic ? 1.25 : 1,
-              }}
-            >
-              {t.hero.title}
-            </motion.h1>
-          </div>
-
-          {/* Subtitle */}
-          <motion.p
-            {...fadeUp(0.4, 20)}
-            className="text-[#eae8c8] font-light mt-3"
-            style={{
-              fontFamily: isArabic
-                ? "'Noto Serif Arabic', serif"
-                : "'Cormorant Garamond', serif",
-              fontStyle: isArabic ? "normal" : "italic",
-              fontSize: "25px",
-              lineHeight: 1.8,
-              letterSpacing: isArabic ? "0" : "0.02em",
-            }}
-          >
-            {isArabic
-              ? "حيث تلتقي المكوّنات النادرة بفنّ العطور الراقية"
-              : "Crafted to Define Your Presence"}
-          </motion.p>
-
-          {/* CTA */}
-          <motion.div {...fadeUp(0.65, 20)} className="mt-7">
-            <Link
-              href={`/${locale.toLowerCase()}/shop`}
-              className="group inline-flex items-center gap-2 py-3.5 px-7 rounded-sm bg-transparent border border-[#eece64]"
-            >
-              <span
-                className="text-[#eae8c8] font-medium whitespace-nowrap text-[16px]"
-                style={{
-                  fontFamily: isArabic
-                    ? "'Noto Serif Arabic', sans-serif"
-                    : "'Montserrat', sans-serif",
-                  letterSpacing: isArabic ? "0" : "0.15em",
-                }}
-              >
-                {t.hero.cta}
-              </span>{" "}
-              {isArabic && (
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  className="text-[#eae8c8] rotate-180 transition-transform duration-300 group-hover:-translate-x-1"
-                >
-                  <path
-                    d="M2 7h10M7 3l4 4-4 4"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )}
-              {!isArabic && (
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  className="text-[#eae8c8] transition-transform duration-300 group-hover:translate-x-1"
-                >
-                  <path
-                    d="M2 7h10M7 3l4 4-4 4"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )}
-            </Link>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* ════════════════════════════════════════
-          MOBILE Content — text at TOP with badge
-      ════════════════════════════════════════ */}
-      <div className="absolute inset-0 z-20 flex md:hidden flex-col items-center pt-10 px-6">
-        {/* ── Headline ── */}
-        <div className="overflow-hidden pb-2 text-center">
-          <motion.h1
-            {...fadeUp(0.2, 40)}
-            className="m-0 text-[#eae8c8] tracking-tight text-center"
-            style={{
-              fontFamily: isArabic
-                ? "'Noto Serif Arabic', serif"
-                : "'Cormorant Garamond', 'Georgia', serif",
-              fontWeight: 300,
-              fontStyle: isArabic ? "normal" : "italic",
-              fontSize: isArabic
-                ? "clamp(34px, 9vw, 48px)"
-                : "clamp(36px, 10vw, 52px)",
-              lineHeight: isArabic ? 1.3 : 1.05,
-            }}
-          >
-            {t.hero.title}
-          </motion.h1>
-        </div>
-
-        {/* ── Subtitle ── */}
-        <motion.p
-          {...fadeUp(0.4, 20)}
-          className="text-[#eae8c8] font-light mt-1 text-center max-w-[280px]"
-          style={{
-            fontFamily: isArabic
-              ? "'Noto Serif Arabic', serif"
-              : "'Cormorant Garamond', serif",
-            fontStyle: isArabic ? "normal" : "italic",
-            fontSize: "18px",
-            lineHeight: 1.8,
-          }}
-        >
-          {isArabic
-            ? "حيث تلتقي المكوّنات النادرة بفنّ العطور الراقية"
-            : "Crafted to Define Your Presence"}
-        </motion.p>
-
-        {/* ── CTA ── */}
-        <motion.div {...fadeUp(0.6, 20)} className="mt-2">
-          <Link
-            href={`/${locale.toLowerCase()}/shop`}
-            className="group inline-flex items-center gap-2 py-3.5 px-8 rounded-sm bg-transparent border-2 border-[#eece64]"
-          >
-            {isArabic && (
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 14 14"
-                fill="none"
-                className="text-[#eece64] rotate-180"
-              >
-                <path
-                  d="M2 7h10M7 3l4 4-4 4"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            )}
-            <span
-              className="text-[#eae8c8] font-bold whitespace-nowrap"
-              style={{
-                fontFamily: isArabic
-                  ? "'Noto Serif Arabic', sans-serif"
-                  : "'Montserrat', sans-serif",
-                fontSize: "14px",
-                letterSpacing: isArabic ? "0" : "0.16em",
-                textTransform: isArabic ? "none" : "uppercase",
-              }}
-            >
-              {t.hero.cta}
-            </span>
-            {!isArabic && (
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 14 14"
-                fill="none"
-                className="text-[#eece64]"
-              >
-                <path
-                  d="M2 7h10M7 3l4 4-4 4"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            )}
-          </Link>
-        </motion.div>
-      </div>
     </section>
   );
 }

@@ -83,6 +83,9 @@ function StatusBadge({ active }: { active: boolean }) {
 const inputClass =
   "w-full h-10 rounded-xl border border-white/10 bg-[#0f1117] px-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#fff]/50 focus:ring-2 focus:ring-[#fff]/20 transition";
 
+const fileInputClass =
+  "text-sm text-gray-400 file:ml-3 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#fda481] file:to-[#b4182d] file:text-white hover:file:opacity-90 cursor-pointer";
+
 // ─── Tab type ─────────────────────────────────────────────────────────────────
 
 type Tab = "banners" | "governorates" | "settings";
@@ -108,7 +111,7 @@ export default function BannersSettingsPage() {
       {/* Card */}
       <div className="bg-[#1a1d29] rounded-2xl border border-white/10 overflow-hidden max-w-[860px]">
         {/* Tabs */}
-        <div className="flex gap-1 border-b border-white/10  pt-4">
+        <div className="flex gap-1 border-b border-white/10 pt-4">
           {(["banners", "governorates", "settings"] as Tab[]).map((tab) => (
             <button
               key={tab}
@@ -178,15 +181,32 @@ function BannersTab({
   const [newLink, setNewLink] = useState("");
   const [newOrder, setNewOrder] = useState(1);
   const [newIsActive, setNewIsActive] = useState(true);
-  const [newImage, setNewImage] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [editImage, setEditImage] = useState<File | null>(null);
-  const [editImagePreview, setEditImagePreview] = useState<string | null>(null);
-  const editFileInputRef = useRef<HTMLInputElement>(null);
+  // ── Create: separate desktop/mobile images ──
+  const [desktopImage, setDesktopImage] = useState<File | null>(null);
+  const [desktopPreviewUrl, setDesktopPreviewUrl] = useState<string | null>(
+    null,
+  );
+  const desktopFileInputRef = useRef<HTMLInputElement>(null);
 
-  // ── Image size validation helper ──
+  const [mobileImage, setMobileImage] = useState<File | null>(null);
+  const [mobilePreviewUrl, setMobilePreviewUrl] = useState<string | null>(null);
+  const mobileFileInputRef = useRef<HTMLInputElement>(null);
+
+  // ── Edit: separate desktop/mobile images ──
+  const [editDesktopImage, setEditDesktopImage] = useState<File | null>(null);
+  const [editDesktopPreview, setEditDesktopPreview] = useState<string | null>(
+    null,
+  );
+  const editDesktopFileInputRef = useRef<HTMLInputElement>(null);
+
+  const [editMobileImage, setEditMobileImage] = useState<File | null>(null);
+  const [editMobilePreview, setEditMobilePreview] = useState<string | null>(
+    null,
+  );
+  const editMobileFileInputRef = useRef<HTMLInputElement>(null);
+
+  // ── Image size validation ──
   const validateImageSize = (file: File): boolean => {
     if (file.size > MAX_IMAGE_SIZE_BYTES) {
       showNotification(
@@ -200,17 +220,27 @@ function BannersTab({
     return true;
   };
 
-const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0] ?? null;
+  // ── Create: desktop image handler ──
+  const handleDesktopImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] ?? null;
+    if (file && !validateImageSize(file)) {
+      if (desktopFileInputRef.current) desktopFileInputRef.current.value = "";
+      return;
+    }
+    setDesktopImage(file);
+    setDesktopPreviewUrl(file ? URL.createObjectURL(file) : null);
+  };
 
-  if (file && !validateImageSize(file)) {
-    if (fileInputRef.current) fileInputRef.current.value = "";
-    return;
-  }
-
-  setNewImage(file);
-  setPreviewUrl(file ? URL.createObjectURL(file) : null);
-};
+  // ── Create: mobile image handler ──
+  const handleMobileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] ?? null;
+    if (file && !validateImageSize(file)) {
+      if (mobileFileInputRef.current) mobileFileInputRef.current.value = "";
+      return;
+    }
+    setMobileImage(file);
+    setMobilePreviewUrl(file ? URL.createObjectURL(file) : null);
+  };
 
   const resetCreateForm = () => {
     setNewTitleEn("");
@@ -218,22 +248,25 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewLink("");
     setNewOrder(1);
     setNewIsActive(true);
-    setNewImage(null);
-    setPreviewUrl(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    setDesktopImage(null);
+    setDesktopPreviewUrl(null);
+    setMobileImage(null);
+    setMobilePreviewUrl(null);
+    if (desktopFileInputRef.current) desktopFileInputRef.current.value = "";
+    if (mobileFileInputRef.current) mobileFileInputRef.current.value = "";
     setShowCreateForm(false);
   };
 
   const handleCreate = () => {
-    if (!newImage) return;
+    if (!desktopImage || !mobileImage) return;
     const fd = new FormData();
     fd.append("title_en", newTitleEn);
     fd.append("title_ar", newTitleAr);
     fd.append("link", newLink);
     fd.append("order", String(newOrder));
     fd.append("is_active", String(newIsActive));
-    fd.append("desktop_image", newImage);
-    fd.append("mobile_image", newImage);
+    fd.append("desktop_image", desktopImage);
+    fd.append("mobile_image", mobileImage);
     createBanner(fd, {
       onSuccess: () => {
         showNotification(b.notifications.created, "success");
@@ -257,17 +290,25 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       order: banner.order,
       is_active: banner.is_active,
     });
-    setEditImage(null);
-    setEditImagePreview(null);
-    if (editFileInputRef.current) editFileInputRef.current.value = "";
+    setEditDesktopImage(null);
+    setEditDesktopPreview(null);
+    setEditMobileImage(null);
+    setEditMobilePreview(null);
+    if (editDesktopFileInputRef.current)
+      editDesktopFileInputRef.current.value = "";
+    if (editMobileFileInputRef.current)
+      editMobileFileInputRef.current.value = "";
   };
 
+  // ✅ دايمًا بيبعت FormData
   const handleEditSave = (id: number) => {
     const onSuccess = () => {
       showNotification(b.notifications.updated, "success");
       setEditingId(null);
-      setEditImage(null);
-      setEditImagePreview(null);
+      setEditDesktopImage(null);
+      setEditDesktopPreview(null);
+      setEditMobileImage(null);
+      setEditMobilePreview(null);
     };
     const onError = (error: AxiosError<ErrorResponse>) => {
       showNotification(
@@ -276,20 +317,17 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       );
     };
 
-    if (editImage) {
-      const fd = new FormData();
-      fd.append("title_en", editFields.title_en);
-      fd.append("title_ar", editFields.title_ar);
-      fd.append("link", editFields.link);
-      fd.append("order", String(editFields.order));
-      fd.append("is_active", String(editFields.is_active));
-      fd.append("image", editImage);
-      console.log(editFields.title_en);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      patchBanner({ id, body: fd as any }, { onSuccess, onError });
-    } else {
-      patchBanner({ id, body: editFields }, { onSuccess, onError });
-    }
+    const fd = new FormData();
+    fd.append("title_en", editFields.title_en);
+    fd.append("title_ar", editFields.title_ar);
+    fd.append("link", editFields.link);
+    fd.append("order", String(editFields.order));
+    fd.append("is_active", String(editFields.is_active));
+    if (editDesktopImage) fd.append("desktop_image", editDesktopImage);
+    if (editMobileImage) fd.append("mobile_image", editMobileImage);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    patchBanner({ id, body: fd as any }, { onSuccess, onError });
   };
 
   const handleToggleActive = (banner: Banner) => {
@@ -299,8 +337,7 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onSuccess: () => showNotification(b.notifications.toggled, "success"),
         onError: (error: AxiosError<ErrorResponse>) => {
           showNotification(
-            error?.response?.data?.message ||
-              error?.message,
+            error?.response?.data?.message || error?.message,
             "error",
           );
         },
@@ -318,8 +355,7 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       },
       onError: (error: AxiosError<ErrorResponse>) => {
         showNotification(
-          error?.response?.data?.message ||
-            error?.message,
+          error?.response?.data?.message || error?.message,
           "error",
         );
         setDeletingId(null);
@@ -342,7 +378,7 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       {/* Create Form */}
       {showCreateForm && (
         <div className="mb-5 p-5 border border-white/10 rounded-2xl bg-[#0f1117]">
-          <p className="text-sm font-bold text-gray-400 mb-4 uppercase -wider">
+          <p className="text-sm font-bold text-gray-400 mb-4 uppercase">
             {b.newBanner}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -415,39 +451,71 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             </div>
           </div>
 
-          {/* Image Upload */}
-          <div className="mb-5">
-            <label className="text-sm text-gray-400 mb-1.5 block font-bold">
-              {b.fields.image}
-              <span className="text-gray-600 font-normal text-xs ml-2">
-                {isArabic
-                  ? `(الحد الأقصى ${MAX_IMAGE_SIZE_MB} ميجا)`
-                  : `(max ${MAX_IMAGE_SIZE_MB}MB)`}
-              </span>
-            </label>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="text-sm text-gray-400 file:ml-3 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#fda481] file:to-[#b4182d] file:text-white hover:file:opacity-90 cursor-pointer"
-            />
-            {previewUrl && (
-              <div className="mt-3 rounded-xl overflow-hidden border border-white/10 w-full max-w-xs h-28">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={previewUrl}
-                  alt="preview"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            )}
+          {/* ── Image Uploads: Desktop + Mobile side by side ── */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+            {/* Desktop Image */}
+            <div>
+              <label className="text-sm text-gray-400 mb-1.5 block font-bold">
+                {isArabic ? "صورة الديسكتوب" : "Desktop Image"}
+                <span className="text-gray-600 font-normal text-xs ml-2">
+                  {isArabic
+                    ? `(الحد الأقصى ${MAX_IMAGE_SIZE_MB} ميجا)`
+                    : `(max ${MAX_IMAGE_SIZE_MB}MB)`}
+                </span>
+              </label>
+              <input
+                ref={desktopFileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleDesktopImageChange}
+                className={fileInputClass}
+              />
+              {desktopPreviewUrl && (
+                <div className="mt-3 rounded-xl overflow-hidden border border-white/10 w-full h-28">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={desktopPreviewUrl}
+                    alt="desktop preview"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Mobile Image */}
+            <div>
+              <label className="text-sm text-gray-400 mb-1.5 block font-bold">
+                {isArabic ? "صورة الموبايل" : "Mobile Image"}
+                <span className="text-gray-600 font-normal text-xs ml-2">
+                  {isArabic
+                    ? `(الحد الأقصى ${MAX_IMAGE_SIZE_MB} ميجا)`
+                    : `(max ${MAX_IMAGE_SIZE_MB}MB)`}
+                </span>
+              </label>
+              <input
+                ref={mobileFileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleMobileImageChange}
+                className={fileInputClass}
+              />
+              {mobilePreviewUrl && (
+                <div className="mt-3 rounded-xl overflow-hidden border border-white/10 w-full h-28">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={mobilePreviewUrl}
+                    alt="mobile preview"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="flex gap-2">
             <button
               onClick={handleCreate}
-              disabled={creating || !newImage}
+              disabled={creating || !desktopImage || !mobileImage}
               className="h-10 px-6 bg-gradient-to-r from-[#fda481] to-[#b4182d] text-white rounded-xl text-sm font-bold disabled:opacity-50 hover:opacity-90 transition-opacity"
             >
               {creating ? b.actions.saving : b.actions.save}
@@ -492,9 +560,10 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 className="flex items-center gap-3 p-4 bg-[#0f1117] cursor-pointer hover:bg-white/5 transition-colors flex-wrap"
               >
                 <div className="w-14 h-10 rounded-xl overflow-hidden border border-white/10 shrink-0 bg-white/5">
-                  {banner.image ? (
+                  {/* ✅ استخدم banner.desktop_img_url مش banners?.[0] */}
+                  {banner.desktop_img_url ? (
                     <Image
-                      src={banner.img_url}
+                      src={banner.desktop_img_url}
                       alt={banner.title_en}
                       width={56}
                       height={40}
@@ -553,18 +622,6 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               {/* Expanded */}
               {isExpanded && (
                 <div className="bg-[#1a1d29] border-t border-white/10 p-5">
-                  {banner.img_url && (
-                    <div className="mb-5 rounded-xl overflow-hidden border border-white/10 w-full max-h-40">
-                      <Image
-                        src={banner.img_url}
-                        alt={banner.title_en}
-                        width={500}
-                        height={300}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-
                   {isEditing ? (
                     <div className="space-y-4">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -664,50 +721,119 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                         </div>
                       </div>
 
-                      {/* Image Upload */}
-                      <div>
-                        <label className="text-sm text-gray-400 mb-1.5 block font-bold">
-                          {b.fields.replaceImage}{" "}
-                          <span className="text-gray-600 font-normal text-sm">
-                            {b.fields.optional}
-                          </span>
-                          <span className="text-gray-600 font-normal text-xs ml-2">
-                            {isArabic
-                              ? `(الحد الأقصى ${MAX_IMAGE_SIZE_MB} ميجا)`
-                              : `(max ${MAX_IMAGE_SIZE_MB}MB)`}
-                          </span>
-                        </label>
-                        <input
-                          ref={editFileInputRef}
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0] ?? null;
-
-                            if (file && !validateImageSize(file)) {
-                              if (editFileInputRef.current)
-                                editFileInputRef.current.value = "";
-                              return;
-                            }
-
-                            setEditImage(file);
-                            setEditImagePreview(
-                              file ? URL.createObjectURL(file) : null,
-                            );
-                          }}
-                          className="text-sm text-gray-400 file:ml-3 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#fda481] file:to-[#b4182d] file:text-white hover:file:opacity-90 cursor-pointer"
-                        />
-                        {editImagePreview && (
-                          <div className="mt-3 rounded-xl overflow-hidden border border-white/10 w-full max-w-xs h-28">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={editImagePreview}
-                              alt="new preview"
-                              loading="lazy"
-                              className="w-full h-full object-cover"
-                            />
+                      {/* ✅ Edit: Desktop + Mobile Image side by side مع عرض الصورة الحالية */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {/* Edit Desktop Image */}
+                        <div>
+                          <label className="text-sm text-gray-400 mb-1.5 block font-bold">
+                            {isArabic ? "صورة الديسكتوب" : "Desktop Image"}{" "}
+                            <span className="text-gray-600 font-normal text-sm">
+                              {b.fields.optional}
+                            </span>
+                            <span className="text-gray-600 font-normal text-xs ml-2">
+                              {isArabic
+                                ? `(الحد الأقصى ${MAX_IMAGE_SIZE_MB} ميجا)`
+                                : `(max ${MAX_IMAGE_SIZE_MB}MB)`}
+                            </span>
+                          </label>
+                          {/* عرض الصورة الحالية أو البريفيو الجديد */}
+                          <div className="mb-3 rounded-xl overflow-hidden border border-white/10 w-full h-28 bg-white/5">
+                            {editDesktopPreview ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={editDesktopPreview}
+                                alt="desktop preview"
+                                className="w-full h-full object-cover"
+                              />
+                            ) : banner.desktop_img_url ? (
+                              <Image
+                                src={banner.desktop_img_url}
+                                alt="current desktop"
+                                width={300}
+                                height={112}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-gray-600 text-xs">
+                                {isArabic ? "لا توجد صورة" : "No image"}
+                              </div>
+                            )}
                           </div>
-                        )}
+                          <input
+                            ref={editDesktopFileInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0] ?? null;
+                              if (file && !validateImageSize(file)) {
+                                if (editDesktopFileInputRef.current)
+                                  editDesktopFileInputRef.current.value = "";
+                                return;
+                              }
+                              setEditDesktopImage(file);
+                              setEditDesktopPreview(
+                                file ? URL.createObjectURL(file) : null,
+                              );
+                            }}
+                            className={fileInputClass}
+                          />
+                        </div>
+
+                        {/* Edit Mobile Image */}
+                        <div>
+                          <label className="text-sm text-gray-400 mb-1.5 block font-bold">
+                            {isArabic ? "صورة الموبايل" : "Mobile Image"}{" "}
+                            <span className="text-gray-600 font-normal text-sm">
+                              {b.fields.optional}
+                            </span>
+                            <span className="text-gray-600 font-normal text-xs ml-2">
+                              {isArabic
+                                ? `(الحد الأقصى ${MAX_IMAGE_SIZE_MB} ميجا)`
+                                : `(max ${MAX_IMAGE_SIZE_MB}MB)`}
+                            </span>
+                          </label>
+                          {/* عرض الصورة الحالية أو البريفيو الجديد */}
+                          <div className="mb-3 rounded-xl overflow-hidden border border-white/10 w-full h-28 bg-white/5">
+                            {editMobilePreview ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={editMobilePreview}
+                                alt="mobile preview"
+                                className="w-full h-full object-cover"
+                              />
+                            ) : banner.mobile_img_url ? (
+                              <Image
+                                src={banner.mobile_img_url}
+                                alt="current mobile"
+                                width={300}
+                                height={112}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-gray-600 text-xs">
+                                {isArabic ? "لا توجد صورة" : "No image"}
+                              </div>
+                            )}
+                          </div>
+                          <input
+                            ref={editMobileFileInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0] ?? null;
+                              if (file && !validateImageSize(file)) {
+                                if (editMobileFileInputRef.current)
+                                  editMobileFileInputRef.current.value = "";
+                                return;
+                              }
+                              setEditMobileImage(file);
+                              setEditMobilePreview(
+                                file ? URL.createObjectURL(file) : null,
+                              );
+                            }}
+                            className={fileInputClass}
+                          />
+                        </div>
                       </div>
 
                       <div className="flex flex-wrap gap-2 pt-3 border-t border-white/10">
@@ -1155,7 +1281,7 @@ function SettingsTab({
       <div className="border border-white/10 rounded-2xl overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3.5 bg-[#0f1117] border-b border-white/10">
-          <p className="text-sm font-bold text-gray-400 uppercase -wider">
+          <p className="text-sm font-bold text-gray-400 uppercase">
             {s.announcementBar}
           </p>
           <div className="flex items-center gap-3">
@@ -1193,7 +1319,6 @@ function SettingsTab({
 
         {/* Fields */}
         <div className="bg-[#1a1d29] p-5 flex flex-col gap-4">
-          {/* Announcement Text EN + AR side by side */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-sm text-gray-400 mb-1.5 block font-bold">
@@ -1229,7 +1354,6 @@ function SettingsTab({
             </div>
           </div>
 
-          {/* Announcement Link */}
           <div>
             <label className="text-sm text-gray-400 mb-1.5 block font-bold">
               {s.announcementLink}{" "}

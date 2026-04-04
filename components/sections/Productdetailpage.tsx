@@ -873,22 +873,43 @@ export default function ProductDetailPage({ id }: { id: number }) {
                     {product.variants.map((v) => {
                       const isSelected = selectedVariant?.id === v.id;
                       const outOfStock = v.stock === 0;
+                      const lowStock = v.stock > 0 && v.stock < 10;
+
                       return (
                         <motion.button
                           key={v.id}
                           whileTap={{ scale: 0.95 }}
                           onClick={() => !outOfStock && setSelectedVariant(v)}
                           disabled={outOfStock}
-                          className={` text-[15px] rounded-2xl px-[18px] py-2 border transition-all duration-200 
-                            ${isSelected ? "border-[#c9a84c]/80 bg-[#c9a84c]/10 text-[#c9a84c]/90 shadow-[inset_0_0_0_1px_rgba(201,168,76,0.3)]" : "border-black/10 bg-white text-[#444]"}
-                            ${outOfStock ? "text-gray-300 cursor-not-allowed line-through" : "hover:border-[#c9a84c]/50 cursor-pointer"}
-                            ${isArabic ? "-normal" : "-[1px]"}
-                          `}
+                          className={`text-[15px] rounded-2xl px-[18px] py-2 border transition-all duration-200 
+        ${
+          isSelected
+            ? "border-[#c9a84c]/80 bg-[#c9a84c]/10 text-[#c9a84c]/90 shadow-[inset_0_0_0_1px_rgba(201,168,76,0.3)]"
+            : "border-black/10 bg-white text-[#444]"
+        }
+        ${outOfStock ? "text-gray-300 cursor-not-allowed line-through" : "hover:border-[#c9a84c]/50 cursor-pointer"}
+        ${isArabic ? "font-normal" : "tracking-[-1px]"}
+      `}
                         >
                           {v.volume}
                         </motion.button>
                       );
                     })}
+
+                    {/* رسالة الـ urgency تظهر تحت الفارينتس لو الـ selected قليل */}
+                    {selectedVariant &&
+                      selectedVariant.stock > 0 &&
+                      selectedVariant.stock < 10 && (
+                        <motion.p
+                          initial={{ opacity: 0, y: 4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className={`text-[13px] text-[#b8860b] mt-2 ${isArabic ? "font-normal" : "tracking-[0.01em]"}`}
+                        >
+                          {isArabic
+                            ? "⚡ اشتري الآن قبل نفاد الكمية"
+                            : "⚡ Buy now before it sells out"}
+                        </motion.p>
+                      )}
                   </div>
                 </motion.div>
               )}

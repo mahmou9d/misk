@@ -492,8 +492,10 @@ export interface Banner {
   link: string;
   order: number;
   is_active: boolean;
-  image: string;
-  img_url:string
+  desktop_image: string;
+  mobile_image: string;
+  desktop_img_url: string;
+  mobile_img_url: string;
 }
 
 export interface SiteSettings {
