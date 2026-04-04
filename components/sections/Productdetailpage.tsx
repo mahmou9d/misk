@@ -857,62 +857,52 @@ export default function ProductDetailPage({ id }: { id: number }) {
               </motion.div>
 
               {/* Variants */}
-              {product.variants && product.variants.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.33, duration: 0.4 }}
-                  className="mb-6"
-                >
-                  <p
-                    className={` text-[16px] rounded-xl text-[#000] mb-3 ${isArabic ? "-normal" : "-[3px] uppercase"}`}
-                  >
-                    {t.productDetail.volume}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {product.variants.map((v) => {
-                      const isSelected = selectedVariant?.id === v.id;
-                      const outOfStock = v.stock === 0;
-                      const lowStock = v.stock > 0 && v.stock < 10;
+              {product?.variants?.map((v) => {
+                const isSelected = selectedVariant?.id === v.id;
+                const outOfStock = v.stock === 0;
+                const lowStock = v.stock > 0 && v.stock < 10;
 
-                      return (
-                        <motion.button
-                          key={v.id}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => !outOfStock && setSelectedVariant(v)}
-                          disabled={outOfStock}
-                          className={`text-[15px] rounded-2xl px-[18px] py-2 border transition-all duration-200 
+                return (
+                  <motion.button
+                    key={v.id}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => !outOfStock && setSelectedVariant(v)}
+                    disabled={outOfStock}
+                    className={`flex flex-col items-center justify-center w-fit rounded-2xl px-[18px] py-3 border transition-all duration-200 
         ${
           isSelected
             ? "border-[#c9a84c]/80 bg-[#c9a84c]/10 text-[#c9a84c]/90 shadow-[inset_0_0_0_1px_rgba(201,168,76,0.3)]"
-            : "border-black/10 bg-white text-[#444]"
+            : lowStock
+              ? "border-[#c9a84c]/40 bg-white text-[#444]"
+              : "border-black/10 bg-white text-[#444]"
         }
         ${outOfStock ? "text-gray-300 cursor-not-allowed line-through" : "hover:border-[#c9a84c]/50 cursor-pointer"}
         ${isArabic ? "font-normal" : "tracking-[-1px]"}
       `}
-                        >
-                          {v.volume}
-                        </motion.button>
-                      );
-                    })}
+                  >
+                    <span className="text-[15px] leading-none">{v.volume}</span>
+                  </motion.button>
+                );
+              })}
 
-                    {/* رسالة الـ urgency تظهر تحت الفارينتس لو الـ selected قليل */}
-                    {selectedVariant &&
-                      selectedVariant.stock > 0 &&
-                      selectedVariant.stock < 10 && (
-                        <motion.p
-                          initial={{ opacity: 0, y: 4 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className={`text-[13px] text-[#b8860b] mt-2 ${isArabic ? "font-normal" : "tracking-[0.01em]"}`}
-                        >
-                          {isArabic
-                            ? "⚡ اشتري الآن قبل نفاد الكمية"
-                            : "⚡ Buy now before it sells out"}
-                        </motion.p>
-                      )}
-                  </div>
-                </motion.div>
-              )}
+              <motion.p
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`text-[13px] text-[#b8860b] mt-2 ${isArabic ? "font-normal" : "tracking-[0.01em]"}`}
+              >
+                {isArabic
+                  ? "⚡ اشتري الآن قبل نفاد الكمية"
+                  : "⚡ Buy now before it sells out"}
+                {selectedVariant &&
+                  selectedVariant.stock > 0 &&
+                  selectedVariant.stock < 10 && (
+                    <span className="mr-1">
+                      {isArabic
+                        ? `· باقي ${selectedVariant.stock} فقط`
+                        : `· Only ${selectedVariant.stock} left`}
+                    </span>
+                  )}
+              </motion.p>
 
               <div className="h-[1px] bg-gradient-to-r from-[#c9a84c]/10 to-transparent mb-6" />
 
