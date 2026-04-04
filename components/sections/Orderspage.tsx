@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useGetRecentOrders, usePatchOrders } from "@/hooks/useDashboard";
-import { ErrorResponse, NotificationState, OrderStatus } from "@/type/type";
+import { ErrorResponse, NotificationState, Order, OrderItems, OrderStatus } from "@/type/type";
 import { useShowNotification } from "@/utils/showNotification";
 import Notification from "../layout/Notification";
 import { AxiosError } from "axios";
@@ -124,6 +124,7 @@ function OrderCard({
   onCancelEdit,
   onSave,
   onStatusSelect,
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 }: any) {
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const statusRef = useRef<HTMLDivElement>(null);
@@ -239,7 +240,7 @@ function OrderCard({
                 {o.items}
               </p>
               <div className="space-y-2">
-                {order.items.map((item: any, i: number) => (
+                {order.items.map((item: OrderItems, i: number) => (
                   <div
                     key={i}
                     className={`flex justify-between items-center p-3 rounded-lg bg-white/5 border border-white/5 ${isArabic ? "flex-row-reverse" : ""}`}
@@ -261,9 +262,11 @@ function OrderCard({
                     </div>
                     <span className="text-sm font-bold text-white shrink-0 ml-2">
                       LE{" "}
-                      {parseFloat(
+                      {/* {parseFloat(
                         item.subtotal || item.price || 0,
-                      ).toLocaleString()}
+                      ).toLocaleString()} */}
+{                      (Number(item.subtotal || item.price ||
+                      0)).toLocaleString()}
                     </span>
                   </div>
                 ))}
@@ -473,7 +476,7 @@ export default function OrdersPage() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [editingOrder, setEditingOrder] = useState<any | null>(null);
+  const [editingOrder, setEditingOrder] = useState<{id: string} | null>(null);
   const [newStatus, setNewStatus] = useState<OrderStatus>("pending");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -527,7 +530,7 @@ export default function OrdersPage() {
     count:
       opt.value === "all"
         ? ordersData.length
-        : ordersData.filter((ord: any) => ord.status === opt.value).length,
+        : ordersData.filter((ord) => ord.status === opt.value).length,
   }));
 
   const selectedFilter =
@@ -696,7 +699,7 @@ export default function OrdersPage() {
       {/* ── Mobile Cards (< md) ── */}
       <div className="block md:hidden">
         {ordersData.length > 0
-          ? ordersData.map((order: any) => {
+          ? ordersData.map((order: Order) => {
               const isExpanded = expandedId === String(order.id);
               const isEditing = editingOrder?.id === String(order.id);
               const currentOpt =
@@ -764,7 +767,7 @@ export default function OrdersPage() {
             </thead>
             <tbody className="divide-y divide-white/5">
               {ordersData.length > 0
-                ? ordersData.map((order: any) => {
+                ? ordersData.map((order: Order) => {
                     const isExpanded = expandedId === String(order.id);
                     const isEditing = editingOrder?.id === String(order.id);
                     const currentOpt =
@@ -828,9 +831,15 @@ export default function OrdersPage() {
                           <td className="px-6 py-5">
                             <span className="font-bold text-white text-lg">
                               LE{" "}
-                              {parseFloat(
-                                order.total_price || 0,
-                              ).toLocaleString()}
+                              {/* {parseFloat(
+                                String(order?.total_price) || 0,
+                              ).toLocaleString()} */}
+                              {(Number(order?.total_price) || 0).toLocaleString(
+                                "en-US",
+                                {
+                                  minimumFractionDigits: 2,
+                                },
+                              )}
                             </span>
                           </td>
 
@@ -898,7 +907,7 @@ export default function OrdersPage() {
                                     </p>
                                     <div className="space-y-2">
                                       {order.items.map(
-                                        (item: any, i: number) => (
+                                        (item: OrderItems, i: number) => (
                                           <div
                                             key={i}
                                             className={`flex justify-between items-center p-3 rounded-lg bg-white/5 border border-white/5 ${isArabic ? "flex-row-reverse" : ""}`}
@@ -924,7 +933,7 @@ export default function OrdersPage() {
                                             </div>
                                             <span className="text-sm font-bold text-white">
                                               LE{" "}
-                                              {parseFloat(
+                                              {Number(
                                                 item.subtotal ||
                                                   item.price ||
                                                   0,

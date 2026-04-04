@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useGetPublicSettings } from "@/hooks/useDashboard";
 
 export default function AnnouncementBar() {
-  const { data, isLoading } = useGetPublicSettings();
+  const { data } = useGetPublicSettings();
 
   if (!data?.is_announcement_active) return null;
 

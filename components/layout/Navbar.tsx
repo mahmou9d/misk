@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { CartDrawer } from "./Cartdrawer";
-import { useAuth, useGetRole } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 import { useGetCartItems } from "@/hooks/useCart";
 import { useCats } from "@/lib/CatsContext";
 import { useTranslation } from "@/lib/Usetranslation";
@@ -305,14 +305,6 @@ console.log(orderHistory,"o")
   };
   const handleSearchClick = () =>
     router.push(`/${locale.toLowerCase()}/search`);
-
-  // const categories = [
-  //   {
-  //     label: t.navbar.womens,
-  //     href: `/${locale.toLowerCase()}/collections/womens`,
-  //   },
-  //   { label: t.navbar.mens, href: `/${locale.toLowerCase()}/collections/mens` },
-  // ];
 
   const links = [
     {

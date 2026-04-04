@@ -1,5 +1,3 @@
-import { LucideIcon } from "lucide-react";
-import { FieldError, UseFormRegisterReturn } from "react-hook-form";
 import { checkoutSchema, loginSchema } from "@/utils/validation";
 import * as z from "zod";
 
@@ -151,9 +149,29 @@ export interface RecentOrdersData {
   next: string | null;
   previous: string | null;
 }
+export interface OrderItems {
+  quantity: number;
+  price: string;
+  subtotal: number;
+  created_at: string;
+  variant_name: string;
+  variant_volume: string;
+}
 export interface Order {
+  id: number;
   message: string;
   status: OrderStatus;
+  full_name: string;
+  country: string;
+  total_price: string;
+  created_at: string;
+  full_address: string;
+  governorate_name_en: string;
+  governorate_name_ar: string;
+  phone_number: string;
+  shipping_fee: string;
+  payment_method: string;
+  items: OrderItems[];
 }
 export type OrderStatus =
   | "pending"
@@ -479,6 +497,7 @@ export interface Banner {
 }
 
 export interface SiteSettings {
+  announcement_text: string;
   announcement_text_en: string;
   announcement_text_ar: string;
   announcement_link: string;
@@ -486,4 +505,5 @@ export interface SiteSettings {
 }
 
 export type TabKey1 = "Men" | "Unisex" | "Women";
-export type TabKey2 = "BodySplash" | "Niche"|"Makhmaryat"| "incense";
+export type TabKey2 = "Niche";
+export type TabKey3 = "BodySplash"|"Makhmaryat"| "incense";

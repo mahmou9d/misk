@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/lib/Usetranslation";
-import { ArrowRight } from "@/public/svg/Svgs";
+import Image from "next/image";
 
 
 const FacebookIcon = () => (
@@ -86,8 +85,6 @@ const icons = [
 
 export default function Footer() {
   const { t, isArabic, dir, locale } = useTranslation();
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
 const [hovered, setHovered] = useState(null);
   const quickLinks = [
     { label: t.footer.links.search, href: `/${locale.toLowerCase()}/search` },
@@ -141,12 +138,6 @@ const [hovered, setHovered] = useState(null);
     },
   ];
 
-  const handleSubmit = () => {
-    if (!email) return;
-    setSubmitted(true);
-    setEmail("");
-    setTimeout(() => setSubmitted(false), 3500);
-  };
 
   return (
     <footer
@@ -156,37 +147,28 @@ const [hovered, setHovered] = useState(null);
       {/* Main content */}
       <div className="max-w-screen-xl mx-auto flex flex-col items-center text-center px-10 pt-[60px] ">
         {/* Logo Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+        <div
           className="mb-4"
         >
           <span className="text-[28px] font-bold -[8px] bg-[linear-gradient(135deg,#c9a84c_0%,#f0d080_50%,#b8912e_100%)] bg-clip-text text-transparent drop-shadow-[0_1px_6px_rgba(201,168,76,0.2)]">
             Misk
           </span>
           <div className="mt-[6px] mx-auto h-[1px] w-full bg-[linear-gradient(90deg,transparent,rgba(201,168,76,0.5),transparent)]" />
-        </motion.div>
+        </div>
 
         {/* Quick Links Label */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.1, duration: 0.4 }}
+        <p
           className={`text-[16px] text-[rgba(201,168,76,0.75)] mb-4 
           ${isArabic ? "-0 normal-case" : "-[4px] uppercase"}`}
         >
           {t.footer.quickLinksLabel}
-        </motion.p>
+        </p>
 
         {/* Navigation Links */}
         <nav className="flex flex-wrap justify-center gap-x-6 mb-4">
           {quickLinks.map((l, i) => (
-            <motion.div
+            <div
               key={l.label}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.12 + i * 0.05, duration: 0.35 }}
             >
               <Link
                 href={l.href}
@@ -199,7 +181,7 @@ const [hovered, setHovered] = useState(null);
                 </span>
                 <span className="absolute bottom-0 left-0 right-0 h-px bg-[linear-gradient(90deg,#1a0a3d,rgba(201,168,76,0.5))] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </Link>
-            </motion.div>
+            </div>
           ))}
         </nav>
       </div>
@@ -224,14 +206,13 @@ const [hovered, setHovered] = useState(null);
         {/* Payment Icons */}
         <div className="flex flex-wrap justify-center sm:justify-end items-center gap-2 py-2">
           {paymentMethods.map((method, i) => (
-            <motion.img
+            <Image
               key={method.name}
               src={method.src}
               alt={method.name}
+              width={20}
+              height={20}
               title={method.name}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 + i * 0.03, duration: 0.3 }}
               className="h-5 w-auto object-contain max-w-[44px]"
             />
           ))}
