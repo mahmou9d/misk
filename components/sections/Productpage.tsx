@@ -37,7 +37,8 @@ export default function ProductPage() {
   // ─── Pagination ───
   const [page, setPage] = useState(1);
 
-  const ITEMS_PER_PAGE = 4;
+  const ITEMS_PER_PAGE =
+    typeof window !== "undefined" && window.innerWidth < 768 ? 2 : 4;
   const bestsellersList = Array.isArray(bestsellers)
     ? bestsellers
     : (bestsellers ?? []);
