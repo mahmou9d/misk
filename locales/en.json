@@ -1154,6 +1154,7 @@
     }
   },
     "orderHistory": {
+      "shippingFee": "Shipping Fee",
     "pageTitle": "My Orders",
     "pageSubtitle": {
       "withOrders": "You have {{count}} registered orders",

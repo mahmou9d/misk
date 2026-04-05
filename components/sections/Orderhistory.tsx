@@ -181,6 +181,7 @@ function OrderCard({
       </div>
 
       {/* Footer */}
+      {/* Footer */}
       <div
         className="px-7 py-4 flex items-center justify-between flex-wrap gap-4"
         style={{
@@ -213,27 +214,60 @@ function OrderCard({
           </div>
         </div>
 
-        <div className="flex flex-col items-end gap-0.5">
-          <span className="text-xs text-gray-400 font-medium">
-            {tran.total}
-          </span>
-          <span
-            className="text-2xl font-extrabold"
-            style={{
-              background: "linear-gradient(135deg,#c9a84c 0%,#a3720c 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              lineHeight: 1.1,
-            }}
-          >
-            {order.total_price.toLocaleString(isArabic ? "ar-EG" : "en-US")}
-            <span
-              className="text-sm font-bold ms-1"
-              style={{ WebkitTextFillColor: "#c9a84c" }}
-            >
-              {tran.currency}
+        <div className="flex flex-col items-end gap-1.5">
+          {/* ✅ Shipping Fee */}
+          {order.shipping_fee && parseFloat(order.shipping_fee) > 0 && (
+            <div className="flex items-center gap-1.5">
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="rgba(201,168,76,0.7)"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="1" y="3" width="15" height="13" rx="1" />
+                <path d="M16 8h4l3 5v3h-7V8z" />
+                <circle cx="5.5" cy="18.5" r="2.5" />
+                <circle cx="18.5" cy="18.5" r="2.5" />
+              </svg>
+              <span className="text-[15px] text-gray-400 font-medium">
+                {tran.shippingFee}
+              </span>
+              <span className="text-[15px] font-bold" style={{ color: "#92650a" }}>
+                {parseFloat(order.shipping_fee).toLocaleString(
+                  isArabic ? "ar-EG" : "en-US",
+                )}
+                <span className="font-normal ms-0.5">{tran.currency}</span>
+              </span>
+            </div>
+          )}
+
+          {/* Total */}
+          <div className="flex flex-col items-end gap-0.5">
+            <span className="text-xs text-gray-400 font-medium">
+              {tran.total}
             </span>
-          </span>
+            <span
+              className="text-2xl font-extrabold"
+              style={{
+                background: "linear-gradient(135deg,#c9a84c 0%,#a3720c 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                lineHeight: 1.1,
+              }}
+            >
+              {order.total_price.toLocaleString(isArabic ? "ar-EG" : "en-US")}
+              <span
+                className="text-sm font-bold ms-1"
+                style={{ WebkitTextFillColor: "#c9a84c" }}
+              >
+                {tran.currency}
+              </span>
+            </span>
+          </div>
         </div>
       </div>
     </motion.div>
@@ -245,6 +279,7 @@ export default function OrderHistoryPage() {
   const { t, isArabic, dir } = useTranslation();
   const tran = t.orderHistory;
   const { data: orders = [], isLoading } = useOrderHistory();
+  
   const [activeFilter, setActiveFilter] = useState("all");
 
   const filtered =

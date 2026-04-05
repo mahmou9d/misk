@@ -1150,6 +1150,7 @@
     }
   },
     "orderHistory": {
+      "shippingFee": "رسوم الشحن",
       "pageTitle": "طلباتي",
       "pageSubtitle": {
         "withOrders": "لديك {{count}} طلب مسجّل",

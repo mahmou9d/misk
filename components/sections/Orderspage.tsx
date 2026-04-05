@@ -265,8 +265,9 @@ function OrderCard({
                       {/* {parseFloat(
                         item.subtotal || item.price || 0,
                       ).toLocaleString()} */}
-{                      (Number(item.subtotal || item.price ||
-                      0)).toLocaleString()}
+                      {Number(
+                        item.subtotal || item.price || 0,
+                      ).toLocaleString()}
                     </span>
                   </div>
                 ))}
@@ -306,6 +307,26 @@ function OrderCard({
                 {order.phone_number}
               </p>
             )}
+            {/* Subtotal row */}
+            
+              <div
+                className={`flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+              >
+                <span
+                  className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+                >
+                  <Package className="w-4 h-4 text-[#fff] shrink-0" />
+                  {isArabic ? "سعر المنتجات" : "Subtotal"}
+                </span>
+                <span className="text-sm font-semibold text-white">
+                  LE{" "}
+                  {Number(
+                    order.total_price - (parseFloat(order.shipping_fee) || 0) ||
+                      0,
+                  ).toLocaleString()}
+                </span>
+              </div>
+           
             {order.shipping_fee && (
               <p
                 className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
@@ -317,6 +338,23 @@ function OrderCard({
                 </span>
               </p>
             )}
+            {/* Total */}
+            <div
+              className={`flex items-center gap-2  ${isArabic ? "flex-row-reverse" : ""}`}
+            >
+              <span
+                className={`text-sm font-bold text-white flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+              >
+                <CreditCard className="w-4 h-4 text-[#fff] shrink-0" />
+                {isArabic ? "الإجمالي" : "Total"}
+              </span>
+              <span className="text-base font-bold text-white">
+                LE{" "}
+                {(Number(order.total_price) || 0).toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
+            </div>
             {order.payment_method && (
               <p
                 className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
@@ -697,7 +735,7 @@ export default function OrdersPage() {
       )}
 
       {/* ── Mobile Cards (< md) ── */}
-      <div className="block md:hidden">
+      <div className="block lg:hidden">
         {ordersData.length > 0
           ? ordersData.map((order: Order) => {
               const isExpanded = expandedId === String(order.id);
@@ -750,7 +788,7 @@ export default function OrdersPage() {
       </div>
 
       {/* ── Desktop Table (>= md) ── */}
-      <div className="hidden md:block bg-[#1a1d29] rounded-2xl border border-white/10 overflow-hidden">
+      <div className="hidden lg:block bg-[#1a1d29] rounded-2xl border border-white/10 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-[#0f1117] border-b border-white/10">
@@ -977,6 +1015,28 @@ export default function OrdersPage() {
                                       {order.phone_number}
                                     </p>
                                   )}
+                                  {/* Subtotal row */}
+
+                                  <div
+                                    className={`flex items-center gap-2 pb-2  mb-2 ${isArabic ? "flex-row-reverse" : ""}`}
+                                  >
+                                    <span
+                                      className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+                                    >
+                                      <Package className="w-4 h-4 text-[#fff] shrink-0" />
+                                      {isArabic ? "سعر المنتجات" : "Subtotal"}
+                                    </span>
+                                    <span className="text-sm font-semibold text-white">
+                                      LE{" "}
+                                      {Number(
+                                        (Number(order.total_price) || 0) -
+                                          (parseFloat(
+                                            order.shipping_fee || "0",
+                                          ) || 0),
+                                      ).toLocaleString()}
+                                    </span>
+                                  </div>
+
                                   {order.shipping_fee && (
                                     <p
                                       className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
@@ -991,6 +1051,25 @@ export default function OrdersPage() {
                                       </span>
                                     </p>
                                   )}
+                                  {/* Total */}
+                                  <div
+                                    className={`flex items-center gap-2 pt-2  mt-2 ${isArabic ? "flex-row-reverse" : ""}`}
+                                  >
+                                    <span
+                                      className={`text-sm font-bold text-white flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+                                    >
+                                      <CreditCard className="w-4 h-4 text-[#fff] shrink-0" />
+                                      {isArabic ? "الإجمالي" : "Total"}
+                                    </span>
+                                    <span className="text-base font-bold text-white">
+                                      LE{" "}
+                                      {(
+                                        Number(order.total_price) || 0
+                                      ).toLocaleString("en-US", {
+                                        minimumFractionDigits: 2,
+                                      })}
+                                    </span>
+                                  </div>
                                   {order.payment_method && (
                                     <p
                                       className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}

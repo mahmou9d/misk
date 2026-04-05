@@ -1,5 +1,3 @@
-"use client";
-
 import { Suspense } from "react";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
@@ -19,20 +17,20 @@ import { TabKey1, TabKey2, TabKey3 } from "@/type/type";
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function Page() {
+export default async function Page() {
   const CATEGORY_MAP1: Record<TabKey1, { en: string; ar: string }> = {
     Men: { en: "Men", ar: "رجالى" },
     Unisex: { en: "Unisex", ar: "رجالى و نسائي" },
     Women: { en: "Women", ar: "نسائي" },
   };
-    const CATEGORY_MAP2: Record<TabKey2, { en: string; ar: string }> = {
-      Niche: { en: "Niche", ar: "النيش" },
-    };   
-     const CATEGORY_MAP3: Record<TabKey3, { en: string; ar: string }> = {
-      BodySplash: { en: "Body Splash", ar: "بادي سبلاش" },
-      Makhmaryat: { en: "Makhmaryat", ar: "مخمريات" },
-      incense: { en: "incense", ar: "بخور" },
-    };
+  const CATEGORY_MAP2: Record<TabKey2, { en: string; ar: string }> = {
+    Niche: { en: "Niche", ar: "النيش" },
+  };
+  const CATEGORY_MAP3: Record<TabKey3, { en: string; ar: string }> = {
+    BodySplash: { en: "Body Splash", ar: "بادي سبلاش" },
+    Makhmaryat: { en: "Makhmaryat", ar: "مخمريات" },
+    incense: { en: "incense", ar: "بخور" },
+  };
   return (
     <main>
       <Suspense fallback={<IsLoading />}>

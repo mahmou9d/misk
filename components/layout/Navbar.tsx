@@ -145,7 +145,10 @@ function UserActions({ locale }: { locale: string }) {
           <span className="block xl:hidden w-1 h-8 [background:linear-gradient(180deg,transparent,rgba(201,168,76,0.3),transparent)]" />
         </>
       )}
-      <IconBtn onClick={() => logout()} title={t.navbar.signOut}>
+      <IconBtn onClick={() => {
+        logout()
+        
+        }} title={t.navbar.signOut}>
         <LogoutIcon />
       </IconBtn>
     </div>
@@ -291,8 +294,7 @@ export default function Navbar() {
   const { data: cartData } = useGetCartItems();
   const { data: categories } = useGetCategory();
   const { data } = useGetPublicSettings();
-const {data: orderHistory} = useOrderHistory()
-console.log(orderHistory,"o")
+const { isAuthenticated} = useAuth();
   const cartCount = cartData?.reduce(
     (acc, item) => acc + Number(item?.quantity),
     0,
@@ -422,7 +424,8 @@ console.log(orderHistory,"o")
                       )}
                     </AnimatePresence>
                   </div>
-                ) : (
+                ) : l.href === `/${locale.toLowerCase()}/orderhistory` &&
+                  !isAuthenticated ? null : (
                   <Link
                     key={l.label}
                     href={l.href}
@@ -505,7 +508,8 @@ console.log(orderHistory,"o")
                             {isArabic ? <ChevronLeft /> : <ChevronRight />}
                           </span>
                         </button>
-                      ) : (
+                      ) : l.href === `/${locale.toLowerCase()}/orderhistory` &&
+                        !isAuthenticated ? null : (
                         <Link
                           href={l.href}
                           onClick={closeAll}

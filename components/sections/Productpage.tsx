@@ -425,12 +425,15 @@ export default function ProductPage() {
       >
         <div className="w-full max-w-screen-xl mx-auto px-1 sm:px-6 lg:px-10">
           <div className="flex items-center gap-1 md:gap-5">
-            {/* ─ سهم يسار ─ */}
             <motion.button
               whileTap={{ scale: 0.92 }}
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              disabled={page === 1}
-              className={`${arrowBase} ${page === 1 ? arrowDisabled : arrowActive} mb-12`}
+              onClick={() =>
+                setPage((p) =>
+                  isArabic ? Math.min(totalPages, p + 1) : Math.max(1, p - 1),
+                )
+              }
+              disabled={isArabic ? page === totalPages : page === 1}
+              className={`${arrowBase} ${(isArabic ? page === totalPages : page === 1) ? arrowDisabled : arrowActive} mb-12`}
             >
               <svg
                 width="15"
@@ -441,12 +444,13 @@ export default function ProductPage() {
                 strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                className={isArabic ? "rotate-180" : ""}
               >
                 <path d="M19 12H5M12 19l-7-7 7-7" />
               </svg>
             </motion.button>
 
-            {/* ─ Grid ─ */}
+            {/* ─ Grid مع Swipe ─ */}
             {bestsellersLoading ? (
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
                 {[1, 2, 3, 4].map((i) => (
@@ -460,11 +464,28 @@ export default function ProductPage() {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={page}
-                  initial={{ opacity: 0, x: 16 }}
+                  initial={{ opacity: 0, x: isArabic ? -16 : 16 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -16 }}
+                  exit={{ opacity: 0, x: isArabic ? 16 : -16 }}
                   transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5"
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.1}
+                  onDragEnd={(_, info) => {
+                    const threshold = 50;
+                    if (isArabic) {
+                      if (info.offset.x > threshold)
+                        setPage((p) => Math.max(1, p - 1));
+                      else if (info.offset.x < -threshold)
+                        setPage((p) => Math.min(totalPages, p + 1));
+                    } else {
+                      if (info.offset.x < -threshold)
+                        setPage((p) => Math.min(totalPages, p + 1));
+                      else if (info.offset.x > threshold)
+                        setPage((p) => Math.max(1, p - 1));
+                    }
+                  }}
+                  className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 cursor-grab active:cursor-grabbing"
                 >
                   {gridProducts.map((p, i) => (
                     <ProductCard key={p.id} index={i} p={p} />
@@ -473,12 +494,16 @@ export default function ProductPage() {
               </AnimatePresence>
             )}
 
-            {/* ─ سهم يمين ─ */}
+            {/* ─ سهم يمين/تقدم ─ */}
             <motion.button
               whileTap={{ scale: 0.92 }}
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              disabled={page === totalPages}
-              className={`${arrowBase} ${page === totalPages ? arrowDisabled : arrowActive}  mb-12`}
+              onClick={() =>
+                setPage((p) =>
+                  isArabic ? Math.max(1, p - 1) : Math.min(totalPages, p + 1),
+                )
+              }
+              disabled={isArabic ? page === 1 : page === totalPages}
+              className={`${arrowBase} ${(isArabic ? page === 1 : page === totalPages) ? arrowDisabled : arrowActive} mb-12`}
             >
               <svg
                 width="15"
@@ -489,6 +514,7 @@ export default function ProductPage() {
                 strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                className={isArabic ? "rotate-180" : ""}
               >
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
