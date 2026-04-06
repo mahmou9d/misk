@@ -27,8 +27,8 @@ export const productsAPI = {
       params: {
         page: params?.page,
         all: params?.all,
-        search: (params?.search),
-        category: (params?.category),
+        search: params?.search,
+        category: params?.category,
         max_price: params?.max_price,
         min_price: params?.min_price,
       },
@@ -66,7 +66,7 @@ export const productsAPI = {
   createProduct: async (
     payload: CreateProduct,
   ): Promise<CreateProductResponse> => {
-    console.log(payload)
+    console.log(payload);
     const { data } = await apiClient.post<CreateProductResponse>(
       "/dashboard/products/create/",
       payload,
@@ -152,8 +152,14 @@ export const productsAPI = {
     );
     return data;
   },
-    getBestsellers: async (): Promise<Product> => {
-      const { data } = await apiClient.get<Product>("/products/best-sellers/");
-      return data;
-    },
+  getBestsellers: async (): Promise<Product> => {
+    const { data } = await apiClient.get<Product>("/products/best-sellers/");
+    return data;
+  },
+  getFirstBestsellers: async (): Promise<Product> => {
+    const { data } = await apiClient.get<Product>(
+      "/products/top-selling-overall/",
+    );
+    return data;
+  },
 };

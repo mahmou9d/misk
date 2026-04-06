@@ -63,11 +63,11 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (refreshError) {
         const err = refreshError as { response?: { status: number } };
-        if (err.response?.status === 401 || err.response?.status === 400) {
-          localStorage.removeItem("access");
-          localStorage.removeItem("refresh");
-          window.location.href = "/login";
-        }
+        // if (err.response?.status === 401 || err.response?.status === 400) {
+        //   localStorage.removeItem("access");
+        //   localStorage.removeItem("refresh");
+        //   window.location.href = "/login";
+        // }
         return Promise.reject(refreshError);
       }
     }

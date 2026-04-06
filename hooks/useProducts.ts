@@ -274,4 +274,11 @@ export const useGetBestsellers = () => {
     queryFn: productsAPI.getBestsellers,
     staleTime: 10 * 60 * 1000,
   });
-};
+  };
+  export const useGetFirstBestsellers = () => {
+    return useQuery({
+      queryKey: ["bestsellers"],
+      queryFn: productsAPI.getFirstBestsellers,
+      staleTime: 10 * 60 * 1000,
+    });
+  };

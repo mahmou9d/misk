@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useAddToCart } from "@/hooks/useCart";
-import { useGetBestsellers } from "@/hooks/useProducts";
+import { useGetBestsellers, useGetFirstBestsellers } from "@/hooks/useProducts";
 import { ErrorResponse, NotificationState, Product } from "@/type/type";
 import { useShowNotification } from "@/utils/showNotification";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,6 +21,7 @@ export default function ProductPage() {
   const { setCartOpen } = useCats();
   const { data: bestsellers, isLoading: bestsellersLoading } =
     useGetBestsellers();
+  const { data: firstBestseller, isLoading } = useGetFirstBestsellers();
   const router = useRouter();
   const [added, setAdded] = useState(false);
   const [notification, setNotification] = useState<NotificationState | null>(
@@ -34,26 +35,23 @@ export default function ProductPage() {
   const ITEMS_PER_PAGE =
     typeof window !== "undefined" && window.innerWidth < 768 ? 2 : 4;
 
-  const bestsellersList = Array.isArray(bestsellers)
+  const bestsellersList: Product[] = Array.isArray(bestsellers)
     ? bestsellers
-    : (bestsellers ?? []);
-  const isArray = Array.isArray(bestsellersList);
+    : [];
 
-  // ─── Hero product = أول عنصر في الـ bestsellers ───
-const product: Product = (
-  isArray && bestsellersList.length > 0 ? bestsellersList[0] : null
-)!;
-  const isLoading = bestsellersLoading;
+  // ─── Hero product ───
+  const product: Product = (firstBestseller ?? null) as Product;
   const firstProductId = product?.id;
 
   const totalPages = Math.max(
     1,
-    Math.ceil((isArray ? bestsellersList.length : 1) / ITEMS_PER_PAGE),
+    Math.ceil(bestsellersList.length / ITEMS_PER_PAGE),
   );
 
-  const gridProducts = isArray
-    ? bestsellersList.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
-    : [bestsellersList];
+  const gridProducts = bestsellersList.slice(
+    (page - 1) * ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE,
+  );
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -179,7 +177,7 @@ const product: Product = (
                 </motion.div>
               )}
 
-              <div className="relative overflow-hidden rounded-3xl border border-[rgba(201,168,76,0.18)] shadow-[0_8px_48px_rgba(45,27,105,0.1)] bg-white">
+              <div className="relative overflow-hidden rounded-3xl border border-[rgba(201,168,76,0.18)] shadow-[0_8px_48px_rgba(45,27,105,0.1)] bg-white aspect-square">
                 <Image
                   src={
                     (typeof product.variants?.[0]?.images?.[0] === "string"
@@ -188,9 +186,8 @@ const product: Product = (
                   }
                   loading="lazy"
                   alt={product.name}
-                  width={520}
-                  height={520}
-                  className="block w-full transition-transform duration-700 ease-out group-hover:scale-105"
+                  fill
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(245,240,228,0.35)_0%,transparent_50%)] pointer-events-none" />
               </div>

@@ -51,7 +51,7 @@ function formatDate(iso: string): string {
 function CodSuccessModal({ onClose }: { onClose: () => void }) {
   const { locale, t, isArabic: isRTL } = useTranslation();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
-const router = useRouter();
+
   useEffect(() => {
     try {
       const raw = localStorage.getItem("next_step");
@@ -62,7 +62,7 @@ const router = useRouter();
 
     const timer = setTimeout(() => {
       localStorage.removeItem("next_step");
-      router.push(`/${locale.toLowerCase()}`);
+      
       // onClose();
     }, 8000);
 
@@ -162,7 +162,7 @@ function CardSuccessModal({
 }) {
   const { locale, t, isArabic: isRTL } = useTranslation();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
-const router = useRouter();
+
   useEffect(() => {
     try {
       const raw = localStorage.getItem("next_step");
@@ -173,7 +173,7 @@ const router = useRouter();
 
     const timer = setTimeout(() => {
       localStorage.removeItem("next_step");
-      router.push(`/${locale.toLowerCase()}`);
+      
       // onClose();
     }, 8000);
 

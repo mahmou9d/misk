@@ -41,8 +41,11 @@ const { data, isLoading } = useGetProducts({ category });
       {/* ── Background Decoration ── */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 opacity-[0.03] select-none pointer-events-none">
         <h2 className="text-[45px] md:text-[90px] lg:text-[180px] font-serif font-bold whitespace-nowrap uppercase">
-          { CATEGORY_MAP[tab].ar
-              }
+          {CATEGORY_MAP[tab].en === "Men" ||
+          CATEGORY_MAP[tab].en === "Women" ||
+          CATEGORY_MAP[tab].en === "Unisex"
+            ? CATEGORY_MAP[tab].en
+            : CATEGORY_MAP[tab].ar}
         </h2>
       </div>
 
@@ -58,13 +61,17 @@ const { data, isLoading } = useGetProducts({ category });
               <button
                 key={tabKey}
                 onClick={() => setTab(tabKey)}
-                className={`relative px-4 lg:px-12 py-2 md:py-4 rounded-full text-[13px] font-bold uppercase transition-all duration-500
+                className={`relative px-4 lg:px-12 py-2 md:py-4 rounded-full text-[14px] font-bold uppercase transition-all duration-500
                   ${tab === tabKey ? "text-white" : "text-gray-400 hover:text-gray-900"}
-                  ${isArabic ? "text-[14px]" : "tracking-[0.2em]"}`}
+                  ${isArabic ? "" : "tracking-[0.2em]"}`}
               >
                 <span className="relative z-10">
-                  { CATEGORY_MAP[tabKey].ar
-                      }
+                  {" "}
+                  {CATEGORY_MAP[tabKey].en === "Men" ||
+                  CATEGORY_MAP[tabKey].en === "Women" ||
+                  CATEGORY_MAP[tabKey].en === "Unisex"
+                    ? CATEGORY_MAP[tabKey].en
+                    :CATEGORY_MAP[tabKey].ar}
                 </span>
                 {tab === tabKey && (
                   <motion.div
@@ -121,7 +128,7 @@ const { data, isLoading } = useGetProducts({ category });
           >
             <span
               className={`text-white font-medium text-[13px] transition-colors duration-500 group-hover:text-[#111]
-                ${isArabic ? "text-[16px] font-bold" : "tracking-[0.2em]"}`}
+                ${isArabic ? "text-[16px] font-bold" : "tracking-[0.1em]"}`}
             >
               {t.productGrid.viewAll}
             </span>
