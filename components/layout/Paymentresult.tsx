@@ -62,7 +62,7 @@ function CodSuccessModal({ onClose }: { onClose: () => void }) {
 
     const timer = setTimeout(() => {
       localStorage.removeItem("next_step");
-      onClose();
+      // onClose();
     }, 8000);
 
     return () => clearTimeout(timer);
