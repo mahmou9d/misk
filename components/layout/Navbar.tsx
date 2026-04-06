@@ -89,12 +89,12 @@ function UserActions({ locale }: { locale: string }) {
   const { isAuthenticated, isLoading, logout } = useAuth();
   const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
-  const [isAdmin, setIsAdmin] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
     setMounted(true);
-    setIsAdmin(localStorage.getItem("role"));
+    setIsAdmin(localStorage.getItem("role") === "true");
   }, []);
 
   if (!mounted)
@@ -127,7 +127,7 @@ function UserActions({ locale }: { locale: string }) {
   const handleDashboardClick = () => {
     queryClient.clear();
   };
-
+console.log(isAdmin)
   return (
     <div className="flex items-center gap-[12px]">
       {isAdmin && (
