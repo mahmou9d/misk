@@ -172,7 +172,7 @@ function CardSuccessModal({
 
     const timer = setTimeout(() => {
       localStorage.removeItem("next_step");
-      onClose();
+      // onClose();
     }, 8000);
 
     return () => clearTimeout(timer);
