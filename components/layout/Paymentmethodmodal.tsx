@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/lib/Usetranslation";
+import Image from "next/image";
 
 export function PaymentMethodModal({
   phone,
@@ -75,17 +76,18 @@ export function PaymentMethodModal({
             </div>
             <div className="flex items-center gap-1">
               {[
-                { name: "VISA", bg: "#1a1f71" },
-                { name: "MC", bg: "#eb001b" },
-                { name: "Meza", bg: "#00a651" },
+                { name: "/Visa.svg" },
+                { name: "/Mastercard.svg" },
+                { name: "/Meeza.svg" },
               ].map((c) => (
-                <span
+                <Image
                   key={c.name}
-                  className=" font-bold text-white text-[9px] px-[6px] py-[2px] rounded-[3px]"
-                  style={{ backgroundColor: c.bg }}
-                >
-                  {c.name}
-                </span>
+                  className=" font-bold text-white"
+                  width={30}
+                  height={20}
+                  src={c.name}
+                  alt=""
+                />
               ))}
             </div>
           </label>

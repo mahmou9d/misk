@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
@@ -20,8 +19,6 @@ import { PaymentMethodModal } from "@/components/layout/Paymentmethodmodal";
 import { CheckoutForm } from "@/components/layout/Checkoutform";
 import { useTranslation } from "@/lib/Usetranslation";
 
-const SHIPPING = 85;
-
 export default function CheckoutPage() {
   const { t, isArabic, dir, locale } = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -29,6 +26,7 @@ export default function CheckoutPage() {
   const [pendingOrderId, setPendingOrderId] = useState<string | null>(null);
   const [pendingPhone, setPendingPhone] = useState("");
   const [discountApplied] = useState(false);
+  const [shippingFee, setShippingFee] = useState(0); // ── جديد ──
   const [notification, setNotification] = useState<NotificationState | null>(
     null,
   );
@@ -44,51 +42,46 @@ export default function CheckoutPage() {
     0,
   );
   const discountAmt = discountApplied ? Math.round(subtotal * 0.1) : 0;
-  
+  const total = subtotal + shippingFee - discountAmt; // ── جديد ──
 
-const handleSubmit = async (values: CheckoutFormValues) => {
-  setLoading(true);
-  try {
-    const result = await placeOrder({
-      full_name: `${values.firstName} ${values.lastName}`,
-      full_address: values.apt
-        ? `${values.address}, ${values.apt}`
-        : values.address,
-      phone_number: values.phone,
-      country: `Egypt`,
-      order_notes: "",
-      payment_method: values.payment_method,
-      governorate_id: values.governorate_id,
-    });
+  const handleSubmit = async (values: CheckoutFormValues) => {
+    setLoading(true);
+    try {
+      const result = await placeOrder({
+        full_name: `${values.firstName} ${values.lastName}`,
+        full_address: values.apt
+          ? `${values.address}, ${values.apt}`
+          : values.address,
+        phone_number: values.phone,
+        country: `Egypt`,
+        order_notes: "",
+        payment_method: values.payment_method,
+        governorate_id: values.governorate_id,
+      });
+        const nextStep = localStorage.setItem("next_step", String(result.next_step));
+        
+      const orderId = String(result.order_id);
 
-    // امسح الـ localStorage block ده كله
-    // const nextStep = localStorage.setItem(...)  ← احذفه
-    // if (nextStep !== null) { ... }              ← احذفه
+      if (values.payment_method === "cod") {
+        showNotification(t.checkout.orderSuccess, "success");
+        setLoading(false);
+        window.location.href = "/?success=true&order=" + orderId;
+        return;
+      }
 
-    const orderId = String(result.order_id);
-
-    if (values.payment_method === "cod") {
-      showNotification(t.checkout.orderSuccess, "success");
+      setPendingOrderId(orderId);
+      setPendingPhone(values.phone);
       setLoading(false);
-      // هنا تعمل redirect للـ success page
-      window.location.href = "/?success=true&order=" + orderId;
-      return;
+      setShowPayModal(true);
+    } catch (err: unknown) {
+      const error = err as AxiosError<ErrorResponse>;
+      showNotification(
+        error?.response?.data?.message || t.checkout.orderError,
+        "error",
+      );
+      setLoading(false);
     }
-
-    // Paymob
-    setPendingOrderId(orderId);
-    setPendingPhone(values.phone);
-    setLoading(false);
-    setShowPayModal(true);
-  } catch (err: unknown) {
-    const error = err as AxiosError<ErrorResponse>;
-    showNotification(
-      error?.response?.data?.message || t.checkout.orderError,
-      "error",
-    );
-    setLoading(false);
-  }
-};
+  };
 
   const handlePayWithWallet = async (walletNumber: string) => {
     if (!pendingOrderId) return;
@@ -161,14 +154,10 @@ const handleSubmit = async (values: CheckoutFormValues) => {
             className="flex flex-col items-center select-none leading-none group"
           >
             <span
-              className="
-         font-bold -widest transition-all duration-300
-        text-3xl md:text-4xl
-        [background:linear-gradient(135deg,#c9a84c_0%,#f0d080_45%,#b8912e_100%)]
-        [background-clip:text]
-        [letter-spacing:6px]
-        [filter:drop-shadow(0_1px_6px_rgba(201,168,76,0.25))]
-      "
+              className="font-bold transition-all duration-300 text-3xl md:text-4xl
+                [background:linear-gradient(135deg,#c9a84c_0%,#f0d080_45%,#b8912e_100%)]
+                [background-clip:text] [letter-spacing:6px]
+                [filter:drop-shadow(0_1px_6px_rgba(201,168,76,0.25))]"
               style={{
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
@@ -176,33 +165,29 @@ const handleSubmit = async (values: CheckoutFormValues) => {
             >
               Misk
             </span>
-
-            {/* Gold divider */}
             <span className="block h-px w-full mt-0.5 [background:linear-gradient(90deg,transparent,rgba(201,168,76,0.5),transparent)]" />
           </Link>
           <div className="flex items-center gap-3">
             <Link
               href={`/${locale.toLowerCase()}`}
-              className="text-[15px] -[1.5px] uppercase text-[#aaa] hover:text-[#C9A84C] transition-colors hidden sm:block"
+              className="text-[15px] uppercase text-[#aaa] hover:text-[#C9A84C] transition-colors hidden sm:block"
             >
               {isArabic ? "→ رجوع" : "← Back"}
             </Link>
-            <div className="bg-[#1a1a1a] text-[#F0D080] text-[14px] font-semibold px-4 py-2 rounded-full -[0.3px]">
+            <div className="bg-[#1a1a1a] text-[#F0D080] text-[14px] font-semibold px-4 py-2 rounded-full">
               {t.checkout.currency}
               {subtotal.toLocaleString()}.00
             </div>
           </div>
         </div>
 
-        {/* Cart items horizontal scroll */}
-
+        {/* Cart items */}
         {cartItems.length > 0 && (
           <div
             className="flex gap-3 overflow-x-auto pb-4 pt-2 px-1 no-scrollbar"
             style={{ scrollbarWidth: "none" }}
           >
             {cartItems.map((item) => {
-              // حماية ضد روابط http من Cloudinary
               const rawImage =
                 (typeof item?.variant?.images?.[0] === "string"
                   ? item.variant.images[0]
@@ -214,7 +199,6 @@ const handleSubmit = async (values: CheckoutFormValues) => {
                   key={item.id}
                   className="flex flex-col sm:flex-row items-center gap-3 bg-white border border-[#E8E2D6] rounded-xl p-2 flex-shrink-0 w-[140px] sm:w-auto shadow-sm"
                 >
-                  {/* Container الصورة */}
                   <div className="relative w-full sm:w-[80px] h-[100px] sm:h-[80px] flex-shrink-0">
                     <div className="w-full h-full bg-[#EDE8DE] rounded-lg overflow-hidden border border-[#f0ece5]">
                       <Image
@@ -226,18 +210,14 @@ const handleSubmit = async (values: CheckoutFormValues) => {
                         className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
                       />
                     </div>
-
-                    {/* دائرة العدد */}
                     <span
-                      className={`absolute -top-1.5 -inline-flex items-center justify-center rounded-full
-                text-white font-bold min-w-[20px] h-[20px] px-1 text-[11px] bg-[#C9A84C] border-2 border-white shadow-sm
-                ${isArabic ? "-left-1.5" : "-right-1.5"}`}
+                      className={`absolute -top-1.5 inline-flex items-center justify-center rounded-full
+                        text-white font-bold min-w-[20px] h-[20px] px-1 text-[11px] bg-[#C9A84C] border-2 border-white shadow-sm
+                        ${isArabic ? "-left-1.5" : "-right-1.5"}`}
                     >
                       {item.quantity}
                     </span>
                   </div>
-
-                  {/* نصوص المنتج */}
                   <div className="flex flex-col text-center sm:text-start overflow-hidden w-full px-1">
                     <span className="text-[12px] sm:text-[14px] font-bold text-[#1a1a1a] truncate leading-tight">
                       {item.name}
@@ -259,15 +239,40 @@ const handleSubmit = async (values: CheckoutFormValues) => {
           </div>
         )}
 
-        {/* Totals row */}
+        {/* ── Totals row ── */}
         <div className="flex gap-5 mt-3.5 pt-3.5 border-t border-[#E8E2D6]">
+          {/* Subtotal */}
           <div className="flex flex-col gap-0.5">
-            <span className="text-[11px] text-[#aaa] uppercase -[1.5px]">
+            <span className="text-[11px] text-[#aaa] uppercase tracking-[1.5px]">
               {t.checkout.subtotal || "Subtotal"}
             </span>
             <span className="text-[15px] font-bold text-[#C9A84C]">
               {t.checkout.currency}
               {subtotal.toLocaleString()}.00
+            </span>
+          </div>
+
+          {/* Shipping */}
+          {shippingFee > 0 && (
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[11px] text-[#aaa] uppercase tracking-[1.5px]">
+                {isArabic ? "الشحن" : "Shipping"}
+              </span>
+              <span className="text-[15px] font-bold text-[#888]">
+                {t.checkout.currency}
+                {shippingFee.toLocaleString()}.00
+              </span>
+            </div>
+          )}
+
+          {/* Total */}
+          <div className="flex flex-col gap-0.5 ml-auto">
+            <span className="text-[11px] text-[#aaa] uppercase tracking-[1.5px]">
+              {isArabic ? "الإجمالي" : "Total"}
+            </span>
+            <span className="text-[17px] font-bold text-[#1a1a1a]">
+              {t.checkout.currency}
+              {total.toLocaleString()}.00
             </span>
           </div>
         </div>
@@ -280,12 +285,11 @@ const handleSubmit = async (values: CheckoutFormValues) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* Header */}
         <div className="mb-8">
-          <p className="text-[11px] -[4px] text-[#C9A84C] uppercase mb-2 font-semibold">
+          <p className="text-[11px] tracking-[4px] text-[#C9A84C] uppercase mb-2 font-semibold">
             {isArabic ? "إتمام الطلب" : "Secure Checkout"}
           </p>
-          <h1 className="text-[32px] font-bold text-[#1a1a1a] -[-0.3px] mb-2">
+          <h1 className="text-[32px] font-bold text-[#1a1a1a] mb-2">
             {isArabic ? "تفاصيل الشحن" : "Shipping Details"}
           </h1>
           <p className="text-[16px] text-[#888] leading-relaxed">
@@ -295,7 +299,11 @@ const handleSubmit = async (values: CheckoutFormValues) => {
           </p>
         </div>
 
-        <CheckoutForm onSubmit={handleSubmit} loading={loading} />
+        <CheckoutForm
+          onSubmit={handleSubmit}
+          loading={loading}
+          onGovernorateChange={setShippingFee} // ── جديد ──
+        />
       </motion.div>
     </div>
   );

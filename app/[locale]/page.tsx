@@ -24,7 +24,7 @@ export default async function Page() {
     Women: { en: "Women", ar: "نسائي" },
   };
   const CATEGORY_MAP2: Record<TabKey2, { en: string; ar: string }> = {
-    Niche: { en: "Niche", ar: "النيش" },
+    Niche: { en: "Niche perfumes", ar: "عطور النيش" },
   };
   const CATEGORY_MAP3: Record<TabKey3, { en: string; ar: string }> = {
     BodySplash: { en: "Body Splash", ar: "بادي سبلاش" },

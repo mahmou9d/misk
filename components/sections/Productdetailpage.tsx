@@ -857,6 +857,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
               </motion.div>
 
               {/* Variants */}
+              <div className="flex flex-wrap gap-2">
               {product?.variants?.map((v) => {
                 const isSelected = selectedVariant?.id === v.id;
                 const outOfStock = v.stock === 0;
@@ -884,7 +885,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
                   </motion.button>
                 );
               })}
-
+</div>
               <motion.p
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}

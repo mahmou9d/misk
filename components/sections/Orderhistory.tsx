@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useOrderHistory } from "@/hooks/usePayment";
 import { useTranslation } from "@/lib/Usetranslation";
+import Link from "next/link";
 
 const statusConfig: Record<string, { color: string; bg: string; dot: string }> =
   {
@@ -52,7 +53,7 @@ function OrderCard({
   index: number;
   isArabic: boolean;
 }) {
-  const { t, isArabic: _isArabic } = useTranslation();
+  const { t } = useTranslation();
   const tran = t.orderHistory;
   const [expanded, setExpanded] = useState(false);
   const cfg = statusConfig[order.status] ?? statusConfig.pending;
@@ -181,7 +182,6 @@ function OrderCard({
       </div>
 
       {/* Footer */}
-      {/* Footer */}
       <div
         className="px-7 py-4 flex items-center justify-between flex-wrap gap-4"
         style={{
@@ -215,7 +215,6 @@ function OrderCard({
         </div>
 
         <div className="flex flex-col items-end gap-1.5">
-          {/* ✅ Shipping Fee */}
           {order.shipping_fee && parseFloat(order.shipping_fee) > 0 && (
             <div className="flex items-center gap-1.5">
               <svg
@@ -236,7 +235,10 @@ function OrderCard({
               <span className="text-[15px] text-gray-400 font-medium">
                 {tran.shippingFee}
               </span>
-              <span className="text-[15px] font-bold" style={{ color: "#92650a" }}>
+              <span
+                className="text-[15px] font-bold"
+                style={{ color: "#92650a" }}
+              >
                 {parseFloat(order.shipping_fee).toLocaleString(
                   isArabic ? "ar-EG" : "en-US",
                 )}
@@ -245,7 +247,6 @@ function OrderCard({
             </div>
           )}
 
-          {/* Total */}
           <div className="flex flex-col items-end gap-0.5">
             <span className="text-xs text-gray-400 font-medium">
               {tran.total}
@@ -276,10 +277,10 @@ function OrderCard({
 
 // ─── Page ──────────────────────────────────────────────────────────────────────
 export default function OrderHistoryPage() {
-  const { t, isArabic, dir } = useTranslation();
+  const { t, isArabic, dir, locale } = useTranslation();
   const tran = t.orderHistory;
   const { data: orders = [], isLoading } = useOrderHistory();
-  
+
   const [activeFilter, setActiveFilter] = useState("all");
 
   const filtered =
@@ -321,6 +322,34 @@ export default function OrderHistoryPage() {
             className="mt-4 h-1 w-16 rounded-full"
             style={{ background: "linear-gradient(90deg,#c9a84c,transparent)" }}
           />
+
+          {/* ── Home Button ── */}
+          <motion.div
+            initial={{ opacity: 0, x: isArabic ? 10 : -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2, duration: 0.4 }}
+            className="mt-5"
+          >
+            <Link
+              href={`/${locale.toLowerCase()}`}
+              className="inline-flex items-center gap-2 text-[14px] font-semibold text-[#666] hover:text-[#2d1b69] transition-colors duration-200 group"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={`transition-transform duration-200 ${isArabic ? "rotate-180 group-hover:translate-x-1" : "group-hover:-translate-x-1"}`}
+              >
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              {isArabic ? "الرئيسية" : "Home"}
+            </Link>
+          </motion.div>
         </motion.div>
 
         {/* Filter Tabs */}

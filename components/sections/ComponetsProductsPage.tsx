@@ -406,7 +406,7 @@ export function VRow({
         <div className="grid grid-cols-2 gap-x-2 gap-y-1.5 flex-1 min-w-[180px]">
           <Input
             label={c.volume}
-            placeholder="100ml"
+            placeholder="100ml / حجم"
             value={v.volume}
             onChange={onChangeVolume}
           />

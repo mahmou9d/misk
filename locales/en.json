@@ -261,7 +261,7 @@
     "payment": "Payment",
     "paymentSecure": "All transactions are secure and encrypted.",
     "cod": "Cash on Delivery (COD)",
-    "card": "Credit / Debit Card",
+    "card": "Credit / Debit Card / wallet",
     "billingAddress": "Billing address",
     "billingSame": "Same as shipping address",
     "billingDifferent": "Use a different billing address",

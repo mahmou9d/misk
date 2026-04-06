@@ -13,35 +13,44 @@ export default function HeroSection() {
   if (!banners?.[0]) return null;
 
   return (
-    <section className="relative w-full overflow-hidden min-h-[500px] h-[100svh] max-h-[700px] lg:max-h-[600px]">
-      {/* ── DESKTOP ── */}
-      <div className="absolute inset-0 overflow-hidden hidden md:block">
-        <motion.div className="absolute inset-0">
-          <Image
-            src={desktopSrc as string}
-            alt="Hero"
-            fill
-            sizes="100vw"
-            className="object-cover object-center"
-            priority
-            unoptimized={desktopSrc?.startsWith("http")}
-          />
-        </motion.div>
+    <section className="relative w-full overflow-hidden min-h-[500px] h-[100svh] max-h-[700px] lg:max-h-[600px] bg-[#f5f0e8]">
+      {/* ── MOBILE : < md ── */}
+      <div className="absolute inset-0 hidden md:block lg:hidden">
+        <Image
+          src={mobileSrc as string}
+          alt="Hero"
+          fill
+          sizes="100vw"
+          className=" object-center"
+          priority
+          unoptimized={mobileSrc?.startsWith("http")}
+        />
       </div>
 
-      {/* ── MOBILE ── */}
-      <div className="absolute inset-0 overflow-hidden md:hidden">
-        <motion.div className="absolute inset-0">
-          <Image
-            src={mobileSrc as string}
-            alt="Hero"
-            fill
-            sizes="100vw"
-            className="object-cover object-center"
-            priority
-            unoptimized={mobileSrc?.startsWith("http")}
-          />
-        </motion.div>
+      {/* ── MOBILE : < md ── */}
+      <div className="absolute inset-0 md:hidden">
+        <Image
+          src={mobileSrc as string}
+          alt="Hero"
+          fill
+          sizes="100vw"
+          className="object-center"
+          priority
+          unoptimized={mobileSrc?.startsWith("http")}
+        />
+      </div>
+
+      {/* ── DESKTOP : lg+ ── */}
+      <div className="absolute inset-0 hidden lg:block">
+        <Image
+          src={desktopSrc as string}
+          alt="Hero"
+          fill
+          sizes="100vw"
+          className=" object-center"
+          priority
+          unoptimized={desktopSrc?.startsWith("http")}
+        />
       </div>
     </section>
   );

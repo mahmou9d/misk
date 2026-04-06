@@ -41,13 +41,8 @@ const { data, isLoading } = useGetProducts({ category });
       {/* ── Background Decoration ── */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 opacity-[0.03] select-none pointer-events-none">
         <h2 className="text-[45px] md:text-[90px] lg:text-[180px] font-serif font-bold whitespace-nowrap uppercase">
-          {CATEGORY_MAP[tab].en === "Men" ||
-          CATEGORY_MAP[tab].en === "Women" ||
-          CATEGORY_MAP[tab].en === "Unisex"
-            ? CATEGORY_MAP[tab].en
-            : isArabic
-              ? CATEGORY_MAP[tab].ar
-              : CATEGORY_MAP[tab].en}
+          { CATEGORY_MAP[tab].ar
+              }
         </h2>
       </div>
 
@@ -68,13 +63,8 @@ const { data, isLoading } = useGetProducts({ category });
                   ${isArabic ? "text-[14px]" : "tracking-[0.2em]"}`}
               >
                 <span className="relative z-10">
-                  {CATEGORY_MAP[tabKey].en === "Men" ||
-                  CATEGORY_MAP[tabKey].en === "Women" ||
-                  CATEGORY_MAP[tabKey].en === "Unisex"
-                    ? CATEGORY_MAP[tabKey].en
-                    : isArabic
-                      ? CATEGORY_MAP[tabKey].ar
-                      : CATEGORY_MAP[tabKey].en}
+                  { CATEGORY_MAP[tabKey].ar
+                      }
                 </span>
                 {tab === tabKey && (
                   <motion.div

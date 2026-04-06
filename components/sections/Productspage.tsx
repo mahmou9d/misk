@@ -13,7 +13,6 @@ import { useProductPage } from "@/hooks/Useproductpage";
 import Notification from "../layout/Notification";
 import { useTranslation } from "@/lib/Usetranslation";
 import Image from "next/image";
-import { useGetBestsellers } from "@/hooks/useProducts";
 import { X } from "lucide-react";
 
 /* ══════════════════════════════════════════════════════════

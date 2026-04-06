@@ -4,13 +4,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useTranslation } from "@/lib/Usetranslation";
 import { CheckoutFormValues } from "@/type/type";
 import { checkoutSchema } from "@/utils/validation";
 import Image from "next/image";
 import { useGetShippingGovernorates } from "@/hooks/useDashboard";
-
-
 
 type Governorate = {
   id: number;
@@ -18,24 +17,18 @@ type Governorate = {
   shipping_fee: string;
 };
 
-/* ── Card Icons ── */
 function VisaIcon() {
-  return (
-    <div className="flex items-center bg-white border border-[#DDD] rounded px-2 h-[26px]">
-      <Image src="/visa.svg" width={36} height={26} alt="Visa" />
-    </div>
-  );
+  return <Image src="/Visa.svg" width={25} height={20} alt="Visa" />;
 }
 function MastercardIcon() {
   return (
-    <Image src="/mastercard.svg" width={36} height={26} alt="Mastercard" />
+    <Image src="/Mastercard.svg" width={25} height={20} alt="Mastercard" />
   );
 }
 function MeezaIcon() {
-  return <Image src="/meeza.svg" width={36} height={26} alt="Meeza" />;
+  return <Image src="/Meeza.svg" width={25} height={20} alt="Meeza" />;
 }
 
-/* ── Field ── */
 function Field({
   label,
   error,
@@ -51,7 +44,7 @@ function Field({
       )}
       <input
         {...props}
-        className={`w-full h-[52px] px-4 text-[16px] text-[#1a1a1a] bg-white rounded-[10px] border-2 outline-none transition-all duration-150 placeholder-[#C8C4BC]
+        className={`w-full h-[52px] px-4 text-[14px] text-[#1a1a1a] bg-white rounded-[10px] border-2 outline-none transition-all duration-150 placeholder-[#C8C4BC]
           ${
             error
               ? "border-red-400 focus:border-red-400 focus:shadow-[0_0_0_4px_rgba(248,113,113,0.12)]"
@@ -63,7 +56,6 @@ function Field({
   );
 }
 
-/* ── Section Label ── */
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-[18px]">
@@ -73,7 +65,6 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-/* ── Radio Card ── */
 function RadioCard({
   checked,
   label,
@@ -85,7 +76,7 @@ function RadioCard({
 }) {
   return (
     <label
-      className={`flex items-center justify-between cursor-pointer px-[18px] py-4 rounded-[10px] border-2 mb-2.5 transition-all duration-150
+      className={`flex items-center justify-between cursor-pointer px-[14px] py-4 rounded-[10px] border-2 mb-2.5 transition-all duration-150
         ${
           checked
             ? "border-[#C9A84C] bg-[#FDFAF0]"
@@ -101,7 +92,9 @@ function RadioCard({
             <span className="w-[11px] h-[11px] rounded-full bg-[#C9A84C]" />
           )}
         </span>
-        <span className="text-[16px] font-medium text-[#1a1a1a]">{label}</span>
+        <span className="text-[14px] font-medium text-[#1a1a1a] w-[160px] md:w-full">
+          {label}
+        </span>
       </div>
       {children}
       <input type="radio" className="sr-only" {...props} />
@@ -109,13 +102,14 @@ function RadioCard({
   );
 }
 
-/* ══ CheckoutForm ══ */
 export function CheckoutForm({
   onSubmit,
   loading,
+  onGovernorateChange,
 }: {
   onSubmit: (values: CheckoutFormValues) => void;
   loading: boolean;
+  onGovernorateChange?: (fee: number) => void;
 }) {
   const { t, isArabic, locale, dir } = useTranslation();
   const { data: governorates } = useGetShippingGovernorates();
@@ -135,15 +129,19 @@ export function CheckoutForm({
   });
 
   const payment = watch("payment_method");
-  const billing = watch("billing");
-
-  // ── الـ shipping_fee بتاعت المحافظة المختارة ──
   const selectedGovId = watch("governorate_id");
+
   const selectedGov = governorates?.find(
     (g: Governorate) => g.id === Number(selectedGovId),
   );
   const shippingFee =
     selectedGov?.shipping_fee ?? governorates?.[0]?.shipping_fee ?? "0";
+
+  // ── إرسال الـ fee للـ parent عند كل تغيير ──
+  useEffect(() => {
+    const fee = parseFloat(shippingFee) || 0;
+    onGovernorateChange?.(fee);
+  }, [shippingFee, onGovernorateChange]);
 
   const translatedErrors = {
     firstName: errors.firstName ? t.checkoutForm.errors.firstName : undefined,
@@ -169,7 +167,7 @@ export function CheckoutForm({
         <SectionLabel>{t.checkoutForm.delivery}</SectionLabel>
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between h-[52px] px-4 bg-[#F4F1EB] border-2 border-[#DDD8CC] rounded-[10px]">
-            <span className="text-[16px] font-medium text-[#666]">
+            <span className="text-[14px] font-medium text-[#666]">
               {t.checkoutForm.country}
             </span>
             <svg
@@ -219,26 +217,29 @@ export function CheckoutForm({
               {...register("city")}
             />
 
-            {/* ── Governorate Select ── */}
             <div className="flex flex-col gap-1.5">
               <label className="text-[12px] font-semibold text-[#555]">
                 {isArabic ? "المحافظة" : "Governorate"}
               </label>
               <select
                 {...register("governorate_id")}
-                className="h-[52px] px-4 text-[16px] text-[#1a1a1a] bg-white rounded-[10px] border-2 border-[#DDD8CC] outline-none appearance-none cursor-pointer focus:border-[#C9A84C] transition-colors duration-150"
+                className="h-[52px] w-[140px] px-4 text-[14px] text-[#1a1a1a] bg-white rounded-[10px] border-2 border-[#DDD8CC] outline-none appearance-none cursor-pointer focus:border-[#C9A84C] transition-colors duration-150"
                 style={{
                   backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
                   backgroundRepeat: "no-repeat",
-                  backgroundPosition: "right 14px center",
+                  backgroundPosition: isArabic
+                    ? "left 14px center"
+                    : "right 14px center",
+                  paddingLeft: isArabic ? "36px" : "16px",
+                  paddingRight: isArabic ? "16px" : "36px",
                 }}
               >
                 <option value="" disabled>
                   {isArabic ? "اختر المحافظة" : "Governorate"}
                 </option>
-                {governorates?.map((g: Governorate, i: number) => (
+                {governorates?.map((g: Governorate) => (
                   <option key={g.id} value={g.id}>
-                    {isArabic ? g.name : g.name}
+                    {g.name}
                   </option>
                 ))}
               </select>
@@ -265,14 +266,13 @@ export function CheckoutForm({
         <SectionLabel>{t.checkoutForm.shippingMethod}</SectionLabel>
         <div className="flex items-center justify-between bg-white border-2 border-[#DDD8CC] rounded-[10px] px-[18px] py-4">
           <div className="flex flex-col gap-0.5">
-            <span className="text-[16px] font-semibold text-[#1a1a1a]">
+            <span className="text-[14px] font-semibold text-[#1a1a1a]">
               {t.checkoutForm.shippingDays}
             </span>
             <span className="text-[13px] text-[#aaa]">
               {isArabic ? "٣–٥ أيام عمل" : "3–5 business days"}
             </span>
           </div>
-          {/* ── shipping_fee الديناميكي ── */}
           <span className="text-[18px] font-bold text-[#C9A84C]">
             EGP {parseFloat(shippingFee).toFixed(2)}
           </span>
@@ -319,15 +319,9 @@ export function CheckoutForm({
       <motion.button
         whileTap={{ scale: 0.99 }}
         onClick={() => {
-          console.log("Button clicked!");
           handleSubmit(
-            (values) => {
-              console.log("✅ Values:", values);
-              onSubmit(values);
-            },
-            (errors) => {
-              console.log("❌ Errors:", errors);
-            },
+            (values) => onSubmit(values),
+            (errors) => console.log("❌ Errors:", errors),
           )();
         }}
         disabled={loading}

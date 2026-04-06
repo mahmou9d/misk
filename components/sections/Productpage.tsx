@@ -2,12 +2,8 @@
 
 import { useState } from "react";
 import { useAddToCart } from "@/hooks/useCart";
-import {
-  useGetBestsellers,
-  useGetProducts,
-  useGetSingleProduct,
-} from "@/hooks/useProducts";
-import { ErrorResponse, NotificationState } from "@/type/type";
+import { useGetBestsellers } from "@/hooks/useProducts";
+import { ErrorResponse, NotificationState, Product } from "@/type/type";
 import { useShowNotification } from "@/utils/showNotification";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -21,12 +17,10 @@ import ProductCard from "@/components/layout/Productcard";
 
 export default function ProductPage() {
   const { t, isArabic, dir, locale } = useTranslation();
-  const { data: productsData } = useGetProducts({ page: 1 });
-  const firstProductId = productsData?.products?.[0]?.id;
-  const { data: product, isLoading } = useGetSingleProduct(firstProductId ?? 0);
   const { mutate: addToCart, isPending } = useAddToCart();
   const { setCartOpen } = useCats();
-  const { data: bestsellers, isLoading: bestsellersLoading } = useGetBestsellers();
+  const { data: bestsellers, isLoading: bestsellersLoading } =
+    useGetBestsellers();
   const router = useRouter();
   const [added, setAdded] = useState(false);
   const [notification, setNotification] = useState<NotificationState | null>(
@@ -39,10 +33,18 @@ export default function ProductPage() {
 
   const ITEMS_PER_PAGE =
     typeof window !== "undefined" && window.innerWidth < 768 ? 2 : 4;
+
   const bestsellersList = Array.isArray(bestsellers)
     ? bestsellers
     : (bestsellers ?? []);
   const isArray = Array.isArray(bestsellersList);
+
+  // ─── Hero product = أول عنصر في الـ bestsellers ───
+const product: Product = (
+  isArray && bestsellersList.length > 0 ? bestsellersList[0] : null
+)!;
+  const isLoading = bestsellersLoading;
+  const firstProductId = product?.id;
 
   const totalPages = Math.max(
     1,
@@ -52,6 +54,7 @@ export default function ProductPage() {
   const gridProducts = isArray
     ? bestsellersList.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
     : [bestsellersList];
+
   const handleAddToCart = () => {
     if (!product) return;
     addToCart(
@@ -368,10 +371,8 @@ export default function ProductPage() {
       {/* ══════════════ DIVIDER ══════════════ */}
       <div className="w-full flex justify-center px-4 sm:px-6 lg:px-10 bg-[#fafaf8]">
         <div className="w-full max-w-240 flex items-center gap-5">
-          {/* خط يسار */}
           <div className="flex-1 h-px bg-[linear-gradient(to_left,rgba(201,168,76,0.35),transparent)]" />
 
-          {/* الأيقونة والنص في المنتصف */}
           <motion.div
             initial={{ opacity: 0, y: 6 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -379,7 +380,6 @@ export default function ProductPage() {
             transition={{ duration: 0.5 }}
             className="flex items-center gap-3 shrink-0"
           >
-            {/* زخرفة ذهبية يسار */}
             <svg
               width="18"
               height="18"
@@ -399,7 +399,6 @@ export default function ProductPage() {
               {isArabic ? "الاكثر مبيعا" : "best selling"}
             </span>
 
-            {/* زخرفة ذهبية يمين */}
             <svg
               width="18"
               height="18"
@@ -414,7 +413,6 @@ export default function ProductPage() {
             </svg>
           </motion.div>
 
-          {/* خط يمين */}
           <div className="flex-1 h-px bg-[linear-gradient(to_right,rgba(201,168,76,0.35),transparent)]" />
         </div>
       </div>
@@ -451,7 +449,6 @@ export default function ProductPage() {
               </svg>
             </motion.button>
 
-            {/* ─ Grid مع Swipe ─ */}
             {bestsellersLoading ? (
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
                 {[1, 2, 3, 4].map((i) => (
@@ -495,7 +492,6 @@ export default function ProductPage() {
               </AnimatePresence>
             )}
 
-            {/* ─ سهم يمين/تقدم ─ */}
             <motion.button
               whileTap={{ scale: 0.92 }}
               onClick={() =>
