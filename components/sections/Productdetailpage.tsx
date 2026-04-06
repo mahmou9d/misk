@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import ProductCard from "@/components/layout/Productcard";
@@ -610,7 +610,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
   const router = useRouter();
   const { data: product, isLoading, isError } = useGetSingleProduct(id, true);
   const { data: allData } = useGetProducts();
-
+const [isLoggedIn, setIsLoggedIn] = useState(false);
   const relatedProducts =
     product && allData?.products
       ? allData.products
@@ -631,7 +631,10 @@ export default function ProductDetailPage({ id }: { id: number }) {
   const { setCartOpen } = useCats();
   const showNotification = useShowNotification(setNotification);
   const { mutate: addToCart } = useAddToCart();
-
+useEffect(() => {
+  const token = localStorage.getItem("access");
+  setIsLoggedIn(!!token);
+}, []);
   if (product && !selectedVariant && product.variants?.length) {
     setSelectedVariant(product?.variants[0]);
   }
@@ -966,7 +969,10 @@ export default function ProductDetailPage({ id }: { id: number }) {
 
                 <motion.button
                   whileTap={{ scale: 0.988 }}
-                  onClick={handleBuyNow}
+                  onClick={() => {
+                    if (isLoggedIn) handleBuyNow();
+                    else router.push("/login");
+                  }}
                   disabled={!inStock}
                   className={`h-[52px] text-[18px] rounded-2xl font-semibold border border-[#c9a84c]/25 shadow-lg transition-all duration-300 relative overflow-hidden group
                     ${inStock ? "bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] text-[#f0d080]/95 shadow-[#2d1b69]/20 hover:shadow-[#2d1b69]/35 cursor-pointer" : "bg-gray-300 text-white cursor-not-allowed"}
