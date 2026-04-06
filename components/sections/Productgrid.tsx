@@ -63,7 +63,7 @@ const { data, isLoading } = useGetProducts({ category });
                 onClick={() => setTab(tabKey)}
                 className={`relative px-4 lg:px-12 py-2 md:py-4 rounded-full text-[14px] font-bold uppercase transition-all duration-500
                   ${tab === tabKey ? "text-white" : "text-gray-400 hover:text-gray-900"}
-                  ${isArabic ? "" : "tracking-[0.2em]"}`}
+                  ${isArabic ? "" : "-[0.2em]"}`}
               >
                 <span className="relative z-10">
                   {" "}
@@ -128,7 +128,7 @@ const { data, isLoading } = useGetProducts({ category });
           >
             <span
               className={`text-white font-medium text-[13px] transition-colors duration-500 group-hover:text-[#111]
-                ${isArabic ? "text-[16px] font-bold" : "tracking-[0.1em]"}`}
+                ${isArabic ? "text-[16px] font-bold" : "-[0.1em]"}`}
             >
               {t.productGrid.viewAll}
             </span>
