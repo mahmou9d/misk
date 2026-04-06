@@ -62,9 +62,12 @@ apiClient.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${data.access}`;
         return apiClient(originalRequest);
       } catch (refreshError) {
-        // localStorage.removeItem("access");
-        // localStorage.removeItem("refresh");
-        // window.location.href = "/login";
+        const err = refreshError as { response?: { status: number } };
+        if (err.response?.status === 401 || err.response?.status === 400) {
+          localStorage.removeItem("access");
+          localStorage.removeItem("refresh");
+          window.location.href = "/login";
+        }
         return Promise.reject(refreshError);
       }
     }
