@@ -447,7 +447,7 @@ export function useProductPage({
         ),
       );
       setEStep("done");
-      showNotification("Product updated.", "success");
+      showNotification(isArabic? "تم التحديث بنجاح" : "Updated successfully", "success");
       setTimeout(() => setEStep("idle"), 2000);
     } catch (err: unknown) {
       const e = err as AxiosError<ErrorResponse>;
