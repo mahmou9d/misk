@@ -20,14 +20,21 @@ export  function RedirectResetPassword() {
   const router = useRouter();
 const { locale } = useTranslation();
 
-  useEffect(() => {
-    const token = searchParams.get("token");
+useEffect(() => {
+  const token = searchParams.get("token");
+  const savedLang = localStorage.getItem("lang");
+  const locale = savedLang === "AR" ? "ar" : "en";
 
-    if (token) {
-      localStorage.setItem("resetToken", token);
-      router.replace(`/${locale.toLowerCase()}/reset-password/?token=${token}`);
-    }
-  }, [searchParams, router, locale]);
+  console.log("token:", token); // هل فيه token؟
+  console.log("locale:", locale); // en أو ar؟
+  console.log("full URL:", window.location.href); // الـ URL الكامل
 
+  const dest = token
+    ? `/${locale}/reset-password?token=${token}`
+    : `/${locale}/login`;
+
+  console.log("redirecting to:", dest); // الـ destination
+  router.replace(dest);
+}, [router, searchParams]);
   return null;
 }

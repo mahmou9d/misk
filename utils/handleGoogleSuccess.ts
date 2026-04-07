@@ -11,7 +11,7 @@ export const useHandleGoogleSuccess = (
   showNotification: (message: string, type: "success" | "error") => void,
 ) => {
   const { mutate: loginWithGoogle } = useLoginGoogle();
-  const { locale } = useTranslation();
+  const { t, locale } = useTranslation();
   const router = useRouter();
 
   const handleGoogleSuccess = useCallback(
@@ -27,7 +27,7 @@ export const useHandleGoogleSuccess = (
               const savedToken = localStorage.getItem("access");
 
               if (savedToken) {
-                showNotification("Login successful!", "success");
+                showNotification(t.login.success, "success");
 
                 setTimeout(() => {
                   router.push(`/${locale.toLowerCase()}`);
@@ -40,11 +40,6 @@ export const useHandleGoogleSuccess = (
               const error = errorData as AxiosError<ErrorResponse>;
               showNotification(
                 error?.response?.data?.message ||
-                  error?.response?.data?.detail ||
-                  error?.response?.data?.error ||
-                  error?.response?.data?.status ||
-                  error?.response?.data?.non_field_errors ||
-                  error?.response?.data?.name ||
                   error?.message ||
                   `${locale.toLowerCase() === "en" ? "Google login failed. Please try again." : "فشل تسجيل الدخول بواسطة جوجل. يرجى المحاولة مرة أخرى."}`,
                 "error",
@@ -54,11 +49,6 @@ export const useHandleGoogleSuccess = (
           onError: (error: AxiosError<ErrorResponse>) => {
             showNotification(
               error?.response?.data?.message ||
-                error?.response?.data?.detail ||
-                error?.response?.data?.error ||
-                error?.response?.data?.status ||
-                error?.response?.data?.non_field_errors ||
-                error?.response?.data?.name ||
                 error?.message ||
               `${locale.toLowerCase() === "en" ? "Google login failed. Please try again." : "فشل تسجيل الدخول بواسطة جوجل. يرجى المحاولة مرة أخرى."}`,
               "error",

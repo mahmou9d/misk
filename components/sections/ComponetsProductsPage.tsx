@@ -13,6 +13,7 @@ import { GalleryImage, Volume } from "@/type/type";
 import { useTranslation } from "@/lib/Usetranslation";
 import Image from "next/image";
 import { createPortal } from "react-dom";
+import { X } from "lucide-react";
 export const MAX_IMG_BYTES = 3 * 1024 * 1024;
 
 /* ── Spinner ── */
@@ -435,7 +436,7 @@ export function VRow({
             onClick={onRemove}
             className="h-8 w-8 border border-red-500/20 rounded-xl bg-red-500/10 text-red-400 cursor-pointer text-base shrink-0 hover:bg-red-500/20 transition-colors"
           >
-            ×
+            <X/>
           </button>
         )}
       </div>

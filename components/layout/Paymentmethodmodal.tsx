@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/lib/Usetranslation";
 import Image from "next/image";
+import { X } from "lucide-react";
 
 export function PaymentMethodModal({
   phone,
@@ -51,7 +52,7 @@ export function PaymentMethodModal({
             onClick={onClose}
             className="bg-none border-none cursor-pointer text-[20px] text-[#aaa] leading-none hover:text-gray-600 transition-colors"
           >
-            ×
+            <X/>
           </button>
         </div>
 

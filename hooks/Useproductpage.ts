@@ -345,7 +345,7 @@ export function useProductPage({
       const created: any = await createAsync({
         name_ar: cf.name_ar,
         name_en: cf.name_en,
-        categories: cf.categories, // ✅ ابعت الـ list مباشرة
+        categories: cf.categories, 
         description_ar: cf.description_ar,
         description_en: cf.description_en,
         fragrance_family_ar: cf.fragrance_family_ar,
@@ -382,7 +382,7 @@ export function useProductPage({
       setCf({
         name_en: "",
         name_ar: "",
-        categories: [], // ✅ reset كـ empty array
+        categories: [],
         fragrance_family_en: "",
         fragrance_family_ar: "",
         description_en: "",

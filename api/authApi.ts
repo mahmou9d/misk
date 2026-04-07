@@ -21,6 +21,7 @@ export const authAPI = {
     );
     storage.setToken("access", data.access);
     storage.setToken("refresh", data.refresh);
+    
     return data;
   },
 

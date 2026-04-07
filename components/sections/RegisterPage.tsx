@@ -76,8 +76,6 @@ export default function RegisterPage() {
         onError: (error: AxiosError<ErrorResponse>) => {
           showNotification(
             error?.response?.data?.message ||
-              error?.response?.data?.detail ||
-              error?.response?.data?.error ||
               error?.message ||
               t.register.error,
             "error",
