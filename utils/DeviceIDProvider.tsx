@@ -31,7 +31,7 @@ useEffect(() => {
 
   const dest = token
     ? `/${locale}/reset-password?token=${token}`
-    : `/${locale}/login`;
+    : ``;
 
   console.log("redirecting to:", dest); // الـ destination
   router.replace(dest);
