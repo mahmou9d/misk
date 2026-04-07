@@ -299,7 +299,7 @@ const ResetPasswordContent = () => {
 
   const onSubmit = async (data: ResetPasswordFormData): Promise<void> => {
     if (!token) {
-      showNotification("Invalid reset token", "error");
+      showNotification(isArabic ? "رابط غير صالح" : "Invalid reset token", "error");
       return;
     }
     resetConfirmMutation.mutate(
@@ -308,7 +308,7 @@ const ResetPasswordContent = () => {
         onSuccess: (response: { message: string }) => {
           setSuccess(true);
           showNotification(
-            response.message || "Password reset successfully!",
+            response.message || isArabic ? "تم تعيين كلمة المرور بنجاح" : "Password reset successfully!",
             "success",
           );
           setTimeout(() => router.push(`/${locale.toLowerCase()}/login`), 2000);
