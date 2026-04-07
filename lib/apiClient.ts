@@ -62,9 +62,9 @@ apiClient.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${data.access}`;
         return apiClient(originalRequest);
       } catch (refreshError) {
-        localStorage.removeItem("access");
-        localStorage.removeItem("refresh");
-        window.location.href = "/login";
+        // localStorage.removeItem("access");
+        // localStorage.removeItem("refresh");
+        // window.location.href = "/login";
         return Promise.reject(refreshError);
       }
     }
