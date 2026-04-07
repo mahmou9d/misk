@@ -337,7 +337,7 @@ export function useProductPage({
   const handleCreate = async () => {
     if (!cf.name_en || !cf.name_ar || !cf.categories.length) {
       // ✅ .length
-      showNotification("Name & category required.", "error");
+      showNotification(isArabic? "اسم والفئه مطلوب" : "Name & category required.", "error");
       return;
     }
     setCStep("creating");
@@ -378,7 +378,7 @@ export function useProductPage({
         }
       }
       setCStep("done");
-      showNotification("Product created!", "success");
+      showNotification(isArabic? "تم إنشاء المنتج بنجاح" : "Product created!", "success");
       setCf({
         name_en: "",
         name_ar: "",
@@ -406,7 +406,7 @@ export function useProductPage({
       { product_id: id },
       {
         onSuccess: () => {
-          showNotification("Product deleted.", "success");
+          showNotification(isArabic? "تم حذف المنتج بنجاح" : "Product deleted.", "success");
           setConfirmDeletePid(null);
           if (pid === id) setPid(null);
         },
@@ -423,7 +423,7 @@ export function useProductPage({
 
   const handleEdit = async () => {
     if (!pid) {
-      showNotification("Select a product.", "error");
+      showNotification(isArabic? "اختر المنتج" : "Select a product.", "error");
       return;
     }
     setEStep("updating");
@@ -461,12 +461,12 @@ export function useProductPage({
 
   const handleAddVariant = async () => {
     if (!varPid) {
-      showNotification("Select a product.", "error");
+      showNotification(isArabic? "اختر منتج" : "Select a product.", "error");
       return;
     }
     const filled = avars.filter((v) => v.volume && v.price);
     if (!filled.length) {
-      showNotification(
+      showNotification(isArabic? "يجب تحديد حجم وسعر" :
         "Add at least one variant with volume & price.",
         "error",
       );
@@ -500,7 +500,7 @@ export function useProductPage({
       setNewlyCreatedVids(ids);
       refreshVariantProduct();
       setAvStep("done");
-      showNotification("Variants added!", "success");
+      showNotification(isArabic? "تم الإضافة بنجاح" : "Variants added!", "success");
       setAvars([emptyV()]);
       setTimeout(() => setAvStep("idle"), 2000);
     } catch (err: unknown) {
@@ -515,7 +515,7 @@ export function useProductPage({
 
   const handleEditVariant = async () => {
     if (!selectedVid) {
-      showNotification("Select a variant.", "error");
+      showNotification(isArabic? "اختر المنتج" : "Select a variant.", "error");
       return;
     }
     setEvStep("updating");
@@ -528,7 +528,7 @@ export function useProductPage({
       payload.is_active = evf.is_active === "true";
       await updateVariantAsync({ variant_id: selectedVid, payload });
       setEvStep("done");
-      showNotification("Variant updated.", "success");
+      showNotification(isArabic? "تم التحديث بنجاح" : "Variant updated.", "success");
       setTimeout(() => setEvStep("idle"), 2000);
     } catch (err: any) {
       showNotification(
@@ -544,7 +544,7 @@ export function useProductPage({
       { variant_id: vid },
       {
         onSuccess: () => {
-          showNotification("Variant deleted.", "success");
+          showNotification(isArabic? "تم حذف المنتج بنجاح" : "Variant deleted.", "success");
           setConfirmDeleteVid(null);
           setSelectedVid(null);
           refreshVariantProduct();
