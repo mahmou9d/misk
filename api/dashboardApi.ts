@@ -15,6 +15,7 @@ import {
   Banner,
   SiteSettings,
 } from "../type/type";
+import { publicClient } from "@/lib/publicClient";
 type OrderFilters = {
   page?: number;
   // all?: boolean;
@@ -91,7 +92,7 @@ export const dashboardAPI = {
       is_active: boolean;
     }[]
   > => {
-    const { data } = await apiClient.get<
+    const { data } = await publicClient.get<
       {
         id: number;
         name: string;
@@ -160,7 +161,7 @@ export const dashboardAPI = {
   },
   // ─── Banners ───────────────────────────────────────────────────────────────
   getBannersPublic: async (): Promise<Banner[]> => {
-    const { data } = await apiClient.get<Banner[]>("/banners/");
+    const { data } = await publicClient.get<Banner[]>("/banners/");
     return data;
   },
   getBanners: async (): Promise<Banner[]> => {
@@ -206,7 +207,7 @@ export const dashboardAPI = {
   // ─── Governorates ──────────────────────────────────────────────────────────
 
   getShippingGovernorates: async () => {
-    const { data } = await apiClient.get("/shipping/governorates/");
+    const { data } = await publicClient.get("/shipping/governorates/");
     return data;
   },
   getDashboardGovernorates: async () => {
@@ -246,7 +247,7 @@ export const dashboardAPI = {
   },
   // ─── Settings ──────────────────────────────────────────────────────────────
   getDashboardSettingsPublic: async (): Promise<SiteSettings> => {
-    const { data } = await apiClient.get<SiteSettings>("/settings/");
+    const { data } = await publicClient.get<SiteSettings>("/settings/");
     return data;
   },
 

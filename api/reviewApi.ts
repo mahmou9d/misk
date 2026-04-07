@@ -2,13 +2,14 @@
 
 import { apiClient } from "@/lib/apiClient";
 import { AddReviewRequest, TReview } from "../type/type";
+import { publicClient } from "@/lib/publicClient";
 
 export const reviewAPI = {
 
   // TODO
   
   getReviews: async (productId?: number): Promise<TReview[]> => {
-    const { data } = await apiClient.get<TReview[]>(
+    const { data } = await publicClient.get<TReview[]>(
       `/products/${productId}/reviews/`,
     );
     return data || [];

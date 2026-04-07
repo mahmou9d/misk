@@ -1,6 +1,7 @@
 "use client";
 
 import { apiClient } from "@/lib/apiClient";
+import { publicClient } from "@/lib/publicClient";
 import {
   AddImageVariants,
   AddVariants,
@@ -23,7 +24,7 @@ export const productsAPI = {
     max_price?: number;
     min_price?: number;
   }): Promise<ProductsData> => {
-    const { data } = await apiClient.get<ProductsDataRes>(`/products/`, {
+    const { data } = await publicClient.get<ProductsDataRes>(`/products/`, {
       params: {
         page: params?.page,
         all: params?.all,
@@ -51,7 +52,7 @@ export const productsAPI = {
         throw new Error("Invalid product ID");
       }
 
-      const { data } = await apiClient.get<Product>(`/products/${id}/`, {
+      const { data } = await publicClient.get<Product>(`/products/${id}/`, {
         params: { ...(all && { all: true }) },
       });
 
@@ -153,11 +154,11 @@ export const productsAPI = {
     return data;
   },
   getBestsellers: async (): Promise<Product> => {
-    const { data } = await apiClient.get<Product>("/products/best-sellers/");
+    const { data } = await publicClient.get<Product>("/products/best-sellers/");
     return data;
   },
   getFirstBestsellers: async (): Promise<Product> => {
-    const { data } = await apiClient.get<Product>(
+    const { data } = await publicClient.get<Product>(
       "/products/top-selling-overall/",
     );
     console.log(data)
