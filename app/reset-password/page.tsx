@@ -23,8 +23,8 @@ function Redirect() {
     <div className="min-h-screen flex items-center justify-center bg-[#faf8f4]">
       <svg
         className="animate-spin text-[#c9a84c]/60"
-        width="22"
-        height="22"
+        width="40"
+        height="40"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"

@@ -9,7 +9,7 @@ import Productgrid from "@/components/sections/Productgrid";
 // import Collections from "@/components/sections/Collections";
 // import Faq from "@/components/sections/Faq";
 import Footer from "@/components/sections/Footer";
-import DeviceIDProvider, { RedirectResetPassword } from "@/utils/DeviceIDProvider";
+import DeviceIDProvider from "@/utils/DeviceIDProvider";
 import { PaymentPopup } from "@/components/layout/Paymentresult";
 import IsLoading from "@/components/layout/IsLoading";
 import { TabKey1, TabKey2, TabKey3 } from "@/type/type";
@@ -33,7 +33,7 @@ export default function PaymentResultPage() {
     <main>
       <Suspense fallback={<IsLoading />}>
         <DeviceIDProvider />
-        <RedirectResetPassword />
+        {/* <RedirectResetPassword /> */}
         <AnnouncementBar />
         <Navbar />
         <HeroSection />
