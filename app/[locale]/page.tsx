@@ -7,7 +7,7 @@ import Productgrid from "@/components/sections/Productgrid";
 // import Collections from "@/components/sections/Collections";
 // import Faq from "@/components/sections/Faq";
 import Footer from "@/components/sections/Footer";
-import DeviceIDProvider from "@/utils/DeviceIDProvider";
+import DeviceIDProvider, { RedirectResetPassword } from "@/utils/DeviceIDProvider";
 import { PaymentPopup } from "@/components/layout/Paymentresult";
 import IsLoading from "@/components/layout/IsLoading";
 import { TabKey1, TabKey2, TabKey3 } from "@/type/type";
@@ -35,7 +35,7 @@ export default async function Page() {
     <main className="xl:pb-0 pb-[60px]">
       <Suspense fallback={<IsLoading />}>
         <DeviceIDProvider />
-        {/* <RedirectResetPassword /> */}
+        <RedirectResetPassword />
         <AnnouncementBar />
         <Navbar />
         <HeroSection />

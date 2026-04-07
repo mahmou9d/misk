@@ -94,18 +94,28 @@ export function ImgGallery({
     try {
       const fd = new FormData();
       fd.append("img", f);
-      await uploadImg({ payload: fd, variant_id: variantId });
+      await uploadImg(
+        { payload: fd, variant_id: variantId },
+        {
+          onSuccess: (response: { message: string }) => {
+            onRefresh();
+            onNotify(response.message || c.imgUploaded, "success");
+          },
+          onError: (error: AxiosError<ErrorResponse>) =>
+            onNotify(
+              error?.response?.data?.message ||
+                error?.message ||
+                c.uploadFailed,
+              "error",
+            ),
+        },
+      );
       onRefresh();
       onNotify(c.imgUploaded, "success");
     } catch (err: unknown) {
       const error = err as AxiosError<ErrorResponse>;
       onNotify(
         error?.response?.data?.message ||
-          error?.response?.data?.detail ||
-          error?.response?.data?.error ||
-          error?.response?.data?.status ||
-          error?.response?.data?.non_field_errors ||
-          error?.response?.data?.name ||
           error?.message ||
           c.uploadFailed,
         "error",
@@ -115,18 +125,13 @@ export function ImgGallery({
 
   const handleDelete = (image_id: number) => {
     deleteImg(image_id, {
-      onSuccess: () => {
+      onSuccess: (response: { message: string }) => {
         onRefresh();
-        onNotify(c.imgDeleted, "success");
+        onNotify(response.message || c.imgDeleted, "success");
       },
       onError: (error: AxiosError<ErrorResponse>) =>
         onNotify(
           error?.response?.data?.message ||
-            error?.response?.data?.detail ||
-            error?.response?.data?.error ||
-            error?.response?.data?.status ||
-            error?.response?.data?.non_field_errors ||
-            error?.response?.data?.name ||
             error?.message ||
             c.deleteFailed,
           "error",

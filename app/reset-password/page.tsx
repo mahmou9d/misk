@@ -14,7 +14,7 @@ function Redirect() {
 
     const dest = token
       ? `/${locale}/reset-password?token=${token}`
-      : `/${locale}/login`;
+      : ``;
 
     window.location.replace(dest);
   }, []);

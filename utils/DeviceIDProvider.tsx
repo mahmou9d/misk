@@ -15,26 +15,26 @@ export default function DeviceIDProvider() {
 
   return null;
 }
-// export  function RedirectResetPassword() {
-//   const searchParams = useSearchParams();
-//   const router = useRouter();
-// const { locale } = useTranslation();
+export  function RedirectResetPassword() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+const { locale } = useTranslation();
 
-// useEffect(() => {
-//   const token = searchParams.get("token");
-//   const savedLang = localStorage.getItem("lang");
-//   const locale = savedLang === "AR" ? "ar" : "en";
+useEffect(() => {
+  const token = searchParams.get("token");
+  const savedLang = localStorage.getItem("lang");
+  const locale = savedLang === "AR" ? "ar" : "en";
 
-//   console.log("token:", token); // هل فيه token؟
-//   console.log("locale:", locale); // en أو ar؟
-//   console.log("full URL:", window.location.href); // الـ URL الكامل
+  console.log("token:", token); // هل فيه token؟
+  console.log("locale:", locale); // en أو ar؟
+  console.log("full URL:", window.location.href); // الـ URL الكامل
 
-//   const dest = token
-//     ? `/${locale}/reset-password?token=${token}`
-//     : `/${locale}/login`;
+  const dest = token
+    ? `/${locale}/reset-password?token=${token}`
+    : `/${locale}/login`;
 
-//   console.log("redirecting to:", dest); // الـ destination
-//   router.replace(dest);
-// }, [router, searchParams]);
-//   return null;
-// }
+  console.log("redirecting to:", dest); // الـ destination
+  router.replace(dest);
+}, [router, searchParams]);
+  return null;
+}
