@@ -14,6 +14,8 @@ export const apiClient = axios.create({
   timeout: 10000,
 });
 
+let isRefreshing = false;
+
 // Request Interceptor - Attach token
 apiClient.interceptors.request.use(
   (config) => {
@@ -22,7 +24,8 @@ apiClient.interceptors.request.use(
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
-      const selectedLanguage = localStorage.getItem("lang")?.toLowerCase() || "ar";
+      const selectedLanguage =
+        localStorage.getItem("lang")?.toLowerCase() || "ar";
       config.headers["Accept-Language"] = selectedLanguage;
       const isCartRequest = config.url?.startsWith("/cart");
       if (isCartRequest) {
@@ -44,12 +47,18 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config;
 
     if (error.response?.status === 401 && !originalRequest._retry) {
+      if (isRefreshing) return Promise.reject(error);
+
       originalRequest._retry = true;
+      isRefreshing = true;
 
       const refreshToken =
         typeof window !== "undefined" ? localStorage.getItem("refresh") : null;
 
-      if (!refreshToken) return Promise.reject(error);
+      if (!refreshToken) {
+        isRefreshing = false;
+        return Promise.reject(error);
+      }
 
       try {
         const { data } = await axios.post(`${BASE_URL}/auth/token/refresh/`, {
@@ -62,10 +71,12 @@ apiClient.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${data.access}`;
         return apiClient(originalRequest);
       } catch (refreshError) {
-        // localStorage.removeItem("access");
-        // localStorage.removeItem("refresh");
-        // window.location.href = "/login";
+        localStorage.removeItem("access");
+        localStorage.removeItem("refresh");
+        window.location.href = "/login";
         return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
       }
     }
 
