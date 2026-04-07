@@ -77,8 +77,12 @@ function ProductGallery({
   name: string;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const currentImage = images[activeIndex].url || images[activeIndex];
 
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [images]); 
+     const safeIndex = Math.min(activeIndex, images.length - 1);
+    const currentImage = images[safeIndex]?.url || images[safeIndex];
   return (
     <div className="flex flex-col gap-3">
       <div className="relative w-3/4 aspect-[3/4] rounded-2xl overflow-hidden bg-gradient-to-br from-[#f8f5f0] to-[#ede8e0] border border-[#c9a84c]/[0.14]">

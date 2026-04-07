@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAddToCart } from "@/hooks/useCart";
 import { useGetBestsellers, useGetFirstBestsellers } from "@/hooks/useProducts";
 import { ErrorResponse, NotificationState, Product } from "@/type/type";
@@ -33,9 +33,14 @@ console.log(firstBestseller,"f")
   // ─── Pagination ───
   const [page, setPage] = useState(1);
 
-  const ITEMS_PER_PAGE =
-    typeof window !== "undefined" && window.innerWidth < 768 ? 2 : 4;
-
+const [ITEMS_PER_PAGE, setItemsPerPage] = useState(
+  typeof window !== "undefined" && window.innerWidth < 768 ? 2 : 4,
+);
+useEffect(() => {
+  const handleResize = () => setItemsPerPage(window.innerWidth < 768 ? 2 : 4);
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
   const bestsellersList: Product[] = Array.isArray(bestsellers)
     ? bestsellers
     : [];

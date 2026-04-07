@@ -19,7 +19,7 @@ import { TabKey1, TabKey2, TabKey3 } from "@/type/type";
 
 export default async function Page() {
   const CATEGORY_MAP1: Record<TabKey1, { en: string; ar: string }> = {
-    Men: { en: "Men", ar: "رجالى" },
+    Men: { en: "Men", ar: "رجالي" },
     Unisex: { en: "Unisex", ar: "رجالى و نسائي" },
     Women: { en: "Women", ar: "نسائي" },
   };
