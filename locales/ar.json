@@ -333,7 +333,7 @@
     "subtitle": "إدارة فئات المنتجات",
     "newCategory": "فئة جديدة",
     "nameLabel": "الاسم *",
-    "namePlaceholder": "مثال: عطور رجالية",
+    "namePlaceholder": "Men",
     "createBtn": "إنشاء الفئة",
     "created": "تم إنشاء الفئة بنجاح.",
     "createFailed": "فشل إنشاء الفئة.",
