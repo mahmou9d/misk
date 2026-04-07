@@ -616,9 +616,9 @@ const { isAuthenticated} = useAuth();
           {/* Divider */}
           <span className="w-1 h-8 [background:linear-gradient(180deg,transparent,rgba(201,168,76,0.3),transparent)]" />
 
-          <button className="flex flex-col items-center gap-1 flex-1 py-2 text-[#888] hover:text-[var(--purple-deep)] transition-colors">
+          <div className="flex flex-col items-center gap-1 flex-1 py-2 text-[#888] hover:text-[var(--purple-deep)] transition-colors">
             <UserActions locale={locale} />
-          </button>
+          </div>
         </div>
 
         {/* Gold top line */}

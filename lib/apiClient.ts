@@ -4,7 +4,7 @@ import axios from "axios";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ||
-  "https://hopeful-flow-production-c143.up.railway.app/api/";
+  "https://hopeful-flow-production-c143.up.railway.app/api";
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -58,7 +58,7 @@ apiClient.interceptors.response.use(
 
         localStorage.setItem("access", data.access);
         localStorage.setItem("refresh", data.refresh);
-        if (data.refresh) localStorage.setItem("refresh", data.refresh);
+        // if (data.refresh) localStorage.setItem("refresh", data.refresh);
 
         originalRequest.headers.Authorization = `Bearer ${data.access}`;
         return apiClient(originalRequest);
