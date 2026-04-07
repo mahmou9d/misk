@@ -32,7 +32,7 @@ export default async function Page() {
     incense: { en: "incense", ar: "بخور" },
   };
   return (
-    <main>
+    <main className="xl:pb-0 pb-[60px]">
       <Suspense fallback={<IsLoading />}>
         <DeviceIDProvider />
         <RedirectResetPassword />

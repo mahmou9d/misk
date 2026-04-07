@@ -277,7 +277,7 @@ export const useGetBestsellers = () => {
   };
   export const useGetFirstBestsellers = () => {
     return useQuery({
-      queryKey: ["bestsellers"],
+      queryKey: ["first-bestseller"],
       queryFn: productsAPI.getFirstBestsellers,
       staleTime: 10 * 60 * 1000,
     });

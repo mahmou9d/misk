@@ -1064,7 +1064,7 @@
     },
     "labels": {
       "orderId": "Order ID",
-      "reference": "Reference",
+      "reference": "Number of Order",
       "card": "Card",
       "date": "Date",
       "currency": "Currency"

@@ -51,7 +51,7 @@ function formatDate(iso: string): string {
 function CodSuccessModal({ onClose }: { onClose: () => void }) {
   const { locale, t, isArabic: isRTL } = useTranslation();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
-
+const order_id=localStorage.getItem("order_id");
   useEffect(() => {
     try {
       const raw = localStorage.getItem("next_step");
@@ -92,11 +92,15 @@ function CodSuccessModal({ onClose }: { onClose: () => void }) {
           </div>
 
           <div className="text-center">
+            <p className="m-0 text-[0.76rem] text-green-600 mt-0.5">
+              {isRTL ? "رقم الطلب" : "Order ID"}:{" "}
+              {orderData?.order_id || order_id}
+            </p>
             <h3 className="text-[1.2rem] font-bold text-green-900 m-0 mb-1">
-              {isRTL?"تم حجز الطلب":"Order Booked"}
+              {isRTL ? "تم حجز الطلب" : "Order Booked"}
             </h3>
             <p className="text-[0.8rem] text-green-600 m-0 font-medium">
-              {isRTL?"تم حجز الطلب بنجاح":"Order Booked Successfully"}
+              {isRTL ? "تم حجز الطلب بنجاح" : "Order Booked Successfully"}
             </p>
           </div>
         </div>
@@ -241,7 +245,6 @@ function CardSuccessModal({
 
           <div className="space-y-0">
             {[
-              [t.paymentPopup.labels.orderId, `#${data.order}`],
               [
                 t.paymentPopup.labels.reference,
                 `${data.merchant_order_id.slice(0, 18)}…`,
@@ -251,13 +254,13 @@ function CardSuccessModal({
                 `${data.source_data_sub_type} ••••${data.source_data_pan}`,
               ],
               [t.paymentPopup.labels.date, formatDate(data.created_at)],
-              [t.paymentPopup.labels.currency, data.currency],
+              
             ].map(([label, value], i, arr) => (
               <div key={i}>
                 <div className="flex justify-between py-2.5 text-[0.87rem]">
                   <span className="text-slate-400 font-medium">{label}</span>
                   <span
-                    className={`text-slate-800 font-semibold max-w-[58%] break-all ${isRTL ? "text-left" : "text-right"}`}
+                    className={`text-slate-800 font-semibold max-w-[58%] ${isRTL ? "text-left" : "text-right"}`}
                   >
                     {value}
                   </span>

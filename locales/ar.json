@@ -1060,7 +1060,7 @@
     },
     "labels": {
       "orderId": "رقم الطلب",
-      "reference": "المرجع",
+      "reference": "رقم الاوردر",
       "card": "البطاقة",
       "date": "التاريخ",
       "currency": "العملة"

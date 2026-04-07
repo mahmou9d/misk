@@ -26,10 +26,12 @@ import { useTranslation } from "@/lib/Usetranslation";
 import { useGetReviews, useAddReview } from "@/hooks/useReviews";
 
 /* ── Skeleton ── */
-function Skeleton() {
+function Skeleton({ isArabic }: { isArabic?: boolean }) {
   return (
     <div
-      className="animate-pulse flex flex-col md:flex-row gap-10 lg:gap-16"
+      className={`animate-pulse flex flex-col gap-10 lg:gap-16 ${
+        isArabic ? "md:flex-row-reverse" : "md:flex-row"
+      }`}
       style={{ paddingTop: 48 }}
     >
       <div
@@ -39,7 +41,9 @@ function Skeleton() {
           aspectRatio: "3/4",
         }}
       />
-      <div className="w-full md:w-1/2 flex flex-col gap-5 pt-4">
+      <div
+        className={`w-full md:w-1/2 flex flex-col gap-5 pt-4 ${isArabic ? "items-end" : "items-start"}`}
+      >
         {(
           [
             ["30%", 12],
@@ -256,7 +260,7 @@ function ReviewCard({
   review: {
     id: number;
     user_name?: string;
-    user?: string;
+    customer_name?: string;
     rating: number;
     comment: string;
     created_at?: string;
@@ -264,8 +268,8 @@ function ReviewCard({
   index: number;
   isArabic: boolean;
 }) {
-  const displayName = review.user_name || review.user || "Anonymous";
-  const initials = displayName
+  const displayName = review.user_name || review.customer_name;
+  const initials = String(displayName)
     .split(" ")
     .map((n: string) => n[0])
     .slice(0, 2)
@@ -351,14 +355,12 @@ function AddReviewForm({
           onSuccess?.();
         },
         onError: (error: AxiosError<ErrorResponse>) => {
-          console.log(error.response?.data.detail);
+          console.log(error.response?.data.message);
           showFormNotification(
-            error?.response?.data?.message ||
-              error?.response?.data?.detail ||
-              t?.reviews?.submitError ||
-              "Failed to submit review",
+            error?.response?.data?.message || "Failed",
             "error",
           );
+          
         },
       },
     );
@@ -385,6 +387,14 @@ function AddReviewForm({
 
   return (
     <div className="border rounded-2xl border-black/[0.07] bg-[#faf9f7] p-5">
+      <AnimatePresence>
+        {formNotification && (
+          <Notification
+            type={formNotification.type}
+            message={formNotification.message}
+          />
+        )}
+      </AnimatePresence>
       <p
         className={`text-[16px] text-[#111] mb-4 ${
           isArabic ? "-normal" : "-[2px] uppercase"
@@ -435,12 +445,12 @@ function AddReviewForm({
       <motion.button
         whileTap={{ scale: 0.98 }}
         onClick={handleSubmit}
-        disabled={!rating || isPending}
+        // disabled={!rating || isPending}
         className={`h-[44px] rounded-xl px-8 text-[16px] font-semibold border transition-all duration-300 relative overflow-hidden group
           ${
             rating && !isPending
               ? "bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] text-[#f0d080]/95 border-[#c9a84c]/25 cursor-pointer hover:shadow-[0_4px_20px_rgba(45,27,105,0.25)]"
-              : "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
+              : "bg-gray-200 text-gray-500 border-gray-300 "
           }
           ${isArabic ? "-normal" : "-[2px] uppercase"}
         `}
@@ -610,7 +620,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
   const router = useRouter();
   const { data: product, isLoading, isError } = useGetSingleProduct(id, true);
   const { data: allData } = useGetProducts();
-const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const relatedProducts =
     product && allData?.products
       ? allData.products
@@ -631,10 +641,10 @@ const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { setCartOpen } = useCats();
   const showNotification = useShowNotification(setNotification);
   const { mutate: addToCart } = useAddToCart();
-useEffect(() => {
-  const token = localStorage.getItem("access");
-  setIsLoggedIn(!!token);
-}, []);
+  useEffect(() => {
+    const token = localStorage.getItem("access");
+    setIsLoggedIn(!!token);
+  }, []);
   if (product && !selectedVariant && product.variants?.length) {
     setSelectedVariant(product?.variants[0]);
   }
@@ -711,7 +721,7 @@ useEffect(() => {
         <Navbar />
         <section className="w-full bg-white pb-20">
           <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-10">
-            <Skeleton />
+            <Skeleton isArabic />
           </div>
         </section>
         <Footer />
@@ -861,18 +871,18 @@ useEffect(() => {
 
               {/* Variants */}
               <div className="flex flex-wrap gap-2">
-              {product?.variants?.map((v) => {
-                const isSelected = selectedVariant?.id === v.id;
-                const outOfStock = v.stock === 0;
-                const lowStock = v.stock > 0 && v.stock < 10;
+                {product?.variants?.map((v) => {
+                  const isSelected = selectedVariant?.id === v.id;
+                  const outOfStock = v.stock === 0;
+                  const lowStock = v.stock > 0 && v.stock < 10;
 
-                return (
-                  <motion.button
-                    key={v.id}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => !outOfStock && setSelectedVariant(v)}
-                    disabled={outOfStock}
-                    className={`flex flex-col items-center justify-center w-fit rounded-2xl px-[18px] py-3 border transition-all duration-200 
+                  return (
+                    <motion.button
+                      key={v.id}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => !outOfStock && setSelectedVariant(v)}
+                      disabled={outOfStock}
+                      className={`flex flex-col items-center justify-center w-fit rounded-2xl px-[18px] py-3 border transition-all duration-200 
         ${
           isSelected
             ? "border-[#c9a84c]/80 bg-[#c9a84c]/10 text-[#c9a84c]/90 shadow-[inset_0_0_0_1px_rgba(201,168,76,0.3)]"
@@ -883,12 +893,14 @@ useEffect(() => {
         ${outOfStock ? "text-gray-300 cursor-not-allowed line-through" : "hover:border-[#c9a84c]/50 cursor-pointer"}
         ${isArabic ? "font-normal" : "tracking-[-1px]"}
       `}
-                  >
-                    <span className="text-[15px] leading-none">{v.volume}</span>
-                  </motion.button>
-                );
-              })}
-</div>
+                    >
+                      <span className="text-[15px] leading-none">
+                        {v.volume}
+                      </span>
+                    </motion.button>
+                  );
+                })}
+              </div>
               <motion.p
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}

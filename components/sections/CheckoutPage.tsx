@@ -58,8 +58,8 @@ export default function CheckoutPage() {
         payment_method: values.payment_method,
         governorate_id: values.governorate_id,
       });
-        const nextStep = localStorage.setItem("next_step", String(result.next_step));
-        
+        localStorage.setItem("next_step", String(result.next_step));
+        localStorage.setItem("order_id", String(result.order_id));
       const orderId = String(result.order_id);
 
       if (values.payment_method === "cod") {

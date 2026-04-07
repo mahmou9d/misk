@@ -160,6 +160,7 @@ export const productsAPI = {
     const { data } = await apiClient.get<Product>(
       "/products/top-selling-overall/",
     );
+    console.log(data)
     return data;
   },
 };

@@ -19,16 +19,17 @@ export default function ProductPage() {
   const { t, isArabic, dir, locale } = useTranslation();
   const { mutate: addToCart, isPending } = useAddToCart();
   const { setCartOpen } = useCats();
+  const { data: firstBestseller, isLoading } = useGetFirstBestsellers();
+
   const { data: bestsellers, isLoading: bestsellersLoading } =
     useGetBestsellers();
-  const { data: firstBestseller, isLoading } = useGetFirstBestsellers();
-  const router = useRouter();
+    const router = useRouter();
   const [added, setAdded] = useState(false);
   const [notification, setNotification] = useState<NotificationState | null>(
     null,
   );
   const showNotification = useShowNotification(setNotification);
-
+console.log(firstBestseller,"f")
   // ─── Pagination ───
   const [page, setPage] = useState(1);
 
