@@ -774,7 +774,7 @@ export default function ProductsPage() {
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
               <DualInput
-                label={p.fields.name}
+                label={"الاسم بالانجليزي"}
                 labelAr="الاسم بالعربي"
                 placeholderEn="Perfume name"
                 placeholderAr="اسم العطر"
@@ -784,7 +784,7 @@ export default function ProductsPage() {
                 onChangeAr={sc("name_ar")}
               />
               <DualInput
-                label={p.fields.fragranceFamily}
+                label={"العائلة العطرية بالانجليزي"}
                 labelAr="العائلة العطرية بالعربي"
                 placeholderEn="e.g. Woody"
                 placeholderAr="مثال: خشبي"
@@ -832,7 +832,7 @@ export default function ProductsPage() {
             </div>
 
             <DualTextarea
-              label={p.fields.description}
+              label={"وصف بالانجليزي"}
               labelAr="الوصف بالعربي"
               placeholderEn="Brief description..."
               placeholderAr="وصف مختصر..."
@@ -1002,7 +1002,7 @@ export default function ProductsPage() {
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
               <DualInput
-                label={p.fields.name}
+                label={"الاسم بالانجليزي"}
                 labelAr="الاسم بالعربي"
                 placeholderEn="Product name"
                 placeholderAr="اسم المنتج"
@@ -1012,7 +1012,7 @@ export default function ProductsPage() {
                 onChangeAr={se("name_ar")}
               />
               <DualInput
-                label={p.fields.fragranceFamily}
+                label={"العائلة العطرية بالانجليزي"}
                 labelAr="العائلة العطرية بالعربي"
                 placeholderEn="Woody"
                 placeholderAr="خشبي"
@@ -1060,7 +1060,7 @@ export default function ProductsPage() {
             </div>
 
             <DualTextarea
-              label={p.fields.description}
+              label={"الوصف بالانجليزي"}
               labelAr="الوصف بالعربي"
               placeholderEn="Description..."
               placeholderAr="الوصف..."
