@@ -92,10 +92,7 @@ const order_id=localStorage.getItem("order_id");
           </div>
 
           <div className="text-center">
-            <p className="m-0 text-[0.76rem] text-green-600 mt-0.5">
-              {isRTL ? "رقم الطلب" : "Order ID"}:{" "}
-              {orderData?.order_id || order_id}
-            </p>
+
             <h3 className="text-[1.2rem] font-bold text-green-900 m-0 mb-1">
               {isRTL ? "تم حجز الطلب" : "Order Booked"}
             </h3>
@@ -107,6 +104,10 @@ const order_id=localStorage.getItem("order_id");
 
         {/* Body */}
         <div className="p-5 px-7 pb-7">
+                      <p className="m-0 text-[16px] text-black mt-0.5 mb-2">
+              {isRTL ? "رقم الطلب" : "Order ID"}:{" "}
+              {orderData?.order_id || order_id}
+            </p>
           {orderData?.message && (
             <div className="flex items-start gap-2.5 bg-green-50 border border-green-200 rounded-xl p-3 px-4 mb-4">
               <span className="text-green-500 mt-0.5 text-base">🎉</span>
@@ -116,7 +117,7 @@ const order_id=localStorage.getItem("order_id");
                 </p>
                 {orderData.order_id && (
                   <p className="m-0 text-[0.76rem] text-green-600 mt-0.5">
-                    Order ID: {orderData.order_id}
+                    {`${isRTL ? "رقم الطلب":"Order ID:"} ${orderData.order_id}`}
                   </p>
                 )}
               </div>
@@ -247,7 +248,7 @@ function CardSuccessModal({
             {[
               [
                 t.paymentPopup.labels.reference,
-                `${data.merchant_order_id.slice(0, 18)}…`,
+                `${data.merchant_order_id}`,
               ],
               [
                 t.paymentPopup.labels.card,
@@ -348,7 +349,7 @@ function FailedModal({
               [t.paymentPopup.labels.orderId, `#${data.order}`],
               [
                 t.paymentPopup.labels.reference,
-                `${data.merchant_order_id.slice(0, 18)}…`,
+                `${data.merchant_order_id}`,
               ],
               [
                 t.paymentPopup.labels.card,

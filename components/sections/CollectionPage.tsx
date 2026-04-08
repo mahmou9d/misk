@@ -175,7 +175,6 @@ const { data, isLoading, isError } = useGetProducts({
   ]);
 
   let products = data?.products ?? [];
-
   if (selectedCategories.length > 0)
     products = products.filter((p) =>
       selectedCategories.some((c) => p.categories.includes(c)),
@@ -193,7 +192,6 @@ const { data, isLoading, isError } = useGetProducts({
     setSelectedCategories((prev) =>
       prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name],
     );
-
   return (
     <>
       <AnnouncementBar />
@@ -225,7 +223,6 @@ const { data, isLoading, isError } = useGetProducts({
                     </span>
                   )}
                 </div>
-
 
                 <Dropdown
                   open={priceOpen}
@@ -332,7 +329,11 @@ const { data, isLoading, isError } = useGetProducts({
                 ))}
               </div>
             )}
-
+            {allProducts.length === 0  && (
+                <div className="text-center py-40 text-gray-400 text-[18px] font-medium">
+                  {t.collectionPage.noMatch}
+                </div>
+              )}
             {!isError && allProducts.length > 0 && (
               <>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
@@ -340,12 +341,6 @@ const { data, isLoading, isError } = useGetProducts({
                     <ProductCard key={p.id} p={p} index={i} fill={true} />
                   ))}
                 </div>
-
-                {products.length === 0 && (
-                  <div className="text-center py-40 text-gray-400 text-[18px] font-medium">
-                    {t.collectionPage.noMatch}
-                  </div>
-                )}
 
                 {!isLoading && nextPage && (
                   <div className="flex justify-center mt-24">

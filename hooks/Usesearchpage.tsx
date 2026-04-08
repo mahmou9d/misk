@@ -83,7 +83,7 @@ export function useSearchPage({
 
   // غير فلترة الـ results
   // في useSearchPage — غيّر الـ results filter
-  let results = allProducts.filter((p) => {
+  const results = allProducts.filter((p) => {
     const matchSearch =
       !isSearchMode ||
       p.name.toLowerCase().includes(urlQuery.toLowerCase()) ||
@@ -115,14 +115,6 @@ export function useSearchPage({
     return matchSearch && matchCategory;
   });
 
-  if (availFilter.includes("in-stock") && !availFilter.includes("out-of-stock"))
-    results = results.filter((p) => p.is_active);
-  if (availFilter.includes("out-of-stock") && !availFilter.includes("in-stock"))
-    results = results.filter((p) => !p.is_active);
-  if (minPrice)
-    results = results.filter((p) => Number(p.price) >= Number(minPrice));
-  if (maxPrice)
-    results = results.filter((p) => Number(p.price) <= Number(maxPrice));
 
   const sorted = applySort(results, sort);
   const inCount = results.filter((p) => p.is_active).length;

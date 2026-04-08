@@ -69,6 +69,7 @@ export const useGetRecentOrders = (
     ],
     queryFn: () =>
       dashboardAPI.getRecentOrders({
+        
         page: isFiltered ? undefined : page,
         search: search || undefined,
         status: status || undefined,

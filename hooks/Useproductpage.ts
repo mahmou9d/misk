@@ -335,9 +335,14 @@ export function useProductPage({
   /* Handlers                                                          */
   /* ---------------------------------------------------------------- */
   const handleCreate = async () => {
-    if (!cf.name_en || !cf.name_ar || !cf.categories.length) {
+    if (!cf.name_en || !cf.name_ar || !cf.categories.length || !cf.description_ar ||!cf.description_en ||!cf.fragrance_family_ar||!cf.fragrance_family_en) {
       // ✅ .length
-      showNotification(isArabic? "اسم والفئه مطلوب" : "Name & category required.", "error");
+      showNotification(
+        isArabic
+          ? "اسم والفئه مطلوب"
+          : "Name & category & description && fragrance required.",
+        "error",
+      );
       return;
     }
     setCStep("creating");

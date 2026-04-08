@@ -19,7 +19,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Search,
-  SlidersHorizontal,
 } from "lucide-react";
 
 export default function SearchPage() {
@@ -64,7 +63,6 @@ export default function SearchPage() {
     router,
     nextPage,
     prevPage,
-    allProducts,
     categories,
     selectedCategories,
     setSelectedCategories,

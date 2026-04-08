@@ -551,12 +551,9 @@ export default function OrdersPage() {
     debouncedSearch,
     apiStatus,
   );
-  const {
-    mutate: patch,
-    isPending: patching,
-    isSuccess: patchSuccess,
-    isError: patchError,
-  } = usePatchOrders();
+const { mutate: patch, isPending: patching } = usePatchOrders();
+const [patchSuccessId, setPatchSuccessId] = useState<string | null>(null);
+const [patchErrorId, setPatchErrorId] = useState<string | null>(null);
 
   const ordersData = data?.orders || [];
 
@@ -594,24 +591,28 @@ export default function OrdersPage() {
         "Actions",
       ];
 
-  const handleSave = (id: string) => {
-    patch(
-      { id, status: newStatus },
-      {
-        onSuccess: () => {
-          showNotification(o.updateSuccess, "success");
-          setEditingOrder(null);
-          setIsStatusOpen(false);
-        },
-        onError: (error: AxiosError<ErrorResponse>) => {
-          showNotification(
-            error?.response?.data?.message || o.updateError,
-            "error",
-          );
-        },
+const handleSave = (id: string) => {
+  setPatchSuccessId(null);
+  setPatchErrorId(null);
+  patch(
+    { id, status: newStatus },
+    {
+      onSuccess: () => {
+        showNotification(o.updateSuccess, "success");
+        setEditingOrder(null);
+        setIsStatusOpen(false);
+        setPatchSuccessId(id); // ← بس الأوردر ده
       },
-    );
-  };
+      onError: (error: AxiosError<ErrorResponse>) => {
+        showNotification(
+          error?.response?.data?.message || o.updateError,
+          "error",
+        );
+        setPatchErrorId(id); // ← بس الأوردر ده
+      },
+    },
+  );
+};
 
   return (
     <div dir={dir}>
@@ -754,8 +755,8 @@ export default function OrdersPage() {
                   newStatus={newStatus}
                   isStatusOpen={isStatusOpen}
                   patching={patching}
-                  patchSuccess={patchSuccess}
-                  patchError={patchError}
+                  patchSuccess={patchSuccessId === String(order.id)}
+                  patchError={patchErrorId === String(order.id)}
                   isArabic={isArabic}
                   o={o}
                   currentOpt={currentOpt}
@@ -1218,7 +1219,7 @@ export default function OrdersPage() {
                                     </button>
                                   )}
 
-                                  {patchSuccess && (
+                                  {patchSuccessId === String(order.id) && (
                                     <div
                                       className={`mt-3 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
                                     >
@@ -1228,7 +1229,7 @@ export default function OrdersPage() {
                                       </span>
                                     </div>
                                   )}
-                                  {patchError && (
+                                  {patchErrorId === String(order.id) && (
                                     <div
                                       className={`mt-3 p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
                                     >

@@ -593,16 +593,8 @@
           "The perfume must be in its original condition, free from any damage or misuse.",
           "The external packaging must be included.",
           "Opening the bottle for testing purposes is permitted.",
-          "Refund requests must be submitted within 7 days of receiving your order.",
-          "Refunds will not be issued due to personal dislike of the scent."
+          "Refund requests must be submitted within 7 days of receiving your order."
         ]
-      },
-      {
-        "title": "Exchange Policy",
-        "content": "",
-        "bullets": ["No exchanges are permitted for any reason."],
-        "note": "All orders are considered final, and exchanges are not accepted under any circumstances.",
-        "noteType": "warning"
       },
       {
         "title": "How to Request a Refund",

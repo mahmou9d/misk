@@ -167,34 +167,6 @@ export default function PrivacyPolicy() {
               />
             ))}
           </motion.div>
-
-          {/* Footer callout */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.4 }}
-            className="mt-12 px-7 py-6 bg-[#faf9fc] border border-[#c9a84c1f] rounded-[3px] flex items-start gap-3.5"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#c9a84c"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              className="flex-shrink-0 mt-0.5"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="8" x2="12" y2="12" />
-              <line x1="12" y1="16" x2="12.01" y2="16" />
-            </svg>
-            <p
-              className={` text-sm text-[#8a7f99] m-0 ${isArabic ? "leading-[2]" : "leading-[1.8]"}`}
-            >
-              {t.privacyPolicy.contactNote}
-            </p>
-          </motion.div>
         </div>
       </section>
       <Footer />

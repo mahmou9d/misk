@@ -103,7 +103,7 @@ function OrderCard({
               className="font-mono text-xl font-extrabold tracking-tight"
               style={{ color: "#2d1b69" }}
             >
-              {order.id.slice(0, 8).toUpperCase()}
+              {order.id}
             </span>
             <span className="text-sm text-gray-400 mt-0.5">
               {formattedDate} · {formattedTime}

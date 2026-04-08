@@ -127,7 +127,7 @@ function UserActions({ locale }: { locale: string }) {
   const handleDashboardClick = () => {
     queryClient.clear();
   };
-console.log(isAdmin)
+// console.log(isAdmin)
   return (
     <div className="flex items-center gap-[12px]">
       {isAdmin && (
@@ -476,18 +476,22 @@ const { isAuthenticated} = useAuth();
       <AnimatePresence>
         {drawerOpen && (
           <>
-            <style>{`body { overflow: hidden; }`}</style>
+            <style>{`
+  body { overflow: hidden; touch-action: none; }
+`}</style>
 
             {/* Main menu panel */}
             <AnimatePresence>
               {!catsOpen && (
                 <motion.nav
-                  className={`fixed z-40 bg-white xl:hidden flex flex-col ${data?.is_announcement_active ? "top-[105px]" : "top-[67px]"}  bottom-0 left-0 right-0 overflow-y-hidden`}
+                  className={`fixed z-40 bg-white xl:hidden flex flex-col ${data?.is_announcement_active ? "top-[105px]" : "top-[67px]"}  bottom-[60px] left-0 right-0 overflow-y-auto`}
                   dir={dir}
                   initial={{ x: isArabic ? "100%" : "-100%" }}
                   animate={{ x: 0 }}
                   exit={{ x: isArabic ? "100%" : "-100%" }}
                   transition={{ duration: 0.3, ease: EASE }}
+                  onTouchMove={(e) => e.stopPropagation()} // ← أضف دي
+                  style={{ overscrollBehavior: "contain" }} // ← أضف دي
                 >
                   <div className="h-px [background:linear-gradient(90deg,rgba(201,168,76,0.5),rgba(201,168,76,0.1))]" />
 
@@ -520,10 +524,6 @@ const { isAuthenticated} = useAuth();
                       )}
                     </motion.div>
                   ))}
-
-                  <div className=" mt-auto p-5 [border-top:1px_solid_rgba(201,168,76,0.15)]">
-                    <UserActions locale={locale} />
-                  </div>
                 </motion.nav>
               )}
             </AnimatePresence>
@@ -532,12 +532,14 @@ const { isAuthenticated} = useAuth();
             <AnimatePresence>
               {catsOpen && (
                 <motion.div
-                  className={`fixed z-40 bg-white xl:hidden flex flex-col ${data?.is_announcement_active ? "top-[105px]" : "top-[67px]"} bottom-0 left-0 right-0 overflow-y-hidden`}
+                  className={`fixed z-40 bg-white xl:hidden flex flex-col ${data?.is_announcement_active ? "top-[105px]" : "top-[67px]"} bottom-[60px] left-0 right-0 overflow-y-auto`}
                   dir={dir}
                   initial={{ x: isArabic ? "-100%" : "100%" }}
                   animate={{ x: 0 }}
                   exit={{ x: isArabic ? "-100%" : "100%" }}
                   transition={{ duration: 0.3, ease: EASE }}
+                  onTouchMove={(e) => e.stopPropagation()} // ← أضف دي
+                  style={{ overscrollBehavior: "contain" }} // ← أضف دي
                 >
                   <div className="h-px [background:linear-gradient(90deg,rgba(201,168,76,0.5),transparent)]" />
 

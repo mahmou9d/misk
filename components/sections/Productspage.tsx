@@ -821,7 +821,7 @@ export default function ProductsPage() {
                             cf.categories.filter((c) => c !== cat),
                           )
                         }
-                        className="text-gray-400 text-[7px] hover:text-white leading-none"
+                        className="text-gray-400 text-[10px] hover:text-white leading-none"
                       >
                   <X/>
                       </button>

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Btn, Card, Input, Sec } from "@/components/layout/Adminui";
 import {
   useAddImageVariantsProduct,
@@ -461,22 +461,60 @@ export default function AdminCategoryDropdown({
   isArabic: boolean;
 }) {
   const [open, setOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
 
   const hasSelection = selectedCategories.length > 0;
 
-  const handleOpen = () => {
-    if (triggerRef.current) {
-      const rect = triggerRef.current.getBoundingClientRect();
-      const panelWidth = 220;
-      let left = isArabic ? rect.left : rect.right - panelWidth;
-      if (left < 8) left = 8;
-      if (left + panelWidth > window.innerWidth - 8)
-        left = window.innerWidth - panelWidth - 8;
-      setDropdownPos({ top: rect.bottom + 8, left });
+  // Detect mobile
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // Lock body scroll when bottom sheet is open on mobile
+  useEffect(() => {
+    if (open && isMobile) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
     }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open, isMobile]);
+
+  // Calculate dropdown position from trigger element
+  const calcPos = useCallback(() => {
+    if (!triggerRef.current || isMobile) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    const panelWidth = 220;
+    let left = isArabic ? rect.left - 100 : rect.right - panelWidth;
+    if (left < 8) left = 8;
+    if (left + panelWidth > window.innerWidth - 8)
+      left = window.innerWidth - panelWidth - 8;
+    setDropdownPos({ top: rect.bottom + 8, left });
+  }, [isMobile, isArabic]);
+
+  // Re-calculate on every scroll/resize while dropdown is open
+  useEffect(() => {
+    if (!open || isMobile) return;
+    calcPos();
+    // capture: true catches scroll on ANY scrollable ancestor
+    window.addEventListener("scroll", calcPos, true);
+    window.addEventListener("resize", calcPos);
+    return () => {
+      window.removeEventListener("scroll", calcPos, true);
+      window.removeEventListener("resize", calcPos);
+    };
+  }, [open, isMobile, calcPos]);
+
+  const handleOpen = () => {
+    calcPos();
     setOpen((v) => !v);
   };
 
@@ -492,7 +530,9 @@ export default function AdminCategoryDropdown({
     }
   };
 
+  // Close on outside click (desktop only)
   useEffect(() => {
+    if (isMobile) return;
     const handler = (e: MouseEvent) => {
       if (
         triggerRef.current &&
@@ -504,7 +544,7 @@ export default function AdminCategoryDropdown({
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
-  }, []);
+  }, [isMobile]);
 
   const triggerLabel = () => {
     if (!hasSelection) return isArabic ? "الفئة" : "Category";
@@ -519,7 +559,136 @@ export default function AdminCategoryDropdown({
       : `${selectedCategories.length} Categories`;
   };
 
-  const panel = (
+  const categoryList = (
+    <>
+      <button
+        onClick={() => {
+          onSelect([]);
+          if (isMobile) setOpen(false);
+        }}
+        className={`w-full text-start px-4 py-3 text-[16px] font-bold flex items-center justify-between transition-colors
+          ${
+            !hasSelection
+              ? "text-[#fda481] bg-white/5"
+              : "text-gray-400 hover:bg-white/5 hover:text-white"
+          }`}
+      >
+        {isArabic ? "كل الفئات" : "All Categories"}
+        {!hasSelection && (
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#fda481"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          >
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        )}
+      </button>
+
+      <div className="h-px bg-white/10 mx-3 my-1" />
+
+      {categories.slice(1).map((cat) => {
+        const active = selectedCategories.includes(cat.value);
+        return (
+          <button
+            key={cat.value}
+            onClick={() => toggle(cat.value)}
+            className={`w-full text-start px-4 py-3 text-[15px] flex items-center gap-2.5 transition-colors
+              ${
+                active
+                  ? "text-[#fda481] bg-white/5 font-bold"
+                  : "text-gray-400 hover:bg-white/5 hover:text-white font-medium"
+              }`}
+          >
+            <span
+              className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all
+              ${
+                active
+                  ? "bg-gradient-to-br from-[#fda481] to-[#b4182d] border-transparent"
+                  : "border-white/20 bg-white/5"
+              }`}
+            >
+              {active && (
+                <svg
+                  className="w-2.5 h-2.5 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              )}
+            </span>
+            {cat.label}
+          </button>
+        );
+      })}
+    </>
+  );
+
+  const footer = hasSelection && (
+    <div className="border-t border-white/10 px-3 py-2 flex gap-2">
+      <button
+        onClick={() => onSelect([])}
+        className="flex-1 text-[15px] text-gray-400 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+      >
+        {isArabic ? "مسح الكل" : "Clear"}
+      </button>
+      <button
+        onClick={() => setOpen(false)}
+        className="flex-1 text-[15px] font-bold text-white py-1.5 rounded-lg bg-gradient-to-r from-[#fda481] to-[#b4182d] hover:opacity-90 transition-opacity"
+      >
+        {isArabic ? "تطبيق" : "Apply"}
+      </button>
+    </div>
+  );
+
+  // ── MOBILE: Bottom Sheet ──────────────────────────────────────────
+  const bottomSheet = (
+    <>
+      <div
+        className="fixed inset-0 bg-black/60 z-[9998] backdrop-blur-sm"
+        onClick={() => setOpen(false)}
+        style={{ animation: "fadeIn 0.2s ease" }}
+      />
+      <div
+        ref={panelRef}
+        className="fixed bottom-0 left-0 right-0 z-[9999] bg-[#1a1d29] rounded-t-3xl border-t border-white/10"
+        style={{
+          direction: isArabic ? "rtl" : "ltr",
+          animation: "slideUp 0.28s cubic-bezier(0.32, 0.72, 0, 1)",
+          paddingBottom: "env(safe-area-inset-bottom, 16px)",
+        }}
+      >
+        <div className="flex justify-center pt-3 pb-1">
+          <div className="w-10 h-1 rounded-full bg-white/20" />
+        </div>
+        <div className="px-4 py-2 pb-1">
+          <p className="text-white font-bold text-[17px]">
+            {isArabic ? "اختر الفئة" : "Select Category"}
+          </p>
+        </div>
+        <div className="overflow-y-auto max-h-[60vh] py-1">{categoryList}</div>
+        <div className="pb-2">{footer}</div>
+      </div>
+      <style>{`
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes fadeIn  { from { opacity: 0; }                 to { opacity: 1; }              }
+      `}</style>
+    </>
+  );
+
+  // ── DESKTOP: Dropdown — position stays locked to the button ───────
+  const desktopPanel = (
     <div
       ref={panelRef}
       style={{
@@ -530,101 +699,10 @@ export default function AdminCategoryDropdown({
         zIndex: 9999,
         direction: isArabic ? "rtl" : "ltr",
       }}
-      className="bg-[#1a1d29] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden border border-white/10"
+      className="bg-[#1a1d29] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden border border-white/10 pb-5"
     >
-      <div className="py-1.5 max-h-[300px] overflow-y-auto">
-        {/* Clear All */}
-        <button
-          onClick={() => {
-            onSelect([]);
-            setOpen(false);
-          }}
-          className={`w-full text-start px-4 py-2.5 text-[13px] font-bold flex items-center justify-between transition-colors
-            ${
-              !hasSelection
-                ? "text-[#fda481] bg-white/5"
-                : "text-gray-400 hover:bg-white/5 hover:text-white"
-            }`}
-        >
-          {isArabic ? "كل الفئات" : "All Categories"}
-          {!hasSelection && (
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#fda481"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-            >
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
-          )}
-        </button>
-
-        <div className="h-px bg-white/10 mx-3 my-1" />
-
-        {categories.slice(1).map((cat) => {
-          const active = selectedCategories.includes(cat.value);
-          return (
-            <button
-              key={cat.value}
-              onClick={() => toggle(cat.value)}
-              className={`w-full text-start px-4 py-2.5 text-[13px] flex items-center gap-2.5 transition-colors
-                ${
-                  active
-                    ? "text-[#fda481] bg-white/5 font-bold"
-                    : "text-gray-400 hover:bg-white/5 hover:text-white font-medium"
-                }`}
-            >
-              {/* Checkbox */}
-              <span
-                className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all
-                ${
-                  active
-                    ? "bg-gradient-to-br from-[#fda481] to-[#b4182d] border-transparent"
-                    : "border-white/20 bg-white/5"
-                }`}
-              >
-                {active && (
-                  <svg
-                    className="w-2.5 h-2.5 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={3}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                )}
-              </span>
-              {cat.label}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Footer — apply & clear */}
-      {hasSelection && (
-        <div className="border-t border-white/10 px-3 py-2 flex gap-2">
-          <button
-            onClick={() => onSelect([])}
-            className="flex-1 text-[12px] text-gray-400 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
-          >
-            {isArabic ? "مسح الكل" : "Clear"}
-          </button>
-          <button
-            onClick={() => setOpen(false)}
-            className="flex-1 text-[12px] font-bold text-white py-1.5 rounded-lg bg-gradient-to-r from-[#fda481] to-[#b4182d] hover:opacity-90 transition-opacity"
-          >
-            {isArabic ? "تطبيق" : "Apply"}
-          </button>
-        </div>
-      )}
+      <div className="py-1.5 max-h-[300px] overflow-y-auto">{categoryList}</div>
+      {footer}
     </div>
   );
 
@@ -672,8 +750,12 @@ export default function AdminCategoryDropdown({
           <polyline points="6 9 12 15 18 9" />
         </svg>
       </button>
+
       {typeof window !== "undefined" &&
-        createPortal(open ? panel : null, document.body)}
+        createPortal(
+          open ? (isMobile ? bottomSheet : desktopPanel) : null,
+          document.body,
+        )}
     </div>
   );
 }
