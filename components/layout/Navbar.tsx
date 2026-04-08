@@ -336,7 +336,19 @@ const { isAuthenticated} = useAuth();
       dropdown: false,
     },
   ];
-
+useEffect(() => {
+  if (drawerOpen) {
+    document.body.style.overflow = "hidden";
+    document.body.style.overscrollBehavior = "none";
+  } else {
+    document.body.style.overflow = "";
+    document.body.style.overscrollBehavior = "";
+  }
+  return () => {
+    document.body.style.overflow = "";
+    document.body.style.overscrollBehavior = "";
+  };
+}, [drawerOpen]);
   return (
     <>
       {/* ── Header ── */}
@@ -481,7 +493,7 @@ const { isAuthenticated} = useAuth();
 `}</style>
 
             {/* Main menu panel */}
-            <AnimatePresence>
+            
               {!catsOpen && (
                 <motion.nav
                   className={`fixed z-40 bg-white xl:hidden flex flex-col ${data?.is_announcement_active ? "top-[105px]" : "top-[67px]"}  bottom-[60px] left-0 right-0 overflow-y-auto`}
@@ -526,10 +538,10 @@ const { isAuthenticated} = useAuth();
                   ))}
                 </motion.nav>
               )}
-            </AnimatePresence>
+            
 
             {/* Categories sub-panel */}
-            <AnimatePresence>
+            
               {catsOpen && (
                 <motion.div
                   className={`fixed z-40 bg-white xl:hidden flex flex-col ${data?.is_announcement_active ? "top-[105px]" : "top-[67px]"} bottom-[60px] left-0 right-0 overflow-y-auto`}
@@ -574,7 +586,7 @@ const { isAuthenticated} = useAuth();
                   ))}
                 </motion.div>
               )}
-            </AnimatePresence>
+            
           </>
         )}
       </AnimatePresence>
