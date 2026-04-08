@@ -24,7 +24,7 @@ export const productsAPI = {
     max_price?: number;
     min_price?: number;
   }): Promise<ProductsData> => {
-    const { data } = await publicClient.get<ProductsDataRes>(`/products/`, {
+    const { data } = await apiClient.get<ProductsDataRes>(`/products/`, {
       params: {
         page: params?.page,
         all: params?.all,
@@ -52,7 +52,7 @@ export const productsAPI = {
         throw new Error("Invalid product ID");
       }
 
-      const { data } = await publicClient.get<Product>(`/products/${id}/`, {
+      const { data } = await apiClient.get<Product>(`/products/${id}/`, {
         params: { ...(all && { all: true }) },
       });
 

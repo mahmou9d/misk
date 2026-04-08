@@ -92,7 +92,7 @@ export const dashboardAPI = {
       is_active: boolean;
     }[]
   > => {
-    const { data } = await publicClient.get<
+    const { data } = await apiClient.get<
       {
         id: number;
         name: string;
