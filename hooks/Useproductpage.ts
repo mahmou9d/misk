@@ -428,13 +428,13 @@ export function useProductPage({
     }
     setEStep("updating");
     const payload: any = {};
-    if (ef.name_en) payload.name = ef.name_en;
+    if (ef.name_en) payload.name_en = ef.name_en;
     if (ef.name_ar) payload.name_ar = ef.name_ar;
     if (ef.categories.length) payload.categories = ef.categories; // ✅ .length
-    if (ef.description_en) payload.description = ef.description_en;
+    if (ef.description_en) payload.description_en = ef.description_en;
     if (ef.description_ar) payload.description_ar = ef.description_ar;
     if (ef.fragrance_family_en)
-      payload.fragrance_family = ef.fragrance_family_en;
+      payload.fragrance_family_en = ef.fragrance_family_en;
     if (ef.fragrance_family_ar)
       payload.fragrance_family_ar = ef.fragrance_family_ar;
     payload.is_active = ef.is_active === "true";
