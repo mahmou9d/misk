@@ -493,7 +493,7 @@ useEffect(() => {
 `}</style>
 
             {/* Main menu panel */}
-            
+            <AnimatePresence>
               {!catsOpen && (
                 <motion.nav
                   className={`fixed z-40 bg-white xl:hidden flex flex-col ${data?.is_announcement_active ? "top-[105px]" : "top-[67px]"}  bottom-[60px] left-0 right-0 overflow-y-auto`}
@@ -538,10 +538,10 @@ useEffect(() => {
                   ))}
                 </motion.nav>
               )}
-            
+            </AnimatePresence>
 
             {/* Categories sub-panel */}
-            
+            <AnimatePresence>
               {catsOpen && (
                 <motion.div
                   className={`fixed z-40 bg-white xl:hidden flex flex-col ${data?.is_announcement_active ? "top-[105px]" : "top-[67px]"} bottom-[60px] left-0 right-0 overflow-y-auto`}
@@ -586,7 +586,7 @@ useEffect(() => {
                   ))}
                 </motion.div>
               )}
-            
+            </AnimatePresence>
           </>
         )}
       </AnimatePresence>
