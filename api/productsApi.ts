@@ -53,7 +53,7 @@ export const productsAPI = {
       }
 
       const { data } = await apiClient.get<Product>(`/products/${id}/`, {
-        params: { ...(all && { all: true }) },
+        params: all===true ? { all: true } : undefined,
       });
 
       // console.log("Single Product Response:", data);

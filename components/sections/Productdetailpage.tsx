@@ -70,7 +70,7 @@ function Skeleton({ isArabic }: { isArabic?: boolean }) {
 
 /* ── Gallery ── */
 function ProductGallery({
-  images,
+  images = [],
   name,
 }: {
   images: { url: string }[];
@@ -80,9 +80,10 @@ function ProductGallery({
 
   useEffect(() => {
     setActiveIndex(0);
-  }, [images]); 
-     const safeIndex = Math.min(activeIndex, images.length - 1);
-    const currentImage = images[safeIndex]?.url || images[safeIndex];
+  }, [images]);
+  if (!images.length) return null;
+  const safeIndex = Math.min(activeIndex, images.length - 1);
+  const currentImage = images[safeIndex]?.url || images[safeIndex];
   return (
     <div className="flex flex-col gap-3">
       <div className="relative w-3/4 aspect-[3/4] rounded-2xl overflow-hidden bg-gradient-to-br from-[#f8f5f0] to-[#ede8e0] border border-[#c9a84c]/[0.14]">
@@ -622,18 +623,11 @@ function ReviewsSection({
 export default function ProductDetailPage({ id }: { id: number }) {
   const { t, isArabic, dir, locale } = useTranslation();
   const router = useRouter();
-  const { data: product, isLoading, isError } = useGetSingleProduct(id, true);
-  const { data: allData } = useGetProducts();
+  const { data: product, isLoading, isError } = useGetSingleProduct(id);
+  const { data: allData } = useGetProducts({ category: product?.categories.join(",") });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const relatedProducts =
-    product && allData?.products
-      ? allData.products
-          .filter(
-            (p: Product) =>
-              p.id !== product.id && p.category_name === product.category,
-          )
-          .slice(0, 4)
-      : [];
+  const relatedProducts = allData?.products.slice(0, 4).filter((p) => p.id !== id);
+
 
   const [qty, setQty] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
@@ -759,7 +753,54 @@ export default function ProductDetailPage({ id }: { id: number }) {
         <Footer />
       </>
     );
+if (!product.variants || product.variants.length === 0) {
+  return (
+    <>
+      <AnnouncementBar />
+      <Navbar />
+      <section className="w-full bg-white min-h-screen flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center px-6 max-w-md"
+        >
+          {/* Icon */}
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] flex items-center justify-center border border-[#c9a84c]/25">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" strokeWidth="1.5">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+          </div>
 
+          <p className={`text-[13px] text-[#c9a84c]/80 mb-3 ${isArabic ? "font-normal" : "tracking-[5px] uppercase"}`}>
+            {isArabic ? "مسك" : "Misk"}
+          </p>
+
+          <h2 className={`text-[clamp(20px,3vw,28px)] font-normal text-[#111] mb-4 ${isArabic ? "leading-[1.6]" : "leading-[1.3]"}`}>
+            {isArabic ? "المنتج غير متوفر حالياً" : "Currently Unavailable"}
+          </h2>
+
+          <div className="h-[1px] w-12 mx-auto bg-gradient-to-r from-transparent via-[#c9a84c]/50 to-transparent mb-4" />
+
+          <p className={`text-[15px] text-gray-400 mb-8 ${isArabic ? "leading-[2] font-normal" : "leading-[1.8] tracking-[-0.2px]"}`}>
+            {isArabic
+              ? "سيتوفر هذا المنتج في أقرب وقت ممكن.\nنشكرك على اهتمامك."
+              : "This product will be available soon.\nThank you for your interest."}
+          </p>
+
+          <Link
+            href={`/${locale.toLowerCase()}/shop`}
+            className={`inline-block text-[20px] text-[#888] border-b border-black/10 pb-0.5 transition-colors hover:text-[#111] hover:border-black/30 ${isArabic ? "font-normal" : "tracking-[2px] uppercase"}`}
+          >
+            {isArabic ? "تصفح المنتجات" : "Browse Products"}
+          </Link>
+        </motion.div>
+      </section>
+      <Footer />
+    </>
+  );
+}
   return (
     <>
       <AnnouncementBar />
@@ -784,7 +825,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              <ProductGallery images={variantImages} name={product.name} />
+              <ProductGallery images={variantImages??[]} name={product.name} />
             </motion.div>
 
             {/* Info */}
@@ -1008,7 +1049,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
           <ReviewsSection productId={product.id} isArabic={isArabic} t={t} />
 
           {/* Related Products */}
-          {relatedProducts.length > 0 && (
+          {(relatedProducts??[])?.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -1033,7 +1074,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
                 <div className="mt-2.5 h-[2px] w-16 bg-gradient-to-r from-[#c9a84c]/60 to-transparent" />
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
-                {relatedProducts.map((p, i) => (
+                {relatedProducts?.map((p, i) => (
                   <ProductCard key={p.id} p={p} index={i} />
                 ))}
               </div>
