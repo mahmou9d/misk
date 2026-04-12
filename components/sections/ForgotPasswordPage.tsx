@@ -282,7 +282,7 @@ export default function ForgotPasswordPage() {
               type="submit"
               disabled={resetPasswordMutation.isPending || emailSent}
               className={`
-                relative overflow-hidden h-[52px] w-full text-[13px] font-semibold transition-all duration-300
+                relative overflow-hidden h-[52px] w-full text-[13px] font-semibold transition-all duration-300 rounded-xl
                 border border-[#c9a84c]/25 shadow-[0_2px_18px_rgba(45,27,105,0.22)]
                 hover:not-disabled:shadow-[0_6px_28px_rgba(45,27,105,0.35)]
                 ${

@@ -69,8 +69,8 @@ const CheckIcon = () => (
 
 // ── Shared input class builder ─────────────────────────────────────────────
 const buildInputClass = (hasError: boolean, isArabic: boolean) => `
-  w-full h-[50px] bg-transparent border-b outline-none text-[15px] text-[#1a1a1a] transition-colors duration-250
-  ${isArabic ? "text-right pr-0 pl-10 -normal" : "text-left pl-0 pr-10 -[0.3px]"}
+  w-full h-[50px] bg-transparent border-b outline-none text-[15px] text-[#1a1a1a] transition-colors duration-250 rounded-xl
+  ${isArabic ? "text-right pr-3 pl-10 -normal" : "text-left pl-3 pr-10 -[0.3px]"}
   ${hasError ? "border-red-400/60" : "border-black/15 focus:border-[#c9a84c]/70"}
 `;
 
@@ -129,12 +129,14 @@ const PasswordField = ({
 // ── Password requirements ──────────────────────────────────────────────────
 
 const PasswordRequirements = ({ isArabic }: { isArabic: boolean }) => {
-  const items = [
-    "At least 8 characters",
-    "One uppercase letter",
-    "One lowercase letter",
-    "One number",
-  ];
+  const items = isArabic
+    ? ["على الأقل 8 أحرف", "حرف كبير واحد", "حرف صغير واحد", "رقم واحد"]
+    : [
+        "At least 8 characters",
+        "One uppercase letter",
+        "One lowercase letter",
+        "One number",
+      ];
   return (
     <div className="mb-6 border border-[#c9a84c]/15 bg-[#c9a84c]/5 p-4">
       <p
@@ -142,7 +144,7 @@ const PasswordRequirements = ({ isArabic }: { isArabic: boolean }) => {
           isArabic ? "-normal text-right" : "-[1.5px] uppercase text-left"
         }`}
       >
-        Password requirements
+        {isArabic ? "متطلبات كلمة المرور" : "Password requirements"}
       </p>
       <ul className="space-y-[5px]">
         {items.map((item) => (
@@ -192,14 +194,18 @@ const InvalidTokenMessage = ({
             isArabic ? "-normal" : "-[0.3px]"
           }`}
         >
-          Invalid or expired link
+          {isArabic
+            ? "الرابط غير صالح أو انتهت صلاحيته"
+            : "Invalid or expired link"}
         </p>
         <p
           className={`text-[12px] text-[#aaa] mb-3 ${
             isArabic ? "-normal" : "-[0.2px]"
           }`}
         >
-          This reset link is no longer valid. Please request a new one.
+          {isArabic
+            ? "هذا الرابط لإعادة تعيين كلمة المرور غير صالح حالياً. الرجاء طلب رابط جديد."
+            : "This reset link is no longer valid. Please request a new one."}
         </p>
         <Link
           href={`/${locale}/forgot-password`}
@@ -207,7 +213,7 @@ const InvalidTokenMessage = ({
             isArabic ? "-normal flex-row-reverse" : "-[0.5px]"
           }`}
         >
-          Request a new link
+          {isArabic ? "طلب رابط جديد" : "Request a new link"}
           <ArrowRightIcon />
         </Link>
       </div>
@@ -299,7 +305,10 @@ const ResetPasswordContent = () => {
 
   const onSubmit = async (data: ResetPasswordFormData): Promise<void> => {
     if (!token) {
-      showNotification(isArabic ? "رابط غير صالح" : "Invalid reset token", "error");
+      showNotification(
+        isArabic ? "رابط غير صالح" : "Invalid reset token",
+        "error",
+      );
       return;
     }
     resetConfirmMutation.mutate(
@@ -307,10 +316,12 @@ const ResetPasswordContent = () => {
       {
         onSuccess: (response: { message: string }) => {
           setSuccess(true);
-          showNotification(
-            response.message || isArabic ? "تم تعيين كلمة المرور بنجاح" : "Password reset successfully!",
-            "success",
-          );
+          const successMessage =
+            response.message ||
+            (isArabic
+              ? "تم تعيين كلمة المرور بنجاح"
+              : "Password reset successfully!");
+          showNotification(successMessage, "success");
           setTimeout(() => router.push(`/${locale.toLowerCase()}/login`), 2000);
         },
         onError: (error: AxiosError<ErrorResponse>) => {
@@ -453,7 +464,7 @@ const ResetPasswordContent = () => {
               type="submit"
               disabled={resetConfirmMutation.isPending}
               className={`
-                relative overflow-hidden h-[52px] w-full text-[13px] font-semibold transition-all duration-300
+                relative overflow-hidden h-[52px] w-full text-[13px] font-semibold transition-all duration-300 rounded-xl
                 border border-[#c9a84c]/25 shadow-[0_2px_18px_rgba(45,27,105,0.22)]
                 hover:not-disabled:shadow-[0_6px_28px_rgba(45,27,105,0.35)]
                 ${
