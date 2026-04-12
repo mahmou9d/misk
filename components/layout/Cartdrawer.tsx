@@ -148,10 +148,10 @@ function CartItemRow({
 
   const itemTotal = parseFloat(String(item.price)) * Number(item.quantity);
   const productName = item?.variant?.product_name ?? item.name;
-const productImage =
-  (typeof item?.variant?.images?.[0] === "string"
-    ? item.variant.images[0]
-    : item?.variant?.images?.[0]?.url) || "/heros.jpg";
+  const productImage =
+    (typeof item?.variant?.images?.[0] === "string"
+      ? item.variant.images[0]
+      : item?.variant?.images?.[0]?.url) || "/heros.jpg";
   const currentQty = Number(item.quantity);
 
   const handleDecrement = (e: React.MouseEvent) => {
@@ -175,92 +175,92 @@ const productImage =
     router.push(`/${locale.toLowerCase()}/products/${item.product_id}`);
   };
 
-return (
-  <div
-    onClick={handleRowClick}
-    className={`flex gap-3.5 mb-[22px] pb-[22px] border-b border-[#c9a84c]/10 transition-opacity duration-200 cursor-pointer ${
-      isRemoving ? "opacity-45" : "opacity-100"
-    }`}
-  >
-    {/* Image Container */}
-    <div className="w-[76px] h-[96px] shrink-0 bg-gradient-to-br from-[#f5f0eb] to-[#ede8e0] border border-[#c9a84c]/15 overflow-hidden">
-      <Image
-        src={String(productImage)}
-        alt={String(productName)}
-        width={76}
-        height={96}
-        loading="lazy"
-        className="w-full h-full object-cover"
-      />
-    </div>
-
-    {/* Details Container */}
-    <div className="flex-1 flex flex-col gap-[3px]">
-      {/* Name + Price Row */}
-      <div className="flex items-start justify-between gap-2">
-        <p className=" text-[16px] font-normal text-[#111] leading-[1.3]">
-          {productName}
-        </p>
-        <span className="text-[18px] font-semibold text-[#111] whitespace-nowrap bg-gradient-to-r from-[#c9a84c] via-[#f0d080] via-[40%] to-[#c9a84c] to-[70%] bg-[length:200%_auto] bg-clip-text text-transparent animate-[musk-shimmer_4s_linear_infinite]">
-          LE {itemTotal.toLocaleString()}
-        </span>
+  return (
+    <div
+      onClick={handleRowClick}
+      className={`flex gap-3.5 mb-[22px] pb-[22px] border-b border-[#c9a84c]/10 transition-opacity duration-200 cursor-pointer ${
+        isRemoving ? "opacity-45" : "opacity-100"
+      }`}
+    >
+      {/* Image Container */}
+      <div className="w-[76px] h-[96px] shrink-0 bg-gradient-to-br from-[#f5f0eb] to-[#ede8e0] border border-[#c9a84c]/15 overflow-hidden">
+        <Image
+          src={String(productImage)}
+          alt={String(productName)}
+          width={76}
+          height={96}
+          loading="lazy"
+          className="w-full h-full object-cover"
+        />
       </div>
 
-      {/* Volume Info */}
-      {item?.variant?.volume && (
-        <span className=" text-[15px]  uppercase text-[#c9a84c]/70">
-          {item.variant.volume}
-        </span>
-      )}
-
-      {/* Qty + Delete Row */}
-      <div
-        className="flex items-center justify-between mt-2"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Quantity Controls */}
-        <div className="inline-flex items-center border border-black/10">
-          <QtyButton
-            label="−"
-            onClick={handleDecrement}
-            disabled={currentQty <= 1 || isUpdating}
-            loading={isUpdating && updatingDirection === "dec"}
-          />
-          <span className=" text-[13px] min-w-[28px] text-center text-[#333] border-x border-black/[0.08] h-[30px] leading-[30px]">
-            {currentQty}
+      {/* Details Container */}
+      <div className="flex-1 flex flex-col gap-[3px]">
+        {/* Name + Price Row */}
+        <div className="flex items-start justify-between gap-2">
+          <p className=" text-[16px] font-normal text-[#111] leading-[1.3]">
+            {productName}
+          </p>
+          <span className="text-[18px] font-semibold text-[#111] whitespace-nowrap bg-gradient-to-r from-[#c9a84c] via-[#f0d080] via-[40%] to-[#c9a84c] to-[70%] bg-[length:200%_auto] bg-clip-text text-transparent animate-[musk-shimmer_4s_linear_infinite]">
+            LE {itemTotal.toLocaleString()}
           </span>
-          <QtyButton
-            label="+"
-            onClick={handleIncrement}
-            disabled={isUpdating}
-            loading={isUpdating && updatingDirection === "inc"}
-          />
         </div>
 
-        {/* Delete Button */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            removeItem(item.id);
-          }}
-          disabled={isRemoving}
-          className={`bg-none border-none p-1 flex transition-colors duration-200 text-[#ccc] ${
-            isRemoving
-              ? "cursor-not-allowed"
-              : "cursor-pointer hover:text-red-700/70"
-          }`}
+        {/* Volume Info */}
+        {item?.variant?.volume && (
+          <span className=" text-[15px]  uppercase text-[#c9a84c]/70">
+            {item.variant.volume}
+          </span>
+        )}
+
+        {/* Qty + Delete Row */}
+        <div
+          className="flex items-center justify-between mt-2"
+          onClick={(e) => e.stopPropagation()}
         >
-          {isRemoving ? (
-            <Spinner size={15} color="rgba(180,60,60,0.6)" />
-          ) : (
-            <TrashIcon />
-          )}
-        </button>
+          {/* Quantity Controls */}
+          <div className="inline-flex items-center border border-black/10">
+            <QtyButton
+              label="−"
+              onClick={handleDecrement}
+              disabled={currentQty <= 1 || isUpdating}
+              loading={isUpdating && updatingDirection === "dec"}
+            />
+            <span className=" text-[13px] min-w-[28px] text-center text-[#333] border-x border-black/[0.08] h-[30px] leading-[30px]">
+              {currentQty}
+            </span>
+            <QtyButton
+              label="+"
+              onClick={handleIncrement}
+              disabled={isUpdating}
+              loading={isUpdating && updatingDirection === "inc"}
+            />
+          </div>
+
+          {/* Delete Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              removeItem(item.id);
+            }}
+            disabled={isRemoving}
+            className={`bg-none border-none p-1 flex transition-colors duration-200 text-[#ccc] ${
+              isRemoving
+                ? "cursor-not-allowed"
+                : "cursor-pointer hover:text-red-700/70"
+            }`}
+          >
+            {isRemoving ? (
+              <Spinner size={15} color="rgba(180,60,60,0.6)" />
+            ) : (
+              <TrashIcon />
+            )}
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 }
 
 /* ── Cart Drawer ── */
@@ -273,7 +273,7 @@ export function CartDrawer({
 }) {
   const { data: cartItems, isLoading: isCartLoading } = useGetCartItems();
   const { t, isArabic, locale, dir } = useTranslation();
-const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const totalQuantity =
     cartItems?.reduce((sum, item) => sum + Number(item.quantity), 0) ?? 0;
   const subtotal =
@@ -282,10 +282,10 @@ const [isLoggedIn, setIsLoggedIn] = useState(false);
         sum + parseFloat(String(item.price)) * Number(item.quantity),
       0,
     ) ?? 0;
-useEffect(() => {
-  const token = localStorage.getItem("access");
-  setIsLoggedIn(!!token);
-}, []);
+  useEffect(() => {
+    const token = localStorage.getItem("access");
+    setIsLoggedIn(!!token);
+  }, []);
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -302,7 +302,7 @@ useEffect(() => {
   }, [open]);
 
   // Drawer slides in from the inline-end side
-  const drawerX = isArabic ? "-100%" : "100%";
+  const drawerX = isArabic ? "100%" : "-100%";
 
   return (
     <>
@@ -321,9 +321,12 @@ useEffect(() => {
 
             {/* Drawer */}
             <motion.aside
-              className="fixed top-0 inset-y-0 ltr:right-0 rtl:left-0 z-50 h-full flex flex-col bg-[#faf8f4] shadow-[-4px_0_60px_rgba(45,27,105,0.18)] border-s border-[#c9a84c]/15"
+              className="fixed top-0 inset-y-0 z-50 h-full flex flex-col bg-[#faf8f4] shadow-[-4px_0_60px_rgba(45,27,105,0.18)] border-s border-[#c9a84c]/15"
               dir={dir}
-              style={{ width: "min(460px, 100vw)" }}
+              style={{
+                width: "min(460px, 100vw)",
+                [isArabic ? "right" : "left"]: 0,
+              }}
               initial={{ x: drawerX }}
               animate={{ x: 0 }}
               exit={{ x: drawerX }}
@@ -373,9 +376,7 @@ useEffect(() => {
                     <span className="text-[#c9a84c]/30">
                       <BagIcon />
                     </span>
-                    <p className=" text-[15px]  text-[#ccc]">
-                      {t.cart.empty}
-                    </p>
+                    <p className=" text-[15px]  text-[#ccc]">{t.cart.empty}</p>
                     <button
                       onClick={onClose}
                       className=" text-[20px]  uppercase bg-none border border-black/10 px-[22px] py-[9px] cursor-pointer mt-1 transition-all duration-200 hover:border-[#c9a84c] hover:text-[#c9a84c]"
