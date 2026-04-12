@@ -1,4 +1,3 @@
-"use client";
 
 import CollectionPage from "@/components/sections/CollectionPage";
 import type { Metadata } from "next";
