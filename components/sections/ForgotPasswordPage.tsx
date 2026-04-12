@@ -115,8 +115,8 @@ export default function ForgotPasswordPage() {
     - إنجليزي → text-left  | pl-0 pr-10 (مكان أيقونة الميل على اليمين)
   */
   const inputClassName = `
-    w-full h-[50px] bg-transparent border-b outline-none text-[15px] text-[#1a1a1a] transition-colors duration-250
-    ${isArabic ? "text-right pr-0 pl-10 -normal" : "text-left pl-0 pr-10 -[0.3px]"}
+    w-full h-[50px] bg-transparent border-b outline-none text-[15px] text-[#1a1a1a] transition-colors duration-250 rounded-xl
+    ${isArabic ? "text-right pr-3 pl-10 -normal" : "text-left pl-3 pr-10 -[0.3px]"}
     ${errors.email ? "border-red-400/60" : "border-black/15 focus:border-[#c9a84c]/70"}
   `;
 
@@ -259,7 +259,7 @@ export default function ForgotPasswordPage() {
                 */}
                 <span
                   className={`absolute top-1/2 -translate-y-1/2 text-[#ccc] pointer-events-none ${
-                    isArabic ? "left-0" : "right-0"
+                    isArabic ? "left-3" : "right-3"
                   }`}
                 >
                   <MailIcon />
