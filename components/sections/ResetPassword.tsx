@@ -190,7 +190,7 @@ const InvalidTokenMessage = ({
       </div>
       <div className={isArabic ? "text-right" : "text-left"}>
         <p
-          className={`text-[13px] font-medium text-[#1a1a1a] mb-[2px] ${
+          className={`text-[13px] font-medium text-[#808080] mb-[2px] ${
             isArabic ? "-normal" : "-[0.3px]"
           }`}
         >
@@ -199,7 +199,7 @@ const InvalidTokenMessage = ({
             : "Invalid or expired link"}
         </p>
         <p
-          className={`text-[12px] text-[#aaa] mb-3 ${
+          className={`text-[12px] text-[#808080] mb-3 ${
             isArabic ? "-normal" : "-[0.2px]"
           }`}
         >
@@ -513,7 +513,7 @@ const ResetPasswordContent = () => {
       >
         <Link
           href={`/${locale.toLowerCase()}/login`}
-          className={`inline-flex items-center gap-2 text-[12px] text-[#bbb] no-underline border-b border-black/10 hover:text-[#c9a84c]/90 transition-colors ${
+          className={`inline-flex items-center gap-2 text-[12px] text-[#808080] no-underline border-b border-black/10 hover:text-[#c9a84c]/90 transition-colors ${
             isArabic ? "-normal flex-row-reverse" : "-[1px]"
           }`}
         >

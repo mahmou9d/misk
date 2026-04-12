@@ -202,14 +202,14 @@ export default function ForgotPasswordPage() {
                   </div>
                   <div className={isArabic ? "text-right" : "text-left"}>
                     <p
-                      className={`text-[13px] font-medium text-[#1a1a1a] mb-[2px] ${
+                      className={`text-[13px] font-medium text-[#808080] mb-[2px] ${
                         isArabic ? "-normal" : "-[0.3px]"
                       }`}
                     >
                       {t?.forgotPassword?.checkEmail ?? "Check your inbox"}
                     </p>
                     <p
-                      className={`text-[12px] text-[#aaa] ${
+                      className={`text-[12px] text-[#808080] ${
                         isArabic ? "-normal" : "-[0.2px]"
                       }`}
                     >
@@ -219,7 +219,7 @@ export default function ForgotPasswordPage() {
                       </span>
                     </p>
                     <p
-                      className={`text-[11px] text-[#bbb] mt-1 ${
+                      className={`text-[12px] text-[#808080] mt-1 ${
                         isArabic ? "-normal" : "-[0.2px]"
                       }`}
                     >
@@ -364,7 +364,7 @@ export default function ForgotPasswordPage() {
             <Link
               key={href}
               href={href}
-              className={`text-[12px] text-[#bbb] no-underline hover:text-[#c9a84c]/90 transition-colors ${
+              className={`text-[12px] text-[#808080] no-underline hover:text-[#c9a84c]/90 transition-colors ${
                 isArabic ? "-normal normal-case" : "-[1.5px] uppercase"
               }`}
             >
