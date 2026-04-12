@@ -904,6 +904,7 @@
     "viewAll": "Browse the Full Collection"
   },
   "product": {
+    "soldOut": "Sold Out",
     "loading": "Loading...",
     "noProducts": "No products found.",
     "currency": "EGP",

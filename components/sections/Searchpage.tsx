@@ -89,7 +89,7 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="bg-white min-h-screen selection:bg-[#c9a84c/30]">
+    <div className="bg-white min-h-screen selection:bg-[#c9a84c/30] xl:pb-0 pb-[60px]">
       <AnnouncementBar />
       <Navbar />
 

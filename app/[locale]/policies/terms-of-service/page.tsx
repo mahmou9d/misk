@@ -16,10 +16,10 @@ export async function generateMetadata({
       ? "اقرأ شروط الخدمة الخاصة بمسك للعطور — حقوقك والتزاماتك عند استخدام متجرنا."
       : "Read Misk Fragrances' terms of service — your rights and obligations when using our store.",
     alternates: {
-      canonical: `https://miskfragrances.com/${locale}/terms`,
+      canonical: `https://miskstores.com/${locale}/terms`,
       languages: {
-        "en-US": "https://miskfragrances.com/en/terms",
-        "ar-EG": "https://miskfragrances.com/ar/terms",
+        "en-US": "https://miskstores.com/en/terms",
+        "ar-EG": "https://miskstores.com/ar/terms",
       },
     },
   };
@@ -27,9 +27,9 @@ export async function generateMetadata({
 
 const page = () => {
   return (
-    <div>
+    <section className="xl:pb-0 pb-[60px]">
       <TermsOfService />
-    </div>
+    </section>
   );
 };
 

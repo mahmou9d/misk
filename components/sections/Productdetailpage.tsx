@@ -714,7 +714,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
 
   if (isLoading)
     return (
-      <>
+      <section className="xl:pb-0 pb-[60px]">
         <AnnouncementBar />
         <Navbar />
         <section className="w-full bg-white pb-20">
@@ -723,12 +723,12 @@ export default function ProductDetailPage({ id }: { id: number }) {
           </div>
         </section>
         <Footer />
-      </>
+      </section>
     );
 
   if (isError || !product)
     return (
-      <>
+      <section className="xl:pb-0 pb-[60px]">
         <AnnouncementBar />
         <Navbar />
         <div className="flex items-center justify-center min-h-screen bg-white">
@@ -751,11 +751,11 @@ export default function ProductDetailPage({ id }: { id: number }) {
           </div>
         </div>
         <Footer />
-      </>
+      </section>
     );
 if (!product.variants || product.variants.length === 0) {
   return (
-    <>
+    <section className="xl:pb-0 pb-[60px]">
       <AnnouncementBar />
       <Navbar />
       <section className="w-full bg-white min-h-screen flex items-center justify-center">
@@ -798,11 +798,11 @@ if (!product.variants || product.variants.length === 0) {
         </motion.div>
       </section>
       <Footer />
-    </>
+    </section>
   );
 }
   return (
-    <>
+    <section className="xl:pb-0 pb-[60px]">
       <AnnouncementBar />
       <Navbar />
 
@@ -1082,6 +1082,6 @@ if (!product.variants || product.variants.length === 0) {
         </div>
       </section>
       <Footer />
-    </>
+    </section>
   );
 }

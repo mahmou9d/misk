@@ -193,7 +193,7 @@ const { data, isLoading, isError } = useGetProducts({
       prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name],
     );
   return (
-    <>
+    <section className="xl:pb-0 pb-[60px]">
       <AnnouncementBar />
       <Navbar />
 
@@ -329,11 +329,11 @@ const { data, isLoading, isError } = useGetProducts({
                 ))}
               </div>
             )}
-            {allProducts.length === 0  && (
-                <div className="text-center py-40 text-gray-400 text-[18px] font-medium">
-                  {t.collectionPage.noMatch}
-                </div>
-              )}
+            {allProducts.length === 0 && (
+              <div className="text-center py-40 text-gray-400 text-[18px] font-medium">
+                {t.collectionPage.noMatch}
+              </div>
+            )}
             {!isError && allProducts.length > 0 && (
               <>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
@@ -365,6 +365,6 @@ const { data, isLoading, isError } = useGetProducts({
       </div>
 
       <Footer />
-    </>
+    </section>
   );
 }

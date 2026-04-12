@@ -23,24 +23,24 @@ export default function ProductPage() {
 
   const { data: bestsellers, isLoading: bestsellersLoading } =
     useGetBestsellers();
-    const router = useRouter();
+  const router = useRouter();
   const [added, setAdded] = useState(false);
   const [notification, setNotification] = useState<NotificationState | null>(
     null,
   );
   const showNotification = useShowNotification(setNotification);
-console.log(firstBestseller,"f")
+  console.log(firstBestseller, "f");
   // ─── Pagination ───
   const [page, setPage] = useState(1);
 
-const [ITEMS_PER_PAGE, setItemsPerPage] = useState(
-  typeof window !== "undefined" && window.innerWidth < 768 ? 2 : 4,
-);
-useEffect(() => {
-  const handleResize = () => setItemsPerPage(window.innerWidth < 768 ? 2 : 4);
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
+  const [ITEMS_PER_PAGE, setItemsPerPage] = useState(
+    typeof window !== "undefined" && window.innerWidth < 768 ? 2 : 4,
+  );
+  useEffect(() => {
+    const handleResize = () => setItemsPerPage(window.innerWidth < 768 ? 2 : 4);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const bestsellersList: Product[] = Array.isArray(bestsellers)
     ? bestsellers
     : [];
@@ -296,43 +296,42 @@ useEffect(() => {
               <motion.div
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.42, duration: 0.45 }}
-                className="flex flex-col gap-3"
+                transition={{ delay: 0.4, duration: 0.45 }}
+                className="flex flex-col gap-3 mb-[22px]"
               >
                 <motion.button
+                  whileTap={{ scale: 0.988 }}
                   onClick={handleAddToCart}
-                  disabled={isPending}
-                  whileTap={{ scale: 0.97 }}
-                  className={`w-full h-13.5 text-[13px] font-semibold border-2 rounded-2xl transition-all duration-300 ${isArabic ? "" : "-[2px] uppercase"} ${added ? "border-[#c9a84c] bg-[rgba(201,168,76,0.08)] text-[#b8912e]" : "border-[rgba(26,10,61,0.15)] bg-white text-[#1a0a3d] hover:border-[#c9a84c] hover:text-[#b8912e] hover:bg-[rgba(201,168,76,0.05)]"} ${isPending ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+                  disabled={!product.variants?.[0]?.stock || isPending}
+                  className={`w-full h-[52px] text-[18px] rounded-2xl font-medium border transition-all duration-300
+                    ${added ? "border-[#c9a84c]/50 bg-[#c9a84c]/5 text-[#c9a84c]/90" : "border-black/20 bg-white text-[#222]"}
+                    ${!product.variants?.[0]?.stock || isPending ? "text-gray-300 cursor-not-allowed border-gray-100" : "hover:border-[#c9a84c]/55 hover:text-[#c9a84c]/90 cursor-pointer"}
+                    ${isArabic ? "-normal" : "-[3px] uppercase"}
+                  `}
                 >
-                  {isPending
-                    ? t.product.adding
-                    : added
-                      ? `✓  ${t.product.added}`
-                      : t.product.addToCart}
+                  {!product.variants?.[0]?.stock
+                    ? t.product.soldOut
+                    : isPending
+                      ? t.product.adding
+                      : added
+                        ? `${t.product.added}`
+                        : t.product.addToCart}
                 </motion.button>
 
                 <motion.button
-                  whileTap={{ scale: 0.97 }}
+                  whileTap={{ scale: 0.988 }}
                   onClick={() => {
                     handleAddToCart();
                     router.push(`/${locale.toLowerCase()}/checkout`);
                   }}
-                  className={`relative overflow-hidden w-full h-13.5 text-[13px] font-bold rounded-2xl bg-[linear-gradient(135deg,#1a0a3d_0%,#2d1b69_55%,#1a0a3d_100%)] text-[rgba(240,208,128,0.95)] shadow-[0_4px_22px_rgba(45,27,105,0.35)] hover:shadow-[0_6px_30px_rgba(45,27,105,0.5)] transition-all duration-300 ${isArabic ? "" : "-[2px] uppercase"} after:content-[''] after:absolute after:inset-0 after:rounded-2xl after:bg-[linear-gradient(135deg,rgba(201,168,76,0.18)_0%,transparent_55%)] after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300`}
+                  disabled={!product.variants?.[0]?.stock}
+                  className={`w-full h-[52px] text-[18px] rounded-2xl font-semibold border border-[#c9a84c]/25 shadow-lg transition-all duration-300 relative overflow-hidden group
+                    ${product.variants?.[0]?.stock ? "bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] text-[#f0d080]/95 shadow-[#2d1b69]/20 hover:shadow-[#2d1b69]/35 cursor-pointer" : "bg-gray-300 text-white cursor-not-allowed"}
+                    ${isArabic ? "-normal" : "-[3px] uppercase"}
+                  `}
                 >
-                  <motion.span
-                    className="absolute inset-0 bg-[linear-gradient(105deg,transparent_30%,rgba(255,255,255,0.12)_50%,transparent_70%)]"
-                    initial={{ x: "-100%" }}
-                    animate={{ x: "200%" }}
-                    transition={{
-                      delay: 2,
-                      duration: 0.8,
-                      ease: "easeInOut",
-                      repeat: Infinity,
-                      repeatDelay: 4,
-                    }}
-                  />
                   <span className="relative z-10">{t.product.buyNow}</span>
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#c9a84c]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </motion.button>
               </motion.div>
 

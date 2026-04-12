@@ -16,10 +16,10 @@ export async function generateMetadata({
       ? "اقرأ سياسة الخصوصية الخاصة بمسك للعطور — كيف نجمع بياناتك ونحميها ونستخدمها."
       : "Read Misk Fragrances' privacy policy — how we collect, protect, and use your personal information.",
     alternates: {
-      canonical: `https://miskfragrances.com/${locale}/privacy-policy`,
+      canonical: `https://miskstores.com/${locale}/privacy-policy`,
       languages: {
-        "en-US": "https://miskfragrances.com/en/privacy-policy",
-        "ar-EG": "https://miskfragrances.com/ar/privacy-policy",
+        "en-US": "https://miskstores.com/en/privacy-policy",
+        "ar-EG": "https://miskstores.com/ar/privacy-policy",
       },
     },
   };
@@ -27,9 +27,9 @@ export async function generateMetadata({
 
 const page = () => {
   return (
-    <div>
+    <section className="xl:pb-0 pb-[60px]">
       <PrivacyPolicy />
-    </div>
+    </section>
   );
 };
 

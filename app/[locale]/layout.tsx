@@ -1,6 +1,20 @@
 // app/[locale]/layout.tsx
 import type { Metadata } from "next";
-import { Amiri, Bodoni_Moda, Cairo, DM_Serif_Display, EB_Garamond, Lateef, Libre_Baskerville, Noto_Naskh_Arabic, Noto_Serif, Playfair_Display, Reem_Kufi, Roboto, Scheherazade_New } from "next/font/google";
+import {
+  Amiri,
+  Bodoni_Moda,
+  Cairo,
+  DM_Serif_Display,
+  EB_Garamond,
+  Lateef,
+  Libre_Baskerville,
+  Noto_Naskh_Arabic,
+  Noto_Serif,
+  Playfair_Display,
+  Reem_Kufi,
+  Roboto,
+  Scheherazade_New,
+} from "next/font/google";
 
 const locales = ["en", "ar"] as const;
 type Locale = (typeof locales)[number];
@@ -133,8 +147,8 @@ export async function generateMetadata({
       title: t.title,
       description: t.description,
       images: [`${BASE_URL}/og-image.png`],
-      creator: "@miskfragrances",
-      site: "@miskfragrances",
+      creator: "@miskstores",
+      site: "@miskstores",
     },
 
     robots: {
@@ -233,7 +247,6 @@ export async function generateMetadata({
           "https://www.facebook.com/people/Misk-Perfume/100064094529573/",
           "https://www.instagram.com/misk_perfum2",
           "https://www.tiktok.com/@misk5579",
-          
         ],
       }),
     },

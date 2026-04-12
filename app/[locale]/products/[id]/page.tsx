@@ -19,7 +19,7 @@ export async function generateMetadata({
       title: isArabic ? `عطر #${id} | مسك` : `Fragrance #${id} | Misk`,
       images: [
         {
-          url: "https://miskfragrances.com/og-image.png",
+          url: "https://miskstores.com/og-image.png",
           width: 1200,
           height: 630,
         },
