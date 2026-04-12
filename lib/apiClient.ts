@@ -4,8 +4,8 @@ import axios from "axios";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ||
-  "https://hopeful-flow-production-c143.up.railway.app/api";
-
+  "https://guest-misk-production.up.railway.app/api";
+// https://hopeful-flow-production-c143.up.railway.app/
 export const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -27,7 +27,12 @@ apiClient.interceptors.request.use(
       const selectedLanguage =
         localStorage.getItem("lang")?.toLowerCase() || "ar";
       config.headers["Accept-Language"] = selectedLanguage;
-      const isCartRequest = config.url?.startsWith("/cart");
+      const isCartRequest =
+        config.url?.startsWith("/cart") ||
+        config.url?.startsWith("/orders/place") ||
+        config.url?.startsWith("/paypal/create-order") ||
+        config.url?.startsWith("/payment/paymob/create-checkout") ||
+        config.url?.startsWith("/payment/create-checkout-session");
       if (isCartRequest) {
         const deviceId = localStorage.getItem("X-Device-ID");
         if (deviceId) {

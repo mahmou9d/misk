@@ -1,7 +1,13 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useGetRecentOrders, usePatchOrders } from "@/hooks/useDashboard";
-import { ErrorResponse, NotificationState, Order, OrderItems, OrderStatus } from "@/type/type";
+import {
+  ErrorResponse,
+  NotificationState,
+  Order,
+  OrderItems,
+  OrderStatus,
+} from "@/type/type";
 import { useShowNotification } from "@/utils/showNotification";
 import Notification from "../layout/Notification";
 import { AxiosError } from "axios";
@@ -72,6 +78,14 @@ const statusOptions = [
     bgColor: "bg-green-500/10",
   },
   {
+    value: "refunded",
+    labelEn: "Refunded",
+    labelAr: "مرتجع",
+    icon: Check,
+    color: "text-cyan-400",
+    bgColor: "bg-cyan-500/10",
+  },
+  {
     value: "cancelled",
     labelEn: "Cancelled",
     labelAr: "ملغي",
@@ -124,7 +138,7 @@ function OrderCard({
   onCancelEdit,
   onSave,
   onStatusSelect,
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }: any) {
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const statusRef = useRef<HTMLDivElement>(null);
@@ -308,25 +322,25 @@ function OrderCard({
               </p>
             )}
             {/* Subtotal row */}
-            
-              <div
-                className={`flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+
+            <div
+              className={`flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
+            >
+              <span
+                className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
               >
-                <span
-                  className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
-                >
-                  <Package className="w-4 h-4 text-[#fff] shrink-0" />
-                  {isArabic ? "سعر المنتجات" : "Subtotal"}
-                </span>
-                <span className="text-sm font-semibold text-white">
-                  LE{" "}
-                  {Number(
-                    order.total_price - (parseFloat(order.shipping_fee) || 0) ||
-                      0,
-                  ).toLocaleString()}
-                </span>
-              </div>
-           
+                <Package className="w-4 h-4 text-[#fff] shrink-0" />
+                {isArabic ? "سعر المنتجات" : "Subtotal"}
+              </span>
+              <span className="text-sm font-semibold text-white">
+                LE{" "}
+                {Number(
+                  order.total_price - (parseFloat(order.shipping_fee) || 0) ||
+                    0,
+                ).toLocaleString()}
+              </span>
+            </div>
+
             {order.shipping_fee && (
               <p
                 className={`text-sm text-gray-400 flex items-center gap-2 ${isArabic ? "flex-row-reverse" : ""}`}
@@ -514,7 +528,7 @@ export default function OrdersPage() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [editingOrder, setEditingOrder] = useState<{id: string} | null>(null);
+  const [editingOrder, setEditingOrder] = useState<{ id: string } | null>(null);
   const [newStatus, setNewStatus] = useState<OrderStatus>("pending");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -551,9 +565,9 @@ export default function OrdersPage() {
     debouncedSearch,
     apiStatus,
   );
-const { mutate: patch, isPending: patching } = usePatchOrders();
-const [patchSuccessId, setPatchSuccessId] = useState<string | null>(null);
-const [patchErrorId, setPatchErrorId] = useState<string | null>(null);
+  const { mutate: patch, isPending: patching } = usePatchOrders();
+  const [patchSuccessId, setPatchSuccessId] = useState<string | null>(null);
+  const [patchErrorId, setPatchErrorId] = useState<string | null>(null);
 
   const ordersData = data?.orders || [];
 
@@ -591,28 +605,28 @@ const [patchErrorId, setPatchErrorId] = useState<string | null>(null);
         "Actions",
       ];
 
-const handleSave = (id: string) => {
-  setPatchSuccessId(null);
-  setPatchErrorId(null);
-  patch(
-    { id, status: newStatus },
-    {
-      onSuccess: () => {
-        showNotification(o.updateSuccess, "success");
-        setEditingOrder(null);
-        setIsStatusOpen(false);
-        setPatchSuccessId(id); // ← بس الأوردر ده
+  const handleSave = (id: string) => {
+    setPatchSuccessId(null);
+    setPatchErrorId(null);
+    patch(
+      { id, status: newStatus },
+      {
+        onSuccess: () => {
+          showNotification(o.updateSuccess, "success");
+          setEditingOrder(null);
+          setIsStatusOpen(false);
+          setPatchSuccessId(id); // ← بس الأوردر ده
+        },
+        onError: (error: AxiosError<ErrorResponse>) => {
+          showNotification(
+            error?.response?.data?.message || o.updateError,
+            "error",
+          );
+          setPatchErrorId(id); // ← بس الأوردر ده
+        },
       },
-      onError: (error: AxiosError<ErrorResponse>) => {
-        showNotification(
-          error?.response?.data?.message || o.updateError,
-          "error",
-        );
-        setPatchErrorId(id); // ← بس الأوردر ده
-      },
-    },
-  );
-};
+    );
+  };
 
   return (
     <div dir={dir}>

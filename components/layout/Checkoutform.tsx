@@ -125,6 +125,7 @@ export function CheckoutForm({
       governorate_id: governorates?.[0]?.id ?? "",
       payment_method: "cod",
       billing: "same",
+      email: "",
     },
   });
 
@@ -146,6 +147,7 @@ export function CheckoutForm({
   const translatedErrors = {
     firstName: errors.firstName ? t.checkoutForm.errors.firstName : undefined,
     lastName: errors.lastName ? t.checkoutForm.errors.lastName : undefined,
+    email: errors.email ? t.checkoutForm.errors.email : undefined,
     address: errors.address ? t.checkoutForm.errors.address : undefined,
     city: errors.city ? t.checkoutForm.errors.city : undefined,
     governorate_id: errors.governorate_id
@@ -202,6 +204,13 @@ export function CheckoutForm({
             placeholder="12 El Tahrir St."
             error={translatedErrors.address}
             {...register("address")}
+          />
+          <Field
+            label={t.checkoutForm.emailPlaceholder}
+            placeholder="you@example.com"
+            error={translatedErrors.email}
+            type="email"
+            {...register("email")}
           />
           <Field
             label={t.checkoutForm.apt}

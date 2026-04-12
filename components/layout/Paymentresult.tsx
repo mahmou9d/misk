@@ -167,7 +167,7 @@ function CardSuccessModal({
 }) {
   const { locale, t, isArabic: isRTL } = useTranslation();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
-
+const router = useRouter();
   useEffect(() => {
     try {
       const raw = localStorage.getItem("next_step");
@@ -197,7 +197,10 @@ function CardSuccessModal({
         {/* Header */}
         <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 pb-6 flex flex-col items-center gap-3 relative">
           <button
-            onClick={onClose}
+            onClick={() => {
+              router.push(`/${locale.toLowerCase()}`);
+              onClose();
+            }}
             className={`absolute top-3.5 ${isRTL ? "left-3.5" : "right-3.5"} bg-black/5 hover:bg-black/10 border-none rounded-full w-7 h-7 cursor-pointer text-slate-500 flex items-center justify-center transition-colors`}
           >
             ✕

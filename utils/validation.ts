@@ -28,34 +28,35 @@ export const signupSchema = z
   });
 
 export const loginSchema = z.object({
-    email: z.string().min(1, "Email is required").email("Invalid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    rememberMe: z.boolean().optional(),
-  });
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  rememberMe: z.boolean().optional(),
+});
 
-  export const resetPasswordSchema = z
-    .object({
-      password: z
-        .string()
-        .min(8, "Password must be at least 8 characters")
-        .regex(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-          "Password must contain uppercase, lowercase, and number",
-        ),
-      confirmPassword: z.string().min(1, "Please confirm your password"),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-      message: "Passwords do not match",
-      path: ["confirmPassword"],
-    });
-  export const forgotPasswordSchema = z.object({
-    email: z.string().email("Invalid email address").min(1, "Email is required"),
+export const resetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        "Password must contain uppercase, lowercase, and number",
+      ),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
   });
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Invalid email address").min(1, "Email is required"),
+});
 // ── Schema ──────────────────────────────────────────────────────────────────
 export const checkoutSchema = z.object({
   newsEmail: z.boolean().optional(),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
   address: z.string().min(1, "Address is required"),
   apt: z.string().optional(),
   city: z.string().min(1, "City is required"),

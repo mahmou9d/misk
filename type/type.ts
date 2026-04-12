@@ -90,7 +90,7 @@ export type Product = {
   price?: string;
   variants?: Variant[];
   highest_price?: string;
-  is_bestseller:boolean
+  is_bestseller: boolean;
 };
 
 export interface WishlistResponse {
@@ -391,6 +391,7 @@ export interface GoogleLoginData {
 export interface CheckoutFormData {
   full_name: string;
   full_address: string;
+  email: string;
   order_notes?: string;
   phone_number: string;
   country: string;
@@ -508,4 +509,4 @@ export interface SiteSettings {
 
 export type TabKey1 = "Men" | "Unisex" | "Women";
 export type TabKey2 = "Niche";
-export type TabKey3 = "BodySplash"|"Makhmaryat"| "incense";
+export type TabKey3 = "BodySplash" | "Makhmaryat" | "incense";

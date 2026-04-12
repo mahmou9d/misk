@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { AxiosError } from "axios";
 import Image from "next/image";
-
 import { useGetCartItems } from "@/hooks/useCart";
 import { usePlaceOrder, usePaymentPaymob } from "@/hooks/usePayment";
 import {
@@ -26,7 +25,7 @@ export default function CheckoutPage() {
   const [pendingOrderId, setPendingOrderId] = useState<string | null>(null);
   const [pendingPhone, setPendingPhone] = useState("");
   const [discountApplied] = useState(false);
-  const [shippingFee, setShippingFee] = useState(0); // ── جديد ──
+  const [shippingFee, setShippingFee] = useState(0);
   const [notification, setNotification] = useState<NotificationState | null>(
     null,
   );
@@ -42,7 +41,7 @@ export default function CheckoutPage() {
     0,
   );
   const discountAmt = discountApplied ? Math.round(subtotal * 0.1) : 0;
-  const total = subtotal + shippingFee - discountAmt; // ── جديد ──
+  const total = subtotal + shippingFee - discountAmt;
 
   const handleSubmit = async (values: CheckoutFormValues) => {
     setLoading(true);
@@ -52,14 +51,15 @@ export default function CheckoutPage() {
         full_address: values.apt
           ? `${values.address}, ${values.apt}`
           : values.address,
+        email: values.email,
         phone_number: values.phone,
         country: `Egypt`,
         order_notes: "",
         payment_method: values.payment_method,
         governorate_id: values.governorate_id,
       });
-        localStorage.setItem("next_step", String(result.next_step));
-        localStorage.setItem("order_id", String(result.order_id));
+      localStorage.setItem("next_step", String(result.next_step));
+      localStorage.setItem("order_id", String(result.order_id));
       const orderId = String(result.order_id);
 
       if (values.payment_method === "cod") {

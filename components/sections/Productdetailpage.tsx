@@ -1027,8 +1027,7 @@ if (!product.variants || product.variants.length === 0) {
                 <motion.button
                   whileTap={{ scale: 0.988 }}
                   onClick={() => {
-                    if (isLoggedIn) handleBuyNow();
-                    else router.push("/login");
+                    handleBuyNow();
                   }}
                   disabled={!inStock}
                   className={`h-[52px] text-[18px] rounded-2xl font-semibold border border-[#c9a84c]/25 shadow-lg transition-all duration-300 relative overflow-hidden group

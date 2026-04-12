@@ -33,17 +33,6 @@ const fontAr = Amiri({
   weight: ["400", "700"],
   variable: "--font-ar",
 });
-// const fontEn = EB_Garamond({
-//   subsets: ["latin"],
-//   weight: ["400", "700"],
-//   variable: "--font-en",
-// });
-
-// const fontAr = Noto_Naskh_Arabic({
-//   subsets: ["arabic"],
-//   weight: ["400", "700"],
-//   variable: "--font-ar",
-// });
 // ─── Translations ─────────────────────────────────────────────────────────────
 const translations = {
   en: {
@@ -241,9 +230,10 @@ export async function generateMetadata({
         },
 
         sameAs: [
-          "https://facebook.com/miskfragrances",
-          "https://instagram.com/miskfragrances",
-          "https://twitter.com/miskfragrances",
+          "https://www.facebook.com/people/Misk-Perfume/100064094529573/",
+          "https://www.instagram.com/misk_perfum2",
+          "https://www.tiktok.com/@misk5579",
+          
         ],
       }),
     },

@@ -413,17 +413,7 @@ useEffect(() => {
                   {/* Checkout CTA */}
 
                   <Link
-                    href={`/${locale.toLowerCase()}/${isLoggedIn ? "checkout" : "login"}`}
-                    onClick={(e) => {
-                      const token = localStorage.getItem("access");
-
-                      if (!token) {
-                        e.preventDefault();
-                        window.location.href = `/${locale.toLowerCase()}/login`;
-                      }
-
-                      onClose();
-                    }}
+                    href={`/${locale.toLowerCase()}/checkout`}
                     className="flex rounded-2xl items-center justify-center w-full h-[52px] no-underline  text-[13px]  uppercase font-bold bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] text-[#f0d080]/95 border border-[#c9a84c]/25 shadow-[0_2px_18px_rgba(45,27,105,0.2)] transition-shadow duration-300 hover:shadow-[0_6px_28px_rgba(45,27,105,0.35)] relative overflow-hidden mb-3"
                   >
                     {t.cart.checkout} — LE {subtotal.toLocaleString()}
