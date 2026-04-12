@@ -107,7 +107,7 @@ const PasswordField = ({
           type="button"
           onClick={() => setShow((p) => !p)}
           className={`absolute top-1/2 -translate-y-1/2 bg-none border-none cursor-pointer text-[#ccc] hover:text-[#c9a84c]/70 transition-colors p-1 flex ${
-            isArabic ? "left-0" : "right-0"
+            isArabic ? "left-2" : "right-2"
           }`}
         >
           {show ? <EyeOpen /> : <EyeClosed />}
@@ -140,7 +140,7 @@ const PasswordRequirements = ({ isArabic }: { isArabic: boolean }) => {
   return (
     <div className="mb-6 border border-[#c9a84c]/15 bg-[#c9a84c]/5 p-4">
       <p
-        className={`text-[11px] text-[#aaa] mb-2 font-medium ${
+        className={`text-[13px] text-[#808080] mb-2 font-medium ${
           isArabic ? "-normal text-right" : "-[1.5px] uppercase text-left"
         }`}
       >
@@ -150,11 +150,11 @@ const PasswordRequirements = ({ isArabic }: { isArabic: boolean }) => {
         {items.map((item) => (
           <li
             key={item}
-            className={`flex items-center gap-2 ${isArabic ? "flex-row-reverse" : "flex-row"}`}
+            className={`flex items-center gap-2 ${isArabic ? "flex-row" : "flex-row-reverse"}`}
           >
             <div className="w-[3px] h-[3px] rounded-full bg-[#c9a84c]/50 flex-shrink-0" />
             <span
-              className={`text-[12px] text-[#bbb] ${
+              className={`text-[12px] text-[#808080] ${
                 isArabic ? "-normal" : "-[0.2px]"
               }`}
             >
