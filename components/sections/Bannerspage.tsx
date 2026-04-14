@@ -751,6 +751,7 @@ function BannersTab({
                                 alt="current desktop"
                                 width={300}
                                 height={112}
+                                loading="lazy"
                                 className="w-full h-full object-cover"
                               />
                             ) : (
@@ -807,6 +808,7 @@ function BannersTab({
                                 alt="current mobile"
                                 width={300}
                                 height={112}
+                                loading="lazy"
                                 className="w-full h-full object-cover"
                               />
                             ) : (

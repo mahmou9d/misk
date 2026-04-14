@@ -126,6 +126,7 @@ export function BusinessHoursLocation() {
               <div className="relative w-full aspect-video lg:aspect-square lg:flex-1 min-h-[400px]">
                 <iframe
                   src={location.mapsEmbedUrl}
+                  title={t.businessHours.locationTitle}
                   className="absolute inset-0 w-full h-full grayscale-[0.2] contrast-[1.1]"
                   style={{ border: 0 }}
                   allowFullScreen

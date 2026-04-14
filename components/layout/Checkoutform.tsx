@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "@/lib/Usetranslation";
 import { CheckoutFormValues } from "@/type/type";
 import { getCheckoutSchema } from "@/utils/validation";
@@ -18,31 +18,61 @@ type Governorate = {
 };
 
 function VisaIcon() {
-  return <Image src="/Visa.svg" width={25} height={20} alt="Visa" />;
+  return (
+    <Image
+      src="/Visa.svg"
+      width={25}
+      height={20}
+      alt="Visa"
+      loading="lazy"
+      aria-hidden="true"
+    />
+  );
 }
 function MastercardIcon() {
   return (
-    <Image src="/Mastercard.svg" width={25} height={20} alt="Mastercard" />
+    <Image
+      src="/Mastercard.svg"
+      width={25}
+      height={20}
+      alt="Mastercard"
+      loading="lazy"
+      aria-hidden="true"
+    />
   );
 }
 function MeezaIcon() {
-  return <Image src="/Meeza.svg" width={25} height={20} alt="Meeza" />;
+  return (
+    <Image
+      src="/Meeza.svg"
+      width={25}
+      height={20}
+      alt="Meeza"
+      loading="lazy"
+      aria-hidden="true"
+    />
+  );
 }
 
 function Field({
   label,
   error,
+  id,
   ...props
 }: React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   error?: string;
+  id: string;
 }) {
   return (
     <div className="flex flex-col gap-1.5">
       {label && (
-        <label className="text-[12px] font-semibold text-[#555]">{label}</label>
+        <label htmlFor={id} className="text-[12px] font-semibold text-[#555]">
+          {label}
+        </label>
       )}
       <input
+        id={id}
         {...props}
         className={`w-full h-[52px] px-4 text-[14px] text-[#1a1a1a] bg-white rounded-[10px] border-2 outline-none transition-all duration-150 placeholder-[#C8C4BC]
           ${
@@ -50,8 +80,14 @@ function Field({
               ? "border-red-400 focus:border-red-400 focus:shadow-[0_0_0_4px_rgba(248,113,113,0.12)]"
               : "border-[#DDD8CC] focus:border-[#C9A84C] focus:shadow-[0_0_0_4px_rgba(201,168,76,0.12)]"
           }`}
+        aria-invalid={error ? "true" : "false"}
+        aria-describedby={error ? `${id}-error` : undefined}
       />
-      {error && <span className="text-[13px] text-red-400">{error}</span>}
+      {error && (
+        <span id={`${id}-error`} className="text-[13px] text-red-400">
+          {error}
+        </span>
+      )}
     </div>
   );
 }
@@ -204,12 +240,14 @@ export function CheckoutForm({
 
           <div className="grid grid-cols-2 gap-3.5">
             <Field
+              id="firstName"
               label={t.checkoutForm.firstName}
               placeholder="Ahmed"
               error={translatedErrors.firstName}
               {...register("firstName")}
             />
             <Field
+              id="lastName"
               label={t.checkoutForm.lastName}
               placeholder="Hassan"
               error={translatedErrors.lastName}
@@ -218,12 +256,14 @@ export function CheckoutForm({
           </div>
 
           <Field
+            id="address"
             label={t.checkoutForm.address}
             placeholder="12 El Tahrir St."
             error={translatedErrors.address}
             {...register("address")}
           />
           <Field
+            id="guest_email"
             label={t.checkoutForm.emailPlaceholder}
             placeholder="you@example.com"
             error={translatedErrors.guest_email}
@@ -231,6 +271,7 @@ export function CheckoutForm({
             {...register("guest_email")}
           />
           <Field
+            id="apt"
             label={t.checkoutForm.apt}
             placeholder="Apartment, floor (optional)"
             {...register("apt")}
@@ -238,6 +279,7 @@ export function CheckoutForm({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <Field
+              id="city"
               label={t.checkoutForm.city}
               placeholder="Cairo"
               error={translatedErrors.city}
@@ -245,12 +287,20 @@ export function CheckoutForm({
             />
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-[12px] font-semibold text-[#555]">
+              <label
+                htmlFor="governorate_id"
+                className="text-[12px] font-semibold text-[#555]"
+              >
                 {isArabic ? "المحافظة" : "Governorate"}
               </label>
               <select
+                id="governorate_id"
                 {...register("governorate_id")}
                 className="h-[52px] w-full px-4 text-[14px] text-[#1a1a1a] bg-white rounded-[10px] border-2 border-[#DDD8CC] outline-none appearance-none cursor-pointer focus:border-[#C9A84C] transition-colors duration-150"
+                aria-invalid={errors.governorate_id ? "true" : "false"}
+                aria-describedby={
+                  errors.governorate_id ? "governorate-error" : undefined
+                }
                 style={{
                   backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
                   backgroundRepeat: "no-repeat",
@@ -271,7 +321,10 @@ export function CheckoutForm({
                 ))}
               </select>
               {translatedErrors.governorate_id && (
-                <span className="text-[13px] text-red-400">
+                <span
+                  id="governorate-error"
+                  className="text-[13px] text-red-400"
+                >
                   {translatedErrors.governorate_id}
                 </span>
               )}
@@ -279,6 +332,7 @@ export function CheckoutForm({
           </div>
 
           <Field
+            id="phone"
             label={t.checkoutForm.phone}
             placeholder="+20 100 000 0000"
             type="tel"

@@ -242,7 +242,7 @@ export default function ProductPage() {
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.27, duration: 0.4 }}
-                  className={`text-[#4d4c4c] text-[16px] leading-relaxed mb-4 line-clamp-3 ${isArabic ? " font-[family-name:var(--font-ar)]" : " font-[family-name:var(--font-en)]"}`}
+                  className={`text-[#4d4c4c] text-[16px] leading-relaxed mb-4 ${isArabic ? " font-[family-name:var(--font-ar)]" : " font-[family-name:var(--font-en)]"}`}
                 >
                   {product.description}
                 </motion.p>

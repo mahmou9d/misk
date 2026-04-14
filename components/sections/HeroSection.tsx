@@ -31,6 +31,7 @@ export default function HeroSection() {
           sizes="100vw"
           className="object-center"
           priority
+          
           unoptimized={mobileSrc?.startsWith("http")}
         />
       </div>
@@ -44,6 +45,7 @@ export default function HeroSection() {
           sizes="100vw"
           className="object-center"
           priority
+          
           unoptimized={mobileSrc?.startsWith("http")}
         />
       </div>
@@ -57,6 +59,7 @@ export default function HeroSection() {
           sizes="100vw"
           className="object-center"
           priority
+          
           unoptimized={desktopSrc?.startsWith("http")}
         />
       </div>

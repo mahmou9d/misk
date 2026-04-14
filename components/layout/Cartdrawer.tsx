@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -20,6 +20,7 @@ const CloseIcon = () => (
     height="18"
     viewBox="0 0 24 24"
     fill="none"
+    aria-hidden="true"
     stroke="currentColor"
     strokeWidth="1.6"
     strokeLinecap="round"
@@ -34,6 +35,7 @@ const TrashIcon = () => (
     height="20"
     viewBox="0 0 24 24"
     fill="none"
+    aria-hidden="true"
     stroke="currentColor"
     strokeWidth="1.6"
     strokeLinecap="round"
@@ -50,6 +52,7 @@ const BagIcon = () => (
     height="40"
     viewBox="0 0 24 24"
     fill="none"
+    aria-hidden="true"
     stroke="currentColor"
     strokeWidth="1.2"
     strokeLinecap="round"
@@ -72,6 +75,7 @@ const Spinner = ({
     height={size}
     viewBox="0 0 24 24"
     fill="none"
+    aria-hidden="true"
     stroke={color}
     strokeWidth="2.5"
     strokeLinecap="round"
@@ -103,6 +107,7 @@ function QtyButton({
         onClick(e);
       }}
       disabled={disabled || loading}
+      aria-label={label === "+" ? "Increase quantity" : "Decrease quantity"}
       style={{
         width: 30,
         height: 30,
@@ -154,26 +159,32 @@ function CartItemRow({
       : item?.variant?.images?.[0]?.url) || "/heros.jpg";
   const currentQty = Number(item.quantity);
 
-  const handleDecrement = (e: React.MouseEvent) => {
-    setUpdatingDirection("dec");
-    updateQty(
-      { item_id: item.id, quantity: Math.max(1, currentQty - 1) },
-      { onSettled: () => setUpdatingDirection(null) },
-    );
-  };
+  const handleDecrement = useCallback(
+    (e: React.MouseEvent) => {
+      setUpdatingDirection("dec");
+      updateQty(
+        { item_id: item.id, quantity: Math.max(1, currentQty - 1) },
+        { onSettled: () => setUpdatingDirection(null) },
+      );
+    },
+    [item.id, currentQty, updateQty],
+  );
 
-  const handleIncrement = (e: React.MouseEvent) => {
-    setUpdatingDirection("inc");
-    updateQty(
-      { item_id: item.id, quantity: currentQty + 1 },
-      { onSettled: () => setUpdatingDirection(null) },
-    );
-  };
+  const handleIncrement = useCallback(
+    (e: React.MouseEvent) => {
+      setUpdatingDirection("inc");
+      updateQty(
+        { item_id: item.id, quantity: currentQty + 1 },
+        { onSettled: () => setUpdatingDirection(null) },
+      );
+    },
+    [item.id, currentQty, updateQty],
+  );
 
-  const handleRowClick = () => {
+  const handleRowClick = useCallback(() => {
     onClose();
     router.push(`/${locale.toLowerCase()}/products/${item.product_id}`);
-  };
+  }, [onClose, router, locale, item.product_id]);
 
   return (
     <div
@@ -202,7 +213,7 @@ function CartItemRow({
             {productName}
           </p>
           <span className="text-[18px] font-semibold text-[#111] whitespace-nowrap bg-gradient-to-r from-[#c9a84c] via-[#f0d080] via-[40%] to-[#c9a84c] to-[70%] bg-[length:200%_auto] bg-clip-text text-transparent animate-[musk-shimmer_4s_linear_infinite]">
-            LE {itemTotal.toLocaleString()}
+            EGP {itemTotal.toLocaleString()}
           </span>
         </div>
 
@@ -245,6 +256,7 @@ function CartItemRow({
               removeItem(item.id);
             }}
             disabled={isRemoving}
+            aria-label="Remove item from cart"
             className={`bg-none border-none p-1 flex transition-colors duration-200 text-[#ccc] ${
               isRemoving
                 ? "cursor-not-allowed"
@@ -274,14 +286,22 @@ export function CartDrawer({
   const { data: cartItems, isLoading: isCartLoading } = useGetCartItems();
   const { t, isArabic, locale, dir } = useTranslation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const totalQuantity =
-    cartItems?.reduce((sum, item) => sum + Number(item.quantity), 0) ?? 0;
-  const subtotal =
-    cartItems?.reduce(
-      (sum, item) =>
-        sum + parseFloat(String(item.price)) * Number(item.quantity),
-      0,
-    ) ?? 0;
+
+  const totalQuantity = useMemo(
+    () => cartItems?.reduce((sum, item) => sum + Number(item.quantity), 0) ?? 0,
+    [cartItems],
+  );
+
+  const subtotal = useMemo(
+    () =>
+      cartItems?.reduce(
+        (sum, item) =>
+          sum + parseFloat(String(item.price)) * Number(item.quantity),
+        0,
+      ) ?? 0,
+    [cartItems],
+  );
+
   useEffect(() => {
     const token = localStorage.getItem("access");
     setIsLoggedIn(!!token);
@@ -322,6 +342,9 @@ export function CartDrawer({
             {/* Drawer */}
             <motion.aside
               className="fixed top-0 inset-y-0 z-50 h-full flex flex-col bg-[#faf8f4] shadow-[-4px_0_60px_rgba(45,27,105,0.18)] border-s border-[#c9a84c]/15"
+              role="dialog"
+              aria-modal="true"
+              aria-label={t.cart.title}
               dir={dir}
               style={{
                 width: "min(460px, 100vw)",
@@ -350,6 +373,7 @@ export function CartDrawer({
                 </div>
                 <button
                   onClick={onClose}
+                  aria-label="Close cart drawer"
                   className="bg-none border-none cursor-pointer text-[#aaa] flex p-1.5 transition-colors duration-200 hover:text-[#555]"
                 >
                   <CloseIcon />
@@ -407,7 +431,7 @@ export function CartDrawer({
                       {t.cart.subtotal}
                     </span>
                     <span className=" text-[18px] font-semibold text-[#111]">
-                      LE {subtotal.toLocaleString()}
+                      EGP {subtotal.toLocaleString()}
                     </span>
                   </div>
 
@@ -417,7 +441,7 @@ export function CartDrawer({
                     href={`/${locale.toLowerCase()}/checkout`}
                     className="flex rounded-2xl items-center justify-center w-full h-[52px] no-underline  text-[13px]  uppercase font-bold bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] text-[#f0d080]/95 border border-[#c9a84c]/25 shadow-[0_2px_18px_rgba(45,27,105,0.2)] transition-shadow duration-300 hover:shadow-[0_6px_28px_rgba(45,27,105,0.35)] relative overflow-hidden mb-3"
                   >
-                    {t.cart.checkout} — LE {subtotal.toLocaleString()}
+                    {t.cart.checkout} — EGP {subtotal.toLocaleString()}
                   </Link>
 
                   {/* Continue shopping */}

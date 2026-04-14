@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { AxiosError } from "axios";
@@ -10,7 +10,6 @@ import { usePlaceOrder, usePaymentPaymob } from "@/hooks/usePayment";
 import {
   ErrorResponse,
   NotificationState,
-  CheckoutFormDetails,
   CheckoutFormValues,
 } from "@/type/type";
 import { useShowNotification } from "@/utils/showNotification";
@@ -39,14 +38,21 @@ export default function CheckoutPage() {
   const { mutateAsync: payWithPaymob } = usePaymentPaymob();
   const showNotification = useShowNotification(setNotification);
 
-  const subtotal = cartItems.reduce(
-    (s, i) => s + parseFloat(i.price) * i.quantity,
-    0,
-  );
-  const discountAmt = discountApplied ? Math.round(subtotal * 0.1) : 0;
-  const total = subtotal + shippingFee - discountAmt;
 
-  const handleSubmit = async (values: CheckoutFormValues) => {
+  const subtotal = useMemo(
+    () =>
+      cartItems.reduce((s, i) => s + parseFloat(i.price) * i.quantity, 0),
+    [cartItems],
+  );
+
+  const discountAmt = discountApplied ? Math.round(subtotal * 0.1) : 0;
+
+  const total = useMemo(
+    () => subtotal + shippingFee - discountAmt,
+    [subtotal, shippingFee, discountAmt],
+  );
+
+  const handleSubmit = useCallback(async (values: CheckoutFormValues) => {
     setLoading(true);
     try {
       const result = await placeOrder({
@@ -84,9 +90,9 @@ export default function CheckoutPage() {
       );
       setLoading(false);
     }
-  };
+  }, [placeOrder, showNotification, t.checkout, locale]);
 
-  const handlePayWithWallet = async (walletNumber: string) => {
+  const handlePayWithWallet = useCallback(async (walletNumber: string) => {
     if (!pendingOrderId) return;
     setLoading(true);
     try {
@@ -106,9 +112,9 @@ export default function CheckoutPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [pendingOrderId, payWithPaymob, showNotification, t.checkout]);
 
-  const handlePayWithCard = async () => {
+  const handlePayWithCard = useCallback(async () => {
     if (!pendingOrderId) return;
     setLoading(true);
     try {
@@ -124,7 +130,7 @@ export default function CheckoutPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [pendingOrderId, payWithPaymob, showNotification, t.checkout]);
 
   return (
     <div className="min-h-screen bg-[#F8F6F2]" dir={dir}>
@@ -149,11 +155,12 @@ export default function CheckoutPage() {
         )}
       </AnimatePresence>
 
-      <div className="px-10 md:px-40 top-0 z-20 bg-white border-b-2 border-[#E8E2D6] py-8 shadow-sm">
+      <header className="px-10 md:px-40 top-0 z-20 bg-white border-b-2 border-[#E8E2D6] py-8 shadow-sm">
         {/* Brand + Total pill */}
         <div className="flex items-center justify-between mb-4">
           <Link
             href={`/${locale.toLowerCase()}`}
+            aria-label={isArabic ? "الرئيسية" : "Misk Home"}
             className="flex flex-col items-center select-none leading-none group"
           >
             <span
@@ -173,6 +180,7 @@ export default function CheckoutPage() {
           <div className="flex items-center gap-3">
             <Link
               href={`/${locale.toLowerCase()}`}
+              aria-label={isArabic ? "رجوع للرئيسية" : "Back to home"}
               className="text-[15px] uppercase text-[#aaa] hover:text-[#C9A84C] transition-colors hidden sm:block"
             >
               {isArabic ? "→ رجوع" : "← Back"}
@@ -279,7 +287,7 @@ export default function CheckoutPage() {
             </span>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* ══ FORM AREA ══ */}
       <motion.div

@@ -18,7 +18,7 @@ export default function ProductCard({ index, p, fill = false }: Props) {
 
   const fallbackImage = "/heros.jpg";
   const rawImageSrc = p?.thumbnail ? String(p.thumbnail) : fallbackImage;
-  const currency = isArabic ? "ج.م" : "LE";
+  const currency = "EGP";
 
   return (
     <motion.div
@@ -62,7 +62,7 @@ export default function ProductCard({ index, p, fill = false }: Props) {
             </span>
           </div>
         </div>
-        <div className="pt-3 flex flex-col items-center md:items-baseline">
+        <div className="pt-3 flex flex-col items-center md:items-start">
           <p className=" text-[16px] -[3px] uppercase text-[#c9a84cbf] mb-1">
             {p.category_name}
           </p>

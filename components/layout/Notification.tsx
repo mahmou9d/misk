@@ -8,6 +8,7 @@ const CheckIcon = () => (
     height="16"
     viewBox="0 0 24 24"
     fill="none"
+    aria-hidden="true"
     stroke="currentColor"
     strokeWidth="2.5"
     strokeLinecap="round"
@@ -23,6 +24,7 @@ const ErrorIcon = () => (
     height="16"
     viewBox="0 0 24 24"
     fill="none"
+    aria-hidden="true"
     stroke="currentColor"
     strokeWidth="2.5"
     strokeLinecap="round"
@@ -48,6 +50,8 @@ const Notification = ({
       {visible && (
         <motion.div
           className="fixed top-5 left-1/2 z-[100]"
+          role={type === "error" ? "alert" : "status"}
+          aria-live={type === "error" ? "assertive" : "polite"}
           style={{ translateX: "-50%" }}
           initial={{ opacity: 0, y: -16, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}

@@ -194,7 +194,7 @@ export default function SearchPage() {
                 className="py-32 flex flex-col items-center text-center"
               >
                 <div className="relative mb-8">
-                  <div className="absolute inset-0 bg-[#c9a84c]/10 blur-3xl rounded-full" />
+                  <div className="absolute inset-0 bg-[#c9a84c]/10 rounded-full" />
                   <div className="relative w-24 h-24 bg-gray-50 rounded-3xl flex items-center justify-center border border-gray-100">
                     <Search className="text-gray-300 w-10 h-10" />
                   </div>

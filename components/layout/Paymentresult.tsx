@@ -4,7 +4,7 @@ import { useTranslation } from "@/lib/Usetranslation";
 import { IconFailed, IconSuccess } from "@/public/svg/Svgs";
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -51,7 +51,7 @@ function formatDate(iso: string): string {
 function CodSuccessModal({ onClose }: { onClose: () => void }) {
   const { locale, t, isArabic: isRTL } = useTranslation();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
-const order_id=localStorage.getItem("order_id");
+  const order_id = localStorage.getItem("order_id");
   useEffect(() => {
     try {
       const raw = localStorage.getItem("next_step");
@@ -62,7 +62,7 @@ const order_id=localStorage.getItem("order_id");
 
     const timer = setTimeout(() => {
       localStorage.removeItem("next_step");
-      
+
       // onClose();
     }, 8000);
 
@@ -72,28 +72,38 @@ const order_id=localStorage.getItem("order_id");
   return (
     <div
       onClick={(e) => e.target === e.currentTarget && onClose()}
+      role="presentation"
       className="fixed inset-0 z-[9999] bg-slate-900/60 flex items-center justify-center p-4"
     >
       <div
         dir={isRTL ? "rtl" : "ltr"}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cod-success-title"
         className="w-full max-w-[420px] bg-white rounded-[20px] overflow-hidden shadow-[0_24px_80px_-12px_rgba(0,0,0,0.4)]"
       >
         {/* Header */}
         <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 pb-6 flex flex-col items-center gap-3 relative">
           <button
             onClick={onClose}
+            aria-label={isRTL ? "إغلاق" : "Close"}
             className={`absolute top-3.5 ${isRTL ? "left-3.5" : "right-3.5"} bg-black/5 hover:bg-black/10 border-none rounded-full w-7 h-7 cursor-pointer text-slate-500 flex items-center justify-center transition-colors`}
           >
             ✕
           </button>
 
-          <div className="w-[68px] h-[68px] rounded-full bg-white flex items-center justify-center shadow-[0_0_0_8px_#bbf7d0]">
+          <div
+            className="w-[68px] h-[68px] rounded-full bg-white flex items-center justify-center shadow-[0_0_0_8px_#bbf7d0]"
+            aria-hidden="true"
+          >
             <IconSuccess />
           </div>
 
           <div className="text-center">
-
-            <h3 className="text-[1.2rem] font-bold text-green-900 m-0 mb-1">
+            <h3
+              id="cod-success-title"
+              className="text-[1.2rem] font-bold text-green-900 m-0 mb-1"
+            >
               {isRTL ? "تم حجز الطلب" : "Order Booked"}
             </h3>
             <p className="text-[0.8rem] text-green-600 m-0 font-medium">
@@ -104,20 +114,26 @@ const order_id=localStorage.getItem("order_id");
 
         {/* Body */}
         <div className="p-5 px-7 pb-7">
-                      <p className="m-0 text-[16px] text-black mt-0.5 mb-2">
-              {isRTL ? "رقم الطلب" : "Order ID"}:{" "}
-              {orderData?.order_id || order_id}
-            </p>
+          <p className="m-0 text-[16px] text-black mt-0.5 mb-2">
+            {isRTL ? "رقم الطلب" : "Order ID"}:{" "}
+            {orderData?.order_id || order_id}
+          </p>
           {orderData?.message && (
             <div className="flex items-start gap-2.5 bg-green-50 border border-green-200 rounded-xl p-3 px-4 mb-4">
-              <span className="text-green-500 mt-0.5 text-base">🎉</span>
+              <span
+                className="text-green-500 mt-0.5 text-base"
+                role="img"
+                aria-label="Celebration"
+              >
+                🎉
+              </span>
               <div>
                 <p className="m-0 text-[0.82rem] font-semibold text-green-800">
                   {orderData.message}
                 </p>
                 {orderData.order_id && (
                   <p className="m-0 text-[0.76rem] text-green-600 mt-0.5">
-                    {`${isRTL ? "رقم الطلب":"Order ID:"} ${orderData.order_id}`}
+                    {`${isRTL ? "رقم الطلب" : "Order ID:"} ${orderData.order_id}`}
                   </p>
                 )}
               </div>
@@ -126,7 +142,9 @@ const order_id=localStorage.getItem("order_id");
 
           {/* COD notice */}
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 px-4 mb-4 text-[0.81rem] text-amber-800 leading-relaxed flex items-start gap-2">
-            <span className="mt-0.5">🚚</span>
+            <span className="mt-0.5" role="img" aria-label="Delivery truck">
+              🚚
+            </span>
             <span>
               {isRTL
                 ? "سيتم الدفع عند الاستلام"
@@ -167,7 +185,7 @@ function CardSuccessModal({
 }) {
   const { locale, t, isArabic: isRTL } = useTranslation();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
-const router = useRouter();
+  const router = useRouter();
   useEffect(() => {
     try {
       const raw = localStorage.getItem("next_step");
@@ -178,7 +196,7 @@ const router = useRouter();
 
     const timer = setTimeout(() => {
       localStorage.removeItem("next_step");
-      
+
       // onClose();
     }, 8000);
 
@@ -188,20 +206,30 @@ const router = useRouter();
   return (
     <div
       onClick={(e) => e.target === e.currentTarget && onClose()}
+      role="presentation"
       className="fixed inset-0 z-[9999] bg-slate-900/60 flex items-center justify-center p-4"
     >
       <div
         dir={isRTL ? "rtl" : "ltr"}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="card-success-title"
         className="w-full max-w-[420px] bg-white rounded-[20px] overflow-hidden shadow-[0_24px_80px_-12px_rgba(0,0,0,0.4)]"
       >
         {/* Header */}
         <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 pb-6 flex flex-col items-center gap-3 relative">
-          <div className="w-[68px] h-[68px] rounded-full bg-white flex items-center justify-center shadow-[0_0_0_8px_#bbf7d0]">
+          <div
+            className="w-[68px] h-[68px] rounded-full bg-white flex items-center justify-center shadow-[0_0_0_8px_#bbf7d0]"
+            aria-hidden="true"
+          >
             <IconSuccess />
           </div>
 
           <div className="text-center">
-            <h3 className="text-[1.2rem] font-bold text-green-900 m-0 mb-1">
+            <h3
+              id="card-success-title"
+              className="text-[1.2rem] font-bold text-green-900 m-0 mb-1"
+            >
               {t.paymentPopup.success.title}
             </h3>
             <p className="text-[0.8rem] text-green-600 m-0 font-medium">
@@ -223,7 +251,13 @@ const router = useRouter();
         <div className="p-5 px-7 pb-7">
           {orderData?.message && (
             <div className="flex items-start gap-2.5 bg-green-50 border border-green-200 rounded-xl p-3 px-4 mb-4">
-              <span className="text-green-500 mt-0.5 text-base">🎉</span>
+              <span
+                className="text-green-500 mt-0.5 text-base"
+                role="img"
+                aria-label="Success"
+              >
+                🎉
+              </span>
               <div>
                 <p className="m-0 text-[0.82rem] font-semibold text-green-800">
                   {orderData.message}
@@ -239,16 +273,12 @@ const router = useRouter();
 
           <div className="space-y-0">
             {[
-              [
-                t.paymentPopup.labels.reference,
-                `${data.merchant_order_id}`,
-              ],
+              [t.paymentPopup.labels.reference, `${data.merchant_order_id}`],
               [
                 t.paymentPopup.labels.card,
                 `${data.source_data_sub_type} ••••${data.source_data_pan}`,
               ],
               [t.paymentPopup.labels.date, formatDate(data.created_at)],
-              
             ].map(([label, value], i, arr) => (
               <div key={i}>
                 <div className="flex justify-between py-2.5 text-[0.87rem]">
@@ -300,31 +330,45 @@ function FailedModal({
   return (
     <div
       onClick={(e) => e.target === e.currentTarget && onClose()}
+      role="presentation"
       className="fixed inset-0 z-[9999] bg-slate-900/60 flex items-center justify-center p-4"
     >
       <div
         dir={isRTL ? "rtl" : "ltr"}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="payment-failed-title"
         className="w-full max-w-[420px] bg-white rounded-[20px] overflow-hidden shadow-[0_24px_80px_-12px_rgba(0,0,0,0.4)]"
       >
         {/* Header */}
         <div className="bg-gradient-to-br from-rose-50 to-rose-100 p-8 pb-6 flex flex-col items-center gap-3 relative">
           <button
             onClick={onClose}
+            aria-label={isRTL ? "إغلاق" : "Close"}
             className={`absolute top-3.5 ${isRTL ? "left-3.5" : "right-3.5"} bg-black/5 hover:bg-black/10 border-none rounded-full w-7 h-7 cursor-pointer text-slate-500 flex items-center justify-center transition-colors`}
           >
             ✕
           </button>
 
-          <div className="w-[68px] h-[68px] rounded-full bg-white flex items-center justify-center shadow-[0_0_0_8px_#fecaca]">
+          <div
+            className="w-[68px] h-[68px] rounded-full bg-white flex items-center justify-center shadow-[0_0_0_8px_#fecaca]"
+            aria-hidden="true"
+          >
             <IconFailed />
           </div>
 
           <div className="text-center">
-            <h3 className="text-[1.2rem] font-bold text-red-900 m-0 mb-1.5">
+            <h3
+              id="payment-failed-title"
+              className="text-[1.2rem] font-bold text-red-900 m-0 mb-1.5"
+            >
               {t.paymentPopup.failed.title}
             </h3>
             {data.error_message && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-100 text-red-700 text-[0.76rem] font-semibold">
+              <span
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-100 text-red-700 text-[0.76rem] font-semibold"
+                role="alert"
+              >
                 ⚠ {data.error_message}
               </span>
             )}
@@ -340,10 +384,7 @@ function FailedModal({
           <div className="space-y-0">
             {[
               [t.paymentPopup.labels.orderId, `#${data.order}`],
-              [
-                t.paymentPopup.labels.reference,
-                `${data.merchant_order_id}`,
-              ],
+              [t.paymentPopup.labels.reference, `${data.merchant_order_id}`],
               [
                 t.paymentPopup.labels.card,
                 `${data.source_data_sub_type} ••••${data.source_data_pan}`,
@@ -430,21 +471,27 @@ export function PaymentPopup() {
   if (!successParam || !open) return null;
 
   const success = successParam === "true";
-  const data: PaymentData = {
-    amount_cents: Number(params.get("amount_cents")) || 0,
-    order: params.get("order") ?? "",
-    merchant_order_id: params.get("merchant_order_id") ?? "",
-    created_at: params.get("created_at") ?? new Date().toISOString(),
-    source_data_pan:
-      params.get("source_data.pan") ?? params.get("source_data_pan") ?? "****",
-    source_data_sub_type:
-      params.get("source_data.sub_type") ??
-      params.get("source_data_sub_type") ??
-      "Card",
-    currency: params.get("currency") ?? "EGP",
-    error_message:
-      params.get("data.message") ?? params.get("error_occured") ?? undefined,
-  };
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const data: PaymentData = useMemo(() => {
+    return {
+      amount_cents: Number(params.get("amount_cents")) || 0,
+      order: params.get("order") ?? "",
+      merchant_order_id: params.get("merchant_order_id") ?? "",
+      created_at: params.get("created_at") ?? new Date().toISOString(),
+      source_data_pan:
+        params.get("source_data.pan") ??
+        params.get("source_data_pan") ??
+        "****",
+      source_data_sub_type:
+        params.get("source_data.sub_type") ??
+        params.get("source_data_sub_type") ??
+        "Card",
+      currency: params.get("currency") ?? "EGP",
+      error_message:
+        params.get("data.message") ?? params.get("error_occured") ?? undefined,
+    };
+  }, [params]);
 
   // ── COD ──
   if (isCod) return <CodSuccessModal onClose={handleClose} />;

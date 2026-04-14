@@ -28,6 +28,7 @@ export function PaymentMethodModal({
   return (
     <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/45"
+      role="presentation"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -37,6 +38,9 @@ export function PaymentMethodModal({
     >
       <motion.div
         className="bg-white rounded-xl flex flex-col w-[min(440px,95vw)] p-[28px_28px_24px] shadow-[0_20px_60px_rgba(0,0,0,0.18)]"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="payment-modal-title"
         dir={dir}
         initial={{ opacity: 0, y: 24, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -45,25 +49,35 @@ export function PaymentMethodModal({
       >
         {/* Header */}
         <div className="flex justify-between items-center mb-5">
-          <h3 className=" font-semibold text-gray-900 text-[17px]">
+          <h3
+            id="payment-modal-title"
+            className=" font-semibold text-gray-900 text-[17px]"
+          >
             {p.title}
           </h3>
           <button
             onClick={onClose}
+            aria-label="Close modal"
             className="bg-none border-none cursor-pointer text-[20px] text-[#aaa] leading-none hover:text-gray-600 transition-colors"
           >
-            <X/>
+            <X />
           </button>
         </div>
 
-        <div className="flex flex-col gap-3 mb-5">
+        <div
+          className="flex flex-col gap-3 mb-5"
+          role="radiogroup"
+          aria-labelledby="payment-modal-title"
+        >
           {/* Card Option */}
           <label
+            htmlFor="method-card"
             className={`flex items-center justify-between gap-3 cursor-pointer rounded-lg p-[14px_16px] border-2 transition-all duration-200
               ${method === "card" ? "border-[#1a4fe0] bg-[#f0f4ff]" : "border-[#d0d0d0] bg-white"}`}
           >
             <div className="flex items-center gap-3">
               <input
+                id="method-card"
                 type="radio"
                 name="pm"
                 value="card"
@@ -71,9 +85,7 @@ export function PaymentMethodModal({
                 onChange={() => setMethod("card")}
                 className="accent-[#1a4fe0]"
               />
-              <span className=" text-gray-800 text-[14px]">
-                {p.creditCard}
-              </span>
+              <span className=" text-gray-800 text-[14px]">{p.creditCard}</span>
             </div>
             <div className="flex items-center gap-1">
               {[
@@ -87,7 +99,8 @@ export function PaymentMethodModal({
                   width={30}
                   height={20}
                   src={c.name}
-                  alt=""
+                  loading="lazy"
+                  alt="Cards"
                 />
               ))}
             </div>
@@ -95,11 +108,13 @@ export function PaymentMethodModal({
 
           {/* Wallet Option */}
           <label
+            htmlFor="method-wallet"
             className={`flex flex-col gap-0 cursor-pointer rounded-lg p-[14px_16px] border-2 transition-all duration-200
               ${method === "wallet" ? "border-[#1a4fe0] bg-[#f0f4ff]" : "border-[#d0d0d0] bg-white"}`}
           >
             <div className="flex items-center gap-3">
               <input
+                id="method-wallet"
                 type="radio"
                 name="pm"
                 value="wallet"
@@ -124,6 +139,7 @@ export function PaymentMethodModal({
                   className="overflow-hidden"
                 >
                   <input
+                    aria-label={p.walletPlaceholder}
                     type="tel"
                     placeholder={p.walletPlaceholder}
                     value={walletNumber}

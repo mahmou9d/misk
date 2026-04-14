@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://miskstores.com' // استبدله برابط موقعك الفعلي
+  const baseUrl = "https://miskstores.com"; // استبدله برابط موقعك الفعلي
   const locales = ['ar', 'en']
 
   // القائمة الأساسية للمسارات الثابتة في الموقع

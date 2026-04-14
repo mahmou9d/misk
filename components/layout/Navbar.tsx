@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -24,12 +24,13 @@ import {
 } from "@/public/svg/Svgs";
 import { useGetCategory, useGetPublicSettings } from "@/hooks/useDashboard";
 import { useQueryClient } from "@tanstack/react-query";
-import { useOrderHistory } from "@/hooks/usePayment";
+// import { useOrderHistory } from "@/hooks/usePayment";
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 const Logo = ({ locale }: { locale: string }) => (
   <Link
     href={`/${locale.toLowerCase()}`}
+    aria-label="Misk Stores Home"
     className="flex flex-col items-center select-none leading-none group"
   >
     <span
@@ -60,11 +61,13 @@ function IconBtn({
   badge,
   onClick,
   title,
+  ariaLabel,
 }: {
   children: React.ReactNode;
   badge?: number;
   onClick?: () => void;
   title?: string;
+  ariaLabel?: string;
 }) {
   return (
     <button
@@ -127,7 +130,7 @@ function UserActions({ locale }: { locale: string }) {
   const handleDashboardClick = () => {
     queryClient.clear();
   };
-// console.log(isAdmin)
+  // console.log(isAdmin)
   return (
     <div className="flex items-center gap-[12px]">
       {isAdmin && (
@@ -145,10 +148,13 @@ function UserActions({ locale }: { locale: string }) {
           <span className="block xl:hidden w-1 h-8 [background:linear-gradient(180deg,transparent,rgba(201,168,76,0.3),transparent)]" />
         </>
       )}
-      <IconBtn onClick={() => {
-        logout()
-        
-        }} title={t.navbar.signOut}>
+      <IconBtn
+        ariaLabel={t.navbar.signOut}
+        onClick={() => {
+          logout();
+        }}
+        title={t.navbar.signOut}
+      >
         <LogoutIcon />
       </IconBtn>
     </div>
@@ -163,7 +169,7 @@ function LangSwitcher() {
   const [enRef, setEnRef] = useState<HTMLSpanElement | null>(null);
   const [thumbStyle, setThumbStyle] = useState<React.CSSProperties>({});
   const [loading, setLoading] = useState(false);
-const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const switchLang = () => {
     if (loading) return;
     setLoading(true);
@@ -285,7 +291,7 @@ const EASE: [number, number, number, number] = [0.32, 0.132, 0, 1];
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
-  
+
   const { t, isArabic, locale, dir } = useTranslation();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [catsOpen, setCatsOpen] = useState(false);
@@ -294,61 +300,69 @@ export default function Navbar() {
   const { data: cartData } = useGetCartItems();
   const { data: categories } = useGetCategory();
   const { data } = useGetPublicSettings();
-const { isAuthenticated} = useAuth();
-  const cartCount = cartData?.reduce(
-    (acc, item) => acc + Number(item?.quantity),
-    0,
+  const { isAuthenticated } = useAuth();
+
+  const cartCount = useMemo(
+    () => cartData?.reduce((acc, item) => acc + Number(item?.quantity), 0),
+    [cartData],
   );
 
   const cleanPath = pathname.replace(/^\/(ar|en)/, "") || "/";
-  const closeAll = () => {
+  const closeAll = useCallback(() => {
     setDrawerOpen(false);
     setCatsOpen(false);
-  };
-  const handleSearchClick = () =>
-    router.push(`/${locale.toLowerCase()}/search`);
+  }, []);
 
-  const links = [
-    {
-      label: t.navbar.home,
-      href: `/${locale.toLowerCase()}`,
-      active: cleanPath === `/${locale.toLowerCase()}`,
-      dropdown: false,
-    },
-    { label: t.navbar.categories, href: "", active: false, dropdown: true },
-    {
-      label: t.navbar.orderhistory,
-      href: `/${locale.toLowerCase()}/orderhistory`,
-      active: cleanPath === `/${locale.toLowerCase()}/orderhistory`,
-      dropdown: false,
-    },
-    {
-      label: t.navbar.returnPolicy,
-      href: `/${locale.toLowerCase()}/pages/return-policy`,
-      active: cleanPath === `/${locale.toLowerCase()}/pages/return-policy`,
-      dropdown: false,
-    },
+  const handleSearchClick = useCallback(
+    () => router.push(`/${locale.toLowerCase()}/search`),
+    [router, locale],
+  );
 
-    {
-      label: t.navbar.businesshourslocation,
-      href: `/${locale.toLowerCase()}/businesshourslocation`,
-      active: cleanPath === `/${locale.toLowerCase()}`,
-      dropdown: false,
-    },
-  ];
-useEffect(() => {
-  if (drawerOpen) {
-    document.body.style.overflow = "hidden";
-    document.body.style.overscrollBehavior = "none";
-  } else {
-    document.body.style.overflow = "";
-    document.body.style.overscrollBehavior = "";
-  }
-  return () => {
-    document.body.style.overflow = "";
-    document.body.style.overscrollBehavior = "";
-  };
-}, [drawerOpen]);
+  const links = useMemo(
+    () => [
+      {
+        label: t.navbar.home,
+        href: `/${locale.toLowerCase()}`,
+        active: cleanPath === `/${locale.toLowerCase()}`,
+        dropdown: false,
+      },
+      { label: t.navbar.categories, href: "", active: false, dropdown: true },
+      {
+        label: t.navbar.orderhistory,
+        href: `/${locale.toLowerCase()}/orderhistory`,
+        active: cleanPath === `/${locale.toLowerCase()}/orderhistory`,
+        dropdown: false,
+      },
+      {
+        label: t.navbar.returnPolicy,
+        href: `/${locale.toLowerCase()}/pages/return-policy`,
+        active: cleanPath === `/${locale.toLowerCase()}/pages/return-policy`,
+        dropdown: false,
+      },
+
+      {
+        label: t.navbar.businesshourslocation,
+        href: `/${locale.toLowerCase()}/businesshourslocation`,
+        active: cleanPath === `/${locale.toLowerCase()}`,
+        dropdown: false,
+      },
+    ],
+    [t, locale, cleanPath],
+  );
+
+  useEffect(() => {
+    if (drawerOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.overscrollBehavior = "none";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.overscrollBehavior = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.overscrollBehavior = "";
+    };
+  }, [drawerOpen]);
   return (
     <>
       {/* ── Header ── */}
@@ -360,6 +374,8 @@ useEffect(() => {
           <div className="flex items-center justify-between h-full w-full">
             {/* Hamburger */}
             <button
+              aria-label="Toggle Menu"
+              aria-expanded={drawerOpen}
               className="xl:hidden text-gray-500 hover:text-[var(--purple-deep)] transition-colors flex-shrink-0 p-1 me-3"
               onClick={() => {
                 setDrawerOpen((v) => !v);
@@ -385,6 +401,8 @@ useEffect(() => {
                     onMouseLeave={() => setDdOpen(false)}
                   >
                     <button
+                      aria-haspopup="true"
+                      aria-expanded={ddOpen}
                       className={`flex text-[16px] items-center px-4 py-2 whitespace-nowrap transition-colors duration-200 relative after:content-[''] after:absolute after:bottom-[2px] after:left-4 after:right-3 after:h-[2.5px] after:bg-[linear-gradient(90deg,var(--purple-deep),rgba(201,168,76,0.6))] after:scale-x-0 after:origin-${isArabic ? "right" : "left"} after:transition-transform after:duration-300 hover:after:scale-x-100 bg-transparent border-0 cursor-pointer text-[length:16px] font-normal [letter-spacing:0.3px] hover:after:scale-x-100 active:after:scale-x-100 hover:!text-[var(--purple-deep)]`}
                       style={{ color: ddOpen ? "var(--purple-deep)" : "#555" }}
                     >
@@ -467,6 +485,7 @@ useEffect(() => {
 
               <button
                 onClick={() => setCartOpen(true)}
+                aria-label="View Shopping Cart"
                 className="hidden xl:block  relative p-2.5 transition hover:text-[var(--purple-deep)] hover:bg-[rgba(201,168,76,0.08)] hover:rounded-full transition-all duration-200 text-[#666]"
               >
                 <BagIcon />
@@ -516,6 +535,7 @@ useEffect(() => {
                     >
                       {l.dropdown ? (
                         <button
+                          aria-label={`Show ${l.label} sub-menu`}
                           onClick={() => setCatsOpen(true)}
                           className="w-full flex items-center justify-between text-gray-800 hover:bg-gray-50 transition-colors h-14 px-5 border-b border-black/5 text-[length:15px] font-normal "
                         >
@@ -557,6 +577,7 @@ useEffect(() => {
 
                   {/* Back row */}
                   <div
+                    role="button"
                     className="flex items-center gap-3 shrink-0 cursor-pointer hover:bg-gray-50 transition-colors h-14 px-5 border-b border-black/5"
                     onClick={() => setCatsOpen(false)}
                   >
@@ -600,10 +621,11 @@ useEffect(() => {
           {/* Search */}
           <button
             onClick={handleSearchClick}
+            aria-label={t.navbar.search}
             className="flex flex-col items-center gap-1 flex-1 py-2 text-[#888] hover:text-[var(--purple-deep)] transition-colors"
           >
             <SearchIcon />
-            <span className="text-[10px] font-medium">{t.navbar.search}</span>
+            {/* <span className="text-[10px] font-medium">{t.navbar.search}</span> */}
           </button>
 
           {/* Divider */}
@@ -612,6 +634,7 @@ useEffect(() => {
           {/* Cart */}
           <button
             onClick={() => setCartOpen(true)}
+            aria-label="View Cart"
             className="flex flex-col items-center gap-1 flex-1 py-2 text-[#888] hover:text-[var(--purple-deep)] transition-colors"
           >
             <span className="relative">
@@ -622,9 +645,9 @@ useEffect(() => {
                 </span>
               )}
             </span>
-            <span className="text-[10px] font-medium">
+            {/* <span className="text-[10px] font-medium">
               {isArabic ? "السلة" : "Cart"}
-            </span>
+            </span> */}
           </button>
 
           {/* Divider */}

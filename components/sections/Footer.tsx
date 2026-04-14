@@ -147,9 +147,7 @@ const [hovered, setHovered] = useState(null);
       {/* Main content */}
       <div className="max-w-screen-xl mx-auto flex flex-col items-center text-center px-10 pt-[60px] ">
         {/* Logo Section */}
-        <div
-          className="mb-4"
-        >
+        <div className="mb-4">
           <span className="text-[28px] font-bold -[8px] bg-[linear-gradient(135deg,#c9a84c_0%,#f0d080_50%,#b8912e_100%)] bg-clip-text text-transparent drop-shadow-[0_1px_6px_rgba(201,168,76,0.2)]">
             Misk
           </span>
@@ -167,9 +165,7 @@ const [hovered, setHovered] = useState(null);
         {/* Navigation Links */}
         <nav className="flex flex-wrap justify-center gap-x-6 mb-4">
           {quickLinks.map((l, i) => (
-            <div
-              key={l.label}
-            >
+            <div key={l.label}>
               <Link
                 href={l.href}
                 className="group relative inline-block text-[14px] text-[#666] no-underline"
@@ -185,22 +181,22 @@ const [hovered, setHovered] = useState(null);
           ))}
         </nav>
       </div>
-<div className="flex justify-center items-center gap-5 py-4">
-      {icons.map(({ Icon, href, label }) => (
-        <Link
-          key={label}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            color: hovered === label ? "#6b7280" : "#000",
-            transition: "color 0.2s",
-          }}
-        >
-          <Icon />
-        </Link>
-      ))}
-    </div>
+      <div className="flex justify-center items-center gap-5 py-4">
+        {icons.map(({ Icon, href, label }) => (
+          <Link
+            key={label}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: hovered === label ? "#6b7280" : "#000",
+              transition: "color 0.2s",
+            }}
+          >
+            <Icon />
+          </Link>
+        ))}
+      </div>
       {/* Bottom Bar: Copyright + Payment Icons */}
       <div className="border-t border-[rgba(201,168,76,0.12)] max-w-screen-xl mx-auto px-6 py-3 flex flex-col items-center justify-between gap-3">
         {/* Payment Icons */}
@@ -213,6 +209,7 @@ const [hovered, setHovered] = useState(null);
               width={20}
               height={20}
               title={method.name}
+              loading="lazy"
               className="h-5 w-auto object-contain max-w-[44px]"
             />
           ))}

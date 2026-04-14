@@ -336,9 +336,10 @@ function ProductCard({
                   {vThumb && (
                     <Image
                       src={vThumb.url || String(vThumb)}
-                      alt=""
+                      alt={"variant image"}
                       width={20}
                       height={20}
+                      loading="lazy"
                       className="w-5 h-5 rounded object-cover"
                     />
                   )}
