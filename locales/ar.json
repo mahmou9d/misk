@@ -526,7 +526,9 @@
       "img": "صورة",
       "delete": "حذف",
       "selectVariant": "اختر عنصراً",
-      "editSelected": "تعديل المحدد"
+      "editSelected": "تعديل المحدد",
+      "noVariants": "لا توجد عناصر متاحة لهذا المنتج حالياً.",
+      "variantDeleted": "تم حذف العنصر بنجاح."
     },
     "errors": {
       "nameAndCategoryRequired": "الاسم والفئة مطلوبان."

@@ -11,11 +11,11 @@ import Notification from "@/components/layout/Notification";
 import { GoogleLogin } from "@react-oauth/google";
 import { useShowNotification } from "@/utils/showNotification";
 import { AxiosError } from "axios";
-import { ErrorResponse, LoginFormData, NotificationState } from "@/type/type";
+import { ErrorResponse, NotificationState } from "@/type/type";
 import { useHandleGoogleSuccess } from "@/utils/handleGoogleSuccess";
 import { useCartMerge } from "@/hooks/useCart";
 import { EyeClosed, EyeOpen } from "@/public/svg/Svgs";
-import { loginSchema } from "@/utils/validation";
+import { getLoginSchema } from "@/utils/validation";
 import { useTranslation } from "@/lib/Usetranslation";
 
 export default function LoginPage() {
@@ -34,15 +34,15 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+  } = useForm({
+    resolver: zodResolver(getLoginSchema(locale.toLowerCase())),
     defaultValues: { email: "", password: "" },
   });
 
   const showNotification = useShowNotification(setNotification);
   const handleGoogleSuccess = useHandleGoogleSuccess(showNotification);
 
-  const onSubmit = async (data: LoginFormData): Promise<void> => {
+  const onSubmit = async (data: { email: string; password: string }): Promise<void> => {
     login(
       { email: data.email, password: data.password },
       {
@@ -91,7 +91,7 @@ export default function LoginPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative z-10 w-full max-w-[420px] px-8 py-16"
+        className="relative z-10 w-full max-w-[420px] px-8 py-12"
       >
         {/* برواز ذهبي جانبي صغير جداً */}
         <div
@@ -112,16 +112,16 @@ export default function LoginPage() {
           </p>
         </header>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="relative">
             <input
               type="email"
               {...register("email")}
               placeholder={t.login.emailPlaceholder}
-              className={`w-full bg-white border-b-2 border-black focus:border-black px-5  py-2 rounded-2xl text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
+              className={`w-full bg-white border-b-2 border-black focus:border-black px-5  py-2 rounded-xl text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
             />
             {errors.email && (
-              <p className="absolute -bottom-5 text-[10px] font-bold text-red-500 uppercase -wider">
+              <p className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider">
                 {errors.email.message}
               </p>
             )}
@@ -133,7 +133,7 @@ export default function LoginPage() {
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
                 placeholder={t.login.passwordPlaceholder}
-                className={`w-full bg-white border-b-2 border-black focus:border-black px-5  py-2 rounded-2xl text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
+                className={`w-full bg-white border-b-2 border-black focus:border-black px-5  py-2 rounded-xl text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
               />
               <button
                 type="button"
@@ -144,8 +144,8 @@ export default function LoginPage() {
               </button>
             </div>
             {errors.password && (
-              <p className="absolute -bottom-5 text-[10px] font-bold text-red-500 uppercase -wider">
-                {errors.password.message}
+              <p className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider">
+                {errors.password.message as string}
               </p>
             )}
           </div>
@@ -163,7 +163,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoginPending}
-              className="group relative w-full rounded-2xl h-[54px] bg-black text-white text-[11px] font-bold uppercase -[3px] transition-all overflow-hidden"
+              className="group relative w-full rounded-xl h-[54px] bg-black text-white text-[16px] font-bold uppercase -[3px] transition-all overflow-hidden"
             >
               <span className="relative z-10">
                 {isLoginPending ? t.login.signingIn : t.login.signIn}
@@ -185,7 +185,7 @@ export default function LoginPage() {
           </div>
         </form>
 
-        <footer className="mt-16 pt-8 border-t border-black/5">
+        <footer className="mt-4 pt-8 border-t border-black/5">
           <p className="text-[12px] text-black font-medium">
             {t.login.noAccount}{" "}
             <Link
@@ -196,16 +196,16 @@ export default function LoginPage() {
             </Link>
           </p>
 
-          <div className="mt-12 flex gap-8 opacity-40">
+          <div className="mt-3 flex gap-8 opacity-40">
             <Link
               href={`/${locale.toLowerCase()}/policies/privacy-policy`}
-              className="text-[8px] font-black uppercase -[2px] text-black"
+              className="text-[13px] font-black uppercase -[2px] text-black"
             >
               {t.login.privacyPolicy}
             </Link>
             <Link
               href={`/${locale.toLowerCase()}/policies/terms-of-service`}
-              className="text-[8px] font-black uppercase -[2px] text-black"
+              className="text-[13px] font-black uppercase -[2px] text-black"
             >
               {t.login.terms}
             </Link>

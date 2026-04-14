@@ -8,7 +8,7 @@ import * as z from "zod";
 import { useRouter, useSearchParams } from "next/navigation";
 import { usePasswordResetConfirm } from "@/hooks/useAuth";
 import Notification from "@/components/layout/Notification";
-import { resetPasswordSchema } from "@/utils/validation";
+import { getResetPasswordSchema } from "@/utils/validation";
 import { ErrorResponse, NotificationState } from "@/type/type";
 import { useShowNotification } from "@/utils/showNotification";
 import { AxiosError } from "axios";
@@ -17,7 +17,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { EyeClosed, EyeOpen } from "@/public/svg/Svgs";
 import { useTranslation } from "@/lib/Usetranslation";
 
-type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
+type ResetPasswordFormData = any;
 
 const ArrowRightIcon = () => (
   <svg
@@ -299,7 +299,7 @@ const ResetPasswordContent = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<ResetPasswordFormData>({
-    resolver: zodResolver(resetPasswordSchema),
+    resolver: zodResolver(getResetPasswordSchema(locale)),
     defaultValues: { password: "", confirmPassword: "" },
   });
 
@@ -443,7 +443,7 @@ const ResetPasswordContent = () => {
                 t?.resetPassword?.newPasswordPlaceholder ?? "New password"
               }
               register={register("password")}
-              error={errors.password?.message}
+              error={errors.password?.message as string}
               isArabic={isArabic}
             />
 
@@ -454,7 +454,7 @@ const ResetPasswordContent = () => {
                   "Confirm new password"
                 }
                 register={register("confirmPassword")}
-                error={errors.confirmPassword?.message}
+                error={errors.confirmPassword?.message as string}
                 isArabic={isArabic}
               />
             </div>

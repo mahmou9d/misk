@@ -171,7 +171,7 @@ function Modal({
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 transition-colors text-gray-400 hover:text-white text-lg leading-none cursor-pointer border-none flex-shrink-0"
           >
-            <X/>
+            <X />
           </button>
         </div>
         <div className="overflow-y-auto px-6 py-5 flex-1">{children}</div>
@@ -476,10 +476,10 @@ export default function ProductsPage() {
     setCf,
     setEf,
   } = useProductPage({
-      page,
-      search: debouncedSearch,
-      category: selectedCategories.join(",") || undefined,
-    });
+    page,
+    search: debouncedSearch,
+    category: selectedCategories.join(",") || undefined,
+  });
 
   const C_STEP_LBL: Record<string, string> = {
     idle: p.steps.create.idle,
@@ -644,7 +644,7 @@ export default function ProductsPage() {
                 onClick={() => setSearchTerm("")}
                 className={`absolute inset-y-0 ${isArabic ? "left-3" : "right-3"} flex items-center text-gray-500 hover:text-gray-300`}
               >
-                <X/>
+                <X />
               </button>
             )}
           </div>
@@ -823,7 +823,7 @@ export default function ProductsPage() {
                         }
                         className="text-gray-400 text-[10px] hover:text-white leading-none"
                       >
-                  <X/>
+                        <X />
                       </button>
                     </span>
                   ))}
@@ -1051,7 +1051,7 @@ export default function ProductsPage() {
                         }
                         className="text-gray-400 hover:text-white leading-none"
                       >
-                        <X/>
+                        <X />
                       </button>
                     </span>
                   ))}
@@ -1274,7 +1274,9 @@ export default function ProductsPage() {
                 ◻
               </div>
               <p className="text-gray-400 text-[16px]">
-                {isArabic ? "لا توجد عناصر متاحة لهذا المنتج حالياً." : "No variants available for this product yet."}
+                {isArabic
+                  ? "لا يوجد متغيرات لهذا المنتج حتى الآن."
+                  : "No variants available for this product yet."}
               </p>
               <button
                 onClick={() => {
@@ -1354,7 +1356,7 @@ export default function ProductsPage() {
               </div>
               {confirmDeleteVid !== null && (
                 <ConfirmDelete
-                  label={`variant #${confirmDeleteVid}`}
+                  label={`${isArabic ? "العنصر رقم" : "variant #"} ${confirmDeleteVid}`}
                   busy={deletingVariant}
                   onConfirm={() => handleDeleteVariant(confirmDeleteVid!)}
                   onCancel={() => setConfirmDeleteVid(null)}

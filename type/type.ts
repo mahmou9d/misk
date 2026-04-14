@@ -1,4 +1,4 @@
-import { checkoutSchema, loginSchema } from "@/utils/validation";
+// import { checkoutSchema, loginSchema } from "@/utils/validation";
 import * as z from "zod";
 
 export interface LoginRequest {
@@ -467,9 +467,9 @@ export type Volume = {
   thumbnailIndex: number;
 };
 
-export type LoginFormData = z.infer<typeof loginSchema>;
+// export type LoginFormData = z.infer<typeof loginSchema>;
 
-export type CheckoutFormValues = z.infer<typeof checkoutSchema>;
+// export type CheckoutFormValues = z.infer<typeof checkoutSchema>;
 export interface FieldProps {
   label: string;
   error?: string;

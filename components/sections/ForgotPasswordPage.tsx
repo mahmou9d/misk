@@ -7,14 +7,14 @@ import * as z from "zod";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePasswordReset } from "@/hooks/useAuth";
-import { forgotPasswordSchema } from "@/utils/validation";
+import { getForgotPasswordSchema } from "@/utils/validation";
 import { ErrorResponse, NotificationState } from "@/type/type";
 import { useShowNotification } from "@/utils/showNotification";
 import Notification from "@/components/layout/Notification";
 import { AxiosError } from "axios";
 import { useTranslation } from "@/lib/Usetranslation";
 
-type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
+type ForgotPasswordFormData = { email: string };
 
 const CheckIcon = () => (
   <svg
@@ -79,7 +79,7 @@ export default function ForgotPasswordPage() {
     handleSubmit,
     formState: { errors },
   } = useForm<ForgotPasswordFormData>({
-    resolver: zodResolver(forgotPasswordSchema),
+    resolver: zodResolver(getForgotPasswordSchema(locale.toLowerCase())),
     defaultValues: { email: "" },
   });
 

@@ -34,7 +34,12 @@ export const useHandleGoogleSuccess = (
                   router.refresh();
                 }, 1500);
               } else {
-                showNotification("Failed to save login session", "error");
+                showNotification(
+                  locale.toLowerCase() === "en"
+                    ? "Failed to save login session"
+                    : "فشل في حفظ جلسة تسجيل الدخول",
+                  "error",
+                );
               }
             } catch (errorData: unknown) {
               const error = errorData as AxiosError<ErrorResponse>;
@@ -50,7 +55,7 @@ export const useHandleGoogleSuccess = (
             showNotification(
               error?.response?.data?.message ||
                 error?.message ||
-              `${locale.toLowerCase() === "en" ? "Google login failed. Please try again." : "فشل تسجيل الدخول بواسطة جوجل. يرجى المحاولة مرة أخرى."}`,
+                `${locale.toLowerCase() === "en" ? "Google login failed. Please try again." : "فشل تسجيل الدخول بواسطة جوجل. يرجى المحاولة مرة أخرى."}`,
               "error",
             );
           },

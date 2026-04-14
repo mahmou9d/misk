@@ -1,69 +1,139 @@
 import * as z from "zod";
 
-export const signupSchema = z
-  .object({
-    full_name: z
-      .string()
-      .min(2, "Name must be at least 2 characters")
-      .max(50, "Name is too long"),
+export const getSignupSchema = (locale: string) => {
+  const isAr = locale === "ar";
+  return z
+    .object({
+      full_name: z
+        .string()
+        .min(
+          2,
+          isAr
+            ? "يجب أن يكون الاسم حرفين على الأقل"
+            : "Name must be at least 2 characters",
+        )
+        .max(50, isAr ? "الاسم طويل جداً" : "Name is too long"),
+      email: z
+        .string()
+        .email(isAr ? "البريد الإلكتروني غير صالح" : "Invalid email address")
+        .min(1, isAr ? "البريد الإلكتروني مطلوب" : "Email is required"),
+      password1: z
+        .string()
+        .min(
+          8,
+          isAr
+            ? "يجب أن تكون كلمة المرور 8 أحرف على الأقل"
+            : "Password must be at least 8 characters",
+        )
+        .regex(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+          isAr
+            ? "يجب أن تحتوي كلمة المرور على أحرف كبيرة وصغيرة وأرقام"
+            : "Password must contain uppercase, lowercase, and numbers",
+        ),
+      password2: z
+        .string()
+        .min(
+          1,
+          isAr ? "يرجى تأكيد كلمة المرور" : "Please confirm your password",
+        ),
+    })
+    .refine((data) => data.password1 === data.password2, {
+      message: isAr ? "كلمات المرور غير متطابقة" : "Passwords do not match",
+      path: ["password2"],
+    });
+};
+
+export const getLoginSchema = (locale: string) => {
+  const isAr = locale === "ar";
+  return z.object({
     email: z
       .string()
-      .email("Invalid email address")
-      .min(1, "Email is required"),
-    password1: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-        "Password must contain uppercase, lowercase, and number",
-      ),
-    password2: z.string().min(1, "Please confirm your password"),
-    acceptTerms: z.boolean().refine((val) => val === true, {
-      message: "You must accept the terms and conditions",
-    }),
-  })
-  .refine((data) => data.password1 === data.password2, {
-    message: "Passwords do not match",
-    path: ["password2"],
-  });
-
-export const loginSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  rememberMe: z.boolean().optional(),
-});
-
-export const resetPasswordSchema = z
-  .object({
+      .min(1, isAr ? "البريد الإلكتروني مطلوب" : "Email is required")
+      .email(isAr ? "البريد الإلكتروني غير صالح" : "Invalid email address"),
     password: z
       .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-        "Password must contain uppercase, lowercase, and number",
+      .min(
+        6,
+        isAr
+          ? "يجب أن تكون كلمة المرور 6 أحرف على الأقل"
+          : "Password must be at least 6 characters",
       ),
-    confirmPassword: z.string().min(1, "Please confirm your password"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
+    rememberMe: z.boolean().optional(),
   });
-export const forgotPasswordSchema = z.object({
-  email: z.string().email("Invalid email address").min(1, "Email is required"),
-});
+};
+
+export const getResetPasswordSchema = (locale: string) => {
+  const isAr = locale === "ar";
+  return z
+    .object({
+      password: z
+        .string()
+        .min(
+          8,
+          isAr
+            ? "يجب أن تكون كلمة المرور 8 أحرف على الأقل"
+            : "Password must be at least 8 characters",
+        )
+        .regex(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+          isAr
+            ? "يجب أن تحتوي كلمة المرور على أحرف كبيرة وصغيرة وأرقام"
+            : "Password must contain uppercase, lowercase, and numbers",
+        ),
+      confirmPassword: z
+        .string()
+        .min(
+          1,
+          isAr ? "يرجى تأكيد كلمة المرور" : "Please confirm your password",
+        ),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: isAr ? "كلمات المرور غير متطابقة" : "Passwords do not match",
+      path: ["confirmPassword"],
+    });
+};
+
+export const getForgotPasswordSchema = (locale: string) => {
+  const isAr = locale === "ar";
+  return z.object({
+    email: z
+      .string()
+      .email(isAr ? "البريد الإلكتروني غير صالح" : "Invalid email address")
+      .min(1, isAr ? "البريد الإلكتروني مطلوب" : "Email is required"),
+  });
+};
+
 // ── Schema ──────────────────────────────────────────────────────────────────
-export const checkoutSchema = z.object({
-  newsEmail: z.boolean().optional(),
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().min(1, "Email is required").email("Invalid email address"),
-  address: z.string().min(1, "Address is required"),
-  apt: z.string().optional(),
-  city: z.string().min(1, "City is required"),
-  governorate_id: z.string().min(1, "Governorate is required"),
-  postal: z.string().optional(),
-  phone: z.string().min(8, "Valid phone number is required"),
-  saveInfo: z.boolean().optional(),
-  payment_method: z.enum(["cod", "paymob"]),
-  billing: z.enum(["same", "different"]),
-});
+export const getCheckoutSchema = (locale: string) => {
+  const isAr = locale === "ar";
+  return z.object({
+    newsEmail: z.boolean().optional(),
+    firstName: z
+      .string()
+      .min(1, isAr ? "الاسم الأول مطلوب" : "First name is required"),
+    lastName: z
+      .string()
+      .min(1, isAr ? "اسم العائلة مطلوب" : "Last name is required"),
+    email: z
+      .string()
+      .min(1, isAr ? "البريد الإلكتروني مطلوب" : "Email is required")
+      .email(isAr ? "البريد الإلكتروني غير صالح" : "Invalid email address"),
+    address: z.string().min(1, isAr ? "العنوان مطلوب" : "Address is required"),
+    apt: z.string().optional(),
+    city: z.string().min(1, isAr ? "المدينة مطلوبة" : "City is required"),
+    governorate_id: z
+      .string()
+      .min(1, isAr ? "المحافظة مطلوبة" : "Governorate is required"),
+    postal: z.string().optional(),
+    phone: z
+      .string()
+      .min(
+        8,
+        isAr ? "يرجى إدخال رقم هاتف صالح" : "Please enter a valid phone number",
+      ),
+    saveInfo: z.boolean().optional(),
+    payment_method: z.enum(["cod", "paymob"]),
+    billing: z.enum(["same", "different"]),
+  });
+};

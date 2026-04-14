@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -17,20 +18,14 @@ import { ErrorResponse, NotificationState } from "@/type/type";
 import { useCartMerge } from "@/hooks/useCart";
 import { useTranslation } from "@/lib/Usetranslation";
 import { EyeClosed, EyeOpen } from "@/public/svg/Svgs";
+import { getSignupSchema } from "@/utils/validation";
 
-const registerSchema = z
-  .object({
-    first_name: z.string().min(1, "Full name is required"),
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    password2: z.string().min(1, "Please confirm your password"),
-  })
-  .refine((data) => data.password === data.password2, {
-    message: "Passwords do not match",
-    path: ["password2"],
-  });
-
-type RegisterFormData = z.infer<typeof registerSchema>;
+type RegisterFormData = {
+  full_name: string;
+  email: string;
+  password1: string;
+  password2: string;
+};
 
 export default function RegisterPage() {
   const { t, isArabic, dir, locale } = useTranslation();
@@ -50,8 +45,8 @@ export default function RegisterPage() {
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: { first_name: "", email: "", password: "", password2: "" },
+    resolver: zodResolver(getSignupSchema(locale.toLowerCase())),
+    defaultValues: { full_name: "", email: "", password1: "", password2: "" },
   });
 
   const showNotification = useShowNotification(setNotification);
@@ -60,16 +55,16 @@ export default function RegisterPage() {
   const onSubmit = (data: RegisterFormData) => {
     signupMutation.mutate(
       {
-        full_name: data.first_name,
+        full_name: data.full_name,
         email: data.email,
-        password1: data.password,
+        password1: data.password1,
         password2: data.password2,
       },
       {
         onSuccess: () => {
           const deviceId = localStorage.getItem("X-Device-ID");
           if (deviceId) mergeCart.mutate(deviceId);
-          loginMutation.mutate({ email: data.email, password: data.password });
+          loginMutation.mutate({ email: data.email, password: data.password1 });
           showNotification(t.register.success, "success");
           setTimeout(() => router.push(`/${locale.toLowerCase()}`), 1000);
         },
@@ -111,7 +106,7 @@ export default function RegisterPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative z-10 w-full max-w-[420px] px-8 py-16"
+        className="relative z-10 w-full max-w-[420px] px-8 py-12"
       >
         {/* برواز ذهبي جانبي */}
         <div
@@ -132,18 +127,18 @@ export default function RegisterPage() {
           </p>
         </header>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Full Name */}
           <div className="relative">
             <input
               type="text"
-              {...register("first_name")}
+              {...register("full_name")}
               placeholder={t.register.fullName}
-              className={`w-full bg-white rounded-2xl border-b-2 border-black focus:border-black px-5 py-2 text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
+              className={`w-full bg-white rounded-xl border-b-2 border-black focus:border-black px-5 py-2 text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
             />
-            {errors.first_name && (
-              <p className="absolute -bottom-5 text-[10px] font-bold text-red-500 uppercase -wider">
-                {errors.first_name.message}
+            {errors.full_name && (
+              <p className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider">
+                {errors.full_name.message as string}
               </p>
             )}
           </div>
@@ -154,11 +149,11 @@ export default function RegisterPage() {
               type="email"
               {...register("email")}
               placeholder={t.register.email}
-              className={`w-full bg-white rounded-2xl border-b-2 border-black focus:border-black px-5 py-2 text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
+              className={`w-full bg-white rounded-xl border-b-2 border-black focus:border-black px-5 py-2 text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
             />
             {errors.email && (
-              <p className="absolute -bottom-5 text-[10px] font-bold text-red-500 uppercase -wider">
-                {errors.email.message}
+              <p className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider">
+                {errors.email.message as string}
               </p>
             )}
           </div>
@@ -168,9 +163,9 @@ export default function RegisterPage() {
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                {...register("password")}
+                {...register("password1")}
                 placeholder={t.register.password}
-                className={`w-full bg-white rounded-2xl px-5 border-b-2 border-black focus:border-black py-2 text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
+                className={`w-full bg-white rounded-xl px-5 border-b-2 border-black focus:border-black py-2 text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
               />
               <button
                 type="button"
@@ -180,9 +175,9 @@ export default function RegisterPage() {
                 {showPassword ? <EyeOpen /> : <EyeClosed />}
               </button>
             </div>
-            {errors.password && (
-              <p className="absolute -bottom-5 text-[10px] font-bold text-red-500 uppercase -wider">
-                {errors.password.message}
+            {errors.password1 && (
+              <p className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider">
+                {errors.password1.message as string}
               </p>
             )}
           </div>
@@ -194,7 +189,7 @@ export default function RegisterPage() {
                 type={showPassword2 ? "text" : "password"}
                 {...register("password2")}
                 placeholder={t.register.confirmPassword}
-                className={`w-full bg-white rounded-2xl px-5 border-b-2 border-black focus:border-black py-2 text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
+                className={`w-full bg-white rounded-xl px-5 border-b-2 border-black focus:border-black py-2 text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
               />
               <button
                 type="button"
@@ -205,8 +200,8 @@ export default function RegisterPage() {
               </button>
             </div>
             {errors.password2 && (
-              <p className="absolute -bottom-5 text-[10px] font-bold text-red-500 uppercase -wider">
-                {errors.password2.message}
+              <p className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider">
+                {errors.password2.message as string}
               </p>
             )}
           </div>
@@ -215,7 +210,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full rounded-2xl h-[54px] bg-black text-white text-[11px] font-bold uppercase -[3px] transition-all overflow-hidden"
+              className="group relative w-full rounded-xl h-[54px] bg-black text-white text-[16px] font-bold uppercase -[3px] transition-all overflow-hidden"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
                 {isLoading ? t.register.creating : t.register.createAccount}
@@ -239,7 +234,7 @@ export default function RegisterPage() {
           </div>
         </form>
 
-        <footer className="mt-16 pt-8 border-t border-black/5">
+        <footer className="mt-4 pt-8 border-t border-black/5">
           <p className="text-[12px] text-black font-medium">
             {t.register.haveAccount}{" "}
             <Link
@@ -250,16 +245,16 @@ export default function RegisterPage() {
             </Link>
           </p>
 
-          <div className="mt-12 flex gap-8 opacity-40">
+          <div className="mt-3 flex gap-8 opacity-40">
             <Link
               href={`/${locale.toLowerCase()}/policies/privacy-policy`}
-              className="text-[8px] font-black uppercase -[2px] text-black"
+              className="text-[13px] font-black uppercase -[2px] text-black"
             >
               {t.login.privacyPolicy}
             </Link>
             <Link
               href={`/${locale.toLowerCase()}/policies/terms-of-service`}
-              className="text-[8px] font-black uppercase -[2px] text-black"
+              className="text-[13px] font-black uppercase -[2px] text-black"
             >
               {t.login.terms}
             </Link>
