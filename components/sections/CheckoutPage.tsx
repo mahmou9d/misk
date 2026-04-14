@@ -8,7 +8,6 @@ import Image from "next/image";
 import { useGetCartItems } from "@/hooks/useCart";
 import { usePlaceOrder, usePaymentPaymob } from "@/hooks/usePayment";
 import {
-  CheckoutFormValues,
   ErrorResponse,
   NotificationState,
 } from "@/type/type";
@@ -17,6 +16,18 @@ import Notification from "@/components/layout/Notification";
 import { PaymentMethodModal } from "@/components/layout/Paymentmethodmodal";
 import { CheckoutForm } from "@/components/layout/Checkoutform";
 import { useTranslation } from "@/lib/Usetranslation";
+
+type CheckoutFormData = {
+  firstName: string;
+  lastName: string;
+  address: string;
+  apt: string;
+  email: string;
+  phone: string;
+  payment_method: string;
+  governorate_id: string;
+};
+
 
 export default function CheckoutPage() {
   const { t, isArabic, dir, locale } = useTranslation();
@@ -43,7 +54,7 @@ export default function CheckoutPage() {
   const discountAmt = discountApplied ? Math.round(subtotal * 0.1) : 0;
   const total = subtotal + shippingFee - discountAmt;
 
-  const handleSubmit = async (values: CheckoutFormValues) => {
+  const handleSubmit = async (values: CheckoutFormData) => {
     setLoading(true);
     try {
       const result = await placeOrder({
