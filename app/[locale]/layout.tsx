@@ -19,7 +19,7 @@ import {
 const locales = ["en", "ar"] as const;
 type Locale = (typeof locales)[number];
 
-const BASE_URL = "https://perfume-site-bee1.vercel.app";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://miskstores.com";
 
 // ─── Fonts ────────────────────────────────────────────────────────────────────
 const roboto = Roboto({
@@ -50,14 +50,14 @@ const fontAr = Amiri({
 // ─── Translations ─────────────────────────────────────────────────────────────
 const translations = {
   en: {
-    title: "Misk Fragrances | Luxury Extrait De Parfum — Egypt",
+    title: "Misk Fragrances | The Art of Scents — Egypt",
     description:
-      "Discover Misk's exclusive collection of Extrait De Parfum. 30–35% concentration, 8–14 hours longevity. Free shipping on orders over 2,000 EGP. Shop men's & women's fragrances.",
+      "A curated collection of exceptional fragrances. Crafted for those who appreciate the extraordinary. Complimentary shipping on orders above 1,000 EGP.",
   },
   ar: {
-    title: "مسك للعطور | عطور Extrait De Parfum الفاخرة — مصر",
+    title: "مسك للعطور | فن ابتكار العطر — مصر",
     description:
-      "اكتشف كولكشن مسك الحصري من عطور Extrait De Parfum بتركيز ٣٠–٣٥٪ وثبات ٨–١٤ ساعة. شحن مجاني للطلبات فوق ٢٠٠٠ جنيه. عطور رجالية ونسائية.",
+      "مجموعة مختارة من العطور الاستثنائية. صُممت خصيصاً لمن يقدرون التميز. شحن مجاني للطلبات فوق 1000 ج.م.",
   },
 };
 
@@ -84,8 +84,8 @@ export async function generateMetadata({
 
     keywords: isArabic
       ? [
+          // الأساسيات
           "عطور فاخرة مصر",
-          "Extrait De Parfum",
           "عطور رجالية",
           "عطور نسائية",
           "متجر عطور اونلاين",
@@ -93,11 +93,39 @@ export async function generateMetadata({
           "شحن مجاني مصر",
           "كولكشن عطور",
           "مسك للعطور",
-          "عطور احترافية",
+          // الـ Niche والبراندنج
+          "عطور نيش فاخرة",
+          "زيوت عطرية مركزة",
+          "بدائل عطور عالمية",
+          "براند عطور مصري",
+          "عطور للجنسين",
+          "هدايا عطور فاخرة",
+          "عطور النخبة",
+          "روائح شرقية",
+          // الكلمات الدارجة (High Traffic)
+          "برفانات رجالي بريميوم",
+          "برفانات حريمي ماركة",
+          "أفضل عطور في مصر",
+          "برفانات ثباتها عالي",
+          // مناسبات ومواسم
+          "عطور شتوية ثقيلة",
+          "عطور صيفية منعشة",
+          "هدايا رجالية فاخرة",
+          "بوكسات عطور هدايا",
+          // تفاصيل تقنية للعطر
+          "عطور فواحة جداً",
+          "أفضل أنواع المسك",
+          "عطور فرنسية بلمسة شرقية",
+          "زيوت عطرية خام",
+          // كلمات الـ Brand Authority
+          "مسك ايجيبت",
+          "Misk Fragrances Egypt",
+          "عطور أصلية مصر",
+          "مجموعة مسك الحصرية",
         ]
       : [
+          // Core Keywords
           "luxury perfumes Egypt",
-          "Extrait De Parfum",
           "men's fragrances",
           "women's fragrances",
           "online perfume store Egypt",
@@ -105,7 +133,33 @@ export async function generateMetadata({
           "free shipping Egypt",
           "fragrance collection",
           "Misk Fragrances",
+          // Niche & Branding
           "premium perfumes",
+          "niche perfumery Egypt",
+          "oriental perfumes",
+          "unisex fragrances",
+          "luxury perfume oils",
+          "scent of Egypt",
+          "exclusive perfume blends",
+          "signature scents",
+          // Intent-based
+          "best perfumes for men",
+          "best perfumes for women",
+          "high-end fragrances Cairo",
+          "perfume gift sets",
+          "concentrated perfume",
+          "boutique fragrances",
+          "artisanal perfumes",
+          "Misk brand Egypt",
+          // Notes & Vibe
+          "oud and musk perfumes",
+          "floral woody fragrances",
+          "spicy oriental scents",
+          "fresh citrus perfumes",
+          "luxury scent boutique",
+          "premium cologne Egypt",
+          "niche fragrance house",
+          "long lasting scents",
         ],
 
     authors: [{ name: "Misk Fragrances", url: BASE_URL }],
@@ -135,8 +189,8 @@ export async function generateMetadata({
           width: 1200,
           height: 630,
           alt: isArabic
-            ? "مسك للعطور — عطور Extrait De Parfum الفاخرة"
-            : "Misk Fragrances — Luxury Extrait De Parfum",
+            ? "مسك للعطور — عطور الفاخرة"
+            : "Misk Fragrances — Luxury",
           type: "image/png",
         },
       ],
