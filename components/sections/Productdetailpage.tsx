@@ -648,7 +648,7 @@ export default function ProductDetailPage({ id }: { id: number }) {
   }
 
   const selectedPrice = selectedVariant?.price ?? null;
-  const comparePrice = selectedVariant?.compare_at_price ?? null;
+  const comparePrice = selectedVariant?.compare_at_price===selectedVariant?.price ? null : selectedVariant?.compare_at_price;
   const inStock = selectedVariant ? selectedVariant.stock > 0 : true;
   const variantImages = selectedVariant?.images as { url: string }[];
   const isAddingThisVariant = addingVariantId === selectedVariant?.id;
@@ -907,11 +907,11 @@ if (!product.variants || product.variants.length === 0) {
                     })}
                   </span>
                 )}
-                {discountPct && (
+                {/* {discountPct && (
                   <span className=" text-[16px] font-bold rounded-2xl px-2 py-[3px] bg-gradient-to-br from-[#1a0a3d] to-[#2a1060] text-[#f0d080] border border-[#c9a84c]/30">
                     -{discountPct}%
                   </span>
-                )}
+                )} */}
               </motion.div>
 
               {/* Variants */}

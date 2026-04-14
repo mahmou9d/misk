@@ -4,8 +4,7 @@ import axios from "axios";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ||
-  "https://guest-misk-production-8cba.up.railway.app/api";
-// https://guest-misk-production.up.railway.app/
+  "https://api.miskstores.com/api";
 export const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: {

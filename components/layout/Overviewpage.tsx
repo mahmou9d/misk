@@ -198,7 +198,7 @@ export default function OverviewPage() {
                   {steps.map((value, i) => (
                     <div key={i} className="flex items-center h-0">
                       <span className="whitespace-nowrap">
-                        {chartView === "sales" ? `$${value}` : value}
+                        {chartView === "sales" ? `${value}` : value}
                       </span>
                     </div>
                   ))}
@@ -270,13 +270,13 @@ export default function OverviewPage() {
                                     </p>
                                     <p className="text-xl font-bold text-[#fff] mb-0.5">
                                       {chartView === "sales"
-                                        ? `$${monthData.sales}`
+                                        ? `${monthData.sales}`
                                         : monthData.orders}
                                     </p>
                                     <p className="text-xs text-gray-500">
                                       {chartView === "sales"
                                         ? `${monthData.orders} ${a.orders}`
-                                        : `$${monthData.sales} ${a.revenue}`}
+                                        : `${monthData.sales} ${a.revenue}`}
                                     </p>
                                   </div>
                                   <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
@@ -318,14 +318,13 @@ export default function OverviewPage() {
                     </p>
                   </div>
                   <p className="text-[16px] md:text-2xl font-bold text-white">
-                    $
+                    
                     {salesData
                       .reduce((sum: number, d) => sum + d.sales, 0)
                       .toLocaleString()}
                   </p>
                 </div>
 
-              
                 <div className="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-white/30 transition-colors">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center">
@@ -336,10 +335,7 @@ export default function OverviewPage() {
                     </p>
                   </div>
                   <p className="text-[16px] md:text-2xl font-bold text-white">
-                    {salesData.reduce(
-                      (sum: number, d) => sum + d.orders,
-                      0,
-                    )}
+                    {salesData.reduce((sum: number, d) => sum + d.orders, 0)}
                   </p>
                 </div>
                 <div className="col-span-2 bg-white/5 rounded-xl p-4 border border-white/10 hover:border-white/30 transition-colors">
@@ -352,7 +348,7 @@ export default function OverviewPage() {
                     </p>
                   </div>
                   <p className="text-[16px] md:text-2xl font-bold text-white">
-                    $
+                    
                     {(() => {
                       const ts = salesData.reduce(
                         (sum: number, d) => sum + d.sales,

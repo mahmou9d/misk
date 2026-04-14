@@ -45,16 +45,7 @@ export const AdminHeader = ({ sidebarOpen, setSidebarOpen }: HeaderProps) => {
         </svg>
         Home
       </Link>
-      <div className="flex items-center gap-3">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="relative p-3 rounded-xl hover:bg-white/5"
-        >
-          <Bell className="w-5 h-5 text-gray-400" />
-          <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-[#f00] rounded-full ring-2 ring-[#1a1d29]" />
-        </motion.button>
-      </div>
+      <div className="flex items-center gap-3 hidden md:flex"/>
     </header>
   );
 };
