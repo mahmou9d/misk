@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useTranslation } from "@/lib/Usetranslation";
 import { CheckoutFormValues } from "@/type/type";
-import { checkoutSchema } from "@/utils/validation";
+import { getCheckoutSchema } from "@/utils/validation";
 import Image from "next/image";
 import { useGetShippingGovernorates } from "@/hooks/useDashboard";
 
@@ -92,7 +92,7 @@ function RadioCard({
             <span className="w-[11px] h-[11px] rounded-full bg-[#C9A84C]" />
           )}
         </span>
-        <span className="text-[14px] font-medium text-[#1a1a1a] w-[160px] md:w-full">
+        <span className="text-[14px] font-medium text-[#1a1a1a] flex-1">
           {label}
         </span>
       </div>
@@ -118,16 +118,23 @@ export function CheckoutForm({
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<CheckoutFormValues>({
-    resolver: zodResolver(checkoutSchema),
+    resolver: zodResolver(getCheckoutSchema(locale.toLowerCase())),
     defaultValues: {
-      governorate_id: governorates?.[0]?.id ?? "",
       payment_method: "cod",
       billing: "same",
-      email: "",
+      guest_email: "",
     },
   });
+
+  // ── اختيار أول محافظة تلقائياً عند تحميل البيانات ──
+  useEffect(() => {
+    if (governorates?.length && !watch("governorate_id")) {
+      setValue("governorate_id", String(governorates[0].id));
+    }
+  }, [governorates, setValue, watch]);
 
   const payment = watch("payment_method");
   const selectedGovId = watch("governorate_id");
@@ -147,7 +154,7 @@ export function CheckoutForm({
   const translatedErrors = {
     firstName: errors.firstName ? t.checkoutForm.errors.firstName : undefined,
     lastName: errors.lastName ? t.checkoutForm.errors.lastName : undefined,
-    email: errors.email ? t.checkoutForm.errors.email : undefined,
+    guest_email: errors.guest_email ? t.checkoutForm.errors.guest_email : undefined,
     address: errors.address ? t.checkoutForm.errors.address : undefined,
     city: errors.city ? t.checkoutForm.errors.city : undefined,
     governorate_id: errors.governorate_id
@@ -157,11 +164,12 @@ export function CheckoutForm({
   };
 
   return (
-    <motion.div
+    <motion.form
       className="flex flex-col gap-7"
       dir={dir}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
+      onSubmit={handleSubmit(onSubmit)}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
     >
       {/* ── Delivery ── */}
@@ -208,9 +216,9 @@ export function CheckoutForm({
           <Field
             label={t.checkoutForm.emailPlaceholder}
             placeholder="you@example.com"
-            error={translatedErrors.email}
+            error={translatedErrors.guest_email}
             type="email"
-            {...register("email")}
+            {...register("guest_email")}
           />
           <Field
             label={t.checkoutForm.apt}
@@ -218,7 +226,7 @@ export function CheckoutForm({
             {...register("apt")}
           />
 
-          <div className="grid grid-cols-3 gap-3.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <Field
               label={t.checkoutForm.city}
               placeholder="Cairo"
@@ -232,7 +240,7 @@ export function CheckoutForm({
               </label>
               <select
                 {...register("governorate_id")}
-                className="h-[52px] w-[140px] px-4 text-[14px] text-[#1a1a1a] bg-white rounded-[10px] border-2 border-[#DDD8CC] outline-none appearance-none cursor-pointer focus:border-[#C9A84C] transition-colors duration-150"
+                className="h-[52px] w-full px-4 text-[14px] text-[#1a1a1a] bg-white rounded-[10px] border-2 border-[#DDD8CC] outline-none appearance-none cursor-pointer focus:border-[#C9A84C] transition-colors duration-150"
                 style={{
                   backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
                   backgroundRepeat: "no-repeat",
@@ -327,12 +335,7 @@ export function CheckoutForm({
       {/* ── Submit ── */}
       <motion.button
         whileTap={{ scale: 0.99 }}
-        onClick={() => {
-          handleSubmit(
-            (values) => onSubmit(values),
-            (errors) => console.log("❌ Errors:", errors),
-          )();
-        }}
+        type="submit"
         disabled={loading}
         className={`w-full h-[58px] rounded-[12px] text-[14px] font-semibold uppercase transition-all duration-150
           ${
@@ -363,6 +366,6 @@ export function CheckoutForm({
           {t.checkoutForm.terms}
         </Link>
       </div>
-    </motion.div>
+    </motion.form>
   );
 }

@@ -108,14 +108,14 @@ export const getForgotPasswordSchema = (locale: string) => {
 export const getCheckoutSchema = (locale: string) => {
   const isAr = locale === "ar";
   return z.object({
-    newsEmail: z.boolean().optional(),
+    
     firstName: z
       .string()
       .min(1, isAr ? "الاسم الأول مطلوب" : "First name is required"),
     lastName: z
       .string()
       .min(1, isAr ? "اسم العائلة مطلوب" : "Last name is required"),
-    email: z
+    guest_email: z
       .string()
       .min(1, isAr ? "البريد الإلكتروني مطلوب" : "Email is required")
       .email(isAr ? "البريد الإلكتروني غير صالح" : "Invalid email address"),
@@ -125,14 +125,14 @@ export const getCheckoutSchema = (locale: string) => {
     governorate_id: z
       .string()
       .min(1, isAr ? "المحافظة مطلوبة" : "Governorate is required"),
-    postal: z.string().optional(),
+    
     phone: z
       .string()
       .min(
         8,
         isAr ? "يرجى إدخال رقم هاتف صالح" : "Please enter a valid phone number",
       ),
-    saveInfo: z.boolean().optional(),
+    
     payment_method: z.enum(["cod", "paymob"]),
     billing: z.enum(["same", "different"]),
   });

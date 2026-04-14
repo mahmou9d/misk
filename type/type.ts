@@ -391,7 +391,7 @@ export interface GoogleLoginData {
 export interface CheckoutFormData {
   full_name: string;
   full_address: string;
-  email: string;
+  guest_email: string;
   order_notes?: string;
   phone_number: string;
   country: string;
@@ -510,3 +510,36 @@ export interface SiteSettings {
 export type TabKey1 = "Men" | "Unisex" | "Women";
 export type TabKey2 = "Niche";
 export type TabKey3 = "BodySplash" | "Makhmaryat" | "incense";
+export type CheckoutFormDetails = {
+  firstName: string;
+  lastName: string;
+  address: string;
+  apt: string;
+  guest_email: string;
+  phone: string;
+  payment_method: "cod" | "paymob";
+  governorate_id: string;
+  billing: "same" | "different";
+  city: string;
+  full_name: string;
+  full_address: string;
+  order_notes?: string;
+  phone_number: string;
+  country: string;
+};
+export type CheckoutFormValues = {
+  firstName: string;
+  lastName: string;
+  guest_email: string;
+  address: string;
+  city: string;
+  governorate_id: string;
+  phone: string;
+  payment_method: "cod" | "paymob";
+  billing: "same" | "different";
+  newsEmail?: boolean;
+  apt?: string;
+  postal?: string;
+  saveInfo?: boolean;
+};
+

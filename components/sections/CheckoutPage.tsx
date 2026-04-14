@@ -10,6 +10,7 @@ import { usePlaceOrder, usePaymentPaymob } from "@/hooks/usePayment";
 import {
   ErrorResponse,
   NotificationState,
+  CheckoutFormDetails,
 } from "@/type/type";
 import { useShowNotification } from "@/utils/showNotification";
 import Notification from "@/components/layout/Notification";
@@ -17,16 +18,6 @@ import { PaymentMethodModal } from "@/components/layout/Paymentmethodmodal";
 import { CheckoutForm } from "@/components/layout/Checkoutform";
 import { useTranslation } from "@/lib/Usetranslation";
 
-type CheckoutFormData = {
-  firstName: string;
-  lastName: string;
-  address: string;
-  apt: string;
-  email: string;
-  phone: string;
-  payment_method: string;
-  governorate_id: string;
-};
 
 
 export default function CheckoutPage() {
@@ -54,7 +45,7 @@ export default function CheckoutPage() {
   const discountAmt = discountApplied ? Math.round(subtotal * 0.1) : 0;
   const total = subtotal + shippingFee - discountAmt;
 
-  const handleSubmit = async (values: CheckoutFormData) => {
+  const handleSubmit = async (values: CheckoutFormDetails) => {
     setLoading(true);
     try {
       const result = await placeOrder({
@@ -62,7 +53,7 @@ export default function CheckoutPage() {
         full_address: values.apt
           ? `${values.address}, ${values.apt}`
           : values.address,
-        email: values.email,
+        guest_email: values.guest_email,
         phone_number: values.phone,
         country: `Egypt`,
         order_notes: "",

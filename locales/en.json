@@ -271,7 +271,7 @@
     "privacyPolicy": "Privacy policy",
     "terms": "Terms of service",
     "errors": {
-      "email": "Invalid email address",
+      "guest_email": "Invalid email address",
       "firstName": "First name is required",
       "lastName": "Last name is required",
       "address": "Address is required",
