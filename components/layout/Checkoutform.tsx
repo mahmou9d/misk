@@ -107,7 +107,7 @@ export function CheckoutForm({
   loading,
   onGovernorateChange,
 }: {
-  onSubmit: (values: CheckoutFormValues) => void;
+  onSubmit: (values: CheckoutFormValues) => void | Promise<void>;
   loading: boolean;
   onGovernorateChange?: (fee: number) => void;
 }) {
@@ -126,6 +126,14 @@ export function CheckoutForm({
       payment_method: "cod",
       billing: "same",
       guest_email: "",
+      firstName: "",
+      lastName: "",
+      address: "",
+      city: "",
+      governorate_id: "",
+      phone: "",
+      apt: "",
+      postal: "",
     },
   });
 
@@ -154,7 +162,9 @@ export function CheckoutForm({
   const translatedErrors = {
     firstName: errors.firstName ? t.checkoutForm.errors.firstName : undefined,
     lastName: errors.lastName ? t.checkoutForm.errors.lastName : undefined,
-    guest_email: errors.guest_email ? t.checkoutForm.errors.guest_email : undefined,
+    guest_email: errors.guest_email
+      ? t.checkoutForm.errors.guest_email
+      : undefined,
     address: errors.address ? t.checkoutForm.errors.address : undefined,
     city: errors.city ? t.checkoutForm.errors.city : undefined,
     governorate_id: errors.governorate_id

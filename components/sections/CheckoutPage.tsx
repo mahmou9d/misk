@@ -11,6 +11,7 @@ import {
   ErrorResponse,
   NotificationState,
   CheckoutFormDetails,
+  CheckoutFormValues,
 } from "@/type/type";
 import { useShowNotification } from "@/utils/showNotification";
 import Notification from "@/components/layout/Notification";
@@ -45,7 +46,7 @@ export default function CheckoutPage() {
   const discountAmt = discountApplied ? Math.round(subtotal * 0.1) : 0;
   const total = subtotal + shippingFee - discountAmt;
 
-  const handleSubmit = async (values: CheckoutFormDetails) => {
+  const handleSubmit = async (values: CheckoutFormValues) => {
     setLoading(true);
     try {
       const result = await placeOrder({
