@@ -80,6 +80,7 @@ const PasswordField = ({
   placeholder,
   register,
   error,
+  id,
   isArabic,
 }: {
   placeholder: string;
@@ -89,23 +90,29 @@ const PasswordField = ({
     ? R
     : never;
   error?: string;
+  id: string;
   isArabic: boolean;
 }) => {
   const [show, setShow] = useState(false);
   return (
     <div className="mb-[10px]">
       <div className="relative">
+        <label htmlFor={id} className="sr-only">{placeholder}</label>
         <input
+          id={id}
           type={show ? "text" : "password"}
           placeholder={placeholder}
           {...register}
           className={`${buildInputClass(!!error, isArabic)} placeholder:text-[#bbb] ${
             isArabic ? "placeholder:not-italic" : "placeholder:italic"
           }`}
+          aria-invalid={error ? "true" : "false"}
+          aria-describedby={error ? `${id}-error` : undefined}
         />
         <button
           type="button"
           onClick={() => setShow((p) => !p)}
+          aria-label={show ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
           className={`absolute top-1/2 -translate-y-1/2 bg-none border-none cursor-pointer text-[#ccc] hover:text-[#c9a84c]/70 transition-colors p-1 flex ${
             isArabic ? "left-2" : "right-2"
           }`}
@@ -115,6 +122,7 @@ const PasswordField = ({
       </div>
       {error && (
         <p
+          id={`${id}-error`}
           className={`text-[12px] text-red-500/80 mt-1 ${
             isArabic ? "-normal text-right" : "-[0.3px] text-left"
           }`}
@@ -442,6 +450,7 @@ const ResetPasswordContent = () => {
               placeholder={
                 t?.resetPassword?.newPasswordPlaceholder ?? "New password"
               }
+              id="password"
               register={register("password")}
               error={errors.password?.message as string}
               isArabic={isArabic}
@@ -453,6 +462,7 @@ const ResetPasswordContent = () => {
                   t?.resetPassword?.confirmPasswordPlaceholder ??
                   "Confirm new password"
                 }
+                id="confirmPassword"
                 register={register("confirmPassword")}
                 error={errors.confirmPassword?.message as string}
                 isArabic={isArabic}

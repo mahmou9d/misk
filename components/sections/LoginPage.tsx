@@ -42,18 +42,20 @@ export default function LoginPage() {
   const showNotification = useShowNotification(setNotification);
   const handleGoogleSuccess = useHandleGoogleSuccess(showNotification);
 
-  const onSubmit = async (data: { email: string; password: string }): Promise<void> => {
+  const onSubmit = async (data: {
+    email: string;
+    password: string;
+  }): Promise<void> => {
     login(
       { email: data.email, password: data.password },
       {
         onSuccess: () => {
-            const token = localStorage.getItem("access");
-            const deviceId = localStorage.getItem("X-Device-ID");
+          const token = localStorage.getItem("access");
+          const deviceId = localStorage.getItem("X-Device-ID");
 
-            if (deviceId && token) {
-              mergeCart.mutate(deviceId, {
-              });
-            }
+          if (deviceId && token) {
+            mergeCart.mutate(deviceId, {});
+          }
           showNotification(t.login.success, "success");
           setTimeout(() => router.push(`/${currentLocale}`), 1000);
         },
@@ -114,14 +116,23 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="relative">
+            <label htmlFor="email" className="sr-only">
+              {t.login.emailPlaceholder}
+            </label>
             <input
+              id="email"
               type="email"
               {...register("email")}
               placeholder={t.login.emailPlaceholder}
               className={`w-full bg-white border-b-2 border-black focus:border-black px-5  py-2 rounded-xl text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
+              aria-invalid={errors.email ? "true" : "false"}
+              aria-describedby={errors.email ? "email-error" : undefined}
             />
             {errors.email && (
-              <p className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider">
+              <p
+                id="email-error"
+                className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider"
+              >
                 {errors.email.message}
               </p>
             )}
@@ -129,22 +140,36 @@ export default function LoginPage() {
 
           <div className="relative">
             <div className="relative">
+              <label htmlFor="password" className="sr-only">
+                {t.login.passwordPlaceholder}
+              </label>
               <input
+                id="password"
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
                 placeholder={t.login.passwordPlaceholder}
                 className={`w-full bg-white border-b-2 border-black focus:border-black px-5  py-2 rounded-xl text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
+                aria-invalid={errors.password ? "true" : "false"}
+                aria-describedby={
+                  errors.password ? "password-error" : undefined
+                }
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
+                aria-label={
+                  showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"
+                }
                 className={`absolute top-1/2 -translate-y-1/2 text-black/placeholder:text-black/50 hover:text-black transition-colors ${isArabic ? "left-3" : "right-3"}`}
               >
                 {showPassword ? <EyeOpen /> : <EyeClosed />}
               </button>
             </div>
             {errors.password && (
-              <p className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider">
+              <p
+                id="password-error"
+                className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider"
+              >
                 {errors.password.message as string}
               </p>
             )}

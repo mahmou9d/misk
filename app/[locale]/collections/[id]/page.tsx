@@ -8,37 +8,43 @@ export async function generateMetadata({
   params: Promise<{ locale: string; id: string }>;
 }): Promise<Metadata> {
   const { locale, id } = await params;
-
   const decodedId = decodeURIComponent(id);
-
   const isArabic = locale === "ar";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://miskstores.com";
+  const lowerLocale = locale.toLowerCase();
 
-  // const fragrances = isArabic ? "عطور" : "Fragrances";
   const title = `${decodedId}`;
   const description = isArabic
     ? `تصفح كولكشن ${decodedId}`
     : `Browse ${decodedId} collection`;
+
   return {
     title,
     description,
     alternates: {
-      canonical: `https://miskstores.com/${locale}/collections/${id}`,
+      canonical: `${baseUrl}/${lowerLocale}/collections/${id}`,
       languages: {
-        "en-US": `https://miskstores.com/en/collections/${id}`,
-        "ar-EG": `https://miskstores.com/ar/collections/${id}`,
+        "en-US": `${baseUrl}/en/collections/${id}`,
+        "ar-EG": `${baseUrl}/ar/collections/${id}`,
       },
     },
     openGraph: {
       title,
       description,
-      url: `https://miskstores.com/${locale}/collections/${id}`,
+      url: `${baseUrl}/${lowerLocale}/collections/${id}`,
       images: [
         {
-          url: "https://miskstores.com/og-image.png",
+          url: `${baseUrl}/og-image.png`,
           width: 1200,
           height: 630,
         },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [`${baseUrl}/og-image.png`],
     },
   };
 }
@@ -46,8 +52,12 @@ export async function generateMetadata({
 export default async function CollectionRoute({
   params,
 }: {
-  params: { locale: string; id: string };
+  params: Promise<{ locale: string; id: string }>;
 }) {
   const resolvedParams = await params;
-  return <CollectionClient id={resolvedParams.id} />;
+  return (
+    <main>
+      <CollectionClient id={resolvedParams.id} />
+    </main>
+  );
 }

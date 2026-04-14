@@ -9,21 +9,30 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isArabic = locale === "ar";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://miskstores.com";
+  const lowerLocale = locale.toLowerCase();
 
   return {
     title: isArabic ? "نسيت كلمة المرور" : "Forgot Password",
     description: isArabic
       ? "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور."
       : "Enter your email and we'll send you a link to reset your password.",
+    alternates: {
+      canonical: `${baseUrl}/${lowerLocale}/forgot-password`,
+      languages: {
+        "en-US": `${baseUrl}/en/forgot-password`,
+        "ar-EG": `${baseUrl}/ar/forgot-password`,
+      },
+    },
     robots: { index: false, follow: false },
   };
 }
 
 const page = () => {
   return (
-    <div>
+    <main>
       <ForgotPasswordPage />
-    </div>
+    </main>
   );
 };
 

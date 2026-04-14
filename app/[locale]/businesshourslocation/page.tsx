@@ -11,6 +11,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isArabic = locale === "ar";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://miskstores.com";
 
   return {
     title: isArabic ? "ساعات العمل و الموقع" : "Business Hours & Location",
@@ -18,10 +19,10 @@ export async function generateMetadata({
       ? "اكتشف ساعات عملنا وموقعنا. نحن هنا لخدمتك."
       : "Discover our business hours and location. We're here to serve you.",
     alternates: {
-      canonical: `https://miskstores.com/${locale}/businesshourslocation`,
+      canonical: `${baseUrl}/${locale.toLowerCase()}/businesshourslocation`,
       languages: {
-        "en-US": `https://miskstores.com/en/businesshourslocation`,
-        "ar-EG": `https://miskstores.com/ar/businesshourslocation`,
+        "en-US": `${baseUrl}/en/businesshourslocation`,
+        "ar-EG": `${baseUrl}/ar/businesshourslocation`,
       },
     },
     openGraph: {
@@ -29,26 +30,34 @@ export async function generateMetadata({
       description: isArabic
         ? "اكتشف ساعات عملنا وموقعنا. نحن هنا لخدمتك."
         : "Discover our business hours and location. We're here to serve you.",
-      url: `https://miskstores.com/${locale}/businesshourslocation`,
+      url: `${baseUrl}/${locale.toLowerCase()}/businesshourslocation`,
       images: [
         {
-          url: "https://miskstores.com/og-image.png",
+          url: `${baseUrl}/og-image.png`,
           width: 1200,
           height: 630,
         },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: isArabic ? "ساعات العمل و الموقع" : "Business Hours & Location",
+      description: isArabic
+        ? "اكتشف ساعات عملنا وموقعنا. نحن هنا لخدمتك."
+        : "Discover our business hours and location. We're here to serve you.",
+      images: [`${baseUrl}/og-image.png`],
     },
   };
 }
 
 const BusinessHoursPage = () => {
   return (
-    <section className="xl:pb-0 pb-[60px]">
+    <main className="xl:pb-0 pb-[60px]">
       <AnnouncementBar />
       <Navbar />
       <BusinessHoursLocation />
       <Footer />
-    </section>
+    </main>
   );
 };
 

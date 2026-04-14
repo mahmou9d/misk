@@ -242,7 +242,9 @@ export default function ForgotPasswordPage() {
           >
             <div className="mb-7">
               <div className="relative">
+                <label htmlFor="email" className="sr-only">{t?.forgotPassword?.emailPlaceholder ?? "البريد الإلكتروني"}</label>
                 <input
+                  id="email"
                   type="email"
                   placeholder={
                     t?.forgotPassword?.emailPlaceholder ?? "Your email address"
@@ -251,6 +253,8 @@ export default function ForgotPasswordPage() {
                   className={`${inputClassName} placeholder:text-[#bbb] ${
                     isArabic ? "placeholder:not-italic" : "placeholder:italic"
                   }`}
+                  aria-invalid={errors.email ? "true" : "false"}
+                  aria-describedby={errors.email ? "email-error" : undefined}
                 />
                 {/*
                   أيقونة الميل:
@@ -267,6 +271,7 @@ export default function ForgotPasswordPage() {
               </div>
               {errors.email && (
                 <p
+                  id="email-error"
                   className={`text-[12px] text-red-500/80 mt-1 ${
                     isArabic ? "-normal text-right" : "-[0.3px] text-left"
                   }`}

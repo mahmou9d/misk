@@ -71,7 +71,7 @@ const { data, isLoading } = useGetProducts({ category });
                   CATEGORY_MAP[tabKey].en === "Women" ||
                   CATEGORY_MAP[tabKey].en === "Unisex"
                     ? CATEGORY_MAP[tabKey].en
-                    :CATEGORY_MAP[tabKey].ar}
+                    : CATEGORY_MAP[tabKey].ar}
                 </span>
                 {tab === tabKey && (
                   <motion.div
@@ -123,7 +123,7 @@ const { data, isLoading } = useGetProducts({ category });
         {/* ── View All Button ── */}
         <div className="flex justify-center mt-24">
           <Link
-            href={`/${locale.toLowerCase()}/collections/all`}
+            href={`/${locale.toLowerCase()}/collections/${CATEGORY_MAP[tab].ar}`}
             className="group relative bg-[#111] inline-flex items-center gap-1 px-5 lg:px-14 py-4 rounded-full border border-[#c9a84c]/40 transition-all duration-500 hover:border-[#ffbb00] hover:bg-[#ffbb00] no-underline shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_35px_rgba(201,168,76,0.2)]"
           >
             <span

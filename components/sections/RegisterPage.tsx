@@ -130,14 +130,25 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Full Name */}
           <div className="relative">
+            <label htmlFor="full_name" className="sr-only">
+              {t.register.fullName}
+            </label>
             <input
+              id="full_name"
               type="text"
               {...register("full_name")}
               placeholder={t.register.fullName}
               className={`w-full bg-white rounded-xl border-b-2 border-black focus:border-black px-5 py-2 text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
+              aria-invalid={errors.full_name ? "true" : "false"}
+              aria-describedby={
+                errors.full_name ? "full_name-error" : undefined
+              }
             />
             {errors.full_name && (
-              <p className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider">
+              <p
+                id="full_name-error"
+                className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider"
+              >
                 {errors.full_name.message as string}
               </p>
             )}
@@ -145,14 +156,23 @@ export default function RegisterPage() {
 
           {/* Email */}
           <div className="relative">
+            <label htmlFor="email" className="sr-only">
+              {t.register.email}
+            </label>
             <input
+              id="email"
               type="email"
               {...register("email")}
               placeholder={t.register.email}
               className={`w-full bg-white rounded-xl border-b-2 border-black focus:border-black px-5 py-2 text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
+              aria-invalid={errors.email ? "true" : "false"}
+              aria-describedby={errors.email ? "email-error" : undefined}
             />
             {errors.email && (
-              <p className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider">
+              <p
+                id="email-error"
+                className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider"
+              >
                 {errors.email.message as string}
               </p>
             )}
@@ -161,22 +181,36 @@ export default function RegisterPage() {
           {/* Password */}
           <div className="relative">
             <div className="relative">
+              <label htmlFor="password1" className="sr-only">
+                {t.register.password}
+              </label>
               <input
+                id="password1"
                 type={showPassword ? "text" : "password"}
                 {...register("password1")}
                 placeholder={t.register.password}
                 className={`w-full bg-white rounded-xl px-5 border-b-2 border-black focus:border-black py-2 text-[16px] outline-none transition-all duration-500 placeholder:text-black/50 ${isArabic ? "text-right" : "text-left"}`}
+                aria-invalid={errors.password1 ? "true" : "false"}
+                aria-describedby={
+                  errors.password1 ? "password1-error" : undefined
+                }
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
+                aria-label={
+                  showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"
+                }
                 className={`absolute top-1/2 -translate-y-1/2 text-black hover:text-[#c9a84c] transition-colors ${isArabic ? "left-3" : "right-3"}`}
               >
                 {showPassword ? <EyeOpen /> : <EyeClosed />}
               </button>
             </div>
             {errors.password1 && (
-              <p className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider">
+              <p
+                id="password1-error"
+                className="absolute -bottom-5 text-[12px] font-bold text-red-500 uppercase -wider"
+              >
                 {errors.password1.message as string}
               </p>
             )}
