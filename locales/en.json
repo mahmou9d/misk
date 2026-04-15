@@ -330,7 +330,8 @@
     "confirmPay": "Confirm & Pay"
   },
   "productCard": {
-    "viewDetails": "View Details"
+    "viewDetails": "View Details",
+    "noImage": "No images exist for this product"
   },
   "adminCategories": {
     "title": "Categories",

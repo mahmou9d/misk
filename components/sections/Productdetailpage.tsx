@@ -23,6 +23,7 @@ import Notification from "../layout/Notification";
 import { AxiosError } from "axios";
 import { useCats } from "@/lib/CatsContext";
 import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation as useProductGalleryTranslation } from "@/lib/Usetranslation"; // Import with alias
 import { useGetReviews, useAddReview } from "@/hooks/useReviews";
 
 /* ── Skeleton ── */
@@ -76,8 +77,10 @@ function ProductGallery({
   images: { url: string }[];
   name: string;
 }) {
+  const { t, isArabic } = useProductGalleryTranslation(); // Use alias to avoid conflict
   const [activeIndex, setActiveIndex] = useState(0);
 
+  // Reset active index when images change (e.g., variant selection)
   useEffect(() => {
     setActiveIndex(0);
   }, [images]);
@@ -106,9 +109,12 @@ function ProductGallery({
                 sizes="(max-width:768px) 100vw, 52vw"
               />
             ) : (
-              <div className="absolute inset-0 flex items-end justify-center bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69]">
-                <span className=" text-[11px] text-[#c9a84c]/40 -[3px] mb-5">
-                  {name}
+              // Placeholder for no image, similar to ProductCard
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-[#f9f7f2]">
+                <span className="text-[40px] mb-3 opacity-20 select-none">🖼️</span>
+                <span className="text-[14px] font-medium text-[#c9a84c] leading-relaxed">
+                  {/* Use translation key for consistency */}
+                  {t.productCard.noImage}
                 </span>
               </div>
             )}

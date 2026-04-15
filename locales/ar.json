@@ -326,7 +326,8 @@
     "confirmPay": "تأكيد والدفع"
   },
   "productCard": {
-    "viewDetails": "عرض التفاصيل"
+    "viewDetails": "عرض التفاصيل",
+    "noImage": "لا توجد صور للمنتج"
   },
   "adminCategories": {
     "title": "الفئات",
