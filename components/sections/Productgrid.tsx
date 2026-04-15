@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useId } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -8,31 +8,43 @@ import ProductCard from "@/components/layout/Productcard";
 import { useGetProducts } from "@/hooks/useProducts";
 import { Product } from "@/type/type";
 import { useTranslation } from "@/lib/Usetranslation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type CategoryMap = Record<string, { ar: string; en: string }>;
 
 export default function ProductGrid({
   CATEGORY_MAP,
+  queryKey = "tab",
 }: {
   CATEGORY_MAP: CategoryMap;
+  queryKey?: string;
 }) {
   const { t, isArabic, dir, locale } = useTranslation();
   const id = useId();
-
+const searchParams = useSearchParams();
+const router = useRouter();
   const tabs = Object.keys(CATEGORY_MAP) as string[];
-  const [tab, setTab] = useState<string>(tabs[0]);
+  const rawTab = searchParams.get(queryKey);
+  const currentTab = rawTab && CATEGORY_MAP[rawTab] ? rawTab : tabs[0];
+  const [tab, setTab] = useState<string>(currentTab);
 
 const category = isArabic ? CATEGORY_MAP[tab].ar : CATEGORY_MAP[tab].en;
 
 const { data, isLoading } = useGetProducts({ category });
   const filtered: Product[] = data?.products ?? [];
 
-  // const filtered = allProducts.filter((p) =>
-  //   p.categories?.includes(
-  //     isArabic ? CATEGORY_MAP[tab].ar : CATEGORY_MAP[tab].en,
-  //   ),
-  // );
+useEffect(() => {
+  if (rawTab && CATEGORY_MAP[rawTab]) {
+    setTab(rawTab);
+  }
+}, [rawTab, CATEGORY_MAP]);
 
+const handleTabChange = (newTab: string) => {
+  setTab(newTab);
+  const params = new URLSearchParams(searchParams.toString());
+  params.set(queryKey, newTab);
+  router.push(`?${params.toString()}`, { scroll: false });
+};
   return (
     <section
       className="w-full bg-[#fcfcfc] py-28 relative overflow-hidden"
@@ -60,7 +72,7 @@ const { data, isLoading } = useGetProducts({ category });
             {tabs.map((tabKey) => (
               <button
                 key={tabKey}
-                onClick={() => setTab(tabKey)}
+                onClick={() => handleTabChange(tabKey)}
                 className={`relative px-4 lg:px-12 py-2 md:py-4 rounded-full text-[14px] font-bold uppercase transition-all duration-500
                   ${tab === tabKey ? "text-white" : "text-gray-400 hover:text-gray-900"}
                   ${isArabic ? "" : "-[0.2em]"}`}

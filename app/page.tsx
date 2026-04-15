@@ -38,9 +38,9 @@ export default function PaymentResultPage() {
         <Navbar />
         <HeroSection />
         <Productpage />
-        <Productgrid CATEGORY_MAP={CATEGORY_MAP1} />
-        <Productgrid CATEGORY_MAP={CATEGORY_MAP2} />
-        <Productgrid CATEGORY_MAP={CATEGORY_MAP3} />
+        <Productgrid CATEGORY_MAP={CATEGORY_MAP1} queryKey="cat1" />
+        <Productgrid CATEGORY_MAP={CATEGORY_MAP2} queryKey="cat2" />
+        <Productgrid CATEGORY_MAP={CATEGORY_MAP3} queryKey="cat3" />
         {/* <Faq /> */}
         {/* <BusinessHoursLocation /> */}
         <Footer />

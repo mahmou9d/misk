@@ -276,7 +276,7 @@ export async function generateMetadata({
 
         hasOfferCatalog: {
           "@type": "OfferCatalog",
-          name: isArabic ? "كولكشن مسك" : "Misk Collection",
+          name: isArabic ? "مجموعة مسك" : "Misk Collection",
           itemListElement: [
             {
               "@type": "OfferCatalog",

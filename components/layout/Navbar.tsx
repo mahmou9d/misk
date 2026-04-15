@@ -89,28 +89,20 @@ function IconBtn({
 }
 
 function UserActions({ locale }: { locale: string }) {
-  const { isAuthenticated, isLoading, logout } = useAuth();
+  const { isAuthenticated, isLoading, logout, isAdmin } = useAuth();
   const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
     setMounted(true);
-    setIsAdmin(localStorage.getItem("role") === "true");
   }, []);
 
-  if (!mounted)
+  // أثناء التحميل أو قبل "الترطيب" (Hydration)، نظهر مؤشر تحميل بسيط بدلاً من أزرار الدخول
+  if (!mounted || isLoading)
     return (
       <div className="p-2.5">
-        <div className="w-5 h-5" />
-      </div>
-    );
-
-  if (isLoading)
-    return (
-      <div className="p-2.5">
-        <div className="w-4 h-4 rounded-full bg-gray-200 animate-pulse" />
+        <div className="w-5 h-5 border-2 border-gray-200 border-t-[var(--purple-deep)] rounded-full animate-spin" />
       </div>
     );
 
@@ -130,7 +122,7 @@ function UserActions({ locale }: { locale: string }) {
   const handleDashboardClick = () => {
     queryClient.clear();
   };
-  // console.log(isAdmin)
+
   return (
     <div className="flex items-center gap-[12px]">
       {isAdmin && (
@@ -300,7 +292,10 @@ export default function Navbar() {
   const { data: cartData } = useGetCartItems();
   const { data: categories } = useGetCategory();
   const { data } = useGetPublicSettings();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   const cartCount = useMemo(
     () => cartData?.reduce((acc, item) => acc + Number(item?.quantity), 0),
@@ -455,6 +450,8 @@ export default function Navbar() {
                     </AnimatePresence>
                   </div>
                 ) : l.href === `/${locale.toLowerCase()}/orderhistory` &&
+                  mounted &&
+                  !isLoading &&
                   !isAuthenticated ? null : (
                   <Link
                     key={l.label}

@@ -442,6 +442,27 @@ export function PaymentPopup() {
 
   const successParam = params.get("success");
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const data: PaymentData = useMemo(() => {
+    return {
+      amount_cents: Number(params.get("amount_cents")) || 0,
+      order: params.get("order") ?? "",
+      merchant_order_id: params.get("merchant_order_id") ?? "",
+      created_at: params.get("created_at") ?? new Date().toISOString(),
+      source_data_pan:
+        params.get("source_data.pan") ??
+        params.get("source_data_pan") ??
+        "****",
+      source_data_sub_type:
+        params.get("source_data.sub_type") ??
+        params.get("source_data_sub_type") ??
+        "Card",
+      currency: params.get("currency") ?? "EGP",
+      error_message:
+        params.get("data.message") ?? params.get("error_occured") ?? undefined,
+    };
+  }, [params]);
+
   // ── COD: مفيش amount_cents في الـ URL ──
   const isCod = successParam === "true" && !params.get("amount_cents");
 
@@ -471,27 +492,6 @@ export function PaymentPopup() {
   if (!successParam || !open) return null;
 
   const success = successParam === "true";
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const data: PaymentData = useMemo(() => {
-    return {
-      amount_cents: Number(params.get("amount_cents")) || 0,
-      order: params.get("order") ?? "",
-      merchant_order_id: params.get("merchant_order_id") ?? "",
-      created_at: params.get("created_at") ?? new Date().toISOString(),
-      source_data_pan:
-        params.get("source_data.pan") ??
-        params.get("source_data_pan") ??
-        "****",
-      source_data_sub_type:
-        params.get("source_data.sub_type") ??
-        params.get("source_data_sub_type") ??
-        "Card",
-      currency: params.get("currency") ?? "EGP",
-      error_message:
-        params.get("data.message") ?? params.get("error_occured") ?? undefined,
-    };
-  }, [params]);
 
   // ── COD ──
   if (isCod) return <CodSuccessModal onClose={handleClose} />;

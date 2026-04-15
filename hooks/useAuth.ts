@@ -79,7 +79,7 @@ export const useLogout = () => {
   return useMutation({
     mutationFn: authAPI.logout,
     onSuccess: () => {
-      localStorage.clear()
+      localStorage.clear();
       storage.clearAll();
       queryClient.clear();
       router.push("/");
@@ -116,14 +116,21 @@ export const useAuth = () => {
   const logoutMutation = useLogout();
   const signupMutation = useSignup();
 
-  const isAuthenticated =
-    typeof window !== "undefined" && !!user && !!storage.getToken("access");
+  // نقوم بالتأكد من وجود التوكن أولاً بشكل متزامن
+  const hasToken =
+    typeof window !== "undefined" && !!storage.getToken("access");
+
+  // يكون المستخدم "مفترض" أنه مسجل دخول إذا كان هناك توكن والطلب لا يزال جارياً
+  // أو إذا اكتمل الطلب بنجاح ووجدنا بيانات المستخدم
+  const isAuthenticated = hasToken && (isLoading || !!user);
+
   const isAdmin = user?.is_admin ?? false;
 
   return {
     user,
-    isLoading,
+    isLoading, // استخدم هذه الحالة في المكونات لإظهار "Loading Spinner"
     isAuthenticated,
+    isVerifying: isLoading && hasToken, // حالة إضافية لمعرفة إذا كنا نتأكد من التوكن حالياً
     isAdmin,
     login: loginMutation.mutateAsync,
     signup: signupMutation.mutateAsync,
