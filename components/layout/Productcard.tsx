@@ -79,7 +79,6 @@ export default function ProductCard({ index, p, fill = false }: Props) {
                     minimumFractionDigits: 2,
                   })}
             </span>
-
           </div>
         </div>
       </Link>

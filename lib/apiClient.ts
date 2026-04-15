@@ -31,7 +31,8 @@ apiClient.interceptors.request.use(
         config.url?.startsWith("/orders/place") ||
         config.url?.startsWith("/paypal/create-order") ||
         config.url?.startsWith("/payment/paymob/create-checkout") ||
-        config.url?.startsWith("/payment/create-checkout-session");
+        config.url?.startsWith("/payment/create-checkout-session") ||
+        config.url?.startsWith("/orders/history");
       if (isCartRequest) {
         const deviceId = localStorage.getItem("X-Device-ID");
         if (deviceId) {
