@@ -1285,7 +1285,13 @@ export default function OrdersPage() {
             </p>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                onClick={() => {
+                  setPage((p) => Math.max(1, p - 1))
+                 setTimeout(
+                   () => window.scrollTo({ top: 0, behavior: "smooth" }),
+                   100,
+                 );
+                }}
                 disabled={!data?.previous}
                 className="p-2 rounded-lg hover:bg-white/5 text-gray-400 disabled:opacity-30 disabled:cursor-not-allowed"
               >
@@ -1299,7 +1305,13 @@ export default function OrdersPage() {
                 {o.page} {page}
               </span>
               <button
-                onClick={() => setPage((p) => p + 1)}
+                onClick={() => {
+                  setPage((p) => p + 1)
+                 setTimeout(
+                   () => window.scrollTo({ top: 0, behavior: "smooth" }),
+                   100,
+                 );
+                }}
                 disabled={!data?.next}
                 className="p-2 rounded-lg hover:bg-white/5 text-gray-400 disabled:opacity-30 disabled:cursor-not-allowed"
               >
@@ -1315,37 +1327,46 @@ export default function OrdersPage() {
       </div>
 
       {/* ── Mobile Pagination ── */}
-      <div className="block md:hidden">
+      <div className="block lg:hidden">
         {!isFiltered && (data?.next || data?.previous || page > 1) && (
           <div
             className={`flex items-center justify-between py-4 ${isArabic ? "flex-row-reverse" : ""}`}
           >
             <button
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              onClick={() => {
+                setPage((p) => Math.max(1, p - 1))
+                 setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
+              }}
               disabled={!data?.previous}
               className="flex items-center gap-1.5 px-4 py-2.5 bg-[#1a1d29] border border-white/10 rounded-xl text-sm text-gray-400 disabled:opacity-30 disabled:cursor-not-allowed"
             >
-              {isArabic ? (
-                <ChevronRight className="w-4 h-4" />
-              ) : (
-                <ChevronLeft className="w-4 h-4" />
-              )}
               {isArabic ? "السابق" : "Prev"}
+              {isArabic ? (
+                <ChevronLeft className="w-4 h-4" />
+              ) : (
+                <ChevronRight className="w-4 h-4" />
+              )}
             </button>
             <span className="text-sm text-gray-400">
               {o.page} <span className="font-bold text-white">{page}</span>
             </span>
             <button
-              onClick={() => setPage((p) => p + 1)}
+              onClick={() => {
+                setPage((p) => p + 1)
+               setTimeout(
+                 () => window.scrollTo({ top: 0, behavior: "smooth" }),
+                 100,
+               );
+              }}
               disabled={!data?.next}
               className="flex items-center gap-1.5 px-4 py-2.5 bg-[#1a1d29] border border-white/10 rounded-xl text-sm text-gray-400 disabled:opacity-30 disabled:cursor-not-allowed"
             >
-              {isArabic ? "التالي" : "Next"}
               {isArabic ? (
-                <ChevronLeft className="w-4 h-4" />
-              ) : (
                 <ChevronRight className="w-4 h-4" />
+              ) : (
+                <ChevronLeft className="w-4 h-4" />
               )}
+              {isArabic ? "التالي" : "Next"}
             </button>
           </div>
         )}

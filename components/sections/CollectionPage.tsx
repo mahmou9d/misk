@@ -13,6 +13,7 @@ import { Product } from "@/type/type";
 import { useTranslation } from "@/lib/Usetranslation";
 import { ArrowDown } from "@/public/svg/Svgs";
 import { useGetCategory } from "@/hooks/useDashboard";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 function Dropdown({
   trigger,
@@ -153,6 +154,7 @@ const { data, isLoading, isError } = useGetProducts({
 });
 
   const nextPage = data?.next ?? null;
+  const prevPage = data?.previous ?? null;
   const categoryName = categories?.find(
     (c) => c.name.toUpperCase() === decodedTwice.toUpperCase(),
   );
@@ -342,20 +344,51 @@ const { data, isLoading, isError } = useGetProducts({
                   ))}
                 </div>
 
-                {!isLoading && nextPage && (
-                  <div className="flex justify-center mt-24">
+                {(nextPage || prevPage || page > 1) && (
+                  <div
+                    className={`flex items-center justify-between py-4 mt-16 ${isArabic ? "flex-row-reverse" : ""}`}
+                  >
                     <button
-                      onClick={() => setPage((p) => p + 1)}
-                      className="px-12 py-4 rounded-full border-2 border-gray-100 text-[#111] font-bold text-[15px] uppercase hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all duration-300"
+                      onClick={() => {
+                        setPage((p) => Math.max(1, p - 1));
+                        setTimeout(
+                          () => window.scrollTo({ top: 0, behavior: "smooth" }),
+                          100,
+                        );
+                      }}
+                      disabled={!prevPage}
+                      className="flex items-center gap-1.5 px-4 py-2.5 bg-[#111] border border-gray-200 rounded-xl text-sm text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c9a84c] transition-all"
                     >
-                      {t.collectionPage.loadMore}
+                      {isArabic ? "السابق" : "Prev"}
+                      {isArabic ? (
+                        <ChevronLeft className="w-4 h-4" />
+                      ) : (
+                        <ChevronRight className="w-4 h-4" />
+                      )}
                     </button>
-                  </div>
-                )}
 
-                {isLoading && page > 1 && (
-                  <div className="flex justify-center mt-20">
-                    <div className="w-8 h-8 rounded-full border-[3px] border-[#c9a84c20] border-t-[#c9a84c] animate-spin" />
+                    <span className="text-sm text-gray-500">
+                      Page <span className="font-bold text-[#111]">{page}</span>
+                    </span>
+
+                    <button
+                      onClick={() => {
+                        setPage((p) => p + 1);
+                        setTimeout(
+                          () => window.scrollTo({ top: 0, behavior: "smooth" }),
+                          100,
+                        );
+                      }}
+                      disabled={!nextPage}
+                      className="flex items-center gap-1.5 px-4 py-2.5 bg-[#111] border border-gray-200 rounded-xl text-sm text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c9a84c] transition-all"
+                    >
+                      {isArabic ? (
+                        <ChevronRight className="w-4 h-4" />
+                      ) : (
+                        <ChevronLeft className="w-4 h-4" />
+                      )}
+                      {isArabic ? "التالي" : "Next"}
+                    </button>
                   </div>
                 )}
               </>

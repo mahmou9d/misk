@@ -147,11 +147,23 @@ console.log(isActive);
 
   return (
     <>
+      {/* 1. إضافة الـ Overlay للموبايل */}
+      <AnimatePresence>
+        {sidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSidebarOpen(false)} // هنا السر: عند الضغط يتم الإغلاق
+            className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          />
+        )}
+      </AnimatePresence>
+
       <AnimatePresence>
         {sidebarOpen && (
           <motion.aside
             key="mobile-sidebar"
-            // يعتمد الدخول من اليمين أو اليسار حسب اللغة
             initial={{ x: isArabic ? "100%" : "-100%" }}
             animate={{ x: 0 }}
             exit={{ x: isArabic ? "100%" : "-100%" }}
@@ -165,6 +177,7 @@ console.log(isActive);
         )}
       </AnimatePresence>
 
+      {/* Sidebar الخاص بـ Desktop يبقى كما هو */}
       <motion.aside
         animate={{ width: sidebarOpen ? "280px" : "80px" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}

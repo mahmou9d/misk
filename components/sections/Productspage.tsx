@@ -13,7 +13,7 @@ import { useProductPage } from "@/hooks/Useproductpage";
 import Notification from "../layout/Notification";
 import { useTranslation } from "@/lib/Usetranslation";
 import Image from "next/image";
-import { X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 /* ══════════════════════════════════════════════════════════
    Shared input style
@@ -704,27 +704,43 @@ export default function ProductsPage() {
             <div className="flex justify-between items-center mt-6 pt-4 border-t border-white/10 max-w-[1100px]">
               <button
                 onClick={() => {
-                  setPage((pg) => Math.max(1, pg - 1));
-                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  setPage((pg) => pg + 1);
+                  setTimeout(
+                    () => window.scrollTo({ top: 0, behavior: "smooth" }),
+                    100,
+                  );
                 }}
-                disabled={!prevPage}
-                className="text-[16px] px-4 py-1.5 border border-white/10 rounded-xl bg-[#1a1d29] text-gray-400 hover:bg-white/5 disabled:opacity-40 transition-opacity cursor-pointer"
+                disabled={!nextPage}
+                className="text-[16px] flex items-center  px-4 py-1.5 border border-white/10 rounded-xl bg-[#1a1d29] text-gray-400 hover:bg-white/5 disabled:opacity-40 transition-opacity cursor-pointer"
               >
-                {p.pagination.previous}
+                              {isArabic ? (
+                <ChevronRight className="w-4 h-4" />
+              ) : (
+                <ChevronLeft className="w-4 h-4" />
+              )}
+              {isArabic ? "التالي" : "Next"}
               </button>
               <span className="text-[16px] text-gray-500 font-medium">
                 {p.pagination.page.replace("{page}", String(page))}
-              </span>
-              <button
+              </span>              <button
                 onClick={() => {
-                  setPage((pg) => pg + 1);
-                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  setPage((pg) => Math.max(1, pg - 1));
+                  setTimeout(
+                    () => window.scrollTo({ top: 0, behavior: "smooth" }),
+                    100,
+                  );
                 }}
-                disabled={!nextPage}
-                className="text-[16px] px-4 py-1.5 border border-white/10 rounded-xl bg-[#1a1d29] text-gray-400 hover:bg-white/5 disabled:opacity-40 transition-opacity cursor-pointer"
+                disabled={!prevPage}
+                className="text-[16px] flex items-center  px-4 py-1.5 border border-white/10 rounded-xl bg-[#1a1d29] text-gray-400 hover:bg-white/5 disabled:opacity-40 transition-opacity cursor-pointer"
               >
-                {p.pagination.next}
+                             {isArabic ? "السابق" : "Prev"}
+              {isArabic ? (
+                <ChevronLeft className="w-4 h-4" />
+              ) : (
+                <ChevronRight className="w-4 h-4" />
+              )}
               </button>
+
             </div>
           )}
         </>

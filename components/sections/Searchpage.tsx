@@ -72,7 +72,9 @@ export default function SearchPage() {
   // Optimized Handlers
   const handlePageChange = useCallback((newPage: number) => {
     setPage(newPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 100);
   }, []);
 
   const sidebarProps = {
@@ -101,7 +103,7 @@ export default function SearchPage() {
               ref={searchContainerRef}
               className="relative max-w-4xl mx-auto mb-12"
             >
-              <div className="flex flex-col md:flex-row gap-3 items-end bg-white px-3 py-2 rounded-2xl border border-gray-200 shadow-sm focus-within:shadow-md focus-within:border-yellow-400/60 transition-all duration-300">
+              <div className="flex flex-col md:flex-row gap-3 md:items-end bg-white px-3 py-2 rounded-2xl border border-gray-200 shadow-sm focus-within:shadow-md focus-within:border-yellow-400/60 transition-all duration-300">
                 <CategoryDropdown
                   categories={categories ?? []}
                   selectedCategories={selectedCategories}
@@ -234,40 +236,39 @@ export default function SearchPage() {
 
                 {/* Pagination - Premium Design */}
                 {(nextPage || prevPage || page > 1) && (
-                  <nav className="flex justify-center items-center gap-12 pt-16 border-t border-gray-50">
+                  <div
+                    className={`flex items-center justify-between py-4 ${isArabic ? "flex-row-reverse" : ""}`}
+                  >
                     <button
                       onClick={() => handlePageChange(Math.max(1, page - 1))}
                       disabled={!prevPage}
-                      className="group flex items-center gap-3 text-sm font-bold uppercase -widest disabled:opacity-20 transition-all hover:text-[#c9a84c]"
+                      className="flex items-center gap-1.5 px-4 py-2.5 bg-[#111] border border-gray-200 rounded-xl text-sm text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c9a84c] transition-all"
                     >
-                      {isRTL ? (
-                        <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                      ) : (
-                        <ChevronLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
-                      )}
                       {isArabic ? "السابق" : "Prev"}
+                      {isArabic ? (
+                        <ChevronLeft className="w-4 h-4" />
+                      ) : (
+                        <ChevronRight className="w-4 h-4" />
+                      )}
                     </button>
 
-                    <div className="relative group">
-                      <div className="absolute -inset-4 bg-[#c9a84c]/5 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500" />
-                      <span className="relative w-12 h-12 rounded-2xl bg-[#111] text-white flex items-center justify-center text-base font-bold shadow-xl shadow-black/10">
-                        {page}
-                      </span>
-                    </div>
+                    <span className="text-sm text-gray-500">
+                      Page <span className="font-bold text-[#111]">{page}</span>
+                    </span>
 
                     <button
                       onClick={() => handlePageChange(page + 1)}
                       disabled={!nextPage}
-                      className="group flex items-center gap-3 text-sm font-bold uppercase -widest disabled:opacity-20 transition-all hover:text-[#c9a84c]"
+                      className="flex items-center gap-1.5 px-4 py-2.5 bg-[#111] border border-gray-200 rounded-xl text-sm text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c9a84c] transition-all"
                     >
-                      {isArabic ? "التالي" : "Next"}
-                      {isRTL ? (
-                        <ChevronLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
+                      {isArabic ? (
+                        <ChevronRight className="w-4 h-4" />
                       ) : (
-                        <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                        <ChevronLeft className="w-4 h-4" />
                       )}
+                      {isArabic ? "التالي" : "Next"}
                     </button>
-                  </nav>
+                  </div>
                 )}
               </div>
             )}

@@ -475,9 +475,9 @@
       "emptyHint": "أنشئ أول منتج من الزر أعلاه"
     },
     "pagination": {
-      "previous": "→ السابق",
+      "previous": "السابق ←",
       "page": "صفحة {page}",
-      "next": "التالي ←"
+      "next": "→ التالي"
     },
     "card": {
       "edit": "تعديل",

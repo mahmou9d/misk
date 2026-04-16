@@ -10,6 +10,7 @@ import { CheckoutFormValues } from "@/type/type";
 import { getCheckoutSchema } from "@/utils/validation";
 import Image from "next/image";
 import { useGetShippingGovernorates } from "@/hooks/useDashboard";
+import { useCats } from "@/lib/CatsContext";
 
 type Governorate = {
   id: number;
@@ -149,7 +150,7 @@ export function CheckoutForm({
 }) {
   const { t, isArabic, locale, dir } = useTranslation();
   const { data: governorates } = useGetShippingGovernorates();
-
+const { setCartOpen } = useCats();
   const {
     register,
     handleSubmit,
@@ -418,14 +419,16 @@ export function CheckoutForm({
       {/* Links */}
       <div className="flex gap-6 justify-center pb-2">
         <Link
-          href={`/${locale.toLowerCase()}/privacy-policy`}
-          className="text-[13px] text-[#bbb] underline underline-offset-[3px] hover:text-[#C9A84C] transition-colors"
+          href={`/${locale.toLowerCase()}/policies/privacy-policy`}
+          onClick={() => setCartOpen(false)}
+          className="text-[13px] text-gray-600 underline underline-offset-[3px] hover:text-[#C9A84C] transition-colors"
         >
           {t.checkoutForm.privacyPolicy}
         </Link>
         <Link
-          href={`/${locale.toLowerCase()}/terms`}
-          className="text-[13px] text-[#bbb] underline underline-offset-[3px] hover:text-[#C9A84C] transition-colors"
+          href={`/${locale.toLowerCase()}/policies/terms-of-service`}
+          onClick={() => setCartOpen(false)}
+          className="text-[13px] text-gray-600 underline underline-offset-[3px] hover:text-[#C9A84C] transition-colors"
         >
           {t.checkoutForm.terms}
         </Link>

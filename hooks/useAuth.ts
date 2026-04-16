@@ -17,11 +17,10 @@ export const useGetRole = () => {
     queryKey: authKeys.role(),
     queryFn: authAPI.getRole,
     enabled: !!storage.getToken("access"),
-    retry: false,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 60,
   });
 };
-
 export const useLogin = () => {
   const queryClient = useQueryClient();
 
@@ -111,7 +110,7 @@ export const useLoginGoogle = () => {
   });
 };
 export const useAuth = () => {
-  const { data: user, isLoading } = useGetRole();
+  const { data: user, isLoading, isFetching } = useGetRole();
   const loginMutation = useLogin();
   const logoutMutation = useLogout();
   const signupMutation = useSignup();
@@ -122,15 +121,14 @@ export const useAuth = () => {
 
   // يكون المستخدم "مفترض" أنه مسجل دخول إذا كان هناك توكن والطلب لا يزال جارياً
   // أو إذا اكتمل الطلب بنجاح ووجدنا بيانات المستخدم
-  const isAuthenticated = hasToken && (isLoading || !!user);
+  const isAuthenticated = !!user && hasToken;
 
   const isAdmin = user?.is_admin ?? false;
 
   return {
     user,
-    isLoading, // استخدم هذه الحالة في المكونات لإظهار "Loading Spinner"
+    isLoading: isLoading || isFetching, // استخدم هذه الحالة في المكونات لإظهار "Loading Spinner"
     isAuthenticated,
-    isVerifying: isLoading && hasToken, // حالة إضافية لمعرفة إذا كنا نتأكد من التوكن حالياً
     isAdmin,
     login: loginMutation.mutateAsync,
     signup: signupMutation.mutateAsync,
