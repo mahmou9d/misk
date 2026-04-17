@@ -10,7 +10,7 @@ import Footer from "@/components/sections/Footer";
 import DeviceIDProvider from "@/utils/DeviceIDProvider";
 import { PaymentPopup } from "@/components/layout/Paymentresult";
 import IsLoading from "@/components/layout/IsLoading";
-import { TabKey1, TabKey2, TabKey3 } from "@/type/type";
+import { TabKey1, TabKey2 } from "@/type/type";
 // import { BusinessHoursLocation } from "@/components/sections/BusinessHoursLocation";
 
 
@@ -24,13 +24,14 @@ export default async function Page() {
     Women: { en: "Women", ar: "نسائي" },
   };
   const CATEGORY_MAP2: Record<TabKey2, { en: string; ar: string }> = {
-    Niche: { en: "Niche perfumes", ar: "عطور النيش" },
-  };
-  const CATEGORY_MAP3: Record<TabKey3, { en: string; ar: string }> = {
+    // Niche: { en: "Niche perfumes", ar: "عطور النيش" },
     BodySplash: { en: "Body Splash", ar: "بادي سبلاش" },
-    Makhmaryat: { en: "Makhmaryat", ar: "مخمريات" },
-    incense: { en: "incense", ar: "بخور" },
   };
+  // const CATEGORY_MAP3: Record<TabKey3, { en: string; ar: string }> = {
+  //   BodySplash: { en: "Body Splash", ar: "بادي سبلاش" },
+  //   Makhmaryat: { en: "Makhmaryat", ar: "مخمريات" },
+  //   incense: { en: "incense", ar: "بخور" },
+  // };
   return (
     <main className="xl:pb-0 pb-[60px]">
       <Suspense fallback={<IsLoading />}>
@@ -42,7 +43,7 @@ export default async function Page() {
         <Productpage />
         <Productgrid CATEGORY_MAP={CATEGORY_MAP1} queryKey="cat1" />
         <Productgrid CATEGORY_MAP={CATEGORY_MAP2} queryKey="cat2" />
-        <Productgrid CATEGORY_MAP={CATEGORY_MAP3} queryKey="cat3" />
+        {/* <Productgrid CATEGORY_MAP={CATEGORY_MAP3} queryKey="cat3" /> */}
         {/* <Collections /> */}
         {/* <Faq /> */}
         {/* <BusinessHoursLocation /> */}

@@ -508,8 +508,9 @@ export interface SiteSettings {
 }
 
 export type TabKey1 = "Men" | "Unisex" | "Women";
-export type TabKey2 = "Niche";
-export type TabKey3 = "BodySplash" | "Makhmaryat" | "incense";
+// export type TabKey2 = "Niche";
+export type TabKey2 = "BodySplash";
+// export type TabKey3 = "BodySplash" | "Makhmaryat" | "incense";
 export type CheckoutFormDetails = {
   firstName: string;
   lastName: string;

@@ -119,7 +119,7 @@ const handleTabChange = (newTab: string) => {
                   transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16"
                 >
-                  {filtered.slice(0, 8).map((p, i) => (
+                  {filtered.map((p, i) => (
                     <ProductCard key={p.id} p={p} index={i} />
                   ))}
                 </motion.div>
