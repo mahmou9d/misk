@@ -78,14 +78,19 @@ export const useLogout = () => {
   return useMutation({
     mutationFn: authAPI.logout,
     onSuccess: () => {
-      localStorage.clear();
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("role");
       storage.clearAll();
       queryClient.clear();
       router.push("/");
       router.refresh();
     },
     onError: (error: AxiosError<ErrorResponse>) => {
-      localStorage.clear();
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("role");
+
       storage.clearAll();
       queryClient.clear();
       router.push("/");

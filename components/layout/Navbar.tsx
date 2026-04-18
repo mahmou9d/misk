@@ -24,6 +24,7 @@ import {
 } from "@/public/svg/Svgs";
 import { useGetCategory, useGetPublicSettings } from "@/hooks/useDashboard";
 import { useQueryClient } from "@tanstack/react-query";
+import { RefreshDeviceID } from "@/utils/DeviceIDProvider";
 // import { useOrderHistory } from "@/hooks/usePayment";
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
@@ -144,6 +145,7 @@ function UserActions({ locale }: { locale: string }) {
         ariaLabel={t.navbar.signOut}
         onClick={() => {
           logout();
+          RefreshDeviceID(); // إعادة تعيين معرف الجهاز بعد تسجيل الخروج
         }}
         title={t.navbar.signOut}
       >
@@ -449,10 +451,11 @@ export default function Navbar() {
                       )}
                     </AnimatePresence>
                   </div>
-                ) : l.href === `/${locale.toLowerCase()}/orderhistory` &&
-                  mounted &&
-                  !isLoading &&
-                  !isAuthenticated ? null : (
+                ) : (
+                  // l.href === `/${locale.toLowerCase()}/orderhistory` &&
+                  //   mounted &&
+                  //   !isLoading &&
+                  //   !isAuthenticated ? null :
                   <Link
                     key={l.label}
                     href={l.href}
@@ -541,8 +544,9 @@ export default function Navbar() {
                             {isArabic ? <ChevronLeft /> : <ChevronRight />}
                           </span>
                         </button>
-                      ) : l.href === `/${locale.toLowerCase()}/orderhistory` &&
-                        !isAuthenticated ? null : (
+                      ) : (
+                        // l.href === `/${locale.toLowerCase()}/orderhistory` &&
+                        //   !isAuthenticated ? null :
                         <Link
                           href={l.href}
                           onClick={closeAll}

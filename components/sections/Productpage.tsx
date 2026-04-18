@@ -80,6 +80,24 @@ export default function ProductPage() {
     );
   };
 
+  const handleBuyNow = () => {
+    if (!product) return;
+    addToCart(
+      { variant_id: Number(product.variants?.[0]?.id), quantity: 1 },
+      {
+        onSuccess: () => {
+          router.push(`/${locale.toLowerCase()}/checkout`);
+        },
+        onError: (error: AxiosError<ErrorResponse>) => {
+          showNotification(
+            error?.response?.data?.message || t.product.addToCartError,
+            "error",
+          );
+        },
+      },
+    );
+  };
+
   /* ─── Loading / Empty ─── */
   if (isLoading || !product) {
     return (
@@ -320,10 +338,7 @@ export default function ProductPage() {
 
                 <motion.button
                   whileTap={{ scale: 0.988 }}
-                  onClick={() => {
-                    handleAddToCart();
-                    router.push(`/${locale.toLowerCase()}/checkout`);
-                  }}
+                  onClick={handleBuyNow}
                   disabled={!product.variants?.[0]?.stock}
                   className={`w-full h-[52px] text-[18px] rounded-2xl font-semibold border border-[#c9a84c]/25 shadow-lg transition-all duration-300 relative overflow-hidden group
                     ${product.variants?.[0]?.stock ? "bg-gradient-to-br from-[#1a0a3d] to-[#2d1b69] text-[#f0d080]/95 shadow-[#2d1b69]/20 hover:shadow-[#2d1b69]/35 cursor-pointer" : "bg-gray-300 text-white cursor-not-allowed"}

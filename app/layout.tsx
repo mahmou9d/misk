@@ -4,6 +4,7 @@ import "./globals.css";
 import QueryProvider from "@/utils/QueryProvider";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { CatsProvider } from "@/lib/CatsContext";
+import DeviceIDProvider from "@/utils/DeviceIDProvider";
 
 const assistant = Assistant({
   subsets: ["latin"],
@@ -23,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${assistant.className} antialiased`}>
+        <DeviceIDProvider />
         <QueryProvider>
           <GoogleOAuthProvider
             clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
