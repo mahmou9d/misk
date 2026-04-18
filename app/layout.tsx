@@ -5,6 +5,7 @@ import QueryProvider from "@/utils/QueryProvider";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { CatsProvider } from "@/lib/CatsContext";
 import DeviceIDProvider from "@/utils/DeviceIDProvider";
+import WhatsAppButton from "@/components/layout/WhatsAppButton";
 
 const assistant = Assistant({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
           <GoogleOAuthProvider
             clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
           >
+            <WhatsAppButton />
             <CatsProvider>{children}</CatsProvider>
           </GoogleOAuthProvider>
         </QueryProvider>

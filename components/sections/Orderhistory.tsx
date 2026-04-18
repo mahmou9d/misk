@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useOrderHistory } from "@/hooks/usePayment";
 import { useTranslation } from "@/lib/Usetranslation";
@@ -279,9 +279,13 @@ function OrderCard({
 export default function OrderHistoryPage() {
   const { t, isArabic, dir, locale } = useTranslation();
   const tran = t.orderHistory;
-  const { data: orders = [], isLoading } = useOrderHistory();
+  const { data: orders = [], isLoading, refetch } = useOrderHistory();
 
   const [activeFilter, setActiveFilter] = useState("all");
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const filtered =
     activeFilter === "all"

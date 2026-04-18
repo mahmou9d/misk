@@ -6,11 +6,13 @@ import { AxiosError } from "axios";
 import { useLoginGoogle } from "@/hooks/useAuth";
 import { ErrorResponse, GoogleLoginData } from "@/type/type";
 import { useTranslation } from "@/lib/Usetranslation";
+import { useCartMerge } from "@/hooks/useCart";
 
 export const useHandleGoogleSuccess = (
   showNotification: (message: string, type: "success" | "error") => void,
 ) => {
   const { mutate: loginWithGoogle } = useLoginGoogle();
+  const mergeCart = useCartMerge();
   const { t, locale } = useTranslation();
   const router = useRouter();
 
@@ -25,7 +27,11 @@ export const useHandleGoogleSuccess = (
               if (data.refresh) localStorage.setItem("refresh", data.refresh);
 
               const savedToken = localStorage.getItem("access");
+          const deviceId = localStorage.getItem("X-Device-ID");
 
+          if (deviceId && savedToken) {
+            mergeCart.mutate(deviceId, {});
+          }
               if (savedToken) {
                 showNotification(t.login.success, "success");
 
