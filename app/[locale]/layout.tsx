@@ -19,7 +19,7 @@ import {
 const locales = ["en", "ar"] as const;
 type Locale = (typeof locales)[number];
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://miskstores.com";
+const BASE_URL = "https://miskstores.com";
 
 // ─── Fonts ────────────────────────────────────────────────────────────────────
 const roboto = Roboto({
