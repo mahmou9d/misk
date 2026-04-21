@@ -185,7 +185,7 @@ export async function generateMetadata({
       description: t.description,
       images: [
         {
-          url: `${BASE_URL}/og-image-v2.png`,
+          url: `${BASE_URL}/og-image.png`,
           width: 1200,
           height: 630,
           alt: isArabic
@@ -200,7 +200,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: t.title,
       description: t.description,
-      images: [`${BASE_URL}/og-image-v2.png`],
+      images: [`${BASE_URL}/og-image.png`],
       creator: "@miskstores",
       site: "@miskstores",
     },
@@ -252,7 +252,7 @@ export async function generateMetadata({
         name: isArabic ? "مسك للعطور" : "Misk Fragrances",
         description: t.description,
         url: BASE_URL,
-        image: `${BASE_URL}/og-image-v2.png`,
+        image: `${BASE_URL}/og-image.png`,
         logo: `${pageUrl}/logo.png`,
         inLanguage: isArabic ? "ar-EG" : "en-US",
         currenciesAccepted: "EGP",

@@ -29,7 +29,7 @@ export async function generateMetadata({
       url: `https://miskstores.com/${locale}/shop`,
       images: [
         {
-          url: `https://miskstores.com/og-image-v2.png`,
+          url: `https://miskstores.com/og-image.png`,
           width: 1200,
           height: 630,
         },

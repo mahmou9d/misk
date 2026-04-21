@@ -33,7 +33,7 @@ export async function generateMetadata({
       url: `${baseUrl}/${locale.toLowerCase()}/businesshourslocation`,
       images: [
         {
-          url: `${baseUrl}/og-image-v2.png`,
+          url: `${baseUrl}/og-image.png`,
           width: 1200,
           height: 630,
         },
@@ -45,7 +45,7 @@ export async function generateMetadata({
       description: isArabic
         ? "اكتشف ساعات عملنا وموقعنا. نحن هنا لخدمتك."
         : "Discover our business hours and location. We're here to serve you.",
-      images: [`${baseUrl}/og-image-v2.png`],
+      images: [`${baseUrl}/og-image.png`],
     },
   };
 }
