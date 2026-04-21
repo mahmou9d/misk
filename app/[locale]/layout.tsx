@@ -19,7 +19,7 @@ import {
 const locales = ["en", "ar"] as const;
 type Locale = (typeof locales)[number];
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://miskstores.com";
+const BASE_URL = "https://miskstores.com";
 
 // ─── Fonts ────────────────────────────────────────────────────────────────────
 const roboto = Roboto({
@@ -179,7 +179,7 @@ export async function generateMetadata({
       type: "website",
       locale: isArabic ? "ar_EG" : "en_US",
       alternateLocale: isArabic ? "en_US" : "ar_EG",
-      url: pageUrl,
+      url: BASE_URL,
       siteName: isArabic ? "مسك للعطور" : "Misk Fragrances",
       title: t.title,
       description: t.description,
@@ -251,9 +251,9 @@ export async function generateMetadata({
         "@type": "Store",
         name: isArabic ? "مسك للعطور" : "Misk Fragrances",
         description: t.description,
-        url: pageUrl,
+        url: BASE_URL,
         image: `${BASE_URL}/og-image.png`,
-        logo: `${BASE_URL}/logo.png`,
+        logo: `${pageUrl}/logo.png`,
         inLanguage: isArabic ? "ar-EG" : "en-US",
         currenciesAccepted: "EGP",
         paymentAccepted: "Cash, Credit Card, Mobile Wallet",
