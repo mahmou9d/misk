@@ -32,7 +32,7 @@ export async function generateMetadata({
       url: `${baseUrl}/${lowerLocale}/orderhistory`,
       images: [
         {
-          url: `${baseUrl}/og-image.png`,
+          url: `${baseUrl}/${lowerLocale}/og-image.png`,
           width: 1200,
           height: 630,
         },
