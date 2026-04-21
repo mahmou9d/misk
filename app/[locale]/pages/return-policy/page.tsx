@@ -9,7 +9,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isArabic = locale === "ar";
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://miskstores.com";
+  const baseUrl = "https://miskstores.com";
 
   return {
     title: isArabic ? "سياسة الإرجاع والاستبدال" : "Return & Exchange Policy",
