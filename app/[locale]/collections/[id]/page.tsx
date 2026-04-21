@@ -10,7 +10,7 @@ export async function generateMetadata({
   const { locale, id } = await params;
   const decodedId = decodeURIComponent(id);
   const isArabic = locale === "ar";
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://miskstores.com";
+  const baseUrl = "https://miskstores.com";
   const lowerLocale = locale.toLowerCase();
 
   const title = `${decodedId}`;
