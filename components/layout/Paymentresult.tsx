@@ -431,18 +431,17 @@ function FailedModal({
   );
 }
 
+
 // ─── Popup Controller ─────────────────────────────────────────────────────────
 
 export function PaymentPopup() {
   const [open, setOpen] = useState(false);
-  const [nextStep, setNextStep] = useState<string | null>(null);
   const params = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
   const successParam = params.get("success");
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const data: PaymentData = useMemo(() => {
     return {
       amount_cents: Number(params.get("amount_cents")) || 0,
@@ -463,12 +462,14 @@ export function PaymentPopup() {
     };
   }, [params]);
 
-  // ── COD: مفيش amount_cents في الـ URL ──
   const isCod = successParam === "true" && !params.get("amount_cents");
 
   useEffect(() => {
     if (successParam) {
-      setNextStep(localStorage.getItem("next_step"));
+      // ✅ لو فشل، امسح الـ next_step القديم فوراً
+      if (successParam !== "true") {
+        localStorage.removeItem("next_step");
+      }
       setOpen(true);
     }
   }, [successParam]);
@@ -493,11 +494,10 @@ export function PaymentPopup() {
 
   const success = successParam === "true";
 
-  // ── COD ──
   if (isCod) return <CodSuccessModal onClose={handleClose} />;
 
-  // ── Paymob ──
-  return success || nextStep !== null ? (
+  // ✅ القرار بيعتمد على success من الـ URL بس
+  return success ? (
     <CardSuccessModal data={data} onClose={handleClose} />
   ) : (
     <FailedModal data={data} onClose={handleClose} />
