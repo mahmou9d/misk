@@ -411,12 +411,13 @@ function FailedModal({
           </div>
 
           <div className="flex flex-col gap-2 mt-5">
-            <button
+            <Link
+            href={`/${locale.toLowerCase()}/checkout`}
               onClick={onClose}
               className="w-full py-3.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-[0.9rem] font-bold text-center border-none cursor-pointer transition-colors block"
             >
               {t.paymentPopup.failed.tryAgain}
-            </button>
+            </Link>
             <Link
               href={`/${locale.toLowerCase()}`}
               onClick={onClose}
