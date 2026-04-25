@@ -52,12 +52,12 @@ const translations = {
   en: {
     title: "Misk Fragrances | The Art of Scents — Egypt",
     description:
-      "A curated collection of exceptional fragrances. Crafted for those who appreciate the extraordinary. Complimentary shipping on orders above 1,000 EGP.",
+      "A curated collection of exceptional fragrances. Crafted for those who appreciate the extraordinary.",
   },
   ar: {
     title: "مسك للعطور | فن ابتكار العطر — مصر",
     description:
-      "مجموعة مختارة من العطور الاستثنائية. صُممت خصيصاً لمن يقدرون التميز. شحن مجاني للطلبات فوق 1000 ج.م.",
+      "مجموعة مختارة من العطور الاستثنائية. صُممت خصيصاً لمن يقدرون التميز.",
   },
 };
 
