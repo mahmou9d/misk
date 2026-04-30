@@ -92,14 +92,14 @@ export default function CheckoutPage() {
     }
   }, [placeOrder, showNotification, t.checkout, locale]);
 
-  const handlePayWithWallet = useCallback(async (walletNumber: string) => {
+  const handlePayWithWallet = useCallback(async () => {
     if (!pendingOrderId) return;
     setLoading(true);
     try {
       await payWithPaymob({
         order_id: pendingOrderId,
         payment_method: "wallet",
-        wallet_number: walletNumber,
+        // wallet_number: walletNumber,
       });
       setShowPayModal(false);
       showNotification(t.checkout.paymentSuccess, "success");

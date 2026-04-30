@@ -8,7 +8,7 @@ import Navbar from "../layout/Navbar";
 import Footer from "./Footer";
 import ProductCard from "@/components/layout/Productcard";
 import { useGetProducts } from "@/hooks/useProducts";
-import { applySort, getSortOptions } from "@/lib/Products";
+import { applySort } from "@/lib/Products";
 import { Product } from "@/type/type";
 import { useTranslation } from "@/lib/Usetranslation";
 import { ArrowDown } from "@/public/svg/Svgs";

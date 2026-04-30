@@ -138,7 +138,7 @@ export function PaymentMethodModal({
                   transition={{ duration: 0.2 }}
                   className="overflow-hidden"
                 >
-                  <input
+                  {/* <input
                     aria-label={p.walletPlaceholder}
                     type="tel"
                     placeholder={p.walletPlaceholder}
@@ -146,7 +146,7 @@ export function PaymentMethodModal({
                     onChange={(e) => setWalletNumber(e.target.value)}
                     className=" text-gray-800 bg-white outline-none w-full h-10 border border-[#d0d0d0] rounded-md px-3 text-[13px] mt-3 focus:border-[#1a4fe0] transition-colors"
                     onClick={(e) => e.stopPropagation()}
-                  />
+                  /> */}
                 </motion.div>
               )}
             </AnimatePresence>

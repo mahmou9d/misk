@@ -4,7 +4,7 @@ import axios from "axios";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ||
-  "https://api.miskstores.com/api";
+  "https://web-production-e55a59.up.railway.app/api";
 export const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: {
