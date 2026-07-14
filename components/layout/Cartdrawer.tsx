@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState, useMemo, useCallback } from "react";
 import Link from "next/link";
@@ -10,7 +10,7 @@ import {
   useUpdateCartQuantity,
 } from "@/hooks/useCart";
 import { CartItem } from "@/type/type";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 import Image from "next/image";
 
 /* ── Icons ── */

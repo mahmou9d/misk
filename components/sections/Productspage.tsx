@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { Select, Btn } from "@/components/layout/Adminui";
+import { Select, Btn } from "@/components/admin/Adminui";
 import { GalleryImage, Variant } from "@/type/type";
 import AdminCategoryDropdown, {
   Spinner,
@@ -11,7 +11,7 @@ import AdminCategoryDropdown, {
 } from "@/components/sections/ComponetsProductsPage";
 import { useProductPage } from "@/hooks/Useproductpage";
 import Notification from "../layout/Notification";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 

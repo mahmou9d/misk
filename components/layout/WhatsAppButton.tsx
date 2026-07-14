@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 import React from "react";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const WhatsAppButton = () => {
   const { isArabic } = useTranslation();

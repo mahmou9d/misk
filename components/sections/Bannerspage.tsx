@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
 import {
@@ -12,12 +12,12 @@ import {
   usePatchGovernorate,
   usePostGovernorate,
 } from "@/hooks/useDashboard";
-import { P } from "@/components/layout/Adminui";
+import { P } from "@/components/admin/Adminui";
 import { NotificationState, Banner, ErrorResponse } from "@/type/type";
-import { useShowNotification } from "@/utils/showNotification";
+import { useShowNotification } from "@/hooks/useShowNotification";
 import Notification from "../layout/Notification";
 import { AxiosError } from "axios";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 import { RefreshCw, AlertCircle } from "lucide-react";
 import Image from "next/image";
 

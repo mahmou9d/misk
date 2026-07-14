@@ -1,19 +1,19 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { useAddToCart } from "@/hooks/useCart";
 import { useGetBestsellers, useGetFirstBestsellers } from "@/hooks/useProducts";
 import { ErrorResponse, NotificationState, Product } from "@/type/type";
-import { useShowNotification } from "@/utils/showNotification";
+import { useShowNotification } from "@/hooks/useShowNotification";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Notification from "../layout/Notification";
 import { AxiosError } from "axios";
-import { useCats } from "@/lib/CatsContext";
-import { useTranslation } from "@/lib/Usetranslation";
-import ProductCard from "@/components/layout/Productcard";
+import { useCats } from "@/lib/context/CatsContext";
+import { useTranslation } from "@/hooks/useTranslation";
+import ProductCard from "@/components/ui/Productcard";
 
 export default function ProductPage() {
   const { t, isArabic, dir, locale } = useTranslation();

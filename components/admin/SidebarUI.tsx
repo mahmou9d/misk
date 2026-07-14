@@ -2,7 +2,8 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
+import Link from "next/link";
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -103,10 +104,14 @@ const menuItems = [
           const isActive = pathname === item.href;
 console.log(isActive);
           return (
-            <button
+            <Link
               key={item.id}
               dir="ltr"
-              onClick={() => handleMenuClick(item.href)}
+              href={item.href}
+              onClick={() => {
+                if (typeof window !== "undefined" && window.innerWidth < 768)
+                  setSidebarOpen(false);
+              }}
               className={`w-full flex items-center gap-3 px-3.5 py-3.5 rounded-xl relative group transition-all ${
                 isArabic ? "flex-row-reverse text-right " : ""
               } ${
@@ -121,7 +126,7 @@ console.log(isActive);
                   {item.label}
                 </span>
               )}
-            </button>
+            </Link>
           );
         })}
       </nav>

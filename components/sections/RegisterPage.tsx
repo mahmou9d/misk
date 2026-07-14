@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -11,13 +11,13 @@ import { useRouter } from "next/navigation";
 import { useLogin, useSignup } from "@/hooks/useAuth";
 import Notification from "@/components/layout/Notification";
 import { GoogleLogin } from "@react-oauth/google";
-import { useShowNotification } from "@/utils/showNotification";
-import { useHandleGoogleSuccess } from "@/utils/handleGoogleSuccess";
+import { useShowNotification } from "@/hooks/useShowNotification";
+import { useHandleGoogleSuccess } from "@/hooks/useHandleGoogleSuccess";
 import { AxiosError } from "axios";
 import { ErrorResponse, NotificationState } from "@/type/type";
 import { useCartMerge } from "@/hooks/useCart";
-import { useTranslation } from "@/lib/Usetranslation";
-import { EyeClosed, EyeOpen } from "@/public/svg/Svgs";
+import { useTranslation } from "@/hooks/useTranslation";
+import { EyeClosed, EyeOpen } from "@/components/ui/Svgs";
 import { getSignupSchema } from "@/utils/validation";
 
 type RegisterFormData = {

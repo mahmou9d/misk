@@ -1,4 +1,4 @@
-import { PaymentPopup } from "@/components/layout/Paymentresult";
+import { PaymentPopup } from "@/components/sections/Paymentresult";
 import React, { Suspense } from "react";
 import type { Metadata } from "next";
 

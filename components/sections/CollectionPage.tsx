@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+﻿/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -6,12 +6,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import AnnouncementBar from "../layout/AnnouncementBar";
 import Navbar from "../layout/Navbar";
 import Footer from "./Footer";
-import ProductCard from "@/components/layout/Productcard";
+import ProductCard from "@/components/ui/Productcard";
 import { useGetProducts } from "@/hooks/useProducts";
 import { applySort } from "@/lib/Products";
 import { Product } from "@/type/type";
-import { useTranslation } from "@/lib/Usetranslation";
-import { ArrowDown } from "@/public/svg/Svgs";
+import { useTranslation } from "@/hooks/useTranslation";
+import { ArrowDown } from "@/components/ui/Svgs";
 import { useGetCategory } from "@/hooks/useDashboard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 

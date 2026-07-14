@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Assistant } from "next/font/google";
 import "./globals.css";
-import QueryProvider from "@/utils/QueryProvider";
+import QueryProvider from "@/components/providers/QueryProvider";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { CatsProvider } from "@/lib/CatsContext";
-import DeviceIDProvider from "@/utils/DeviceIDProvider";
+import { CatsProvider } from "@/lib/context/CatsContext";
+import DeviceIDProvider from "@/components/providers/DeviceIDProvider";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 
 const assistant = Assistant({

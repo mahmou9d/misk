@@ -1,13 +1,13 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { useId } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import ProductCard from "@/components/layout/Productcard";
+import ProductCard from "@/components/ui/Productcard";
 import { useGetProducts } from "@/hooks/useProducts";
 import { Product } from "@/type/type";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useRouter, useSearchParams } from "next/navigation";
 
 type CategoryMap = Record<string, { ar: string; en: string }>;

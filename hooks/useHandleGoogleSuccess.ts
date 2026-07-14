@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
 import { useLoginGoogle } from "@/hooks/useAuth";
 import { ErrorResponse, GoogleLoginData } from "@/type/type";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useCartMerge } from "@/hooks/useCart";
 
 export const useHandleGoogleSuccess = (
@@ -52,7 +52,7 @@ export const useHandleGoogleSuccess = (
               showNotification(
                 error?.response?.data?.message ||
                   error?.message ||
-                  `${locale.toLowerCase() === "en" ? "Google login failed. Please try again." : "فشل تسجيل الدخول بواسطة جوجل. يرجى المحاولة مرة أخرى."}`,
+                  `${locale.toLowerCase() === "en" ? "Google login failed. Please try again." : "فشل تسجيل الدخول بواسطة جوجل. يرجى المحاولة مرة أخرى."}`,
                 "error",
               );
             }
@@ -61,7 +61,7 @@ export const useHandleGoogleSuccess = (
             showNotification(
               error?.response?.data?.message ||
                 error?.message ||
-                `${locale.toLowerCase() === "en" ? "Google login failed. Please try again." : "فشل تسجيل الدخول بواسطة جوجل. يرجى المحاولة مرة أخرى."}`,
+                `${locale.toLowerCase() === "en" ? "Google login failed. Please try again." : "فشل تسجيل الدخول بواسطة جوجل. يرجى المحاولة مرة أخرى."}`,
               "error",
             );
           },

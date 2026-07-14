@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGetProducts } from "@/hooks/useProducts";
 import { applySort } from "@/lib/Products";
 import { Product } from "@/type/type";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useGetCategory } from "./useDashboard";
 
 export function useSearchPage({

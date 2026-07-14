@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
 import {
   FolderPlus,
@@ -18,11 +18,11 @@ import {
   usePatchCategory,
   useDeleteCategory,
 } from "@/hooks/useDashboard";
-import { useShowNotification } from "@/utils/showNotification";
+import { useShowNotification } from "@/hooks/useShowNotification";
 import { ErrorResponse, NotificationState } from "@/type/type";
 import Notification from "../layout/Notification";
 import { AxiosError } from "axios";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function CategoriesPage() {
   const { t, dir, isArabic } = useTranslation();

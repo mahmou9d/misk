@@ -3,8 +3,6 @@
 import { NotificationState } from "@/type/type";
 import { useCallback } from "react";
 
-
-
 export const useShowNotification = (
   setNotification: React.Dispatch<
     React.SetStateAction<NotificationState | null>

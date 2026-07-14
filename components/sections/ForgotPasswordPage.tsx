@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -9,10 +9,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePasswordReset } from "@/hooks/useAuth";
 import { getForgotPasswordSchema } from "@/utils/validation";
 import { ErrorResponse, NotificationState } from "@/type/type";
-import { useShowNotification } from "@/utils/showNotification";
+import { useShowNotification } from "@/hooks/useShowNotification";
 import Notification from "@/components/layout/Notification";
 import { AxiosError } from "axios";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type ForgotPasswordFormData = { email: string };
 

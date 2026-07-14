@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, Suspense } from "react";
@@ -10,12 +10,12 @@ import { usePasswordResetConfirm } from "@/hooks/useAuth";
 import Notification from "@/components/layout/Notification";
 import { getResetPasswordSchema } from "@/utils/validation";
 import { ErrorResponse, NotificationState } from "@/type/type";
-import { useShowNotification } from "@/utils/showNotification";
+import { useShowNotification } from "@/hooks/useShowNotification";
 import { AxiosError } from "axios";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { EyeClosed, EyeOpen } from "@/public/svg/Svgs";
-import { useTranslation } from "@/lib/Usetranslation";
+import { EyeClosed, EyeOpen } from "@/components/ui/Svgs";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type ResetPasswordFormData = any;
 

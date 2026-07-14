@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Btn, Card, Input, Sec } from "@/components/layout/Adminui";
+import { Btn, Card, Input, Sec } from "@/components/admin/Adminui";
 import {
   useAddImageVariantsProduct,
   useDeleteThumbnail,
@@ -10,7 +10,7 @@ import {
 import { ErrorResponse } from "@/type/type";
 import { AxiosError } from "axios";
 import { GalleryImage, Volume } from "@/type/type";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";

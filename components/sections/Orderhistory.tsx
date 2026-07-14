@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useOrderHistory } from "@/hooks/usePayment";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 import Link from "next/link";
 
 const statusConfig: Record<string, { color: string; bg: string; dot: string }> =

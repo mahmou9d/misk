@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import ProductCard from "@/components/layout/Productcard";
+import ProductCard from "@/components/ui/Productcard";
 import AnnouncementBar from "../layout/AnnouncementBar";
 import Navbar from "../layout/Navbar";
 import Footer from "@/components/sections/Footer";
@@ -18,12 +18,12 @@ import {
 } from "@/type/type";
 import { useAddToCart } from "@/hooks/useCart";
 import { useRouter } from "next/navigation";
-import { useShowNotification } from "@/utils/showNotification";
+import { useShowNotification } from "@/hooks/useShowNotification";
 import Notification from "../layout/Notification";
 import { AxiosError } from "axios";
-import { useCats } from "@/lib/CatsContext";
-import { useTranslation } from "@/lib/Usetranslation";
-import { useTranslation as useProductGalleryTranslation } from "@/lib/Usetranslation"; // Import with alias
+import { useCats } from "@/lib/context/CatsContext";
+import { useTranslation } from "@/hooks/useTranslation";
+import { useTranslation as useProductGalleryTranslation } from "@/hooks/useTranslation"; // Import with alias
 import { useGetReviews, useAddReview } from "@/hooks/useReviews";
 
 /* ── Skeleton ── */

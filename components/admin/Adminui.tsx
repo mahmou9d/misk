@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export const P = ({ t, s }: { t: string; s?: string }) => (
   <div className="mb-[26px]">

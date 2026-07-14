@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import Link from "next/link";
@@ -7,8 +7,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CartDrawer } from "./Cartdrawer";
 import { useAuth } from "@/hooks/useAuth";
 import { useGetCartItems } from "@/hooks/useCart";
-import { useCats } from "@/lib/CatsContext";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useCats } from "@/lib/context/CatsContext";
+import { useTranslation } from "@/hooks/useTranslation";
 import {
   ArrowLeft,
   ArrowRight,
@@ -21,10 +21,10 @@ import {
   MenuToggleIcon,
   SearchIcon,
   UserIcon,
-} from "@/public/svg/Svgs";
+} from "@/components/ui/Svgs";
 import { useGetCategory, useGetPublicSettings } from "@/hooks/useDashboard";
 import { useQueryClient } from "@tanstack/react-query";
-import { RefreshDeviceID } from "@/utils/DeviceIDProvider";
+import { RefreshDeviceID } from "@/components/providers/DeviceIDProvider";
 // import { useOrderHistory } from "@/hooks/usePayment";
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────

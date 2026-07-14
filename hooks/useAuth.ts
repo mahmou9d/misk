@@ -132,7 +132,7 @@ export const useAuth = () => {
 
   return {
     user,
-    isLoading: isLoading || isFetching, // استخدم هذه الحالة في المكونات لإظهار "Loading Spinner"
+    isLoading: isLoading, // Only show spinner on initial load when there is no data in cache
     isAuthenticated,
     isAdmin,
     login: loginMutation.mutateAsync,

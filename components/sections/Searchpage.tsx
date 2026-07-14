@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/sections/Footer";
-import ProductCard from "@/components/layout/Productcard";
+import ProductCard from "@/components/ui/Productcard";
 import {
   ProductSkeleton,
   SearchBox,
@@ -13,7 +13,7 @@ import {
   CategoryDropdown,
 } from "@/components/sections/ComponetsSearchPage";
 import { useSearchPage } from "@/hooks/Usesearchpage";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useEffect, useState, useCallback } from "react";
 import {
   ChevronLeft,

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -9,14 +9,14 @@ import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import Notification from "@/components/layout/Notification";
 import { GoogleLogin } from "@react-oauth/google";
-import { useShowNotification } from "@/utils/showNotification";
+import { useShowNotification } from "@/hooks/useShowNotification";
 import { AxiosError } from "axios";
 import { ErrorResponse, NotificationState } from "@/type/type";
-import { useHandleGoogleSuccess } from "@/utils/handleGoogleSuccess";
+import { useHandleGoogleSuccess } from "@/hooks/useHandleGoogleSuccess";
 import { useCartMerge } from "@/hooks/useCart";
-import { EyeClosed, EyeOpen } from "@/public/svg/Svgs";
+import { EyeClosed, EyeOpen } from "@/components/ui/Svgs";
 import { getLoginSchema } from "@/utils/validation";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function LoginPage() {
   const { t, isArabic, dir, locale } = useTranslation();

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -17,7 +17,7 @@ import {
   useGetTopSelling,
   useGetSalesOrders,
 } from "@/hooks/useDashboard";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function OverviewPage() {
   const { t } = useTranslation();

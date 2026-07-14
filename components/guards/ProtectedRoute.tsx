@@ -1,7 +1,7 @@
 "use client";
 import IsLoading from "@/components/layout/IsLoading";
 import { useAuth } from "@/hooks/useAuth";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 

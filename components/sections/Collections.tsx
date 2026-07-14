@@ -1,10 +1,10 @@
-// "use client";
+﻿// "use client";
 
 // import Link from "next/link";
 // import { motion } from "framer-motion";
 // import Image from "next/image";
-// import { useTranslation } from "@/lib/Usetranslation";
-// import { ArrowRight } from "@/public/svg/Svgs";
+// import { useTranslation } from "@/hooks/useTranslation";
+// import { ArrowRight } from "@/components/ui/Svgs";
 
 // export default function Collections() {
 //   const { t, isArabic, locale, dir } = useTranslation();

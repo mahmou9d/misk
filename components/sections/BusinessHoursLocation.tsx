@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
-import { useTranslation } from "@/lib/Usetranslation";
-import { ClockIcon, CloseIcon, ExternalIcon } from "@/public/svg/Svgs";
+import { useTranslation } from "@/hooks/useTranslation";
+import { ClockIcon, CloseIcon, ExternalIcon } from "@/components/ui/Svgs";
 import Link from "next/link";
 import { motion } from "framer-motion";
 

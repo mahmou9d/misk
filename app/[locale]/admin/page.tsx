@@ -1,13 +1,5 @@
-import AdminLayout from "@/components/layout/Adminlayout";
-import OverviewPage from "@/components/layout/Overviewpage";
-import { ProtectedRoute } from "@/utils/Protectedroute";
+import OverviewPage from "@/components/admin/Overviewpage";
 
 export default function Page() {
-  return (
-    <ProtectedRoute>
-      <AdminLayout>
-        <OverviewPage />
-      </AdminLayout>
-    </ProtectedRoute>
-  );
+  return <OverviewPage />;
 }

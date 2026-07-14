@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { SidebarUI } from "./SidebarUI";
 import { AdminHeader } from "./AdminHeader";
-import { useTranslation } from "@/lib/Usetranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function AdminLayout({
   children,

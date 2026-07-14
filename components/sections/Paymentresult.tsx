@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
-import { useTranslation } from "@/lib/Usetranslation";
-import { IconFailed, IconSuccess } from "@/public/svg/Svgs";
+import { useTranslation } from "@/hooks/useTranslation";
+import { IconFailed, IconSuccess } from "@/components/ui/Svgs";
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useState, useCallback, useEffect, useMemo } from "react";
