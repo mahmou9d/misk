@@ -1,10 +1,10 @@
-﻿/* eslint-disable react-hooks/static-components */
+/* eslint-disable react-hooks/static-components */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Product } from "@/type/type";
-import { getSortOptions } from "@/lib/Products";
+import { getSortOptions } from "@/utils/Products";
 import { useTranslation } from "@/hooks/useTranslation";
 import Image from "next/image";
 import { createPortal } from "react-dom";

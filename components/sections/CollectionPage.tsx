@@ -1,4 +1,4 @@
-﻿/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -8,7 +8,7 @@ import Navbar from "../layout/Navbar";
 import Footer from "./Footer";
 import ProductCard from "@/components/ui/Productcard";
 import { useGetProducts } from "@/hooks/useProducts";
-import { applySort } from "@/lib/Products";
+import { applySort } from "@/utils/Products";
 import { Product } from "@/type/type";
 import { useTranslation } from "@/hooks/useTranslation";
 import { ArrowDown } from "@/components/ui/Svgs";
