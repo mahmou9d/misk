@@ -132,19 +132,30 @@ export default function CollectionPage({ category }: { category: string }) {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const router = useRouter();
-const pathname = usePathname();
-const searchParams = useSearchParams();
+  const [page, setPageState] = useState(1);
+const [ready, setReady] = useState(false);
 
-const page = Number(searchParams.get("page")) || 1;
+// قراءة الصفحة من الـ URL أول ما الصفحة تتحمل
+useEffect(() => {
+  const p = Number(new URLSearchParams(window.location.search).get("page")) || 1;
+  setPageState(p);
+  setReady(true);
+}, []);
 
 const setPage = (updater: number | ((p: number) => number)) => {
-  const next = typeof updater === "function" ? updater(page) : updater;
-  const params = new URLSearchParams(searchParams.toString());
-  if (next <= 1) params.delete("page");
-  else params.set("page", String(next));
-  const qs = params.toString();
-  router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  setPageState((p) => {
+    const next = typeof updater === "function" ? updater(p) : updater;
+    const params = new URLSearchParams(window.location.search);
+    if (next <= 1) params.delete("page");
+    else params.set("page", String(next));
+    const qs = params.toString();
+    window.history.replaceState(
+      window.history.state,
+      "",
+      qs ? `${window.location.pathname}?${qs}` : window.location.pathname,
+    );
+    return next;
+  });
 };
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
@@ -202,6 +213,7 @@ const { data, isLoading, isError } = useGetProducts({
   );
   resetPage();
 };
+  if (!ready) return null;
   return (
     <section className="xl:pb-0 pb-[60px]">
       <AnnouncementBar />
