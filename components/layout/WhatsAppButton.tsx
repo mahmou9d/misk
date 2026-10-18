@@ -1,9 +1,15 @@
 ﻿"use client";
 import React from "react";
 import { useTranslation } from "@/hooks/useTranslation";
+import { usePathname } from "next/navigation";
+
+
 
 const WhatsAppButton = () => {
   const { isArabic } = useTranslation();
+  const pathname = usePathname();
+
+  if (pathname.includes("/admin")) return null;
   const whatsappUrl =
     "https://api.whatsapp.com/send?phone=201123022028&token=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjEyNSJ9.eyJleHAiOjE3NzUwNzgzNTEsInBob25lIjoiMjAxMTIzMDIyMDI4IiwidGV4dCI6IiIsImNvbnRleHQiOiJBZmdDdEw4ZVV5RlIwWEk1QmlwTHdFelcyMnh0ZzZmYXVvSEtoUmtpZTFKR2xGN1JZd29oLVZTRm1KdU9Da2ZOS01KNTVPN1AyNnBGSk42ckV2NmJVYjcteUFsZmVWMGQyYjVFN2wyd0NRVHhsSWstWWd1eGFfQXdSYzFSRjJWeHBPVlB1cl94ZDlKeTBwaTl0QSIsInNvdXJjZSI6IiIsImFwcCI6ImZhY2Vib29rIn0.p0oAwshfcv5TTfTVZWT77NyhhBvlAzSDB5Cj1p6cJVWoH3C9mHzfd5fUGXPj1nDrKk4qwcymgojeXTlwy3Xhbw";
 
