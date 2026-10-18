@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnnouncementBar from "../layout/AnnouncementBar";
@@ -131,7 +132,20 @@ export default function CollectionPage({ category }: { category: string }) {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [page, setPage] = useState(1);
+  const router = useRouter();
+const pathname = usePathname();
+const searchParams = useSearchParams();
+
+const page = Number(searchParams.get("page")) || 1;
+
+const setPage = (updater: number | ((p: number) => number)) => {
+  const next = typeof updater === "function" ? updater(page) : updater;
+  const params = new URLSearchParams(searchParams.toString());
+  if (next <= 1) params.delete("page");
+  else params.set("page", String(next));
+  const qs = params.toString();
+  router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+};
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   const decodedOnce = decodeURIComponent(category);
@@ -165,16 +179,23 @@ const { data, isLoading, isError } = useGetProducts({
     else setAllProducts((prev) => [...prev, ...products]);
   }, [data, page]);
 
-  useEffect(() => {
-    setPage(1);
-  }, [
-    availFilter,
-    minPrice,
-    maxPrice,
-    categoryName,
-    isArabic,
-    selectedCategories,
-  ]);
+  const firstRender = useRef(true);
+
+useEffect(() => {
+  if (firstRender.current) {
+    firstRender.current = false;
+    return;
+  }
+  setPage(1);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [
+  availFilter.join(","),
+  minPrice,
+  maxPrice,
+  categoryName?.name,
+  isArabic,
+  selectedCategories.join(","),
+]);
 
   let products = data?.products ?? [];
   if (selectedCategories.length > 0)
