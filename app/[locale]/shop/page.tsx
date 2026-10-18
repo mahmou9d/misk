@@ -39,5 +39,9 @@ export async function generateMetadata({
 }
 
 export default function AllCollectionsPage() {
-  return <CollectionPage category="all" />;
+  return (
+    <Suspense fallback={null}>
+      <CollectionPage category="all" />
+    </Suspense>
+  );
 }
