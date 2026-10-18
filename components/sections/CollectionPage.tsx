@@ -179,23 +179,9 @@ const { data, isLoading, isError } = useGetProducts({
     else setAllProducts((prev) => [...prev, ...products]);
   }, [data, page]);
 
-  const firstRender = useRef(true);
-
-useEffect(() => {
-  if (firstRender.current) {
-    firstRender.current = false;
-    return;
-  }
-  setPage(1);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [
-  availFilter.join(","),
-  minPrice,
-  maxPrice,
-  categoryName?.name,
-  isArabic,
-  selectedCategories.join(","),
-]);
+  const resetPage = () => {
+  if (page !== 1) setPage(1);
+};
 
   let products = data?.products ?? [];
   if (selectedCategories.length > 0)
@@ -210,11 +196,12 @@ useEffect(() => {
     (minPrice || maxPrice ? 1 : 0) +
     selectedCategories.length;
 
-  // ✅ toggle كاتيجوري - يضيف أو يشيل من المختارين
-  const toggleCategory = (name: string) =>
-    setSelectedCategories((prev) =>
-      prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name],
-    );
+  const toggleCategory = (name: string) => {
+  setSelectedCategories((prev) =>
+    prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name],
+  );
+  resetPage();
+};
   return (
     <section className="xl:pb-0 pb-[60px]">
       <AnnouncementBar />
@@ -260,9 +247,10 @@ useEffect(() => {
                       </span>
                       <button
                         onClick={() => {
-                          setMinPrice("");
-                          setMaxPrice("");
-                        }}
+  setMinPrice("");
+  setMaxPrice("");
+  resetPage();
+}}
                         className="text-[13px] font-bold text-[#c9a84c] underline bg-transparent border-none cursor-pointer"
                       >
                         {t.collectionPage.reset}
@@ -273,14 +261,14 @@ useEffect(() => {
                         type="number"
                         placeholder={t.collectionPage.min}
                         value={minPrice}
-                        onChange={(e) => setMinPrice(e.target.value)}
+                        onChange={(e) => { setMinPrice(e.target.value); resetPage(); }}
                         className="w-full text-[15px] p-3 rounded-xl border border-gray-100 focus:border-[#c9a84c] outline-none transition-colors"
                       />
                       <input
                         type="number"
                         placeholder={t.collectionPage.max}
                         value={maxPrice}
-                        onChange={(e) => setMaxPrice(e.target.value)}
+                        onChange={(e) => { setMaxPrice(e.target.value); resetPage(); }}
                         className="w-full text-[15px] p-3 rounded-xl border border-gray-100 focus:border-[#c9a84c] outline-none transition-colors"
                       />
                     </div>
@@ -304,7 +292,10 @@ useEffect(() => {
                         {selectedCategories.length} {t.collectionPage.selected}
                       </span>
                       <button
-                        onClick={() => setSelectedCategories([])}
+                        onClick={() => {
+  setSelectedCategories([]);
+  resetPage();
+}}
                         className="text-[13px] font-bold text-[#c9a84c] underline bg-transparent border-none cursor-pointer"
                       >
                         {t.collectionPage.reset}
