@@ -89,47 +89,47 @@ function ProductGallery({
   const currentImage = images[safeIndex]?.url || images[safeIndex];
   return (
     <div className="flex flex-col gap-3">
-      <div className="relative w-full h-[65vh] md:h-auto md:w-3/4 md:aspect-[3/4] rounded-2xl overflow-hidden bg-white border border-[#c9a84c]/[0.14]">   
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeIndex}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="absolute inset-0"
-          >
-            {currentImage ? (
-              <Image
-                src={currentImage as string}
-                alt={name}
-                fill
-                loading="lazy"
-                className="object-contain rounded-2xl"
-                sizes="(max-width:768px) 100vw, 52vw"
-              />
-            ) : (
-              // Placeholder for no image, similar to ProductCard
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-[#f9f7f2]">
-                <span className="text-[40px] mb-3 opacity-20 select-none">🖼️</span>
-                <span className="text-[14px] font-medium text-[#c9a84c] leading-relaxed">
-                  {/* Use translation key for consistency */}
-                  {t.productCard.noImage}
-                </span>
-              </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
-        {["tl", "tr", "bl", "br"].map((pos) => (
-          <div
-            key={pos}
-            className={`absolute w-4 h-4 rounded-sm border-[#c9a84c]/50
-              ${pos.startsWith("t") ? "top-3 border-t" : "bottom-3 border-b"}
-              ${pos.endsWith("l") ? "left-3 border-l" : "right-3 border-r"}
-            `}
-          />
-        ))}
-      </div>
+      <div className="relative w-full md:w-3/4 md:aspect-[3/4] rounded-2xl overflow-hidden border border-[#c9a84c]/[0.14]">
+  <AnimatePresence mode="wait">
+    <motion.div
+      key={activeIndex}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      className="md:absolute md:inset-0"
+    >
+      {currentImage ? (
+        <Image
+          src={currentImage as string}
+          alt={name}
+          width={1200}
+          height={1200}
+          loading="lazy"
+          className="block w-full h-auto md:h-full md:object-contain rounded-2xl"
+          sizes="(max-width:768px) 100vw, 52vw"
+        />
+      ) : (
+        <div className="flex flex-col items-center justify-center p-6 text-center bg-[#f9f7f2] aspect-square md:aspect-auto md:h-full">
+          <span className="text-[40px] mb-3 opacity-20 select-none">🖼️</span>
+          <span className="text-[14px] font-medium text-[#c9a84c] leading-relaxed">
+            {t.productCard.noImage}
+          </span>
+        </div>
+      )}
+    </motion.div>
+  </AnimatePresence>
+
+  {["tl", "tr", "bl", "br"].map((pos) => (
+    <div
+      key={pos}
+      className={`absolute w-4 h-4 rounded-sm border-[#c9a84c]/50
+        ${pos.startsWith("t") ? "top-3 border-t" : "bottom-3 border-b"}
+        ${pos.endsWith("l") ? "left-3 border-l" : "right-3 border-r"}
+      `}
+    />
+  ))}
+</div>
       {images.length > 1 && (
         <div className="flex gap-2 flex-wrap">
           {images.map((src, i) => (
