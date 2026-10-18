@@ -105,7 +105,7 @@ function ProductGallery({
                 alt={name}
                 fill
                 loading="lazy"
-                className="object-cover rounded-2xl"
+                className="object-contain rounded-2xl"
                 sizes="(max-width:768px) 100vw, 52vw"
               />
             ) : (
