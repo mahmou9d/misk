@@ -1,4 +1,5 @@
 import CollectionPage from "@/components/sections/CollectionPage";
+import { Suspense } from "react";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
