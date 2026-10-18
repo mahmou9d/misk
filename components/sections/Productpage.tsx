@@ -201,7 +201,7 @@ export default function ProductPage() {
                 </motion.div>
               )}
 
-              <div className="relative overflow-hidden rounded-3xl border border-[rgba(201,168,76,0.18)] shadow-[0_8px_48px_rgba(45,27,105,0.1)] bg-white aspect-square">
+              <div className="relative overflow-hidden rounded-3xl border border-[rgba(201,168,76,0.18)] shadow-[0_8px_48px_rgba(45,27,105,0.1)] bg-white aspect-[4/3] md:aspect-square">
                 <Image
                   src={
                     (typeof product.variants?.[0]?.images?.[0] === "string"
