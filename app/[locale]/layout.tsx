@@ -1,5 +1,6 @@
 // app/[locale]/layout.tsx
 import type { Metadata } from "next";
+import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import {
   Amiri,
   Bodoni_Moda,
@@ -330,6 +331,7 @@ export default async function LocaleLayout({
           : "var(--font-roboto), sans-serif",
       }}
     >
+      <WhatsAppButton />
       {children}
     </div>
   );
