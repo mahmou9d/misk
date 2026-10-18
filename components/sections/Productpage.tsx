@@ -202,19 +202,19 @@ export default function ProductPage() {
               )}
 
               <div className="relative overflow-hidden rounded-3xl border border-[rgba(201,168,76,0.18)] shadow-[0_8px_48px_rgba(45,27,105,0.1)] bg-white aspect-[4/3] md:aspect-square">
-                <Image
-                  src={
-                    (typeof product.variants?.[0]?.images?.[0] === "string"
-                      ? product.variants[0].images[0]
-                      : product.variants?.[0]?.images?.[0]?.url) || "/heros.jpg"
-                  }
-                  loading="lazy"
-                  alt={product.name}
-                  fill
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(245,240,228,0.35)_0%,transparent_50%)] pointer-events-none" />
-              </div>
+  <Image
+    src={
+      (typeof product.variants?.[0]?.images?.[0] === "string"
+        ? product.variants[0].images[0]
+        : product.variants?.[0]?.images?.[0]?.url) || "/heros.jpg"
+    }
+    loading="lazy"
+    alt={product.name}
+    fill
+    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+  />
+  <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(245,240,228,0.35)_0%,transparent_50%)] pointer-events-none" />
+</div>
             </Link>
 
             {/* ── Details ── */}
