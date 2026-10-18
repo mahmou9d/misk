@@ -89,7 +89,7 @@ function ProductGallery({
   const currentImage = images[safeIndex]?.url || images[safeIndex];
   return (
     <div className="flex flex-col gap-3">
-      <div className="relative w-3/4 aspect-[3/4] rounded-2xl overflow-hidden bg-gradient-to-br from-[#f8f5f0] to-[#ede8e0] border border-[#c9a84c]/[0.14]">
+      <div className="relative w-full aspect-[4/3] md:w-3/4 md:aspect-[3/4] rounded-2xl overflow-hidden bg-gradient-to-br from-[#f8f5f0] to-[#ede8e0] border border-[#c9a84c]/[0.14]">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndex}
